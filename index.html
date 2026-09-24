@@ -136,6 +136,37 @@ let userSession=null,cloudTimer=null,cloudLoading=false;
 function scheduleCloudSave(){if(!userSession||cloudLoading)return;clearTimeout(cloudTimer);cloudTimer=setTimeout(()=>cloudSave(false),900)}
 async function cloudSave(show=true){if(!db||!userSession)return;const payload=structuredClone(local);const {error}=await db.from('user_saves').upsert({user_id:userSession.user.id,save_data:payload,updated_at:new Date().toISOString()},{onConflict:'user_id'});if(error){if(show)notice('클라우드 저장 실패: '+error.message);return}if(show)notice('☁️ 클라우드에 저장했어요.')}
 async function cloudLoadOrMigrate(){if(!db||!userSession)return;const {data,error}=await db.from('user_saves').select('save_data,updated_at').eq('user_id',userSession.user.id).maybeSingle();if(error)return notice('클라우드 세이브 확인 실패: '+error.message);if(!data?.save_data){await cloudSave(false);notice('☁️ 이 브라우저의 기존 데이터를 계정에 연동했어요.');return}const cloud=data.save_data;const localMeaningful=(Object.values(local.counts||{}).some(Number)||Number(local.points)!==3000||local.pet);if(localMeaningful){const useCloud=confirm(`이 계정에 클라우드 세이브가 있어요.\n\n확인 = 클라우드 세이브 사용\n취소 = 이 기기의 현재 데이터를 계정에 덮어쓰기\n\n클라우드 포인트: ${Number(cloud.points||0).toLocaleString()}P / 기기 포인트: ${Number(local.points||0).toLocaleString()}P`);if(!useCloud){await cloudSave(false);notice('이 기기의 데이터를 클라우드에 연동했어요.');return}}cloudLoading=true;local={...cloud};local.counts??={};local.homeCharacterIds=Array.isArray(local.homeCharacterIds)?local.homeCharacterIds.slice(0,3):(local.homeCharacterId?[local.homeCharacterId]:[]);localStorage.setItem(key,JSON.stringify(local));cloudLoading=false;render();renderPet();notice('☁️ 계정 데이터를 불러왔어요.')}
+let targetedGrantBusy=false;
+async function claimTargetedPointGrants(showNotice=true){
+ if(!db||!userSession||targetedGrantBusy)return 0;
+ targetedGrantBusy=true;
+ try{
+  // 먼저 이 기기의 최신 세이브를 서버에 올린 뒤,
+  // 서버가 지급 대기분을 원자적으로 반영해 로컬/클라우드 덮어쓰기 문제를 막습니다.
+  await cloudSave(false);
+  const {data,error}=await db.rpc('claim_my_point_grants');
+  if(error){
+   if(showNotice&&!String(error.message||'').includes('claim_my_point_grants'))console.warn('개별 포인트 수령 실패:',error);
+   return 0
+  }
+  const granted=Number(data?.granted||0);
+  const balance=Number(data?.balance);
+  if(granted>0&&Number.isSafeInteger(balance)&&balance>=0){
+   local.points=balance;
+   localStorage.setItem(key,JSON.stringify(local));
+   render();
+   scheduleCloudSave();
+   if(showNotice)notice(`🎁 관리자가 지급한 +${granted.toLocaleString()} P를 받았어요!`);
+   return granted
+  }
+  return 0
+ }catch(err){
+  console.warn('개별 포인트 수령 실패:',err);
+  return 0
+ }finally{
+  targetedGrantBusy=false
+ }
+}
 async function refreshUserSession(){
  if(!db)return false;
  const {data}=await db.auth.getSession();let sess=data.session;
@@ -168,12 +199,12 @@ async function refreshUserSession(){
 }
 $('userLoginBtn').onclick=()=>{$('accountOverlay').classList.remove('hidden')};
 if($('homeAccountOpen'))$('homeAccountOpen').onclick=()=>{$('accountOverlay').classList.remove('hidden')};
-if($('homeCloudLoad'))$('homeCloudLoad').onclick=async()=>{if(!userSession)return $('accountOverlay').classList.remove('hidden');await cloudLoadOrMigrate();await refreshUserSession()};
+if($('homeCloudLoad'))$('homeCloudLoad').onclick=async()=>{if(!userSession)return $('accountOverlay').classList.remove('hidden');await cloudLoadOrMigrate();await refreshUserSession();await claimTargetedPointGrants(true)};
 if($('homeCloudSave'))$('homeCloudSave').onclick=()=>cloudSave(true);
 if($('homeAccountLogout'))$('homeAccountLogout').onclick=async()=>{await cloudSave(false);await db.auth.signOut();userSession=null;await refreshUserSession();notice('로그아웃했어요. 로컬 백업은 그대로 남아 있어요.')};
 $('accountClose').onclick=()=>$('accountOverlay').classList.add('hidden');$('cloudSaveBtn').onclick=()=>cloudSave(true);$('userLogoutBtn').onclick=async()=>{await cloudSave(false);await db.auth.signOut();userSession=null;await refreshUserSession();notice('로그아웃했어요. 로컬 백업은 그대로 남아 있어요.')};
-$('userSignIn').onclick=async()=>{const {error}=await db.auth.signInWithPassword({email:$('userEmail').value.trim(),password:$('userPassword').value});if(error)return notice('로그인 실패: '+error.message);$('accountOverlay').classList.add('hidden');await refreshUserSession();await cloudLoadOrMigrate()};
-$('userSignUp').onclick=async()=>{const {data,error}=await db.auth.signUp({email:$('userEmail').value.trim(),password:$('userPassword').value});if(error)return notice(error.message.includes('rate limit')?'인증 메일 요청이 너무 많아요. 잠시 후 다시 시도해 주세요.':'회원가입 실패: '+error.message);if(data.session){$('accountOverlay').classList.add('hidden');await refreshUserSession();await cloudLoadOrMigrate();notice('회원가입 및 기존 데이터 연동 완료!')}else notice('회원가입 완료! 이메일 인증이 켜져 있다면 인증 메일을 확인한 뒤 로그인해 주세요.')}
+$('userSignIn').onclick=async()=>{const {error}=await db.auth.signInWithPassword({email:$('userEmail').value.trim(),password:$('userPassword').value});if(error)return notice('로그인 실패: '+error.message);$('accountOverlay').classList.add('hidden');await refreshUserSession();await cloudLoadOrMigrate();await claimTargetedPointGrants(true)};
+$('userSignUp').onclick=async()=>{const {data,error}=await db.auth.signUp({email:$('userEmail').value.trim(),password:$('userPassword').value});if(error)return notice(error.message.includes('rate limit')?'인증 메일 요청이 너무 많아요. 잠시 후 다시 시도해 주세요.':'회원가입 실패: '+error.message);if(data.session){$('accountOverlay').classList.add('hidden');await refreshUserSession();await cloudLoadOrMigrate();await claimTargetedPointGrants(false);notice('회원가입 및 기존 데이터 연동 완료!')}else notice('회원가입 완료! 이메일 인증이 켜져 있다면 인증 메일을 확인한 뒤 로그인해 주세요.')}
 function activeLimited(){const now=Date.now();return characters.filter(c=>c.is_limited&&c.limited_start&&c.limited_end&&now>=new Date(c.limited_start).getTime()&&now<new Date(c.limited_end).getTime())}
 function limitedKey(pool){if(!pool.length)return null;return pool.map(c=>c.id).sort().join('|')+'@'+Math.max(...pool.map(c=>new Date(c.limited_end).getTime()))}
 function syncLimitedPoints(){const pool=activeLimited(),k=limitedKey(pool);if(local.limitedEventKey!==k){local.limitedPoints=0;local.limitedEventKey=k;save()}return pool}
@@ -755,8 +786,14 @@ function renderAdminUsers(){
   const right=document.createElement('div');right.className='user-admin-list-right';
   const points=document.createElement('span');points.className='user-admin-points';
   points.textContent=`🪙 ${u.has_save&&u.points!==null?Number(u.points).toLocaleString():'0'} P`;
+  right.append(points);
+  if(Number(u.pending_points||0)>0){
+   const pending=document.createElement('span');pending.className='user-admin-badge';
+   pending.textContent=`지급 대기 +${Number(u.pending_points).toLocaleString()}P`;
+   right.append(pending)
+  }
   const chars=document.createElement('span');chars.className='muted mini';chars.textContent=`캐릭터 ${Number(u.character_count||0)}종`;
-  right.append(points,chars);
+  right.append(chars);
 
   summary.append(idx,main,right);
 
@@ -801,13 +838,17 @@ async function loadAdminUsers(){
  status.textContent='Supabase Auth의 가입 유저 전체 목록을 불러오는 중...';
 
  let data=null,error=null,source='';
- let result=await db.rpc('admin_list_users_v3');
+ let result=await db.rpc('admin_list_users_v4');
  if(!result.error){
-  data=result.data;source='v3'
+  data=result.data;source='v4'
  }else{
-  const fallback=await db.rpc('admin_list_users_v2');
-  if(!fallback.error){data=fallback.data;source='v2'}
-  else error=result.error
+  const fallback3=await db.rpc('admin_list_users_v3');
+  if(!fallback3.error){data=fallback3.data;source='v3'}
+  else{
+   const fallback2=await db.rpc('admin_list_users_v2');
+   if(!fallback2.error){data=fallback2.data;source='v2'}
+   else error=result.error
+  }
  }
 
  if(error){
@@ -846,15 +887,26 @@ function parseAdminPointInput(value,allowZero=false){
 async function adminChangePointsV2(u,mode,value){
  const allowZero=mode==='set',amount=parseAdminPointInput(value,allowZero);
  if(amount===null)return notice(mode==='set'?'0 이상의 안전한 정수 포인트를 입력해 주세요.':'1 이상의 안전한 정수 포인트를 입력해 주세요.');
- const action=mode==='add'?`${amount.toLocaleString()} P를 지급`:mode==='subtract'?`${amount.toLocaleString()} P를 차감`:`잔액을 ${amount.toLocaleString()} P로 설정`;
+
+ if(mode==='add'){
+  if(!confirm(`${u.email||'이 유저'}에게 ${amount.toLocaleString()} P를 지급할까요?\n\n지급 내역은 서버에 대기 상태로 저장되고, 해당 유저가 사이트를 열거나 새로고침하면 자동 반영됩니다.`))return;
+  const {data,error}=await db.rpc('admin_queue_user_points',{p_user_id:u.user_id,p_amount_text:String(amount)});
+  if(error)return notice('포인트 지급 실패: '+error.message+' · user_point_delivery_queue.sql을 먼저 실행해 주세요.');
+  notice(`${u.email||'유저'}에게 +${amount.toLocaleString()} P 지급 등록 완료! · 현재 지급 대기 ${Number(data||amount).toLocaleString()} P`);
+  await loadAdminUsers();
+  return
+ }
+
+ const action=mode==='subtract'?`${amount.toLocaleString()} P를 차감`:`잔액을 ${amount.toLocaleString()} P로 설정`;
  if(!confirm(`${u.email||'이 유저'}의 포인트를 ${action}할까요?`))return;
  let result=await db.rpc('admin_change_user_points_v2',{p_user_id:u.user_id,p_mode:mode,p_amount_text:String(amount)});
  if(result.error){
   const fallback=await db.rpc('admin_change_user_points',{p_user_id:u.user_id,p_mode:mode,p_amount:amount});
   if(!fallback.error)result=fallback
  }
- if(result.error)return notice('포인트 변경 실패: '+result.error.message+' · user_point_grant_repair.sql 실행 여부를 확인해 주세요.');
- notice(`${u.email||'유저'} 포인트 변경 완료 · 현재 ${Number(result.data).toLocaleString()} P`);await loadAdminUsers()
+ if(result.error)return notice('포인트 변경 실패: '+result.error.message);
+ notice(`${u.email||'유저'} 포인트 변경 완료 · 현재 ${Number(result.data).toLocaleString()} P`);
+ await loadAdminUsers()
 }
 async function adminGrantCharacterV2(u,characterId,qtyValue){
  if(!characterId)return notice('지급할 캐릭터를 선택해 주세요.');
@@ -1147,6 +1199,6 @@ function renderPetAdmin(){const list=$('petAdminList');list.replaceChildren();if
 $('petAdminForm').onsubmit=async e=>{e.preventDefault();if(!admin||!db)return notice('관리자 로그인이 필요해요.');const id=$('petEditId').value,old=petCatalog.find(x=>x.id===id);let dialogues;try{dialogues=petCollectDialogues()}catch(err){return notice('대사 입력 확인: '+err.message)}const payload={name:$('petName').value.trim(),description:$('petDescription').value.trim(),dialogues,published:$('petPublished').checked};if(!payload.name)return;const uploaded=[];const btn=$('petAdminSave');btn.disabled=true;try{for(const k of Object.keys(petImageNames)){const file=petDroppedFiles.get(k)||$('petFile_'+k).files[0];if(!file){if(petRequiredImages.has(k)&&!old?.['image_'+k])throw Error(petImageNames[k]+' 이미지를 등록해 주세요.');payload['image_'+k]=old?.['image_'+k]||null;continue}if(file.size>10*1024*1024||!['image/png','image/jpeg','image/webp','image/gif'].includes(file.type))throw Error('이미지는 PNG/JPG/WEBP/GIF 10MB 이하만 가능합니다.');const path=`pets/${crypto.randomUUID()}.${file.type==='image/jpeg'?'jpg':file.type.split('/')[1]}`;const {error}=await db.storage.from('character-images').upload(path,file,{contentType:file.type});if(error)throw Error('이미지 업로드: '+error.message);uploaded.push(path);payload['image_'+k]=db.storage.from('character-images').getPublicUrl(path).data.publicUrl}
 const query=id?db.from('pet_species').update(payload).eq('id',id):db.from('pet_species').insert(payload);const {error}=await query;if(error)throw error;petResetForm();await loadPetCatalog();notice('펫 저장 완료!')}catch(err){if(uploaded.length)await db.storage.from('character-images').remove(uploaded);notice('펫 저장 실패: '+err.message)}finally{btn.disabled=false}};
 
-window.addEventListener('focus',()=>{if(userSession)refreshUserSession()});
-if(ready){await load();arcadeCharacters();await claimGlobalPoints();await authCheck();await refreshUserSession();await loadRhythmSongs();await loadPetCatalog();db.auth.onAuthStateChange(()=>{setTimeout(()=>{authCheck();refreshUserSession()},0)})}else{$('status').textContent='설정 필요';render()}
+window.addEventListener('focus',()=>{if(userSession){refreshUserSession();claimTargetedPointGrants(true)}});document.addEventListener('visibilitychange',()=>{if(!document.hidden&&userSession)claimTargetedPointGrants(true)});setInterval(()=>{if(userSession)claimTargetedPointGrants(true)},60000);
+if(ready){await load();arcadeCharacters();await claimGlobalPoints();await authCheck();await refreshUserSession();await claimTargetedPointGrants(false);await loadRhythmSongs();await loadPetCatalog();db.auth.onAuthStateChange(()=>{setTimeout(async()=>{await authCheck();await refreshUserSession();await claimTargetedPointGrants(false)},0)})}else{$('status').textContent='설정 필요';render()}
 </script></body></html>
