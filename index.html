@@ -848,9 +848,13 @@ async function adminChangePointsV2(u,mode,value){
  if(amount===null)return notice(mode==='set'?'0 이상의 안전한 정수 포인트를 입력해 주세요.':'1 이상의 안전한 정수 포인트를 입력해 주세요.');
  const action=mode==='add'?`${amount.toLocaleString()} P를 지급`:mode==='subtract'?`${amount.toLocaleString()} P를 차감`:`잔액을 ${amount.toLocaleString()} P로 설정`;
  if(!confirm(`${u.email||'이 유저'}의 포인트를 ${action}할까요?`))return;
- const {data,error}=await db.rpc('admin_change_user_points',{p_user_id:u.user_id,p_mode:mode,p_amount:amount});
- if(error)return notice('포인트 변경 실패: '+error.message);
- notice(`${u.email||'유저'} 포인트 변경 완료 · 현재 ${Number(data).toLocaleString()} P`);await loadAdminUsers()
+ let result=await db.rpc('admin_change_user_points_v2',{p_user_id:u.user_id,p_mode:mode,p_amount_text:String(amount)});
+ if(result.error){
+  const fallback=await db.rpc('admin_change_user_points',{p_user_id:u.user_id,p_mode:mode,p_amount:amount});
+  if(!fallback.error)result=fallback
+ }
+ if(result.error)return notice('포인트 변경 실패: '+result.error.message+' · user_point_grant_repair.sql 실행 여부를 확인해 주세요.');
+ notice(`${u.email||'유저'} 포인트 변경 완료 · 현재 ${Number(result.data).toLocaleString()} P`);await loadAdminUsers()
 }
 async function adminGrantCharacterV2(u,characterId,qtyValue){
  if(!characterId)return notice('지급할 캐릭터를 선택해 주세요.');
