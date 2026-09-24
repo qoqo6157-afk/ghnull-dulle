@@ -15,6 +15,33 @@
 .game-picker{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin:12px 0}.game-picker button{min-height:78px;background:#eeeefa;color:#393b8d;border:2px solid transparent}.game-picker button.active{border-color:#595bd7;background:#dedefb}.pang-board{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:4px;max-width:510px;margin:14px auto;touch-action:none;user-select:none}.pang-tile{aspect-ratio:1;padding:2px;min-width:0;border-radius:9px;background:#eeeefa;border:2px solid transparent;overflow:hidden;display:flex;align-items:center;justify-content:center}.pang-tile.selected{border-color:#595bd7;background:#c9caff}.pang-tile img{width:100%;height:100%;object-fit:cover;pointer-events:none}.pang-tile span{font-size:clamp(16px,5vw,33px);pointer-events:none}.pang-tile:disabled{opacity:.7}.pang-result{padding:14px;background:#f0f0fb;border-radius:12px;margin-top:12px}.pang-board.busy{pointer-events:none}
 
 .casino-picker{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}.casino-picker button{background:#eeeefa;color:#393b8d}.casino-picker button.active{background:#595bd7;color:#fff}.casino-balance{background:#eeeefa;padding:14px;border-radius:14px;font-weight:700;color:#393b8d}.casino-options{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:7px}.casino-options button{padding:12px 5px;background:#eeeefa;color:#393b8d;border:2px solid transparent}.casino-options button.active{border-color:#595bd7;background:#d9d9ff}.casino-reels{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;background:#292641;padding:14px;border-radius:18px}.casino-reels span{display:grid;place-items:center;aspect-ratio:1;background:#fff;border-radius:12px;font-size:clamp(28px,8vw,54px)}.casino-result{margin-top:12px;padding:14px;border-radius:12px;background:#f0f0fb;min-height:50px}.casino-bet{max-width:240px}.casino-warning{font-size:12px;color:#777b90}.casino-allin{margin-left:8px;padding:10px 12px}.casino-bet{width:min(100%,240px)}
+.blackjack-panel{position:relative;overflow:hidden;background:radial-gradient(circle at 50% 15%,#1f6b50 0,#124737 42%,#0a3027 100%);color:#fff;border:1px solid #ffffff22}
+.blackjack-panel h3,.blackjack-panel label{color:#fff}.blackjack-panel .muted{color:#d6e8e1}.blackjack-panel .casino-warning{color:#d7e5df}
+.blackjack-balance{background:#ffffff18;color:#fff;border:1px solid #ffffff20}
+.blackjack-bet-wrap{display:flex;gap:7px;align-items:center;flex-wrap:wrap}.blackjack-bet-wrap input{background:#fff}
+.blackjack-quick{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:6px;margin:8px 0 12px}.blackjack-quick button{padding:9px 4px;font-size:12px;background:#ffffff1d;border:1px solid #ffffff30}
+.blackjack-table{position:relative;border:2px solid #d9b968;border-radius:22px;padding:18px 12px;background:linear-gradient(180deg,#14563f,#0f4435);box-shadow:inset 0 0 35px #0005,0 8px 25px #0002;min-height:390px;overflow:hidden}
+.blackjack-zone{min-height:150px;text-align:center}.blackjack-zone-title{display:flex;justify-content:center;align-items:center;gap:8px;font-weight:900;margin-bottom:7px}.blackjack-score{display:inline-block;padding:3px 9px;border-radius:999px;background:#0005;font-size:12px}
+.blackjack-cards{display:flex;justify-content:center;align-items:center;min-height:104px;gap:clamp(4px,1.8vw,10px);flex-wrap:wrap;padding:4px}
+.blackjack-card{position:relative;width:70px;height:100px;border-radius:9px;background:#fff;color:#1e2330;border:1px solid #ddd;box-shadow:0 5px 10px #0005;display:flex;flex-direction:column;justify-content:space-between;padding:7px;font-weight:900;font-size:18px;transform-origin:center}
+.blackjack-card.red{color:#d93450}.blackjack-card .bj-suit{font-size:25px;text-align:center;line-height:1}.blackjack-card .bj-bottom{transform:rotate(180deg);align-self:flex-end}
+.blackjack-card.back{background:repeating-linear-gradient(45deg,#34366f 0 8px,#5558a2 8px 16px);border:5px solid #fff;color:#fff;display:grid;place-items:center;font-size:27px}
+.blackjack-card.deal{animation:blackjackDeal .38s cubic-bezier(.2,.9,.25,1.2) both}.blackjack-card.flip{animation:blackjackFlip .55s ease both}
+@keyframes blackjackDeal{0%{opacity:0;transform:translate(120px,-80px) rotate(18deg) scale(.55)}100%{opacity:1;transform:none}}
+@keyframes blackjackFlip{0%{transform:rotateY(90deg)}100%{transform:rotateY(0)}}
+.blackjack-divider{height:1px;background:#ffffff33;margin:5px 8% 12px}
+.blackjack-actions{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;margin-top:12px}.blackjack-actions button{min-height:48px;font-weight:900}
+.blackjack-result{position:relative;margin-top:12px;min-height:58px;padding:13px;border-radius:14px;background:#ffffff17;border:1px solid #ffffff20;white-space:pre-line;text-align:center;font-weight:800}
+.blackjack-streak{text-align:center;font-size:13px;margin:8px 0;color:#ffe6a3;font-weight:800}
+.blackjack-panel.bj-win .blackjack-table{animation:bjWinGlow .9s ease 2}.blackjack-panel.bj-bust .blackjack-table{animation:bjBustShake .45s ease}.blackjack-panel.bj-blackjack .blackjack-table{animation:bjJackpotGlow .8s ease 3}
+@keyframes bjWinGlow{0%,100%{box-shadow:inset 0 0 35px #0005,0 8px 25px #0002}50%{box-shadow:inset 0 0 50px #ffe47888,0 0 38px #ffe478aa}}
+@keyframes bjJackpotGlow{0%,100%{filter:brightness(1)}50%{filter:brightness(1.35);box-shadow:0 0 45px #fff0a8}}
+@keyframes bjBustShake{0%,100%{transform:translateX(0)}20%{transform:translateX(-9px)}40%{transform:translateX(8px)}60%{transform:translateX(-6px)}80%{transform:translateX(4px)}}
+.blackjack-fx{position:absolute;inset:0;pointer-events:none;overflow:hidden;z-index:5}.blackjack-particle{position:absolute;top:-20px;font-size:18px;animation:bjParticle 1.5s ease-in forwards}
+@keyframes bjParticle{0%{opacity:0;transform:translateY(-15px) rotate(0) scale(.5)}12%{opacity:1}100%{opacity:0;transform:translateY(480px) rotate(540deg) scale(1.2)}}
+.blackjack-flash{position:absolute;inset:0;pointer-events:none;background:#fff;opacity:0;z-index:4}.blackjack-flash.run{animation:bjFlash .55s ease}@keyframes bjFlash{0%{opacity:0}25%{opacity:.48}100%{opacity:0}}
+@media(max-width:480px){.blackjack-card{width:58px;height:84px;font-size:15px;padding:6px}.blackjack-card .bj-suit{font-size:21px}.blackjack-table{padding:14px 6px;min-height:350px}.blackjack-actions{grid-template-columns:1fr}.blackjack-quick{grid-template-columns:repeat(2,1fr)}}
+
 
 .attendance-days{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:5px;margin:14px 0}.attendance-day{background:#f0f0fb;border:1px solid #e4e4f4;border-radius:10px;padding:9px 2px;text-align:center;font-size:11px}.attendance-day strong{display:block;font-size:clamp(10px,2.6vw,14px);margin-top:4px}.attendance-day.done{background:#e5f8ef;border-color:#68c69b}.attendance-day.today{outline:2px solid #595bd7;outline-offset:-2px}@media(max-width:440px){.attendance-days{gap:3px}.attendance-day{font-size:10px;padding:8px 1px}}
 
@@ -110,7 +137,39 @@
   <p><button>한정 가챠 설정 저장</button></p>
 </form>
 </div></details><details class="admin-fold"><summary>➕ 캐릭터 추가</summary><div data-fold-body><form id="characterForm"><label>이름</label><input id="charName" maxlength="100" required><label>등급</label><select id="rarity"><option>SSR</option><option>SR</option><option>R</option></select><label>일러스트 이미지 (PNG/JPG/WEBP/GIF, 최대 10MB)</label><input id="charImage" type="file" accept="image/png,image/jpeg,image/webp,image/gif" required><label><input id="charLimited" type="checkbox" style="width:auto"> ✨ 한정 가챠 캐릭터</label><div class="row"><div><label>한정 시작</label><input id="charLimitedStart" type="datetime-local"></div><div><label>한정 종료</label><input id="charLimitedEnd" type="datetime-local"></div></div><label>대사 (한 줄에 하나씩)</label><textarea id="dialogues" placeholder="배고픈데.\n오늘은 뭐 할 거야?"></textarea><p><button>캐릭터 등록</button></p></form></div></details><details class="admin-fold"><summary>🗂 등록 캐릭터 · 수정 · 삭제</summary><div data-fold-body><div id="adminList"></div><div id="editPanel" class="edit-panel hidden"><h3 id="editTitle">캐릭터 수정</h3><form id="editForm"><img id="editPreview" alt="현재 캐릭터 이미지"><label for="editName">이름</label><input id="editName" maxlength="100" required><label for="editRarity">등급</label><select id="editRarity"><option>SSR</option><option>SR</option><option>R</option></select><label for="editImage">새 이미지 (선택 사항 · 기존 이미지 유지 가능)</label><input id="editImage" type="file" accept="image/png,image/jpeg,image/webp,image/gif"><label><input id="editLimited" type="checkbox" style="width:auto"> ✨ 한정 가챠 캐릭터</label><div class="row"><div><label>한정 시작</label><input id="editLimitedStart" type="datetime-local"></div><div><label>한정 종료</label><input id="editLimitedEnd" type="datetime-local"></div></div><label for="editDialogues">대사 (한 줄에 하나씩)</label><textarea id="editDialogues"></textarea><div class="row"><button type="submit" id="editSave">수정 저장</button><button type="button" class="ghost" id="editCancel">취소</button></div></form></div></div></details></div></div></section>
-<section id="pet" class="hidden"><div class="panel"><h2>🥚 펫 키우기</h2><p class="muted">알을 골라 아기 → 어린이 → 성인으로 키워 보세요. 돌봄 기록은 현재 브라우저에 저장됩니다.</p><div id="petArea">펫 목록을 불러오는 중...</div></div></section><section id="casino" class="hidden"><div class="panel"><h2>🎰 포인트 카지노</h2><p class="muted">게임 포인트만 사용합니다. 현금 교환·출금은 지원하지 않아요.</p><div class="casino-balance">🪙 현재 보유 포인트: <span id="casinoPoints">0</span> P</div><p class="casino-warning">포인트가 부족하면 미니게임에서 다시 획득할 수 있어요. 배팅 후 결과는 취소할 수 없습니다.</p><div class="casino-picker"><button type="button" id="casinoChooseRps" class="active">✊ 가위바위보</button><button type="button" id="casinoChooseSlot">🎰 슬롯머신</button><button type="button" id="casinoChooseDerby">🏇 캐릭터 경마</button></div></div><div id="casinoRps" class="panel"><h3>✊ 가위바위보</h3><label for="casinoRpsBet">배팅 포인트 (1P부터 보유 포인트까지)</label><input class="casino-bet" id="casinoRpsBet" type="number" min="1" step="1" value="100"><button type="button" class="ghost casino-allin" data-allin="casinoRpsBet">💰 전재산 걸기</button><p class="muted mini">승리: 배팅금 포함 2배 반환 · 무승부: 전액 반환 · 패배: 0P 반환</p><div class="casino-options"><button type="button" data-rps="가위">✌️ 가위</button><button type="button" data-rps="바위">✊ 바위</button><button type="button" data-rps="보">✋ 보</button></div><p id="casinoRpsResult" class="casino-result" role="status">배팅금을 입력하고 손 모양을 선택하세요.</p></div><div id="casinoSlot" class="panel hidden"><h3>🎰 LUCKY SLOT</h3><label for="casinoSlotBet">배팅 포인트 (1P부터 보유 포인트까지)</label><input class="casino-bet" id="casinoSlotBet" type="number" min="1" step="1" value="100"><button type="button" class="ghost casino-allin" data-allin="casinoSlotBet">💰 전재산 걸기</button><div class="casino-reels" aria-label="슬롯 결과"><span id="casinoReel0">🍒</span><span id="casinoReel1">⭐</span><span id="casinoReel2">💎</span></div><p class="muted mini">💎×3: 10배 · ⭐×3: 5배 · 🍒/🍋×3: 3배 · 같은 그림 2개: 1배 · 모두 다름: 0배 (배팅금 포함 반환액)</p><button type="button" id="casinoSpin" class="wide">🎰 SPIN!</button><p id="casinoSlotResult" class="casino-result" role="status">배팅금을 입력하고 SPIN을 눌러 주세요.</p></div><div id="casinoDerby" class="panel hidden"><h3>🏇 NULL DERBY · 캐릭터 경마</h3><p class="muted mini">등록된 캐릭터 5명이 무작위 출전해요. 1·2·3위를 순서대로 예측하세요. 1위만 적중 2배 · 1~2위 적중 4배 · 1~3위 적중 8배 · 1위 실패 시 0배. 배당은 베팅 원금 포함 총 지급액이에요.</p><div class="casino-balance">🪙 보유 포인트: <span id="derbyPoints">0</span> P</div><div id="derbyEntrants"></div><div class="derby-picks"><div><label for="derbyPick1">🥇 예상 1위</label><select id="derbyPick1"></select></div><div><label for="derbyPick2">🥈 예상 2위</label><select id="derbyPick2"></select></div><div><label for="derbyPick3">🥉 예상 3위</label><select id="derbyPick3"></select></div></div><label for="derbyBet">베팅 포인트 (1P부터 보유 포인트까지)</label><input id="derbyBet" type="number" min="1" step="1" value="100"><div class="derby-amounts"><button type="button" class="ghost" data-derby-amount="100">100P</button><button type="button" class="ghost" data-derby-amount="300">300P</button><button type="button" class="ghost" data-derby-amount="500">500P</button><button type="button" class="ghost" data-derby-amount="1000">1,000P</button></div><button type="button" id="derbyAllIn" class="ghost wide">💸 전재산 베팅</button><p class="muted mini" id="derbyPotential">예상 지급액: 선택한 베팅금 × 2 / 4 / 8</p><button type="button" id="derbyStart" class="wide">🏁 베팅하고 출발!</button><div id="derbyTrack" class="derby-track hidden" aria-label="경마 트랙"></div><p id="derbyCommentary" class="muted" role="status"></p><div id="derbyResult" class="derby-result hidden" role="status"></div><button type="button" id="derbyNext" class="ghost wide hidden">🔄 다음 경기 준비</button><p class="muted mini">베팅 즉시 포인트가 차감돼요. 경기 도중 새로고침하면 저장된 결과로 정산됩니다. 포인트는 이 브라우저에 저장되며 현금으로 교환할 수 없어요.</p></div></section></main></div><div id="petGiftOverlay" class="pet-gift-overlay hidden" role="dialog" aria-modal="true" aria-labelledby="petGiftTitle"><div class="pet-gift-dialog"><h2 id="petGiftTitle">🎁 펫에게 선물하기</h2><p class="muted mini" style="margin:0">보유한 R 아이템만 표시돼요. 선물을 확정해야 1개가 소모됩니다.</p><label for="petGiftSearch">🔍 아이템 이름 검색</label><input id="petGiftSearch" type="search" placeholder="아이템 이름을 입력하세요" autocomplete="off"><div id="petGiftList" class="pet-gift-list" aria-label="선물 가능한 R 아이템"></div><p id="petGiftSelected" class="muted mini" aria-live="polite">선택한 아이템: 없음</p><div class="pet-gift-footer"><button type="button" id="petGiftConfirm" disabled>🎁 선택한 아이템 선물하기</button><button type="button" id="petGiftCancel" class="ghost">취소</button></div></div></div><div id="pityOverlay" class="pity-overlay hidden" role="dialog" aria-modal="true" aria-labelledby="pityTitle"><div class="pity-dialog"><h2 id="pityTitle">✨ SSR 교환소 · 원하는 캐릭터 선택</h2><p class="muted">천장 포인트를 사용해 원하는 SSR 캐릭터 한 장을 교환하세요. 이미 보유한 캐릭터도 선택할 수 있어요.</p><div id="pityChoices" class="pity-grid"></div><p id="pitySelected" class="muted" aria-live="polite">선택한 캐릭터: 없음</p><button id="pityConfirm" class="wide" disabled>천장 포인트로 SSR 교환하기</button><button id="pityCancel" type="button" class="ghost wide">닫기</button></div></div><div id="accountOverlay" class="pity-overlay hidden" role="dialog" aria-modal="true"><div class="pity-dialog"><h2>👤 로그인 · 계정 데이터 연동</h2><p class="muted">로그인하면 이 계정의 클라우드 세이브와 연결됩니다. 처음 연동할 때는 현재 기기 데이터와 클라우드 데이터 중 어떤 것을 사용할지 선택할 수 있어요. 기존 브라우저 데이터는 먼저 삭제하지 않습니다.</p><label>이메일</label><input id="userEmail" type="email" autocomplete="username"><label>비밀번호</label><input id="userPassword" type="password" autocomplete="current-password"><div class="row"><button id="userSignIn">로그인</button><button id="userSignUp" class="ghost">회원가입</button></div><button id="accountClose" class="ghost wide">닫기</button></div></div><nav class="nav" aria-label="하단 메뉴"><button data-tab="home" class="active">⌂<br>홈</button><button data-tab="gacha">✧<br>가챠</button><button data-tab="collection">▦<br>도감</button><button data-tab="game">🎮<br>게임</button><button data-tab="pet">🥚<br>펫</button><button data-tab="casino">🎰<br>카지노</button><button data-tab="admin">⚙<br>관리</button></nav>
+<section id="pet" class="hidden"><div class="panel"><h2>🥚 펫 키우기</h2><p class="muted">알을 골라 아기 → 어린이 → 성인으로 키워 보세요. 돌봄 기록은 현재 브라우저에 저장됩니다.</p><div id="petArea">펫 목록을 불러오는 중...</div></div></section><section id="casino" class="hidden"><div class="panel"><h2>🎰 포인트 카지노</h2><p class="muted">게임 포인트만 사용합니다. 현금 교환·출금은 지원하지 않아요.</p><div class="casino-balance">🪙 현재 보유 포인트: <span id="casinoPoints">0</span> P</div><p class="casino-warning">포인트가 부족하면 미니게임에서 다시 획득할 수 있어요. 배팅 후 결과는 취소할 수 없습니다.</p><div class="casino-picker"><button type="button" id="casinoChooseRps" class="active">✊ 가위바위보</button><button type="button" id="casinoChooseSlot">🎰 슬롯머신</button><button type="button" id="casinoChooseBlackjack">🃏 블랙잭</button><button type="button" id="casinoChooseDerby">🏇 캐릭터 경마</button></div></div><div id="casinoRps" class="panel"><h3>✊ 가위바위보</h3><label for="casinoRpsBet">배팅 포인트 (1P부터 보유 포인트까지)</label><input class="casino-bet" id="casinoRpsBet" type="number" min="1" step="1" value="100"><button type="button" class="ghost casino-allin" data-allin="casinoRpsBet">💰 전재산 걸기</button><p class="muted mini">승리: 배팅금 포함 2배 반환 · 무승부: 전액 반환 · 패배: 0P 반환</p><div class="casino-options"><button type="button" data-rps="가위">✌️ 가위</button><button type="button" data-rps="바위">✊ 바위</button><button type="button" data-rps="보">✋ 보</button></div><p id="casinoRpsResult" class="casino-result" role="status">배팅금을 입력하고 손 모양을 선택하세요.</p></div><div id="casinoSlot" class="panel hidden"><h3>🎰 LUCKY SLOT</h3><label for="casinoSlotBet">배팅 포인트 (1P부터 보유 포인트까지)</label><input class="casino-bet" id="casinoSlotBet" type="number" min="1" step="1" value="100"><button type="button" class="ghost casino-allin" data-allin="casinoSlotBet">💰 전재산 걸기</button><div class="casino-reels" aria-label="슬롯 결과"><span id="casinoReel0">🍒</span><span id="casinoReel1">⭐</span><span id="casinoReel2">💎</span></div><p class="muted mini">💎×3: 10배 · ⭐×3: 5배 · 🍒/🍋×3: 3배 · 같은 그림 2개: 1배 · 모두 다름: 0배 (배팅금 포함 반환액)</p><button type="button" id="casinoSpin" class="wide">🎰 SPIN!</button><p id="casinoSlotResult" class="casino-result" role="status">배팅금을 입력하고 SPIN을 눌러 주세요.</p></div>
+<div id="casinoBlackjack" class="panel blackjack-panel hidden">
+  <div id="blackjackFx" class="blackjack-fx" aria-hidden="true"></div><div id="blackjackFlash" class="blackjack-flash" aria-hidden="true"></div>
+  <h3>🃏 BLACKJACK · 21</h3>
+  <p class="muted mini">카드 합을 21에 가깝게! 21 초과는 BUST · 일반 승리 2배 · 첫 2장 BLACKJACK은 2.5배 · PUSH는 원금 반환.</p>
+  <div class="casino-balance blackjack-balance">🪙 보유 포인트: <span id="blackjackPoints">0</span> P</div>
+  <div id="blackjackBetArea">
+    <label for="blackjackBet">배팅 포인트</label>
+    <div class="blackjack-bet-wrap"><input class="casino-bet" id="blackjackBet" type="number" min="1" step="1" value="100"><button type="button" class="ghost casino-allin" data-allin="blackjackBet">💰 전재산</button></div>
+    <div class="blackjack-quick"><button type="button" data-blackjack-bet="100">100P</button><button type="button" data-blackjack-bet="500">500P</button><button type="button" data-blackjack-bet="1000">1,000P</button><button type="button" data-blackjack-bet="5000">5,000P</button></div>
+    <button type="button" id="blackjackDeal" class="wide">🃏 카드 받기</button>
+  </div>
+  <p id="blackjackStreak" class="blackjack-streak">🔥 연승 0</p>
+  <div class="blackjack-table" id="blackjackTable">
+    <div class="blackjack-zone">
+      <div class="blackjack-zone-title">🎩 DEALER <span id="blackjackDealerScore" class="blackjack-score">?</span></div>
+      <div id="blackjackDealerCards" class="blackjack-cards"></div>
+    </div>
+    <div class="blackjack-divider"></div>
+    <div class="blackjack-zone">
+      <div class="blackjack-zone-title">YOU <span id="blackjackPlayerScore" class="blackjack-score">0</span></div>
+      <div id="blackjackPlayerCards" class="blackjack-cards"></div>
+    </div>
+  </div>
+  <div class="blackjack-actions">
+    <button type="button" id="blackjackHit">➕ HIT</button>
+    <button type="button" id="blackjackStand">✋ STAND</button>
+    <button type="button" id="blackjackDouble">×2 DOUBLE</button>
+  </div>
+  <p id="blackjackResult" class="blackjack-result" role="status">배팅금을 정하고 카드 받기를 눌러 주세요.</p>
+  <p class="muted mini">A는 1 또는 11로 자동 계산 · J/Q/K는 10 · 딜러는 17 이상에서 멈춤 · 스플릿/보험은 사용하지 않아요. 진행 중 새로고침해도 현재 판이 복구됩니다.</p>
+</div>
+<div id="casinoDerby" class="panel hidden"><h3>🏇 NULL DERBY · 캐릭터 경마</h3><p class="muted mini">등록된 캐릭터 5명이 무작위 출전해요. 1·2·3위를 순서대로 예측하세요. 1위만 적중 2배 · 1~2위 적중 4배 · 1~3위 적중 8배 · 1위 실패 시 0배. 배당은 베팅 원금 포함 총 지급액이에요.</p><div class="casino-balance">🪙 보유 포인트: <span id="derbyPoints">0</span> P</div><div id="derbyEntrants"></div><div class="derby-picks"><div><label for="derbyPick1">🥇 예상 1위</label><select id="derbyPick1"></select></div><div><label for="derbyPick2">🥈 예상 2위</label><select id="derbyPick2"></select></div><div><label for="derbyPick3">🥉 예상 3위</label><select id="derbyPick3"></select></div></div><label for="derbyBet">베팅 포인트 (1P부터 보유 포인트까지)</label><input id="derbyBet" type="number" min="1" step="1" value="100"><div class="derby-amounts"><button type="button" class="ghost" data-derby-amount="100">100P</button><button type="button" class="ghost" data-derby-amount="300">300P</button><button type="button" class="ghost" data-derby-amount="500">500P</button><button type="button" class="ghost" data-derby-amount="1000">1,000P</button></div><button type="button" id="derbyAllIn" class="ghost wide">💸 전재산 베팅</button><p class="muted mini" id="derbyPotential">예상 지급액: 선택한 베팅금 × 2 / 4 / 8</p><button type="button" id="derbyStart" class="wide">🏁 베팅하고 출발!</button><div id="derbyTrack" class="derby-track hidden" aria-label="경마 트랙"></div><p id="derbyCommentary" class="muted" role="status"></p><div id="derbyResult" class="derby-result hidden" role="status"></div><button type="button" id="derbyNext" class="ghost wide hidden">🔄 다음 경기 준비</button><p class="muted mini">베팅 즉시 포인트가 차감돼요. 경기 도중 새로고침하면 저장된 결과로 정산됩니다. 포인트는 이 브라우저에 저장되며 현금으로 교환할 수 없어요.</p></div></section></main></div><div id="petGiftOverlay" class="pet-gift-overlay hidden" role="dialog" aria-modal="true" aria-labelledby="petGiftTitle"><div class="pet-gift-dialog"><h2 id="petGiftTitle">🎁 펫에게 선물하기</h2><p class="muted mini" style="margin:0">보유한 R 아이템만 표시돼요. 선물을 확정해야 1개가 소모됩니다.</p><label for="petGiftSearch">🔍 아이템 이름 검색</label><input id="petGiftSearch" type="search" placeholder="아이템 이름을 입력하세요" autocomplete="off"><div id="petGiftList" class="pet-gift-list" aria-label="선물 가능한 R 아이템"></div><p id="petGiftSelected" class="muted mini" aria-live="polite">선택한 아이템: 없음</p><div class="pet-gift-footer"><button type="button" id="petGiftConfirm" disabled>🎁 선택한 아이템 선물하기</button><button type="button" id="petGiftCancel" class="ghost">취소</button></div></div></div><div id="pityOverlay" class="pity-overlay hidden" role="dialog" aria-modal="true" aria-labelledby="pityTitle"><div class="pity-dialog"><h2 id="pityTitle">✨ SSR 교환소 · 원하는 캐릭터 선택</h2><p class="muted">천장 포인트를 사용해 원하는 SSR 캐릭터 한 장을 교환하세요. 이미 보유한 캐릭터도 선택할 수 있어요.</p><div id="pityChoices" class="pity-grid"></div><p id="pitySelected" class="muted" aria-live="polite">선택한 캐릭터: 없음</p><button id="pityConfirm" class="wide" disabled>천장 포인트로 SSR 교환하기</button><button id="pityCancel" type="button" class="ghost wide">닫기</button></div></div><div id="accountOverlay" class="pity-overlay hidden" role="dialog" aria-modal="true"><div class="pity-dialog"><h2>👤 로그인 · 계정 데이터 연동</h2><p class="muted">로그인하면 이 계정의 클라우드 세이브와 연결됩니다. 처음 연동할 때는 현재 기기 데이터와 클라우드 데이터 중 어떤 것을 사용할지 선택할 수 있어요. 기존 브라우저 데이터는 먼저 삭제하지 않습니다.</p><label>이메일</label><input id="userEmail" type="email" autocomplete="username"><label>비밀번호</label><input id="userPassword" type="password" autocomplete="current-password"><div class="row"><button id="userSignIn">로그인</button><button id="userSignUp" class="ghost">회원가입</button></div><button id="accountClose" class="ghost wide">닫기</button></div></div><nav class="nav" aria-label="하단 메뉴"><button data-tab="home" class="active">⌂<br>홈</button><button data-tab="gacha">✧<br>가챠</button><button data-tab="collection">▦<br>도감</button><button data-tab="game">🎮<br>게임</button><button data-tab="pet">🥚<br>펫</button><button data-tab="casino">🎰<br>카지노</button><button data-tab="admin">⚙<br>관리</button></nav>
 <script type="module">
 // 이미지에 한정해 우클릭 메뉴 및 끌어서 저장을 제한합니다. 관리자의 파일 선택·업로드는 방해하지 않습니다.
 document.addEventListener('contextmenu',e=>{if(e.target.closest('img')&&!e.target.closest('#homeHero'))e.preventDefault()});
@@ -1061,7 +1120,7 @@ $('pangStart').onclick=startPang;$('pangRestart').onclick=()=>{if(confirm('현�
 
 // 카지노: 이 브라우저의 게임 포인트 지갑을 사용하며, 결과당 한 번만 정산합니다.
 let casinoBusy=false;
-function renderCasino(){if(!$('casinoPoints'))return;$('casinoPoints').textContent=local.points.toLocaleString();$('casinoSpin').disabled=casinoBusy||local.points<1;document.querySelectorAll('[data-rps]').forEach(b=>b.disabled=casinoBusy||local.points<1);document.querySelectorAll('[data-allin]').forEach(b=>b.disabled=casinoBusy||local.points<1);for(const id of ['casinoRpsBet','casinoSlotBet'])$(id).max=String(local.points)}
+function renderCasino(){if(!$('casinoPoints'))return;$('casinoPoints').textContent=local.points.toLocaleString();$('casinoSpin').disabled=casinoBusy||local.points<1;document.querySelectorAll('[data-rps]').forEach(b=>b.disabled=casinoBusy||local.points<1);document.querySelectorAll('[data-allin]').forEach(b=>b.disabled=casinoBusy||local.points<1);for(const id of ['casinoRpsBet','casinoSlotBet','blackjackBet'])if($(id))$(id).max=String(local.points);if($('blackjackPoints'))$('blackjackPoints').textContent=local.points.toLocaleString()}
 function casinoBet(id){const amount=Number($(id).value);if(!Number.isSafeInteger(amount)||amount<1){notice('배팅금은 1P 이상의 정수로 입력해 주세요.');return null}if(local.points<amount){notice('보유 포인트가 부족해요. 미니게임에서 포인트를 모아 주세요!');return null}if(amount>Math.floor(Number.MAX_SAFE_INTEGER/10)){notice('한 번에 배팅할 수 있는 안전한 포인트 범위를 초과했어요.');return null}return amount}
 document.querySelectorAll('[data-allin]').forEach(button=>button.addEventListener('click',()=>{if(casinoBusy||local.points<1)return;$(button.dataset.allin).value=String(local.points)}));
 function casinoRandom(max){const bytes=new Uint32Array(1);const limit=Math.floor(4294967296/max)*max;let n;do{crypto.getRandomValues(bytes);n=bytes[0]}while(n>=limit);return n%max}
@@ -1091,6 +1150,192 @@ $('derbyBet').addEventListener('input',derbyUpdatePotential);document.querySelec
 $('derbyStart').onclick=()=>{if(derby.running||local.derbyPending)return;if(derby.entrants.length!==5)return notice('출전 캐릭터가 부족해요.');const picks=derbyIds.map(id=>$(id).value);if(new Set(picks).size!==3)return notice('1·2·3위는 서로 다른 캐릭터로 선택해 주세요.');const bet=Number($('derbyBet').value);if(!Number.isSafeInteger(bet)||bet<1||bet>local.points)return notice('보유 포인트 이내의 1P 이상 정수로 베팅해 주세요.');if(bet>Math.floor((Number.MAX_SAFE_INTEGER-local.points)/8))return notice('안전한 포인트 계산 범위를 초과하는 베팅금이에요.');if(bet===local.points&&!confirm(`⚠️ 전재산 ${bet.toLocaleString()}P를 베팅합니다. 1위 예측에 실패하면 잔액이 0P가 돼요. 진행할까요?`))return;const order=shuffle(derby.entrants.map(c=>c.id));const race={entrants:derby.entrants.map(c=>({...c})),picks,order,bet,settled:false};local.points-=bet;local.derbyPending=race;save();render();renderCasino();derbyRenderPoints();derbyAnimate()};
 $('derbyNext').onclick=()=>{if(derby.running||local.derbyPending)return;derbyPrepare()};
 if(local.derbyPending){const pending=local.derbyPending;if(Array.isArray(pending.entrants)&&pending.entrants.length===5&&Array.isArray(pending.order)&&pending.order.length===5&&Array.isArray(pending.picks)&&pending.picks.length===3&&Number.isSafeInteger(pending.bet)&&pending.bet>0){derby.entrants=pending.entrants;derbyTrackBuild(pending);derbyFinish();$('derbyCommentary').textContent='이전에 진행하던 경기를 복구하고 정산했어요.'}else{$('derbyCommentary').textContent='저장된 경기를 확인할 수 없어요. 임의로 재베팅하거나 포인트를 지급하지 않았어요.';derbySetBusy(true)}}else derbyPrepare();
+
+
+// Blackjack: 1인용 21 게임. 배팅은 시작 즉시 차감하고 진행 상태를 저장해 새로고침 악용을 막습니다.
+local.blackjackStreak=Number.isSafeInteger(local.blackjackStreak)&&local.blackjackStreak>=0?local.blackjackStreak:0;
+local.blackjackPending=local.blackjackPending&&typeof local.blackjackPending==='object'?local.blackjackPending:null;
+const blackjack={busy:false};
+
+function blackjackDeck(){
+ const suits=['♠','♥','♦','♣'],ranks=['A','2','3','4','5','6','7','8','9','10','J','Q','K'],deck=[];
+ for(const suit of suits)for(const rank of ranks)deck.push({suit,rank});
+ for(let i=deck.length-1;i>0;i--){const j=casinoRandom(i+1);[deck[i],deck[j]]=[deck[j],deck[i]]}
+ return deck
+}
+function blackjackCardValue(card){if(card.rank==='A')return 11;if(['J','Q','K'].includes(card.rank))return 10;return Number(card.rank)}
+function blackjackHandValue(hand){
+ let total=hand.reduce((n,c)=>n+blackjackCardValue(c),0),aces=hand.filter(c=>c.rank==='A').length;
+ while(total>21&&aces>0){total-=10;aces--}
+ return total
+}
+function blackjackNatural(hand){return hand.length===2&&blackjackHandValue(hand)===21}
+function blackjackDraw(round){return round.deck.pop()}
+function blackjackCardNode(card,{hidden=false,animate=false,flip=false}={}){
+ const el=document.createElement('div');el.className='blackjack-card'+(hidden?' back':((card.suit==='♥'||card.suit==='♦')?' red':''))+(animate?' deal':'')+(flip?' flip':'');
+ if(hidden){el.textContent='✦';el.setAttribute('aria-label','뒤집힌 카드');return el}
+ const top=document.createElement('span');top.textContent=card.rank+card.suit;
+ const suit=document.createElement('span');suit.className='bj-suit';suit.textContent=card.suit;
+ const bottom=document.createElement('span');bottom.className='bj-bottom';bottom.textContent=card.rank+card.suit;
+ el.append(top,suit,bottom);el.setAttribute('aria-label',card.rank+card.suit);return el
+}
+function blackjackEffect(type){
+ const panel=$('casinoBlackjack'),fx=$('blackjackFx'),flash=$('blackjackFlash');if(!panel||!fx)return;
+ panel.classList.remove('bj-win','bj-bust','bj-blackjack');void panel.offsetWidth;
+ if(type==='win')panel.classList.add('bj-win');
+ if(type==='bust')panel.classList.add('bj-bust');
+ if(type==='blackjack')panel.classList.add('bj-blackjack');
+ if(type==='win'||type==='blackjack'){
+  fx.replaceChildren();
+  const particles=['✦','♦','♣','♥','♠','✨'];
+  for(let i=0;i<26;i++){const p=document.createElement('span');p.className='blackjack-particle';p.textContent=particles[casinoRandom(particles.length)];p.style.left=`${casinoRandom(96)+2}%`;p.style.animationDelay=`${casinoRandom(350)}ms`;p.style.fontSize=`${14+casinoRandom(17)}px`;fx.append(p)}
+  setTimeout(()=>fx.replaceChildren(),2000)
+ }
+ if(type==='blackjack'&&flash){flash.classList.remove('run');void flash.offsetWidth;flash.classList.add('run')}
+ setTimeout(()=>panel.classList.remove('bj-win','bj-bust','bj-blackjack'),2200)
+}
+function renderBlackjack({animatePlayer=false,animateDealer=false,flipDealer=false}={}){
+ const round=local.blackjackPending;
+ $('blackjackPoints').textContent=local.points.toLocaleString();
+ $('blackjackStreak').textContent=`🔥 현재 ${local.blackjackStreak}연승`;
+ $('blackjackBet').max=String(local.points);
+ const active=!!round;
+ $('blackjackBetArea').classList.toggle('hidden',active);
+ $('blackjackHit').disabled=!active||round?.status!=='player'||blackjack.busy;
+ $('blackjackStand').disabled=!active||round?.status!=='player'||blackjack.busy;
+ $('blackjackDouble').disabled=!active||round?.status!=='player'||blackjack.busy||round.player.length!==2||local.points<round.bet;
+ document.querySelectorAll('[data-blackjack-bet]').forEach(b=>b.disabled=active||blackjack.busy);
+ const allin=document.querySelector('[data-allin="blackjackBet"]');if(allin)allin.disabled=active||blackjack.busy||local.points<1;
+ $('blackjackDeal').disabled=active||blackjack.busy||local.points<1;
+
+ const dealerBox=$('blackjackDealerCards'),playerBox=$('blackjackPlayerCards');dealerBox.replaceChildren();playerBox.replaceChildren();
+ if(!round){
+  $('blackjackDealerScore').textContent='?';$('blackjackPlayerScore').textContent='0';
+  if(!$('blackjackResult').dataset.finished)$('blackjackResult').textContent='배팅금을 정하고 카드 받기를 눌러 주세요.';
+  return
+ }
+ const hideHole=round.status==='player';
+ round.dealer.forEach((c,i)=>dealerBox.append(blackjackCardNode(c,{hidden:hideHole&&i===1,animate:animateDealer&&i===round.dealer.length-1,flip:flipDealer&&i===1})));
+ round.player.forEach((c,i)=>playerBox.append(blackjackCardNode(c,{animate:animatePlayer&&i===round.player.length-1})));
+ $('blackjackPlayerScore').textContent=String(blackjackHandValue(round.player));
+ $('blackjackDealerScore').textContent=hideHole?String(blackjackCardValue(round.dealer[0]))+' + ?':String(blackjackHandValue(round.dealer));
+ $('blackjackResult').dataset.finished='';
+ $('blackjackResult').textContent=round.status==='dealer'?`🎩 딜러가 카드를 확인하는 중... · 현재 배팅 ${round.bet.toLocaleString()}P`:`내 합계 ${blackjackHandValue(round.player)} · HIT / STAND${round.player.length===2?' / DOUBLE':''}`;
+}
+function blackjackFinish(label,payout,effect=''){
+ const round=local.blackjackPending;if(!round)return;
+ if(!Number.isSafeInteger(payout)||payout<0||!Number.isSafeInteger(local.points+payout)){notice('포인트 계산 한도를 초과해 정산하지 못했어요.');return}
+ const bet=round.bet,playerValue=blackjackHandValue(round.player),dealerValue=blackjackHandValue(round.dealer);
+ local.points+=payout;
+ if(payout>bet)local.blackjackStreak=(local.blackjackStreak||0)+1;
+ else if(payout<bet)local.blackjackStreak=0;
+ local.blackjackLast={player:round.player,dealer:round.dealer,bet,payout,label,playerValue,dealerValue};
+ local.blackjackPending=null;save();render();renderCasino();
+ $('blackjackBetArea').classList.remove('hidden');
+ $('blackjackDealerCards').replaceChildren(...round.dealer.map(c=>blackjackCardNode(c)));
+ $('blackjackPlayerCards').replaceChildren(...round.player.map(c=>blackjackCardNode(c)));
+ $('blackjackDealerScore').textContent=String(dealerValue);$('blackjackPlayerScore').textContent=String(playerValue);
+ $('blackjackStreak').textContent=`🔥 현재 ${local.blackjackStreak}연승`;
+ $('blackjackResult').dataset.finished='1';
+ $('blackjackResult').textContent=`${label}\n배팅 ${bet.toLocaleString()}P · 반환 ${payout.toLocaleString()}P · 순손익 ${(payout-bet)>=0?'+':''}${(payout-bet).toLocaleString()}P · 잔액 ${local.points.toLocaleString()}P`;
+ blackjackEffect(effect);
+ renderBlackjackFinishedControls()
+}
+function renderBlackjackFinishedControls(){
+ $('blackjackHit').disabled=true;$('blackjackStand').disabled=true;$('blackjackDouble').disabled=true;
+ $('blackjackDeal').disabled=local.points<1||blackjack.busy;
+ document.querySelectorAll('[data-blackjack-bet]').forEach(b=>b.disabled=blackjack.busy);
+ const allin=document.querySelector('[data-allin="blackjackBet"]');if(allin)allin.disabled=blackjack.busy||local.points<1
+}
+async function blackjackDealerTurn(){
+ const round=local.blackjackPending;if(!round)return;
+ blackjack.busy=true;round.status='dealer';save();renderBlackjack({flipDealer:true});
+ await new Promise(r=>setTimeout(r,520));
+ while(local.blackjackPending&&blackjackHandValue(round.dealer)<17){
+  const card=blackjackDraw(round);if(!card)break;round.dealer.push(card);save();renderBlackjack({animateDealer:true});await new Promise(r=>setTimeout(r,520))
+ }
+ blackjack.busy=false;
+ const pv=blackjackHandValue(round.player),dv=blackjackHandValue(round.dealer);
+ if(dv>21)blackjackFinish('🎉 딜러 BUST! 승리!',round.bet*2,'win');
+ else if(pv>dv)blackjackFinish('🎉 딜러보다 높아요! 승리!',round.bet*2,'win');
+ else if(pv<dv)blackjackFinish('💦 딜러 승리! 패배',0,'');
+ else blackjackFinish('🤝 PUSH! 무승부',round.bet,'')
+}
+function blackjackStart(){
+ if(blackjack.busy||local.blackjackPending)return;
+ const bet=casinoBet('blackjackBet');if(bet===null)return;
+ if(bet===local.points&&!confirm(`⚠️ 전재산 ${bet.toLocaleString()}P를 블랙잭에 배팅할까요?`))return;
+ const round={deck:blackjackDeck(),player:[],dealer:[],bet,status:'player',doubled:false};
+ local.points-=bet;
+ round.player.push(blackjackDraw(round));round.dealer.push(blackjackDraw(round));round.player.push(blackjackDraw(round));round.dealer.push(blackjackDraw(round));
+ local.blackjackPending=round;save();render();renderCasino();renderBlackjack({animatePlayer:true,animateDealer:true});
+ const pBJ=blackjackNatural(round.player),dBJ=blackjackNatural(round.dealer);
+ if(pBJ||dBJ){
+  round.status='dealer';save();renderBlackjack({flipDealer:true});
+  setTimeout(()=>{
+   if(!local.blackjackPending)return;
+   if(pBJ&&dBJ)blackjackFinish('🤝 둘 다 BLACKJACK! PUSH',bet,'');
+   else if(pBJ)blackjackFinish('✨ BLACKJACK! 21!',Math.floor(bet*2.5),'blackjack');
+   else blackjackFinish('🎩 딜러 BLACKJACK · 패배',0,'')
+  },520)
+ }
+}
+function blackjackHit(){
+ const round=local.blackjackPending;if(!round||round.status!=='player'||blackjack.busy)return;
+ const card=blackjackDraw(round);if(!card)return;round.player.push(card);save();renderBlackjack({animatePlayer:true});
+ const value=blackjackHandValue(round.player);
+ if(value>21)setTimeout(()=>blackjackFinish(`💥 BUST! ${value}`,0,'bust'),260);
+ else if(value===21)setTimeout(()=>blackjackDealerTurn(),260)
+}
+function blackjackStand(){
+ const round=local.blackjackPending;if(!round||round.status!=='player'||blackjack.busy)return;blackjackDealerTurn()
+}
+function blackjackDouble(){
+ const round=local.blackjackPending;if(!round||round.status!=='player'||blackjack.busy||round.player.length!==2)return;
+ if(local.points<round.bet)return notice('DOUBLE을 하려면 현재 배팅금만큼의 포인트가 더 필요해요.');
+ if(!confirm(`${round.bet.toLocaleString()}P를 추가 배팅하고 카드 1장만 받은 뒤 자동 STAND 할까요?`))return;
+ local.points-=round.bet;round.bet*=2;round.doubled=true;
+ const card=blackjackDraw(round);if(card)round.player.push(card);save();render();renderCasino();renderBlackjack({animatePlayer:true});
+ const value=blackjackHandValue(round.player);
+ if(value>21)setTimeout(()=>blackjackFinish(`💥 DOUBLE BUST! ${value}`,0,'bust'),300);
+ else setTimeout(()=>blackjackDealerTurn(),350)
+}
+$('blackjackDeal').onclick=blackjackStart;
+$('blackjackHit').onclick=blackjackHit;
+$('blackjackStand').onclick=blackjackStand;
+$('blackjackDouble').onclick=blackjackDouble;
+document.querySelectorAll('[data-blackjack-bet]').forEach(b=>b.onclick=()=>{if(local.blackjackPending||blackjack.busy)return;const v=Math.min(Number(b.dataset.blackjackBet),local.points);if(v>=1)$('blackjackBet').value=String(v)});
+
+function showCasinoGame(target){
+ const tabs=[
+  ['casinoRps','casinoChooseRps'],
+  ['casinoSlot','casinoChooseSlot'],
+  ['casinoBlackjack','casinoChooseBlackjack'],
+  ['casinoDerby','casinoChooseDerby']
+ ];
+ for(const [section,button] of tabs){
+  $(section).classList.toggle('hidden',section!==target);
+  $(button).classList.toggle('active',section===target)
+ }
+ if(target==='casinoDerby')derbyRenderPoints();
+ if(target==='casinoBlackjack')renderBlackjack()
+}
+$('casinoChooseRps').onclick=()=>showCasinoGame('casinoRps');
+$('casinoChooseSlot').onclick=()=>showCasinoGame('casinoSlot');
+$('casinoChooseBlackjack').onclick=()=>showCasinoGame('casinoBlackjack');
+$('casinoChooseDerby').onclick=()=>showCasinoGame('casinoDerby');
+
+renderBlackjack();
+if(local.blackjackPending){
+ const r=local.blackjackPending;
+ const valid=Array.isArray(r.deck)&&Array.isArray(r.player)&&Array.isArray(r.dealer)&&Number.isSafeInteger(r.bet)&&r.bet>0&&['player','dealer'].includes(r.status);
+ if(!valid){
+  $('blackjackResult').textContent='⚠️ 저장된 블랙잭 판이 손상되어 있어 자동으로 포인트를 지급하거나 새 판을 만들지 않았어요.';
+  $('blackjackHit').disabled=$('blackjackStand').disabled=$('blackjackDouble').disabled=true
+ }else if(r.status==='dealer'){
+  setTimeout(()=>blackjackDealerTurn(),250)
+ }else renderBlackjack()
+}
 
 // Two independent arcade minigames. Rewards use the existing local game-points wallet.
 const arcadeOwned=()=>characters.filter(c=>(local.counts[c.id]||0)>0);
