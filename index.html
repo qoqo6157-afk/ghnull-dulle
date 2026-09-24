@@ -44,6 +44,15 @@
 .points-box{background:#f0f0fb;border-radius:14px;padding:13px;margin:12px 0}.points-box p{margin:6px 0 0}.points-balance{color:#595bd7;white-space:nowrap;margin-right:7px;font-size:14px}.game-stats{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;margin:14px 0}.game-stat{background:#f0f0fb;border-radius:12px;padding:10px 4px;text-align:center}.game-stat b{display:block;font-size:20px}.memory-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:9px;max-width:570px;margin:18px auto}.memory-card{position:relative;aspect-ratio:3/4;border-radius:12px;padding:0;overflow:hidden;background:#595bd7;color:white;border:2px solid transparent;min-width:0;display:flex;align-items:center;justify-content:center;transition:background .15s}.memory-card .back{font-size:clamp(16px,4vw,30px);font-weight:800}.memory-card .face{display:none;width:100%;height:100%;background:#fff;color:#242738;flex-direction:column;align-items:center;justify-content:center}.memory-card .face img{width:100%;height:78%;object-fit:contain;min-height:0}.memory-card .face span{font-size:10px;font-weight:700;max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;padding:2px}.memory-card.revealed .back{display:none}.memory-card.revealed .face{display:flex}.memory-card.matched{border-color:#42b68a;background:#e6fff4}.memory-card:disabled{opacity:1;cursor:default}.game-result{background:#f0f0fb;border-radius:16px;padding:18px;text-align:center;margin-top:15px}.game-controls{display:flex;gap:8px;flex-wrap:wrap}.game-controls>*{flex:1;min-width:125px}@media(max-width:420px){.memory-grid{gap:6px}.memory-card{border-radius:8px}.memory-card .face span{font-size:9px}.game-stats{gap:5px}}
 /* SSR pity selection */
 .pity-overlay{position:fixed;inset:0;z-index:100;background:#17192bd9;display:flex;align-items:center;justify-content:center;padding:15px}.pity-dialog{background:#fff;border-radius:20px;padding:20px;width:min(100%,680px);max-height:90vh;overflow:auto}.pity-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(125px,1fr));gap:10px;margin:16px 0}.pity-choice{padding:9px;background:#fff;color:#242738;border:2px solid #e7e8f0;display:flex;flex-direction:column;align-items:center;gap:5px;min-width:0}.pity-choice img{width:100%;height:145px;object-fit:contain}.pity-choice.selected{border-color:#595bd7;background:#eeeefa}.pity-choice strong{overflow-wrap:anywhere;font-size:13px}.pity-dialog .wide{margin-top:8px}
+.limited-exchange-dialog{width:min(100%,680px)}
+.limited-exchange-head{display:flex;align-items:flex-start;justify-content:space-between;gap:12px}
+.limited-exchange-cost{display:inline-flex;align-items:center;gap:5px;padding:6px 10px;border-radius:999px;background:#fff3cf;color:#8b6507;font-weight:800;font-size:12px;white-space:nowrap}
+.limited-exchange-choice{position:relative}
+.limited-exchange-choice::after{content:"한정";position:absolute;top:7px;right:7px;padding:3px 7px;border-radius:999px;background:#fff0c2;color:#8b6507;font-size:10px;font-weight:900;box-shadow:0 2px 7px #0001}
+.limited-exchange-choice.selected{border-color:#e9b93d;background:#fff9e8;box-shadow:0 0 0 2px #f8dc88 inset,0 7px 20px #a97d1822}
+.limited-exchange-footer{position:sticky;bottom:-20px;background:linear-gradient(180deg,#ffffff00,#fff 22%);padding-top:18px}
+@media(max-width:520px){.limited-exchange-head{display:block}.limited-exchange-cost{margin-top:8px}.limited-exchange-dialog{padding:16px}.limited-exchange-dialog .pity-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+
 
 /* 캐릭터 이미지의 일반적인 저장 동작 제한 (스크린샷·개발자 도구까지 차단하지는 못함) */
 .card img,.pity-choice img,.admin-item img,.edit-panel img,.memory-card img{ -webkit-user-select:none;user-select:none;-webkit-user-drag:none;-webkit-touch-callout:none; }
@@ -206,7 +215,23 @@
   <p id="blackjackResult" class="blackjack-result" role="status">배팅금을 정하고 카드 받기를 눌러 주세요.</p>
   <p class="muted mini">A는 1 또는 11로 자동 계산 · J/Q/K는 10 · 딜러는 17 이상에서 멈춤 · 스플릿/보험은 사용하지 않아요. 진행 중 새로고침해도 현재 판이 복구됩니다.</p>
 </div>
-<div id="casinoDerby" class="panel hidden"><h3>🏇 NULL DERBY · 캐릭터 경마</h3><p class="muted mini">등록된 캐릭터 5명이 무작위 출전해요. 1·2·3위를 순서대로 예측하세요. 1위만 적중 2배 · 1~2위 적중 4배 · 1~3위 적중 8배 · 1위 실패 시 0배. 배당은 베팅 원금 포함 총 지급액이에요.</p><div class="casino-balance">🪙 보유 포인트: <span id="derbyPoints">0</span> P</div><div id="derbyEntrants"></div><div class="derby-picks"><div><label for="derbyPick1">🥇 예상 1위</label><select id="derbyPick1"></select></div><div><label for="derbyPick2">🥈 예상 2위</label><select id="derbyPick2"></select></div><div><label for="derbyPick3">🥉 예상 3위</label><select id="derbyPick3"></select></div></div><label for="derbyBet">베팅 포인트 (1P부터 보유 포인트까지)</label><input id="derbyBet" type="number" min="1" step="1" value="100"><div class="derby-amounts"><button type="button" class="ghost" data-derby-amount="100">100P</button><button type="button" class="ghost" data-derby-amount="300">300P</button><button type="button" class="ghost" data-derby-amount="500">500P</button><button type="button" class="ghost" data-derby-amount="1000">1,000P</button></div><button type="button" id="derbyAllIn" class="ghost wide">💸 전재산 베팅</button><p class="muted mini" id="derbyPotential">예상 지급액: 선택한 베팅금 × 2 / 4 / 8</p><button type="button" id="derbyStart" class="wide">🏁 베팅하고 출발!</button><div id="derbyTrack" class="derby-track hidden" aria-label="경마 트랙"></div><p id="derbyCommentary" class="muted" role="status"></p><div id="derbyResult" class="derby-result hidden" role="status"></div><button type="button" id="derbyNext" class="ghost wide hidden">🔄 다음 경기 준비</button><p class="muted mini">베팅 즉시 포인트가 차감돼요. 경기 도중 새로고침하면 저장된 결과로 정산됩니다. 포인트는 이 브라우저에 저장되며 현금으로 교환할 수 없어요.</p></div></section></main></div><div id="petGiftOverlay" class="pet-gift-overlay hidden" role="dialog" aria-modal="true" aria-labelledby="petGiftTitle"><div class="pet-gift-dialog"><h2 id="petGiftTitle">🎁 펫에게 선물하기</h2><p class="muted mini" style="margin:0">보유한 R 아이템만 표시돼요. 선물을 확정해야 1개가 소모됩니다.</p><label for="petGiftSearch">🔍 아이템 이름 검색</label><input id="petGiftSearch" type="search" placeholder="아이템 이름을 입력하세요" autocomplete="off"><div id="petGiftList" class="pet-gift-list" aria-label="선물 가능한 R 아이템"></div><p id="petGiftSelected" class="muted mini" aria-live="polite">선택한 아이템: 없음</p><div class="pet-gift-footer"><button type="button" id="petGiftConfirm" disabled>🎁 선택한 아이템 선물하기</button><button type="button" id="petGiftCancel" class="ghost">취소</button></div></div></div><div id="pityOverlay" class="pity-overlay hidden" role="dialog" aria-modal="true" aria-labelledby="pityTitle"><div class="pity-dialog"><h2 id="pityTitle">✨ SSR 교환소 · 원하는 캐릭터 선택</h2><p class="muted">천장 포인트를 사용해 원하는 SSR 캐릭터 한 장을 교환하세요. 이미 보유한 캐릭터도 선택할 수 있어요.</p><div id="pityChoices" class="pity-grid"></div><p id="pitySelected" class="muted" aria-live="polite">선택한 캐릭터: 없음</p><button id="pityConfirm" class="wide" disabled>천장 포인트로 SSR 교환하기</button><button id="pityCancel" type="button" class="ghost wide">닫기</button></div></div><div id="accountOverlay" class="pity-overlay hidden" role="dialog" aria-modal="true"><div class="pity-dialog"><h2>👤 로그인 · 계정 데이터 연동</h2><p class="muted">로그인하면 이 계정의 클라우드 세이브와 연결됩니다. 처음 연동할 때는 현재 기기 데이터와 클라우드 데이터 중 어떤 것을 사용할지 선택할 수 있어요. 기존 브라우저 데이터는 먼저 삭제하지 않습니다.</p><label>이메일</label><input id="userEmail" type="email" autocomplete="username"><label>비밀번호</label><input id="userPassword" type="password" autocomplete="current-password"><div class="row"><button id="userSignIn">로그인</button><button id="userSignUp" class="ghost">회원가입</button></div><button id="accountClose" class="ghost wide">닫기</button></div></div><nav class="nav" aria-label="하단 메뉴"><button data-tab="home" class="active">⌂<br>홈</button><button data-tab="gacha">✧<br>가챠</button><button data-tab="collection">▦<br>도감</button><button data-tab="game">🎮<br>게임</button><button data-tab="pet">🥚<br>펫</button><button data-tab="casino">🎰<br>카지노</button><button data-tab="admin">⚙<br>관리</button></nav>
+<div id="casinoDerby" class="panel hidden"><h3>🏇 NULL DERBY · 캐릭터 경마</h3><p class="muted mini">등록된 캐릭터 5명이 무작위 출전해요. 1·2·3위를 순서대로 예측하세요. 1위만 적중 2배 · 1~2위 적중 4배 · 1~3위 적중 8배 · 1위 실패 시 0배. 배당은 베팅 원금 포함 총 지급액이에요.</p><div class="casino-balance">🪙 보유 포인트: <span id="derbyPoints">0</span> P</div><div id="derbyEntrants"></div><div class="derby-picks"><div><label for="derbyPick1">🥇 예상 1위</label><select id="derbyPick1"></select></div><div><label for="derbyPick2">🥈 예상 2위</label><select id="derbyPick2"></select></div><div><label for="derbyPick3">🥉 예상 3위</label><select id="derbyPick3"></select></div></div><label for="derbyBet">베팅 포인트 (1P부터 보유 포인트까지)</label><input id="derbyBet" type="number" min="1" step="1" value="100"><div class="derby-amounts"><button type="button" class="ghost" data-derby-amount="100">100P</button><button type="button" class="ghost" data-derby-amount="300">300P</button><button type="button" class="ghost" data-derby-amount="500">500P</button><button type="button" class="ghost" data-derby-amount="1000">1,000P</button></div><button type="button" id="derbyAllIn" class="ghost wide">💸 전재산 베팅</button><p class="muted mini" id="derbyPotential">예상 지급액: 선택한 베팅금 × 2 / 4 / 8</p><button type="button" id="derbyStart" class="wide">🏁 베팅하고 출발!</button><div id="derbyTrack" class="derby-track hidden" aria-label="경마 트랙"></div><p id="derbyCommentary" class="muted" role="status"></p><div id="derbyResult" class="derby-result hidden" role="status"></div><button type="button" id="derbyNext" class="ghost wide hidden">🔄 다음 경기 준비</button><p class="muted mini">베팅 즉시 포인트가 차감돼요. 경기 도중 새로고침하면 저장된 결과로 정산됩니다. 포인트는 이 브라우저에 저장되며 현금으로 교환할 수 없어요.</p></div></section></main></div><div id="petGiftOverlay" class="pet-gift-overlay hidden" role="dialog" aria-modal="true" aria-labelledby="petGiftTitle"><div class="pet-gift-dialog"><h2 id="petGiftTitle">🎁 펫에게 선물하기</h2><p class="muted mini" style="margin:0">보유한 R 아이템만 표시돼요. 선물을 확정해야 1개가 소모됩니다.</p><label for="petGiftSearch">🔍 아이템 이름 검색</label><input id="petGiftSearch" type="search" placeholder="아이템 이름을 입력하세요" autocomplete="off"><div id="petGiftList" class="pet-gift-list" aria-label="선물 가능한 R 아이템"></div><p id="petGiftSelected" class="muted mini" aria-live="polite">선택한 아이템: 없음</p><div class="pet-gift-footer"><button type="button" id="petGiftConfirm" disabled>🎁 선택한 아이템 선물하기</button><button type="button" id="petGiftCancel" class="ghost">취소</button></div></div></div><div id="pityOverlay" class="pity-overlay hidden" role="dialog" aria-modal="true" aria-labelledby="pityTitle"><div class="pity-dialog"><h2 id="pityTitle">✨ SSR 교환소 · 원하는 캐릭터 선택</h2><p class="muted">천장 포인트를 사용해 원하는 SSR 캐릭터 한 장을 교환하세요. 이미 보유한 캐릭터도 선택할 수 있어요.</p><div id="pityChoices" class="pity-grid"></div><p id="pitySelected" class="muted" aria-live="polite">선택한 캐릭터: 없음</p><button id="pityConfirm" class="wide" disabled>천장 포인트로 SSR 교환하기</button><button id="pityCancel" type="button" class="ghost wide">닫기</button></div></div><div id="limitedExchangeOverlay" class="pity-overlay hidden" role="dialog" aria-modal="true" aria-labelledby="limitedExchangeTitle">
+  <div class="pity-dialog limited-exchange-dialog">
+    <div class="limited-exchange-head">
+      <div>
+        <h2 id="limitedExchangeTitle">✨ 한정 천장 교환 · 원하는 캐릭터 선택</h2>
+        <p class="muted">한정 천장 포인트를 사용해 현재 픽업 중인 한정 캐릭터 한 장을 교환하세요. 이미 보유한 캐릭터도 선택할 수 있어요.</p>
+      </div>
+      <span id="limitedExchangeCost" class="limited-exchange-cost">🌟 0 LPT</span>
+    </div>
+    <div id="limitedExchangeChoices" class="pity-grid" aria-label="교환 가능한 한정 캐릭터"></div>
+    <p id="limitedExchangeSelected" class="muted" aria-live="polite">선택한 캐릭터: 없음</p>
+    <div class="limited-exchange-footer">
+      <button id="limitedExchangeConfirm" type="button" class="wide" disabled>선택한 한정 캐릭터 교환하기</button>
+      <button id="limitedExchangeCancel" type="button" class="ghost wide">닫기</button>
+    </div>
+  </div>
+</div><div id="accountOverlay" class="pity-overlay hidden" role="dialog" aria-modal="true"><div class="pity-dialog"><h2>👤 로그인 · 계정 데이터 연동</h2><p class="muted">로그인하면 이 계정의 클라우드 세이브와 연결됩니다. 처음 연동할 때는 현재 기기 데이터와 클라우드 데이터 중 어떤 것을 사용할지 선택할 수 있어요. 기존 브라우저 데이터는 먼저 삭제하지 않습니다.</p><label>이메일</label><input id="userEmail" type="email" autocomplete="username"><label>비밀번호</label><input id="userPassword" type="password" autocomplete="current-password"><div class="row"><button id="userSignIn">로그인</button><button id="userSignUp" class="ghost">회원가입</button></div><button id="accountClose" class="ghost wide">닫기</button></div></div><nav class="nav" aria-label="하단 메뉴"><button data-tab="home" class="active">⌂<br>홈</button><button data-tab="gacha">✧<br>가챠</button><button data-tab="collection">▦<br>도감</button><button data-tab="game">🎮<br>게임</button><button data-tab="pet">🥚<br>펫</button><button data-tab="casino">🎰<br>카지노</button><button data-tab="admin">⚙<br>관리</button></nav>
 <script type="module">
 // 이미지에 한정해 우클릭 메뉴 및 끌어서 저장을 제한합니다. 관리자의 파일 선택·업로드는 방해하지 않습니다.
 document.addEventListener('contextmenu',e=>{if(e.target.closest('img')&&!e.target.closest('#homeHero'))e.preventDefault()});
@@ -704,7 +729,81 @@ function limitedDraw(n){
  }
  save();$('limitedResults').innerHTML=out.join('');render()
 }
-$('limitedDraw1').onclick=()=>limitedDraw(1);$('limitedDraw10').onclick=()=>limitedDraw(10);$('limitedExchange').onclick=()=>{const pool=activeLimited(),need=Number(settings.limited_pity||90);if(!pool.length||local.limitedPoints<need)return notice('한정 LPT가 부족해요.');const names=pool.map((c,i)=>`${i+1}. ${c.name}`).join('\n');const n=Number(prompt(`교환할 한정 캐릭터 번호를 입력하세요. (${need} LPT)\n${names}`));const c=pool[n-1];if(!c)return;local.limitedPoints-=need;local.counts[c.id]=(local.counts[c.id]||0)+1;save();render();notice(`${c.name} 한정 교환 완료!`)};
+$('limitedDraw1').onclick=()=>limitedDraw(1);$('limitedDraw10').onclick=()=>limitedDraw(10);
+
+let chosenLimitedExchangeId=null;
+function closeLimitedExchange(){
+ $('limitedExchangeOverlay').classList.add('hidden');
+ chosenLimitedExchangeId=null;
+}
+function showLimitedExchange(){
+ const pool=activeLimited(),need=Number(settings.limited_pity||90);
+ if(!pool.length)return notice('현재 교환 가능한 한정 캐릭터가 없어요.');
+ if(local.limitedPoints<need)return notice(`한정 LPT가 부족해요. 교환에는 ${need.toLocaleString()} LPT가 필요해요.`);
+
+ chosenLimitedExchangeId=null;
+ const choices=$('limitedExchangeChoices');choices.replaceChildren();
+
+ for(const c of pool){
+  const button=document.createElement('button');
+  button.type='button';
+  button.className='pity-choice limited-exchange-choice';
+  button.setAttribute('aria-pressed','false');
+
+  const img=document.createElement('img');
+  img.src=c.image_url;
+  img.alt=c.name;
+
+  const name=document.createElement('strong');
+  name.textContent=c.name;
+
+  const owned=document.createElement('span');
+  owned.className='muted mini';
+  const count=Number(local.counts[c.id])||0;
+  owned.textContent=count>0?`보유 ${count}장`:'미획득';
+
+  button.append(img,name,owned);
+  button.onclick=()=>{
+   chosenLimitedExchangeId=c.id;
+   choices.querySelectorAll('button').forEach(x=>{
+    x.classList.remove('selected');
+    x.setAttribute('aria-pressed','false')
+   });
+   button.classList.add('selected');
+   button.setAttribute('aria-pressed','true');
+   $('limitedExchangeSelected').textContent=`선택한 캐릭터: ${c.name} · 현재 보유 ${count}장`;
+   $('limitedExchangeConfirm').disabled=false;
+  };
+  choices.append(button)
+ }
+
+ $('limitedExchangeCost').textContent=`🌟 ${need.toLocaleString()} LPT`;
+ $('limitedExchangeSelected').textContent='선택한 캐릭터: 없음';
+ $('limitedExchangeConfirm').textContent=`${need.toLocaleString()} LPT로 한정 캐릭터 교환하기`;
+ $('limitedExchangeConfirm').disabled=true;
+ $('limitedExchangeOverlay').classList.remove('hidden');
+}
+$('limitedExchange').onclick=showLimitedExchange;
+$('limitedExchangeCancel').onclick=closeLimitedExchange;
+$('limitedExchangeConfirm').onclick=()=>{
+ const need=Number(settings.limited_pity||90);
+ if(!chosenLimitedExchangeId)return notice('교환할 한정 캐릭터를 먼저 선택해 주세요.');
+ const c=activeLimited().find(x=>String(x.id)===String(chosenLimitedExchangeId));
+ if(!c){closeLimitedExchange();return notice('이 캐릭터의 한정 기간이 종료됐거나 현재 교환할 수 없어요.')}
+ if(local.limitedPoints<need){closeLimitedExchange();render();return notice('한정 LPT가 부족해졌어요.')}
+
+ local.limitedPoints-=need;
+ const old=Number(local.counts[c.id])||0;
+ local.counts[c.id]=old+1;
+ save();
+
+ closeLimitedExchange();
+ $('limitedResults').innerHTML=gachaResultCard(c,old?`한정 교환 · 보유 ${old+1}장`:'LIMITED 교환 NEW',0);
+ render();
+ notice(`${c.name} 한정 교환 완료! ${need.toLocaleString()} LPT 사용 · 잔여 ${local.limitedPoints.toLocaleString()} LPT`);
+};
+$('limitedExchangeOverlay').addEventListener('click',e=>{if(e.target===$('limitedExchangeOverlay'))closeLimitedExchange()});
+document.addEventListener('keydown',e=>{if(e.key==='Escape'&&!$('limitedExchangeOverlay').classList.contains('hidden'))closeLimitedExchange()});
 
 window.navigate=function(tab){for(const id of ['home','gacha','collection','game','pet','casino','admin'])$(id).classList.toggle('hidden',id!==tab);document.querySelectorAll('[data-tab]').forEach(b=>b.classList.toggle('active',b.dataset.tab===tab));if(tab==='collection')renderCollection();if(tab==='game')renderGameInfo();if(tab==='casino')renderCasino();if(tab==='pet')renderPet()};document.querySelectorAll('[data-tab]').forEach(b=>b.addEventListener('click',()=>navigate(b.dataset.tab)));
 function render(){renderAttendance();renderBanner();renderLimited();local.homeCharacterIds=[...new Set(local.homeCharacterIds||[])].filter(id=>characters.some(c=>c.id===id&&(local.counts[c.id]||0)>0)).slice(0,3);const homes=local.homeCharacterIds.map(id=>characters.find(c=>c.id===id)).filter(Boolean);const home=homes.length?homes[Math.floor(Math.random()*homes.length)]:characters.find(c=>c.id===settings.home_character_id);$('homeHero').replaceChildren();if(home){const image=document.createElement('img');image.src=home.image_url;image.alt=home.name;image.title='눌러서 대사 듣기';const name=document.createElement('strong');name.textContent=home.name;const bubble=document.createElement('div');bubble.className='bubble';bubble.textContent='캐릭터를 눌러보세요!';image.addEventListener('click',()=>{const lines=Array.isArray(home.dialogues)?home.dialogues:[];bubble.textContent=lines.length?lines[Math.floor(Math.random()*lines.length)]:'등록된 대사가 없어요.'});const download=document.createElement('button');download.type='button';download.className='home-save-image';download.textContent='📥 캐릭터 이미지 저장';download.addEventListener('click',async()=>{download.disabled=true;try{const response=await fetch(home.image_url);if(!response.ok)throw new Error('이미지 불러오기 실패');const blob=await response.blob();const ext=({'image/png':'png','image/jpeg':'jpg','image/webp':'webp','image/gif':'gif'})[blob.type]||'png';const filename=(home.name||'character').replace(/[\\/:*?"<>|\x00-\x1f]/g,'_')+'.'+ext;const url=URL.createObjectURL(blob);const link=document.createElement('a');link.href=url;link.download=filename;document.body.append(link);link.click();link.remove();setTimeout(()=>URL.revokeObjectURL(url),30000);notice('이미지 저장을 시작했어요!')}catch(err){notice('자동 저장에 실패했어요. 홈 캐릭터 이미지를 길게 누르거나 마우스 오른쪽 버튼으로 저장해 주세요.')}finally{download.disabled=false}});$('homeHero').append(image,name,bubble,download)}else $('homeHero').textContent='관리자가 홈 캐릭터를 설정하면 여기에 표시됩니다.';$('rates').textContent=`SSR ${settings.ssr}% · SR ${settings.sr}% · R ${settings.r}%`;$('pityText').textContent=`✨ 천장 포인트 ${local.pityPoints.toLocaleString()} / ${settings.pity.toLocaleString()} PT · ${local.pityPoints>=settings.pity?'SSR 교환 가능!':`교환까지 ${(settings.pity-local.pityPoints).toLocaleString()} PT`}`;$('pityPoints').textContent=local.pityPoints.toLocaleString();$('pityExchange').disabled=!ready||!characters.some(c=>c.rarity==='SSR'&&!c.is_limited)||local.pityPoints<settings.pity||!!local.pendingGacha;$('headerPoints').textContent=`🪙 ${local.points.toLocaleString()} P`;$('gachaPoints').textContent=local.points.toLocaleString();$('draw1').disabled=!ready||!validPool()||local.points<100||!!local.pendingGacha;$('draw10').disabled=!ready||!validPool()||local.points<1000||!!local.pendingGacha;renderCollection();renderGameInfo();renderCasino();if($('runnerBest'))$('runnerBest').textContent=Number(local.runnerBest||0).toLocaleString();if(admin)renderAdmin()}
