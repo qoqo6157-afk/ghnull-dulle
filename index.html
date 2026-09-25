@@ -135,7 +135,7 @@
   <button type="button" id="homeCloudSave" class="ghost hidden">☁️ 지금 클라우드 저장</button>
   <button type="button" id="homeAccountLogout" class="ghost hidden">로그아웃</button>
 </div>
-<p class="muted mini">로그인 후 변경 내용은 자동 저장되며, 필요할 때 수동 저장/불러오기도 할 수 있어요.</p>
+<p class="muted mini">다른 브라우저에서는 먼저 <b>클라우드 불러오기</b>를 눌러 서버 데이터를 이 기기에 적용하세요. 클라우드를 한 번 불러온 뒤에만 자동 저장이 시작되어, 빈 로컬 데이터가 서버 세이브를 덮어쓰지 않습니다.</p>
 </div><div id="eventBanner" class="panel event-banner hidden" role="button" tabindex="0"><div class="event-banner-stage"><img id="eventBannerImage" alt="이벤트 배너"><div id="eventBannerOverlayText" class="event-banner-overlay-text hidden" aria-hidden="true"></div><button type="button" id="eventBannerPrev" class="event-banner-arrow event-banner-prev" aria-label="이전 배너">‹</button><button type="button" id="eventBannerNext" class="event-banner-arrow event-banner-next" aria-label="다음 배너">›</button><div id="eventBannerDots" class="event-banner-dots"></div></div><div class="event-banner-caption"><p class="muted mini" style="margin:0">눌러서 가챠로 이동 →</p></div></div><div class="panel"><h2>📅 7일 출석 보상</h2><p class="muted">하루에 한 번 출석하고 게임 포인트를 받아요. 연속 출석할수록 보상이 커져요!</p><div class="points-box"><strong id="attendanceStatus">출석 정보를 확인하는 중...</strong><p class="muted mini" id="attendanceHelp"></p></div><div id="attendanceDays" class="attendance-days" aria-label="7일 출석 보상"></div><button type="button" id="attendanceClaim" class="wide">오늘 출석하고 포인트 받기</button><p class="muted mini">매일 기기 현지 날짜 기준으로 1회 · 하루라도 빠지면 1일차부터 다시 시작 · 7일 완료 후 다음 날 1일차로 반복 · 이 브라우저에만 기록됩니다.</p></div><div class="panel"><h1>나만의 캐릭터 컬렉션</h1><p class="muted">캐릭터를 눌러 대사를 듣고, 아래 버튼으로 이미지를 저장할 수 있어요.</p><div class="hero" id="homeHero"><p class="muted">홈 캐릭터를 설정해 주세요.</p></div></div><div class="panel"><h3>오늘은 누굴 만나볼까?</h3><button onclick="navigate('gacha')">가챠 뽑으러 가기 →</button></div></section>
 <section id="gacha" class="hidden"><div class="panel"><h2>캐릭터 가챠</h2><p class="muted" id="rates"></p><p id="pityText"></p><div class="points-box"><strong>✨ 천장 포인트: <span id="pityPoints">0</span> PT</strong><p class="muted mini">뽑기 1회마다 +1 PT · SSR을 뽑아도 유지 · 90 PT(관리자 설정값)로 원하는 SSR 교환</p><button type="button" id="pityExchange" class="ghost wide">✨ SSR 교환소 · 원하는 SSR 선택</button></div><div class="points-box"><strong>🪙 보유 게임 포인트: <span id="gachaPoints">0</span> P</strong><p class="muted mini">1회 100 P · 10회 1,000 P · 게임 클리어로 포인트 획득</p></div><div class="row"><button id="draw1">1회 뽑기 · 100 P</button><button id="draw10">10회 뽑기 · 1,000 P</button></div><p class="muted mini">뽑기 1회마다 천장 포인트 +1 PT. 자연 SSR 획득 시에도 포인트는 유지되며 교환 시 필요한 PT만 차감됩니다.</p></div><div id="results" class="grid result"></div><div id="limitedGachaBox" class="panel limited-box hidden"><h2>✨ 한정 픽업 가챠</h2><p id="limitedPeriod" class="muted"></p><p id="limitedRates" class="muted mini"></p><div class="points-box"><strong class="limited-tag">🌟 한정 천장 포인트: <span id="limitedPoints">0</span> LPT</strong><p class="muted mini">한정 뽑기 1회마다 +1 LPT · 이벤트 종료 시 소멸 · 일반 PT와 별도</p></div><div class="row"><button id="limitedDraw1">한정 1회 · 100 P</button><button id="limitedDraw10">한정 10회 · 1,000 P</button></div><button id="limitedExchange" class="ghost wide">🌟 한정 캐릭터 교환</button><div id="limitedResults" class="grid result"></div></div></section>
 <section id="collection" class="hidden"><div class="panel"><h2>캐릭터 도감</h2><p class="muted">미획득 캐릭터는 비밀로 표시돼요. 가챠에서 획득하면 이미지와 이름이 공개됩니다! 보유 캐릭터는 홈에 설정할 수 있어요.</p><div id="collectionGrid"></div></div></section>
@@ -253,18 +253,146 @@ function attendanceState(){const today=attendanceDate(),current=attendanceDayNum
 function renderAttendance(){const state=attendanceState();const list=$('attendanceDays');if(!list)return;list.replaceChildren();attendanceRewards.forEach((reward,i)=>{const box=document.createElement('div');box.className='attendance-day'+(state.claimed&&i<state.previous?' done':'')+(!state.claimed&&i===state.day-1?' today':'');const label=document.createElement('span');label.textContent=`${i+1}일차${state.claimed&&i<state.previous?' ✓':''}`;const amount=document.createElement('strong');amount.textContent=`${reward.toLocaleString()}P`;box.append(label,amount);list.append(box)});$('attendanceStatus').textContent=state.locked?'기기 날짜가 이전 출석일보다 빨라요. 날짜를 확인해 주세요.':state.claimed?`오늘 출석 완료! · ${state.previous}일차 보상 수령`:`오늘 ${state.day}일차 출석 보상: +${attendanceRewards[state.day-1].toLocaleString()}P`;$('attendanceHelp').textContent=state.claimed?'내일 다시 방문하면 다음 보상을 받을 수 있어요.':state.locked?'날짜를 정상으로 돌리면 출석할 수 있어요.':state.day===1&&state.previous>0?'연속 출석이 끊겼거나 7일을 완료해 1일차부터 시작해요.':'출석 버튼을 눌러 보상을 받아 보세요.';$('attendanceClaim').disabled=state.claimed||state.locked;$('attendanceClaim').textContent=state.claimed?'✓ 오늘 출석 완료':state.locked?'날짜 확인 필요':`출석하기 · +${attendanceRewards[state.day-1].toLocaleString()}P`}
 $('attendanceClaim').addEventListener('click',()=>{const state=attendanceState();if(state.claimed||state.locked)return renderAttendance();const reward=attendanceRewards[state.day-1];if(!Number.isSafeInteger(local.points+reward))return notice('포인트 한도를 초과하여 지급할 수 없어요.');local.attendance={lastDate:state.today,day:state.day};local.points+=reward;save();render();notice(`출석 완료! ${state.day}일차 보상 +${reward.toLocaleString()}P 지급!`)});
 function save(){localStorage.setItem(key,JSON.stringify(local));scheduleCloudSave()}function notice(t){$('notice').textContent=t;$('notice').style.display='block';setTimeout(()=>$('notice').style.display='none',5000)}function escapeHtml(s){return String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
-let userSession=null,cloudTimer=null,cloudLoading=false;
-function scheduleCloudSave(){if(!userSession||cloudLoading)return;clearTimeout(cloudTimer);cloudTimer=setTimeout(()=>cloudSave(false),900)}
-async function cloudSave(show=true){if(!db||!userSession)return;const payload=structuredClone(local);const {error}=await db.from('user_saves').upsert({user_id:userSession.user.id,save_data:payload,updated_at:new Date().toISOString()},{onConflict:'user_id'});if(error){if(show)notice('클라우드 저장 실패: '+error.message);return}if(show)notice('☁️ 클라우드에 저장했어요.')}
-async function cloudLoadOrMigrate(){if(!db||!userSession)return;const {data,error}=await db.from('user_saves').select('save_data,updated_at').eq('user_id',userSession.user.id).maybeSingle();if(error)return notice('클라우드 세이브 확인 실패: '+error.message);if(!data?.save_data){await cloudSave(false);notice('☁️ 이 브라우저의 기존 데이터를 계정에 연동했어요.');return}const cloud=data.save_data;const localMeaningful=(Object.values(local.counts||{}).some(Number)||Number(local.points)!==3000||local.pet);if(localMeaningful){const useCloud=confirm(`이 계정에 클라우드 세이브가 있어요.\n\n확인 = 클라우드 세이브 사용\n취소 = 이 기기의 현재 데이터를 계정에 덮어쓰기\n\n클라우드 포인트: ${Number(cloud.points||0).toLocaleString()}P / 기기 포인트: ${Number(local.points||0).toLocaleString()}P`);if(!useCloud){await cloudSave(false);notice('이 기기의 데이터를 클라우드에 연동했어요.');return}}cloudLoading=true;local={...cloud};local.counts??={};local.homeCharacterIds=Array.isArray(local.homeCharacterIds)?local.homeCharacterIds.slice(0,3):(local.homeCharacterId?[local.homeCharacterId]:[]);localStorage.setItem(key,JSON.stringify(local));cloudLoading=false;render();renderPet();notice('☁️ 계정 데이터를 불러왔어요.')}
+let userSession=null,cloudTimer=null,cloudLoading=false,cloudHydrated=false;
+const cloudBindingKey=key+'-cloud-user-v2';
+const cloudBackupKey=key+'-pre-cloud-backup-v2';
+
+function normalizeCloudSave(data){
+ const x=data&&typeof data==='object'?structuredClone(data):{};
+ x.counts=x.counts&&typeof x.counts==='object'?x.counts:{};
+ x.sinceSSR=Number.isSafeInteger(x.sinceSSR)&&x.sinceSSR>=0?x.sinceSSR:0;
+ x.homeCharacterId=x.homeCharacterId??null;
+ x.homeCharacterIds=Array.isArray(x.homeCharacterIds)?x.homeCharacterIds.slice(0,3):(x.homeCharacterId?[x.homeCharacterId]:[]);
+ x.points=Number.isSafeInteger(x.points)&&x.points>=0?x.points:3000;
+ x.pendingGacha=x.pendingGacha??null;
+ x.pityPoints=Number.isSafeInteger(x.pityPoints)&&x.pityPoints>=0?x.pityPoints:Math.max(0,Math.floor(Number(x.sinceSSR)||0));
+ x.attendance=x.attendance&&typeof x.attendance==='object'?x.attendance:{lastDate:null,day:0};
+ x.lastGlobalGrantId=Number.isSafeInteger(x.lastGlobalGrantId)&&x.lastGlobalGrantId>=0?x.lastGlobalGrantId:0;
+ x.limitedPoints=Number.isSafeInteger(x.limitedPoints)&&x.limitedPoints>=0?x.limitedPoints:0;
+ x.limitedEventKey=x.limitedEventKey??null;
+ return x
+}
+function bindCloudToCurrentUser(){
+ if(!userSession?.user)return;
+ cloudHydrated=true;
+ localStorage.setItem(cloudBindingKey,userSession.user.id)
+}
+function unbindCloudRuntime(){
+ cloudHydrated=false;
+ clearTimeout(cloudTimer)
+}
+function scheduleCloudSave(){
+ // 매우 중요: 이 브라우저가 해당 계정의 클라우드 데이터를 실제로 불러온 뒤에만 자동 저장.
+ // 다른 브라우저의 빈/옛 로컬 세이브가 클라우드를 덮어쓰는 것을 막습니다.
+ if(!userSession||cloudLoading||!cloudHydrated)return;
+ clearTimeout(cloudTimer);
+ cloudTimer=setTimeout(()=>cloudSave(false),900)
+}
+async function cloudSave(show=true,force=false){
+ if(!db||!userSession)return false;
+ if(!cloudHydrated&&!force){
+  if(show)notice('☁️ 먼저 클라우드 불러오기를 해주세요. 다른 브라우저의 세이브를 실수로 덮어쓰지 않도록 저장을 막았어요.');
+  return false
+ }
+ const payload=structuredClone(local);
+ const {error}=await db.from('user_saves').upsert(
+  {user_id:userSession.user.id,save_data:payload,updated_at:new Date().toISOString()},
+  {onConflict:'user_id'}
+ );
+ if(error){
+  if(show)notice('클라우드 저장 실패: '+error.message);
+  return false
+ }
+ bindCloudToCurrentUser();
+ if(show)notice('☁️ 현재 데이터를 클라우드에 저장했어요.');
+ return true
+}
+async function cloudLoadOrMigrate(showNotice=true){
+ if(!db||!userSession)return false;
+ clearTimeout(cloudTimer);
+ cloudLoading=true;
+ try{
+  const {data,error}=await db.from('user_saves')
+   .select('save_data,updated_at')
+   .eq('user_id',userSession.user.id)
+   .maybeSingle();
+
+  if(error){
+   if(showNotice)notice('클라우드 세이브 확인 실패: '+error.message);
+   return false
+  }
+
+  // 계정에 클라우드 세이브가 아예 없을 때만 현재 브라우저 데이터를 최초 업로드.
+  if(!data?.save_data){
+   cloudLoading=false;
+   const saved=await cloudSave(false,true);
+   cloudLoading=true;
+   if(saved&&showNotice)notice('☁️ 이 계정에 저장된 세이브가 없어서 현재 브라우저 데이터를 최초 클라우드 세이브로 등록했어요.');
+   return saved
+  }
+
+  // 클라우드를 적용하기 직전에 현재 로컬 데이터를 별도 백업.
+  try{
+   localStorage.setItem(cloudBackupKey,JSON.stringify({
+    saved_at:new Date().toISOString(),
+    account:userSession.user.id,
+    data:local
+   }))
+  }catch{}
+
+  local=normalizeCloudSave(data.save_data);
+  localStorage.setItem(key,JSON.stringify(local));
+  bindCloudToCurrentUser();
+
+  render();
+  renderPet();
+  renderCasino();
+
+  if(showNotice){
+   const updated=data.updated_at?new Date(data.updated_at).toLocaleString():'시간 정보 없음';
+   notice(`☁️ 클라우드 세이브를 불러왔어요. · 서버 저장 ${updated}`)
+  }
+  return true
+ }finally{
+  cloudLoading=false
+ }
+}
+async function manualCloudSave(){
+ if(!db||!userSession)return notice('로그인 후 사용할 수 있어요.');
+
+ if(cloudHydrated)return cloudSave(true);
+
+ // 아직 이 브라우저에서 클라우드를 읽지 않은 상태에서는 무조건 경고.
+ // 복구가 필요한 '원래 브라우저'에서는 이 버튼으로 로컬 데이터를 강제 업로드할 수 있습니다.
+ const {data,error}=await db.from('user_saves')
+  .select('updated_at,save_data')
+  .eq('user_id',userSession.user.id)
+  .maybeSingle();
+
+ if(error)return notice('클라우드 확인 실패: '+error.message);
+
+ if(data?.save_data){
+  const serverPoints=Number(data.save_data.points||0).toLocaleString();
+  const localPoints=Number(local.points||0).toLocaleString();
+  const ok=confirm(
+   `⚠️ 이 브라우저는 아직 클라우드 세이브를 불러오지 않았어요.\n\n`+
+   `클라우드: ${serverPoints}P\n현재 브라우저: ${localPoints}P\n\n`+
+   `[확인] 현재 브라우저 데이터를 클라우드에 덮어쓰기\n[취소] 아무 것도 하지 않기\n\n`+
+   `다른 기기의 최신 데이터가 클라우드에 있다면 먼저 '클라우드 불러오기'를 눌러 주세요.`
+  );
+  if(!ok)return
+ }
+
+ const saved=await cloudSave(false,true);
+ if(saved)notice('☁️ 현재 브라우저 데이터를 클라우드에 강제 저장했어요.')
+}
 let targetedGrantBusy=false;
 async function claimTargetedPointGrants(showNotice=true){
- if(!db||!userSession||targetedGrantBusy)return 0;
+ if(!db||!userSession||targetedGrantBusy||!cloudHydrated)return 0;
  targetedGrantBusy=true;
  try{
-  // 먼저 이 기기의 최신 세이브를 서버에 올린 뒤,
-  // 서버가 지급 대기분을 원자적으로 반영해 로컬/클라우드 덮어쓰기 문제를 막습니다.
-  await cloudSave(false);
+  // 서버 RPC가 클라우드의 points만 원자적으로 갱신합니다.
+  // 여기서는 절대로 현재 브라우저의 전체 local 세이브를 먼저 업로드하지 않습니다.
   const {data,error}=await db.rpc('claim_my_point_grants');
   if(error){
    if(showNotice&&!String(error.message||'').includes('claim_my_point_grants'))console.warn('개별 포인트 수령 실패:',error);
@@ -276,7 +404,7 @@ async function claimTargetedPointGrants(showNotice=true){
    local.points=balance;
    localStorage.setItem(key,JSON.stringify(local));
    render();
-   scheduleCloudSave();
+   renderCasino();
    if(showNotice)notice(`🎁 관리자가 지급한 +${granted.toLocaleString()} P를 받았어요!`);
    return granted
   }
@@ -290,8 +418,12 @@ async function claimTargetedPointGrants(showNotice=true){
 }
 async function refreshUserSession(){
  if(!db)return false;
+ const previousUserId=userSession?.user?.id||null;
  const {data}=await db.auth.getSession();let sess=data.session;
  userSession=sess;
+ const boundId=localStorage.getItem(cloudBindingKey)||'';
+ cloudHydrated=!!sess&&boundId===sess.user.id;
+ if(!sess||previousUserId&&sess.user.id!==previousUserId)clearTimeout(cloudTimer);
  const updateAccountUi=(session,stateText,emailText)=>{
   const logged=!!session;
   $('userLoginBtn').classList.toggle('hidden',logged);
@@ -314,18 +446,21 @@ async function refreshUserSession(){
   }
  }
  updateAccountUi(sess);
- if(sess)$('status').textContent=admin?'관리자 로그인 · 계정 연동됨':'☁️ 계정 연동됨';
- else if(!$('status').textContent.includes('설정 필요'))$('status').textContent='로컬 데이터';
+ if(sess){
+  const syncState=cloudHydrated?'☁️ 클라우드 연동됨':'☁️ 로그인됨 · 클라우드 불러오기 필요';
+  $('status').textContent=admin?`관리자 로그인 · ${syncState}`:syncState;
+  if($('homeAccountStatus'))$('homeAccountStatus').textContent=cloudHydrated?'☁️ 클라우드 연동됨':'☁️ 로그인됨 · 불러오기 필요';
+ }else if(!$('status').textContent.includes('설정 필요'))$('status').textContent='로컬 데이터';
  return !!sess;
 }
 $('userLoginBtn').onclick=()=>{$('accountOverlay').classList.remove('hidden')};
 if($('homeAccountOpen'))$('homeAccountOpen').onclick=()=>{$('accountOverlay').classList.remove('hidden')};
-if($('homeCloudLoad'))$('homeCloudLoad').onclick=async()=>{if(!userSession)return $('accountOverlay').classList.remove('hidden');await cloudLoadOrMigrate();await refreshUserSession();await claimTargetedPointGrants(true)};
-if($('homeCloudSave'))$('homeCloudSave').onclick=()=>cloudSave(true);
-if($('homeAccountLogout'))$('homeAccountLogout').onclick=async()=>{await cloudSave(false);await db.auth.signOut();userSession=null;await refreshUserSession();notice('로그아웃했어요. 로컬 백업은 그대로 남아 있어요.')};
-$('accountClose').onclick=()=>$('accountOverlay').classList.add('hidden');$('cloudSaveBtn').onclick=()=>cloudSave(true);$('userLogoutBtn').onclick=async()=>{await cloudSave(false);await db.auth.signOut();userSession=null;await refreshUserSession();notice('로그아웃했어요. 로컬 백업은 그대로 남아 있어요.')};
-$('userSignIn').onclick=async()=>{const {error}=await db.auth.signInWithPassword({email:$('userEmail').value.trim(),password:$('userPassword').value});if(error)return notice('로그인 실패: '+error.message);$('accountOverlay').classList.add('hidden');await refreshUserSession();await cloudLoadOrMigrate();await claimTargetedPointGrants(true)};
-$('userSignUp').onclick=async()=>{const {data,error}=await db.auth.signUp({email:$('userEmail').value.trim(),password:$('userPassword').value});if(error)return notice(error.message.includes('rate limit')?'인증 메일 요청이 너무 많아요. 잠시 후 다시 시도해 주세요.':'회원가입 실패: '+error.message);if(data.session){$('accountOverlay').classList.add('hidden');await refreshUserSession();await cloudLoadOrMigrate();await claimTargetedPointGrants(false);notice('회원가입 및 기존 데이터 연동 완료!')}else notice('회원가입 완료! 이메일 인증이 켜져 있다면 인증 메일을 확인한 뒤 로그인해 주세요.')}
+if($('homeCloudLoad'))$('homeCloudLoad').onclick=async()=>{if(!userSession)return $('accountOverlay').classList.remove('hidden');const ok=await cloudLoadOrMigrate(true);await refreshUserSession();if(ok)await claimTargetedPointGrants(true)};
+if($('homeCloudSave'))$('homeCloudSave').onclick=manualCloudSave;
+if($('homeAccountLogout'))$('homeAccountLogout').onclick=async()=>{if(cloudHydrated)await cloudSave(false);await db.auth.signOut();userSession=null;unbindCloudRuntime();await refreshUserSession();notice('로그아웃했어요. 이 브라우저의 로컬 백업은 그대로 남아 있어요.')};
+$('accountClose').onclick=()=>$('accountOverlay').classList.add('hidden');$('cloudSaveBtn').onclick=manualCloudSave;$('userLogoutBtn').onclick=async()=>{if(cloudHydrated)await cloudSave(false);await db.auth.signOut();userSession=null;unbindCloudRuntime();await refreshUserSession();notice('로그아웃했어요. 이 브라우저의 로컬 백업은 그대로 남아 있어요.')};
+$('userSignIn').onclick=async()=>{const {error}=await db.auth.signInWithPassword({email:$('userEmail').value.trim(),password:$('userPassword').value});if(error)return notice('로그인 실패: '+error.message);$('accountOverlay').classList.add('hidden');await refreshUserSession();const ok=await cloudLoadOrMigrate(true);await refreshUserSession();if(ok)await claimTargetedPointGrants(true)};
+$('userSignUp').onclick=async()=>{const {data,error}=await db.auth.signUp({email:$('userEmail').value.trim(),password:$('userPassword').value});if(error)return notice(error.message.includes('rate limit')?'인증 메일 요청이 너무 많아요. 잠시 후 다시 시도해 주세요.':'회원가입 실패: '+error.message);if(data.session){$('accountOverlay').classList.add('hidden');await refreshUserSession();const ok=await cloudLoadOrMigrate(true);await refreshUserSession();if(ok)await claimTargetedPointGrants(false);notice('회원가입 및 기존 데이터 연동 완료!')}else notice('회원가입 완료! 이메일 인증이 켜져 있다면 인증 메일을 확인한 뒤 로그인해 주세요.')}
 function activeLimited(){const now=Date.now();return characters.filter(c=>c.is_limited&&c.limited_start&&c.limited_end&&now>=new Date(c.limited_start).getTime()&&now<new Date(c.limited_end).getTime())}
 function limitedKey(pool){if(!pool.length)return null;return pool.map(c=>c.id).sort().join('|')+'@'+Math.max(...pool.map(c=>new Date(c.limited_end).getTime()))}
 function syncLimitedPoints(){const pool=activeLimited(),k=limitedKey(pool);if(local.limitedEventKey!==k){local.limitedPoints=0;local.limitedEventKey=k;save()}return pool}
@@ -1587,5 +1722,5 @@ $('petAdminForm').onsubmit=async e=>{e.preventDefault();if(!admin||!db)return no
 const query=id?db.from('pet_species').update(payload).eq('id',id):db.from('pet_species').insert(payload);const {error}=await query;if(error)throw error;petResetForm();await loadPetCatalog();notice('펫 저장 완료!')}catch(err){if(uploaded.length)await db.storage.from('character-images').remove(uploaded);notice('펫 저장 실패: '+err.message)}finally{btn.disabled=false}};
 
 window.addEventListener('focus',()=>{if(userSession){refreshUserSession();claimTargetedPointGrants(true)}});document.addEventListener('visibilitychange',()=>{if(!document.hidden&&userSession)claimTargetedPointGrants(true)});setInterval(()=>{if(userSession)claimTargetedPointGrants(true)},60000);
-if(ready){await load();arcadeCharacters();await claimGlobalPoints();await authCheck();await refreshUserSession();await claimTargetedPointGrants(false);await loadRhythmSongs();await loadPetCatalog();db.auth.onAuthStateChange(()=>{setTimeout(async()=>{await authCheck();await refreshUserSession();await claimTargetedPointGrants(false)},0)})}else{$('status').textContent='설정 필요';render()}
+if(ready){await load();arcadeCharacters();await claimGlobalPoints();await authCheck();await refreshUserSession();if(cloudHydrated)await claimTargetedPointGrants(false);await loadRhythmSongs();await loadPetCatalog();db.auth.onAuthStateChange(()=>{setTimeout(async()=>{await authCheck();await refreshUserSession();if(cloudHydrated)await claimTargetedPointGrants(false)},0)})}else{$('status').textContent='설정 필요';render()}
 </script></body></html>
