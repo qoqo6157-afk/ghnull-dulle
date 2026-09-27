@@ -8,17 +8,25 @@
 .full-limit-badge{display:inline-block;margin:5px 0 2px;padding:4px 8px;border-radius:999px;background:linear-gradient(90deg,#7b5cff,#ee66b7);color:#fff;font-size:10px;font-weight:900;box-shadow:0 0 12px #9e6cff55}
 .full-limit-card{border-color:#c7a8ff;box-shadow:0 0 0 2px #eee4ff inset,0 6px 20px #8f67d522}
 .limit-break-overlay{position:fixed;inset:0;z-index:180;background:#17192be8;display:flex;align-items:center;justify-content:center;padding:18px;overflow:hidden}
-.limit-break-stage{position:relative;width:min(92vw,430px);padding:24px 20px 22px;border-radius:26px;background:linear-gradient(145deg,#fff,#f8f3ff);text-align:center;box-shadow:0 18px 60px #0007;animation:limitStagePop .55s cubic-bezier(.2,.85,.2,1.2)}
-.limit-break-stage::before,.limit-break-stage::after{content:"✦";position:absolute;font-size:42px;color:#ffd45c;animation:limitSpark 1.25s ease-in-out infinite}
-.limit-break-stage::before{left:10px;top:15px}.limit-break-stage::after{right:12px;bottom:18px;animation-delay:.35s}
-.limit-break-art-wrap{position:relative;margin:auto;width:min(100%,285px);height:320px;display:grid;place-items:center}
-.limit-break-art{max-width:100%;max-height:100%;object-fit:contain;border-radius:18px;animation:limitArtReveal .8s ease}
-.limit-break-ring{position:absolute;inset:10%;border:4px solid transparent;border-top-color:#a86cff;border-right-color:#ff7bc3;border-radius:50%;animation:limitRing 1.25s linear infinite;filter:drop-shadow(0 0 8px #b775ff)}
-.limit-break-burst{position:absolute;inset:-45%;background:repeating-conic-gradient(from 0deg,#ffffff00 0 8deg,#ffdfff55 9deg 11deg,#ffffff00 12deg 22deg);animation:limitBurst 1.6s linear infinite;pointer-events:none}
-.limit-break-title{margin:8px 0 4px;font-size:26px;font-weight:950;color:#4e397e}
-.limit-break-level{font-size:22px;font-weight:950;letter-spacing:3px;color:#a16a00}
+.limit-break-stage{position:relative;width:min(92vw,430px);max-height:92vh;overflow-y:auto;padding:20px 20px 18px;border-radius:26px;background:linear-gradient(145deg,#fff,#f8f3ff);text-align:center;box-shadow:0 18px 60px #0007;animation:limitStagePop .55s cubic-bezier(.2,.85,.2,1.2)}
+.limit-break-stage::before,.limit-break-stage::after{content:"✦";position:absolute;z-index:5;font-size:36px;color:#ffd45c;animation:limitSpark 1.25s ease-in-out infinite;pointer-events:none}
+.limit-break-stage::before{left:10px;top:12px}.limit-break-stage::after{right:12px;bottom:16px;animation-delay:.35s}
+.limit-break-art-wrap{position:relative;z-index:1;margin:0 auto 14px;width:min(100%,285px);height:clamp(190px,48vh,275px);display:grid;place-items:center;overflow:hidden;border-radius:18px}
+.limit-break-art{display:block;width:100%;height:100%;object-fit:contain;border-radius:18px;animation:limitArtReveal .8s ease}
+.limit-break-ring{position:absolute;z-index:2;inset:9%;border:4px solid transparent;border-top-color:#a86cff;border-right-color:#ff7bc3;border-radius:50%;animation:limitRing 1.25s linear infinite;filter:drop-shadow(0 0 8px #b775ff);pointer-events:none}
+.limit-break-burst{position:absolute;z-index:0;inset:-20%;background:repeating-conic-gradient(from 0deg,#ffffff00 0 8deg,#ffdfff55 9deg 11deg,#ffffff00 12deg 22deg);animation:limitBurst 1.6s linear infinite;pointer-events:none}
+.limit-break-title{position:relative;z-index:4;margin:2px 0 4px;font-size:24px;font-weight:950;line-height:1.2;color:#4e397e}
+.limit-break-level{position:relative;z-index:4;font-size:21px;font-weight:950;line-height:1.35;letter-spacing:3px;color:#a16a00}
 .limit-break-level.full{color:#8b4be0;text-shadow:0 0 10px #d49cff}
-.limit-break-copy{margin-top:8px;color:#696d82;font-size:13px}
+.limit-break-copy{position:relative;z-index:4;margin:8px auto 0;max-width:100%;padding:7px 10px;border-radius:10px;background:#fffdfdcc;color:#696d82;font-size:13px;line-height:1.45}
+#limitBreakClose{position:relative;z-index:4}
+@media(max-height:620px){
+ .limit-break-stage{padding:14px 16px 14px}
+ .limit-break-art-wrap{height:clamp(160px,40vh,220px);margin-bottom:10px}
+ .limit-break-title{font-size:21px}
+ .limit-break-level{font-size:18px}
+ .limit-break-copy{font-size:12px;margin-top:5px;padding:5px 8px}
+}
 .limit-break-full-flash{position:absolute;inset:0;background:radial-gradient(circle,#fff 0,#f6d8ffbb 20%,#b579ff44 45%,transparent 70%);animation:limitFullFlash 1.15s ease-out both;pointer-events:none}
 @keyframes limitStagePop{0%{opacity:0;transform:scale(.72) rotate(-2deg)}70%{opacity:1;transform:scale(1.035) rotate(.5deg)}100%{transform:scale(1)}}
 @keyframes limitArtReveal{0%{opacity:0;transform:scale(.72);filter:brightness(2.2) blur(3px)}55%{opacity:1;transform:scale(1.06);filter:brightness(1.45)}100%{transform:scale(1);filter:none}}
@@ -257,7 +265,7 @@
       <button id="limitedExchangeCancel" type="button" class="ghost wide">닫기</button>
     </div>
   </div>
-</div><div id="limitBreakOverlay" class="limit-break-overlay hidden" role="dialog" aria-modal="true" aria-labelledby="limitBreakTitle"><div class="limit-break-stage"><div id="limitBreakFullFlash" class="limit-break-full-flash hidden"></div><div class="limit-break-burst"></div><div class="limit-break-art-wrap"><div class="limit-break-ring"></div><img id="limitBreakArt" class="limit-break-art" alt=""></div><div id="limitBreakTitle" class="limit-break-title">LIMIT BREAK!</div><div id="limitBreakLevel" class="limit-break-level">★☆☆</div><div id="limitBreakCopy" class="limit-break-copy"></div><button id="limitBreakClose" type="button" class="ghost wide" style="margin-top:14px">확인</button></div></div><div id="accountOverlay" class="pity-overlay hidden" role="dialog" aria-modal="true"><div class="pity-dialog"><h2>👤 로그인 · 계정 데이터 연동</h2><p class="muted">로그인하면 이 계정의 클라우드 세이브와 연결됩니다. 처음 연동할 때는 현재 기기 데이터와 클라우드 데이터 중 어떤 것을 사용할지 선택할 수 있어요. 기존 브라우저 데이터는 먼저 삭제하지 않습니다.</p><label>이메일</label><input id="userEmail" type="email" autocomplete="username"><label>비밀번호</label><input id="userPassword" type="password" autocomplete="current-password"><div class="row"><button id="userSignIn">로그인</button><button id="userSignUp" class="ghost">회원가입</button></div><button id="accountClose" class="ghost wide">닫기</button></div></div><nav class="nav" aria-label="하단 메뉴"><button data-tab="home" class="active">⌂<br>홈</button><button data-tab="gacha">✧<br>가챠</button><button data-tab="collection">▦<br>도감</button><button data-tab="game">🎮<br>게임</button><button data-tab="pet">🥚<br>펫</button><button data-tab="casino">🎰<br>카지노</button><button data-tab="admin">⚙<br>관리</button></nav>
+</div><div id="limitBreakOverlay" class="limit-break-overlay hidden" role="dialog" aria-modal="true" aria-labelledby="limitBreakTitle"><div class="limit-break-stage"><div id="limitBreakFullFlash" class="limit-break-full-flash hidden"></div><div class="limit-break-art-wrap"><div class="limit-break-burst"></div><div class="limit-break-ring"></div><img id="limitBreakArt" class="limit-break-art" alt=""></div><div id="limitBreakTitle" class="limit-break-title">LIMIT BREAK!</div><div id="limitBreakLevel" class="limit-break-level">★☆☆</div><div id="limitBreakCopy" class="limit-break-copy"></div><button id="limitBreakClose" type="button" class="ghost wide" style="margin-top:14px">확인</button></div></div><div id="accountOverlay" class="pity-overlay hidden" role="dialog" aria-modal="true"><div class="pity-dialog"><h2>👤 로그인 · 계정 데이터 연동</h2><p class="muted">로그인하면 이 계정의 클라우드 세이브와 연결됩니다. 처음 연동할 때는 현재 기기 데이터와 클라우드 데이터 중 어떤 것을 사용할지 선택할 수 있어요. 기존 브라우저 데이터는 먼저 삭제하지 않습니다.</p><label>이메일</label><input id="userEmail" type="email" autocomplete="username"><label>비밀번호</label><input id="userPassword" type="password" autocomplete="current-password"><div class="row"><button id="userSignIn">로그인</button><button id="userSignUp" class="ghost">회원가입</button></div><button id="accountClose" class="ghost wide">닫기</button></div></div><nav class="nav" aria-label="하단 메뉴"><button data-tab="home" class="active">⌂<br>홈</button><button data-tab="gacha">✧<br>가챠</button><button data-tab="collection">▦<br>도감</button><button data-tab="game">🎮<br>게임</button><button data-tab="pet">🥚<br>펫</button><button data-tab="casino">🎰<br>카지노</button><button data-tab="admin">⚙<br>관리</button></nav>
 <script type="module">
 // 이미지에 한정해 우클릭 메뉴 및 끌어서 저장을 제한합니다. 관리자의 파일 선택·업로드는 방해하지 않습니다.
 document.addEventListener('contextmenu',e=>{if(e.target.closest('img')&&!e.target.closest('#homeHero'))e.preventDefault()});
