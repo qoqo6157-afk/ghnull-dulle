@@ -231,7 +231,7 @@
       <button id="limitedExchangeCancel" type="button" class="ghost wide">닫기</button>
     </div>
   </div>
-</div><div id="accountOverlay" class="pity-overlay hidden" role="dialog" aria-modal="true"><div class="pity-dialog"><h2>👤 로그인 · 계정 데이터 연동</h2><p class="muted">로그인하면 이 계정의 클라우드 세이브와 연결됩니다. 처음 연동할 때는 현재 기기 데이터와 클라우드 데이터 중 어떤 것을 사용할지 선택할 수 있어요. 기존 브라우저 데이터는 먼저 삭제하지 않습니다.</p><label>이메일</label><input id="userEmail" type="email" autocomplete="username"><label>비밀번호</label><input id="userPassword" type="password" autocomplete="current-password"><div class="row"><button id="userSignIn">로그인</button><button id="userSignUp" class="ghost">회원가입</button></div><button id="accountClose" class="ghost wide">닫기</button></div></div><nav class="nav" aria-label="하단 메뉴"><button data-tab="home" class="active">⌂<br>홈</button><button data-tab="gacha">✧<br>가챠</button><button data-tab="collection">▦<br>도감</button><button data-tab="game">🎮<br>게임</button><button data-tab="pet">🥚<br>펫</button><button data-tab="casino">🎰<br>카지노</button><button data-tab="admin">⚙<br>관리</button></nav>
+</div><div id="accountOverlay" class="pity-overlay hidden" role="dialog" aria-modal="true"><div class="pity-dialog"><h2>👤 민트 전용 계정</h2><p class="muted">이 계정은 민트가챠에서만 사용됩니다. 지눌가챠와 같은 이메일을 써도 서로 다른 계정이며, 포인트·보유 캐릭터·펫·세이브도 공유되지 않습니다.</p><label>이메일</label><input id="userEmail" type="email" autocomplete="username"><label>비밀번호</label><input id="userPassword" type="password" autocomplete="current-password"><div class="row"><button id="userSignIn">로그인</button><button id="userSignUp" class="ghost">회원가입</button></div><button id="accountClose" class="ghost wide">닫기</button></div></div><nav class="nav" aria-label="하단 메뉴"><button data-tab="home" class="active">⌂<br>홈</button><button data-tab="gacha">✧<br>가챠</button><button data-tab="collection">▦<br>도감</button><button data-tab="game">🎮<br>게임</button><button data-tab="pet">🥚<br>펫</button><button data-tab="casino">🎰<br>카지노</button><button data-tab="admin">⚙<br>관리</button></nav>
 <script type="module">
 // 이미지에 한정해 우클릭 메뉴 및 끌어서 저장을 제한합니다. 관리자의 파일 선택·업로드는 방해하지 않습니다.
 document.addEventListener('contextmenu',e=>{if(e.target.closest('img')&&!e.target.closest('#homeHero'))e.preventDefault()});
@@ -243,9 +243,9 @@ import {createClient} from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2
 const SUPABASE_URL='https://awphoeuhuceqjdzupzvn.supabase.co';
 const SUPABASE_ANON_KEY='sb_publishable_lAvF0YPrCfGs0lNW06QIHA_aChjh1iS';
 const ready=SUPABASE_URL.startsWith('https://')&&!SUPABASE_ANON_KEY.startsWith('PASTE_');
-const db=ready?createClient(SUPABASE_URL,SUPABASE_ANON_KEY):null;
+const db=ready?createClient(SUPABASE_URL,SUPABASE_ANON_KEY,{auth:{storageKey:'mint-gacha-admin-auth-clean-v1',persistSession:true,autoRefreshToken:true}}):null;
 const $=id=>document.getElementById(id);let characters=[],settings={ssr:3,sr:17,r:80,pity:90,limited_rate:3,limited_ssr:3,limited_sr:17,limited_r:77,limited_pity:90,home_character_id:null},admin=false,session=null;
-const key='my-gacha-secure-v1';let local;try{local=JSON.parse(localStorage.getItem(key)||'{}')}catch{local={}};local.counts??={};local.sinceSSR??=0;local.homeCharacterId??=null;local.points=Number.isSafeInteger(local.points)&&local.points>=0?local.points:3000;local.pendingGacha??=null;local.pityPoints=Number.isSafeInteger(local.pityPoints)&&local.pityPoints>=0?local.pityPoints:Math.max(0,Math.floor(Number(local.sinceSSR)||0));local.attendance=local.attendance&&typeof local.attendance==='object'?local.attendance:{lastDate:null,day:0};local.lastGlobalGrantId=Number.isSafeInteger(local.lastGlobalGrantId)&&local.lastGlobalGrantId>=0?local.lastGlobalGrantId:0;local.homeCharacterIds=Array.isArray(local.homeCharacterIds)?local.homeCharacterIds.slice(0,3):(local.homeCharacterId?[local.homeCharacterId]:[]);local.limitedPoints=Number.isSafeInteger(local.limitedPoints)&&local.limitedPoints>=0?local.limitedPoints:0;local.limitedEventKey??=null;
+const key='mint-gacha-secure-clean-v1';let local;try{local=JSON.parse(localStorage.getItem(key)||'{}')}catch{local={}};local.counts??={};local.sinceSSR??=0;local.homeCharacterId??=null;local.points=Number.isSafeInteger(local.points)&&local.points>=0?local.points:3000;local.pendingGacha??=null;local.pityPoints=Number.isSafeInteger(local.pityPoints)&&local.pityPoints>=0?local.pityPoints:Math.max(0,Math.floor(Number(local.sinceSSR)||0));local.attendance=local.attendance&&typeof local.attendance==='object'?local.attendance:{lastDate:null,day:0};local.lastGlobalGrantId=Number.isSafeInteger(local.lastGlobalGrantId)&&local.lastGlobalGrantId>=0?local.lastGlobalGrantId:0;local.homeCharacterIds=Array.isArray(local.homeCharacterIds)?local.homeCharacterIds.slice(0,3):(local.homeCharacterId?[local.homeCharacterId]:[]);local.limitedPoints=Number.isSafeInteger(local.limitedPoints)&&local.limitedPoints>=0?local.limitedPoints:0;local.limitedEventKey??=null;
 const attendanceRewards=[400,600,800,1000,1300,1600,2500];
 function attendanceDate(){const d=new Date();return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`}
 function attendanceDayNumber(date){if(!/^\d{4}-\d{2}-\d{2}$/.test(date||''))return null;const [y,m,d]=date.split('-').map(Number);const ms=Date.UTC(y,m-1,d);const check=new Date(ms);return check.getUTCFullYear()===y&&check.getUTCMonth()===m-1&&check.getUTCDate()===d?Math.floor(ms/86400000):null}
@@ -254,6 +254,13 @@ function renderAttendance(){const state=attendanceState();const list=$('attendan
 $('attendanceClaim').addEventListener('click',()=>{const state=attendanceState();if(state.claimed||state.locked)return renderAttendance();const reward=attendanceRewards[state.day-1];if(!Number.isSafeInteger(local.points+reward))return notice('포인트 한도를 초과하여 지급할 수 없어요.');local.attendance={lastDate:state.today,day:state.day};local.points+=reward;save();render();notice(`출석 완료! ${state.day}일차 보상 +${reward.toLocaleString()}P 지급!`)});
 function save(){localStorage.setItem(key,JSON.stringify(local));scheduleCloudSave()}function notice(t){$('notice').textContent=t;$('notice').style.display='block';setTimeout(()=>$('notice').style.display='none',5000)}function escapeHtml(s){return String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
 let userSession=null,cloudTimer=null,cloudLoading=false,cloudHydrated=false;
+const mintAccountTokenKey='mint-gacha-user-token-clean-v1';
+let mintAccountToken=localStorage.getItem(mintAccountTokenKey)||'';
+function setMintAccountToken(token){
+ mintAccountToken=String(token||'');
+ if(mintAccountToken)localStorage.setItem(mintAccountTokenKey,mintAccountToken);
+ else localStorage.removeItem(mintAccountTokenKey)
+}
 const cloudBindingKey=key+'-cloud-user-v2';
 const cloudBackupKey=key+'-pre-cloud-backup-v2';
 
@@ -289,49 +296,40 @@ function scheduleCloudSave(){
  cloudTimer=setTimeout(()=>cloudSave(false),900)
 }
 async function cloudSave(show=true,force=false){
- if(!db||!userSession)return false;
+ if(!db||!userSession||!mintAccountToken)return false;
  if(!cloudHydrated&&!force){
-  if(show)notice('☁️ 먼저 클라우드 불러오기를 해주세요. 다른 브라우저의 세이브를 실수로 덮어쓰지 않도록 저장을 막았어요.');
+  if(show)notice('☁️ 먼저 민트 클라우드 데이터를 불러와 주세요.');
   return false
  }
  const payload=structuredClone(local);
- const {error}=await db.from('user_saves').upsert(
-  {user_id:userSession.user.id,save_data:payload,updated_at:new Date().toISOString()},
-  {onConflict:'user_id'}
- );
+ const {error}=await db.rpc('mint_cloud_save',{p_token:mintAccountToken,p_save:payload});
  if(error){
-  if(show)notice('클라우드 저장 실패: '+error.message);
+  if(show)notice('민트 클라우드 저장 실패: '+error.message);
   return false
  }
  bindCloudToCurrentUser();
- if(show)notice('☁️ 현재 데이터를 클라우드에 저장했어요.');
+ if(show)notice('☁️ 민트 클라우드에 저장했어요.');
  return true
 }
 async function cloudLoadOrMigrate(showNotice=true){
- if(!db||!userSession)return false;
+ if(!db||!userSession||!mintAccountToken)return false;
  clearTimeout(cloudTimer);
  cloudLoading=true;
  try{
-  const {data,error}=await db.from('user_saves')
-   .select('save_data,updated_at')
-   .eq('user_id',userSession.user.id)
-   .maybeSingle();
-
+  const {data,error}=await db.rpc('mint_cloud_load',{p_token:mintAccountToken});
   if(error){
-   if(showNotice)notice('클라우드 세이브 확인 실패: '+error.message);
+   if(showNotice)notice('민트 클라우드 확인 실패: '+error.message);
    return false
   }
 
-  // 계정에 클라우드 세이브가 아예 없을 때만 현재 브라우저 데이터를 최초 업로드.
-  if(!data?.save_data){
+  if(!data?.found||!data?.save_data){
    cloudLoading=false;
    const saved=await cloudSave(false,true);
    cloudLoading=true;
-   if(saved&&showNotice)notice('☁️ 이 계정에 저장된 세이브가 없어서 현재 브라우저 데이터를 최초 클라우드 세이브로 등록했어요.');
+   if(saved&&showNotice)notice('☁️ 새 민트 계정에 현재 브라우저 데이터를 최초 저장했어요.');
    return saved
   }
 
-  // 클라우드를 적용하기 직전에 현재 로컬 데이터를 별도 백업.
   try{
    localStorage.setItem(cloudBackupKey,JSON.stringify({
     saved_at:new Date().toISOString(),
@@ -350,7 +348,7 @@ async function cloudLoadOrMigrate(showNotice=true){
 
   if(showNotice){
    const updated=data.updated_at?new Date(data.updated_at).toLocaleString():'시간 정보 없음';
-   notice(`☁️ 클라우드 세이브를 불러왔어요. · 서버 저장 ${updated}`)
+   notice(`☁️ 민트 클라우드 세이브를 불러왔어요. · ${updated}`)
   }
   return true
  }finally{
@@ -365,9 +363,9 @@ async function claimTargetedPointGrants(showNotice=true){
  try{
   // 서버 RPC가 클라우드의 points만 원자적으로 갱신합니다.
   // 여기서는 절대로 현재 브라우저의 전체 local 세이브를 먼저 업로드하지 않습니다.
-  const {data,error}=await db.rpc('claim_my_point_grants');
+  const {data,error}=await db.rpc('mint_claim_my_point_grants',{p_token:mintAccountToken});
   if(error){
-   if(showNotice&&!String(error.message||'').includes('claim_my_point_grants'))console.warn('개별 포인트 수령 실패:',error);
+   if(showNotice&&!String(error.message||'').includes('mint_claim_my_point_grants'))console.warn('개별 포인트 수령 실패:',error);
    return 0
   }
   const granted=Number(data?.granted||0);
@@ -391,11 +389,26 @@ async function claimTargetedPointGrants(showNotice=true){
 async function refreshUserSession(){
  if(!db)return false;
  const previousUserId=userSession?.user?.id||null;
- const {data}=await db.auth.getSession();let sess=data.session;
+ let sess=null;
+
+ if(mintAccountToken){
+  const {data,error}=await db.rpc('mint_session',{p_token:mintAccountToken});
+  if(error||!data?.valid){
+   const suspended=!!data?.suspended;
+   setMintAccountToken('');
+   userSession=null;
+   unbindCloudRuntime();
+   if(suspended)notice('이 민트 계정은 관리자에 의해 이용이 정지되어 있어요.');
+  }else{
+   sess={user:{id:data.user_id,email:data.email}}
+  }
+ }
+
  userSession=sess;
  const boundId=localStorage.getItem(cloudBindingKey)||'';
  cloudHydrated=!!sess&&boundId===sess.user.id;
- if(!sess||previousUserId&&sess.user.id!==previousUserId)clearTimeout(cloudTimer);
+ if(!sess||(previousUserId&&sess.user.id!==previousUserId))clearTimeout(cloudTimer);
+
  const updateAccountUi=(session,stateText,emailText)=>{
   const logged=!!session;
   $('userLoginBtn').classList.toggle('hidden',logged);
@@ -403,33 +416,85 @@ async function refreshUserSession(){
   if($('homeAccountOpen'))$('homeAccountOpen').classList.toggle('hidden',logged);
   if($('homeCloudLoad'))$('homeCloudLoad').classList.toggle('hidden',!logged);
   if($('homeAccountLogout'))$('homeAccountLogout').classList.toggle('hidden',!logged);
-  if($('homeAccountStatus'))$('homeAccountStatus').textContent=stateText||(logged?'☁️ 계정 연동됨':'로그인하지 않음');
-  if($('homeAccountEmail'))$('homeAccountEmail').textContent=emailText||(logged?(session.user.email||'로그인된 계정'):'로컬 데이터로 이용 중');
+  if($('homeAccountStatus'))$('homeAccountStatus').textContent=stateText||(logged?'☁️ 민트 계정 연동됨':'로그인하지 않음');
+  if($('homeAccountEmail'))$('homeAccountEmail').textContent=emailText||(logged?(session.user.email||'민트 계정'):'로컬 데이터로 이용 중');
  };
- if(sess){
-  const {data:suspended,error:suspendError}=await db.rpc('is_account_suspended');
-  if(!suspendError&&suspended===true){
-   await db.auth.signOut();userSession=null;sess=null;
-   updateAccountUi(null,'계정 이용 정지','관리자에 의해 이 사이트 이용이 정지된 계정입니다.');
-   $('status').textContent='계정 이용 정지';notice('이 계정은 관리자에 의해 사이트 이용이 정지되어 있어요.');
-   return false;
-  }
- }
+
  updateAccountUi(sess);
+
  if(sess){
-  const syncState=cloudHydrated?'☁️ 자동 저장 중':'☁️ 로그인됨 · 클라우드 동기화 중';
+  const syncState=cloudHydrated?'☁️ 민트 자동 저장 중':'☁️ 민트 로그인됨 · 동기화 중';
   $('status').textContent=admin?`관리자 로그인 · ${syncState}`:syncState;
-  if($('homeAccountStatus'))$('homeAccountStatus').textContent=cloudHydrated?'☁️ 자동 저장 중':'☁️ 클라우드 동기화 중';
- }else if(!$('status').textContent.includes('설정 필요'))$('status').textContent='로컬 데이터';
+  if($('homeAccountStatus'))$('homeAccountStatus').textContent=cloudHydrated?'☁️ 민트 자동 저장 중':'☁️ 민트 클라우드 동기화 중';
+ }else if(!$('status').textContent.includes('설정 필요')){
+  $('status').textContent=admin?'관리자 로그인':'로컬 데이터'
+ }
+
  return !!sess;
 }
+
 $('userLoginBtn').onclick=()=>{$('accountOverlay').classList.remove('hidden')};
 if($('homeAccountOpen'))$('homeAccountOpen').onclick=()=>{$('accountOverlay').classList.remove('hidden')};
-if($('homeCloudLoad'))$('homeCloudLoad').onclick=async()=>{if(!userSession)return $('accountOverlay').classList.remove('hidden');const ok=await cloudLoadOrMigrate(true);await refreshUserSession();if(ok)await claimTargetedPointGrants(true)};
-if($('homeAccountLogout'))$('homeAccountLogout').onclick=async()=>{if(cloudHydrated)await cloudSave(false);await db.auth.signOut();userSession=null;unbindCloudRuntime();await refreshUserSession();notice('로그아웃했어요. 이 브라우저의 로컬 백업은 그대로 남아 있어요.')};
-$('accountClose').onclick=()=>$('accountOverlay').classList.add('hidden');$('userLogoutBtn').onclick=async()=>{if(cloudHydrated)await cloudSave(false);await db.auth.signOut();userSession=null;unbindCloudRuntime();await refreshUserSession();notice('로그아웃했어요. 이 브라우저의 로컬 백업은 그대로 남아 있어요.')};
-$('userSignIn').onclick=async()=>{const {error}=await db.auth.signInWithPassword({email:$('userEmail').value.trim(),password:$('userPassword').value});if(error)return notice('로그인 실패: '+error.message);$('accountOverlay').classList.add('hidden');await refreshUserSession();const ok=await cloudLoadOrMigrate(true);await refreshUserSession();if(ok)await claimTargetedPointGrants(true)};
-$('userSignUp').onclick=async()=>{const {data,error}=await db.auth.signUp({email:$('userEmail').value.trim(),password:$('userPassword').value});if(error)return notice(error.message.includes('rate limit')?'인증 메일 요청이 너무 많아요. 잠시 후 다시 시도해 주세요.':'회원가입 실패: '+error.message);if(data.session){$('accountOverlay').classList.add('hidden');await refreshUserSession();const ok=await cloudLoadOrMigrate(true);await refreshUserSession();if(ok)await claimTargetedPointGrants(false);notice('회원가입 및 기존 데이터 연동 완료!')}else notice('회원가입 완료! 이메일 인증이 켜져 있다면 인증 메일을 확인한 뒤 로그인해 주세요.')}
+
+if($('homeCloudLoad'))$('homeCloudLoad').onclick=async()=>{
+ if(!userSession)return $('accountOverlay').classList.remove('hidden');
+ const ok=await cloudLoadOrMigrate(true);
+ await refreshUserSession();
+ if(ok)await claimTargetedPointGrants(true)
+};
+
+async function mintUserLogout(){
+ if(cloudHydrated)await cloudSave(false);
+ if(mintAccountToken)await db.rpc('mint_logout',{p_token:mintAccountToken});
+ setMintAccountToken('');
+ userSession=null;
+ unbindCloudRuntime();
+ await refreshUserSession();
+ notice('민트 계정에서 로그아웃했어요. 로컬 백업은 그대로 남아 있어요.')
+}
+
+if($('homeAccountLogout'))$('homeAccountLogout').onclick=mintUserLogout;
+$('accountClose').onclick=()=>$('accountOverlay').classList.add('hidden');
+$('userLogoutBtn').onclick=mintUserLogout;
+
+$('userSignIn').onclick=async()=>{
+ const email=$('userEmail').value.trim();
+ const password=$('userPassword').value;
+ if(!email||!password)return notice('이메일과 비밀번호를 입력해 주세요.');
+
+ const {data,error}=await db.rpc('mint_login',{p_email:email,p_password:password});
+ if(error)return notice('민트 로그인 실패: '+error.message);
+ if(!data?.token)return notice('민트 로그인에 실패했어요.');
+
+ setMintAccountToken(data.token);
+ $('userPassword').value='';
+ $('accountOverlay').classList.add('hidden');
+
+ await refreshUserSession();
+ const ok=await cloudLoadOrMigrate(true);
+ await refreshUserSession();
+ if(ok)await claimTargetedPointGrants(true)
+};
+
+$('userSignUp').onclick=async()=>{
+ const email=$('userEmail').value.trim();
+ const password=$('userPassword').value;
+ if(!email||password.length<6)return notice('이메일과 6자 이상의 비밀번호를 입력해 주세요.');
+
+ const {data,error}=await db.rpc('mint_signup',{p_email:email,p_password:password});
+ if(error)return notice('민트 회원가입 실패: '+error.message);
+ if(!data?.token)return notice('민트 회원가입에 실패했어요.');
+
+ setMintAccountToken(data.token);
+ $('userPassword').value='';
+ $('accountOverlay').classList.add('hidden');
+
+ await refreshUserSession();
+ const ok=await cloudLoadOrMigrate(true);
+ await refreshUserSession();
+ if(ok)await claimTargetedPointGrants(false);
+ notice('민트 전용 계정 회원가입 완료!')
+};
 function activeLimited(){const now=Date.now();return characters.filter(c=>c.is_limited&&c.limited_start&&c.limited_end&&now>=new Date(c.limited_start).getTime()&&now<new Date(c.limited_end).getTime())}
 function limitedKey(pool){if(!pool.length)return null;return pool.map(c=>c.id).sort().join('|')+'@'+Math.max(...pool.map(c=>new Date(c.limited_end).getTime()))}
 function syncLimitedPoints(){const pool=activeLimited(),k=limitedKey(pool);if(local.limitedEventKey!==k){local.limitedPoints=0;local.limitedEventKey=k;save()}return pool}
@@ -939,12 +1004,12 @@ function continueGacha(){const pending=local.pendingGacha;if(!pending)return;if(
 function draw(n){if(local.pendingGacha)return continueGacha();if(!validPool())return notice('SSR 캐릭터와 확률이 0보다 큰 모든 등급의 캐릭터를 등록해야 합니다.');const cost=n*100;if(local.points<cost)return notice(`포인트가 부족해요! ${n}회 뽑기는 ${cost.toLocaleString()} P가 필요해요. 게임에서 포인트를 모아 주세요.`);local.points-=cost;local.pendingGacha={remaining:n,waiting:false,results:[]};save();for(let i=0;i<n;i++){const x=Math.random()*100;const rarity=x<Number(settings.ssr)?'SSR':x<Number(settings.ssr)+Number(settings.sr)?'SR':'R';const pool=characters.filter(c=>c.rarity===rarity&&!c.is_limited);if(!pool.length){notice('캐릭터 목록이 변경됐어요. 관리자에게 문의해 주세요.');return}const c=pool[Math.floor(Math.random()*pool.length)];local.pendingGacha.remaining--;addGachaResult(c);local.pityPoints+=1;save()}finishGacha()}
 $('pityConfirm').onclick=()=>{if(!chosenPityId)return;const c=characters.find(c=>c.id===chosenPityId&&c.rarity==='SSR');if(!c)return notice('선택한 SSR을 찾을 수 없어요. 다시 선택해 주세요.');const pending=local.pendingGacha;if(pending?.waiting){pending.waiting=false;pending.remaining--;addGachaResult(c);$('pityOverlay').classList.add('hidden');chosenPityId=null;continueGacha();return}if(pending||local.pityPoints<settings.pity)return notice('천장 포인트가 부족하거나 뽑기가 진행 중이에요.');local.pityPoints-=settings.pity;local.counts[c.id]=(Number(local.counts[c.id])||0)+1;save();$('pityOverlay').classList.add('hidden');chosenPityId=null;$('results').innerHTML=gachaResultCard(c,'SSR 교환 완료',0);render();notice(`${c.name} SSR 교환 완료! ${settings.pity} PT 사용 · 잔여 ${local.pityPoints} PT`)}; $('pityExchange').onclick=showPitySelection;$('pityCancel').onclick=()=>{if(local.pendingGacha?.waiting)return;$('pityOverlay').classList.add('hidden');chosenPityId=null};
 $('draw1').onclick=()=>draw(1);$('draw10').onclick=()=>draw(10);
-async function load(){if(!db)return notice('index.html 상단에 Supabase URL과 publishable/anon key를 입력해 주세요.');const [c,s]=await Promise.all([db.from('characters').select('*').order('created_at'),db.from('site_settings').select('*').eq('id',1).single()]);if(c.error||s.error)return notice('데이터 로드 오류: '+(c.error||s.error).message);characters=c.data;settings=s.data;orderDraft=null;if($('bannerEnabled')){$('bannerEnabled').checked=!!settings.event_banner_enabled;bannerDraft=bannerDraftFromSettings();renderBannerAdmin()}render();if(!local.derbyPending&&!derby.running)derbyPrepare();if(local.pendingGacha)continueGacha()}
-async function authCheck(){if(!db)return;const {data:{session:current}}=await db.auth.getSession();session=current;admin=false;if(current){const {data,error}=await db.rpc('is_site_admin');admin=!error&&data===true}if(!admin)closeEditor();$('loginBox').classList.toggle('hidden',admin);$('adminPanel').classList.toggle('hidden',!admin);renderRhythmAdmin();renderPetAdmin();$('status').textContent=admin?'관리자 로그인':'공개 사이트';if(admin)await loadAdminUsers();else{adminUsers=[];if($('userAdminList'))$('userAdminList').replaceChildren()}render()}
-$('loginForm').addEventListener('submit',async e=>{e.preventDefault();if(!db)return notice('Supabase 연결 설정을 먼저 해주세요.');const {error}=await db.auth.signInWithPassword({email:$('email').value,password:$('password').value});if(error)return notice('로그인 실패: '+error.message);$('password').value='';await authCheck();if(!admin){await db.auth.signOut();await authCheck();notice('이 계정은 관리자 권한이 없습니다.')}else notice('관리자 로그인 성공')});$('logout').onclick=async()=>{await db.auth.signOut();await authCheck()};
+async function load(){if(!db)return notice('index.html 상단에 Supabase URL과 publishable/anon key를 입력해 주세요.');const [c,s]=await Promise.all([db.from('mint_characters').select('*').order('created_at'),db.from('mint_site_settings').select('*').eq('id',1).single()]);if(c.error||s.error)return notice('데이터 로드 오류: '+(c.error||s.error).message);characters=c.data;settings=s.data;orderDraft=null;if($('bannerEnabled')){$('bannerEnabled').checked=!!settings.event_banner_enabled;bannerDraft=bannerDraftFromSettings();renderBannerAdmin()}render();if(!local.derbyPending&&!derby.running)derbyPrepare();if(local.pendingGacha)continueGacha()}
+async function authCheck(){if(!db)return;const {data:{session:current}}=await db.auth.getSession();session=current;admin=false;if(current){const {data,error}=await db.rpc('mint_is_site_admin');admin=!error&&data===true}if(!admin)closeEditor();$('loginBox').classList.toggle('hidden',admin);$('adminPanel').classList.toggle('hidden',!admin);renderRhythmAdmin();renderPetAdmin();$('status').textContent=admin?'관리자 로그인':'공개 사이트';if(admin)await loadAdminUsers();else{adminUsers=[];if($('userAdminList'))$('userAdminList').replaceChildren()}render()}
+$('loginForm').addEventListener('submit',async e=>{e.preventDefault();if(!db)return notice('Supabase 연결 설정을 먼저 해주세요.');const {error}=await db.auth.signInWithPassword({email:$('email').value,password:$('password').value});if(error)return notice('로그인 실패: '+error.message);$('password').value='';await authCheck();if(!admin){await db.auth.signOut();await authCheck();notice('이 계정은 민트 관리자 권한이 없습니다.')}else notice('민트 관리자 로그인 성공')});$('logout').onclick=async()=>{await db.auth.signOut();await authCheck()};
 // 서버에 관리자 지급 내역을 보관하고, 각 브라우저가 아직 수령하지 않은 지급분을 적용합니다.
 let globalGrantBusy=false;
-async function claimGlobalPoints(){if(!db||globalGrantBusy)return;globalGrantBusy=true;try{const cutoff=new Date(Date.now()-86400000).toISOString();const {data,error}=await db.from('global_point_grants').select('id,amount,created_at').gte('created_at',cutoff).order('created_at',{ascending:false}).limit(1).maybeSingle();if(error)throw error;if(data&&data.id!==local.lastGlobalGrantId&&Number.isSafeInteger(data.amount)&&data.amount>0){if(!Number.isSafeInteger(local.points+data.amount))throw Error('포인트 최대 허용 범위를 초과했습니다.');local.points+=data.amount;local.lastGlobalGrantId=data.id;save();render();notice(`🎁 24시간 한정 전체 지급 +${data.amount.toLocaleString()} P 수령!`)}}catch(err){console.warn('전체 포인트 지급 확인 실패:',err)}finally{globalGrantBusy=false}}
+async function claimGlobalPoints(){if(!db||globalGrantBusy)return;globalGrantBusy=true;try{const cutoff=new Date(Date.now()-86400000).toISOString();const {data,error}=await db.from('mint_global_point_grants').select('id,amount,created_at').gte('created_at',cutoff).order('created_at',{ascending:false}).limit(1).maybeSingle();if(error)throw error;if(data&&data.id!==local.lastGlobalGrantId&&Number.isSafeInteger(data.amount)&&data.amount>0){if(!Number.isSafeInteger(local.points+data.amount))throw Error('포인트 최대 허용 범위를 초과했습니다.');local.points+=data.amount;local.lastGlobalGrantId=data.id;save();render();notice(`🎁 24시간 한정 전체 지급 +${data.amount.toLocaleString()} P 수령!`)}}catch(err){console.warn('전체 포인트 지급 확인 실패:',err)}finally{globalGrantBusy=false}}
 $('globalPointsRefresh').onclick=claimGlobalPoints;
 $('globalPointsForm').addEventListener('submit',async e=>{
  e.preventDefault();if(!db||!admin||!session)return notice('관리자 로그인 후 이용할 수 있어요.');
@@ -953,13 +1018,13 @@ $('globalPointsForm').addEventListener('submit',async e=>{
  if(!confirm(`모든 방문자에게 ${amount.toLocaleString()} P를 지급할까요? 지급 후 취소할 수 없습니다.`))return;
  const button=$('globalPointsSend');button.disabled=true;
  try{
-  const {data:authorized,error:authError}=await db.rpc('is_site_admin');
+  const {data:authorized,error:authError}=await db.rpc('mint_is_site_admin');
   if(authError||authorized!==true)throw new Error('관리자 권한 확인에 실패했습니다.');
-  const {error}=await db.from('global_point_grants').insert({amount});
+  const {error}=await db.from('mint_global_point_grants').insert({amount});
   if(error)throw error;
   $('globalPointsAmount').value='';notice(`전체 방문자 ${amount.toLocaleString()} P 지급 공지 등록 완료!`);
   await claimGlobalPoints();
- }catch(err){notice('전체 지급 실패: '+err.message+' · SQL 설치 여부를 확인해 주세요.')}
+ }catch(err){notice('전체 지급 실패: '+err.message+' · mint_clean_setup.sql 설치 여부를 확인해 주세요.')}
  finally{button.disabled=false}
 });
 window.addEventListener('focus',()=>{if(ready)claimGlobalPoints()});
@@ -980,9 +1045,9 @@ $('bannerForm').addEventListener('submit',async e=>{
     if(!checkImage(file))return notice('배너 이미지는 PNG/JPG/WEBP/GIF 10MB 이하만 가능합니다.');
     const ext=file.type.split('/')[1]==='jpeg'?'jpg':file.type.split('/')[1];
     const path=`banners/${crypto.randomUUID()}.${ext}`;
-    const {error:uploadError}=await db.storage.from('character-images').upload(path,file,{contentType:file.type});
+    const {error:uploadError}=await db.storage.from('mint-character-images').upload(path,file,{contentType:file.type});
     if(uploadError)return notice(`배너 ${i+1} 이미지 업로드 실패: `+uploadError.message);
-    item.image=db.storage.from('character-images').getPublicUrl(path).data.publicUrl;
+    item.image=db.storage.from('mint-character-images').getPublicUrl(path).data.publicUrl;
     item.pendingFile=null
    }
 
@@ -992,11 +1057,11 @@ $('bannerForm').addEventListener('submit',async e=>{
     if(!checkBannerFont(file))return notice('글꼴은 TTF/OTF/WOFF/WOFF2 파일 10MB 이하만 가능합니다.');
     const ext=(file.name.split('.').pop()||'woff2').toLowerCase();
     const path=`fonts/${crypto.randomUUID()}.${ext}`;
-    const {error:fontError}=await db.storage.from('banner-fonts').upload(path,file,{contentType:file.type||'application/octet-stream'});
+    const {error:fontError}=await db.storage.from('mint-banner-fonts').upload(path,file,{contentType:file.type||'application/octet-stream'});
     if(fontError){
      return notice('글꼴 업로드 실패: '+fontError.message+' · banner_custom_font_setup.sql을 먼저 실행했는지 확인해 주세요.')
     }
-    item.fontUrl=db.storage.from('banner-fonts').getPublicUrl(path).data.publicUrl;
+    item.fontUrl=db.storage.from('mint-banner-fonts').getPublicUrl(path).data.publicUrl;
     item.fontName=file.name.replace(/\.[^.]+$/,'');
     item.pendingFontFile=null;
     item.previewFontFamily=''
@@ -1024,7 +1089,7 @@ $('bannerForm').addEventListener('submit',async e=>{
    event_banner_enabled:$('bannerEnabled').checked
   };
 
-  const {error}=await db.from('site_settings').update(payload).eq('id',1);
+  const {error}=await db.from('mint_site_settings').update(payload).eq('id',1);
   if(error){
    if(String(error.message||'').includes('event_banners'))return notice('배너 기능용 SQL을 먼저 실행해 주세요.');
    return notice('배너 저장 실패: '+error.message)
@@ -1036,7 +1101,7 @@ $('bannerForm').addEventListener('submit',async e=>{
   if(submit)submit.disabled=false
  }
 });
-$('adminPointsForm').addEventListener('submit',async e=>{e.preventDefault();if(!db||!admin||!session)return notice('관리자 로그인 후 이용할 수 있어요.');const amount=Number($('adminPointsAmount').value);if(!Number.isSafeInteger(amount)||amount<1||amount>100000000)return notice('1~100,000,000 사이의 정수 포인트를 입력해 주세요.');const button=$('adminPointsAdd');button.disabled=true;try{const {data,error}=await db.rpc('is_site_admin');if(error||data!==true)return notice('관리자 권한을 확인할 수 없어 충전하지 않았어요.');if(!Number.isSafeInteger(local.points)||local.points<0||!Number.isSafeInteger(local.points+amount))return notice('포인트 합계가 허용 범위를 초과했어요.');local.points+=amount;save();$('adminPointsAmount').value='';render();notice(`관리자 포인트 ${amount.toLocaleString()} P 추가 완료! 현재 ${local.points.toLocaleString()} P`)}catch(err){notice('권한 확인 오류: '+err.message)}finally{button.disabled=false}});
+$('adminPointsForm').addEventListener('submit',async e=>{e.preventDefault();if(!db||!admin||!session)return notice('관리자 로그인 후 이용할 수 있어요.');const amount=Number($('adminPointsAmount').value);if(!Number.isSafeInteger(amount)||amount<1||amount>100000000)return notice('1~100,000,000 사이의 정수 포인트를 입력해 주세요.');const button=$('adminPointsAdd');button.disabled=true;try{const {data,error}=await db.rpc('mint_is_site_admin');if(error||data!==true)return notice('관리자 권한을 확인할 수 없어 충전하지 않았어요.');if(!Number.isSafeInteger(local.points)||local.points<0||!Number.isSafeInteger(local.points+amount))return notice('포인트 합계가 허용 범위를 초과했어요.');local.points+=amount;save();$('adminPointsAmount').value='';render();notice(`관리자 포인트 ${amount.toLocaleString()} P 추가 완료! 현재 ${local.points.toLocaleString()} P`)}catch(err){notice('권한 확인 오류: '+err.message)}finally{button.disabled=false}});
 
 let adminUsers=[];
 const USER_POINT_MAX=9007199254740991;
@@ -1105,7 +1170,7 @@ function renderAdminUsers(){
   const body=document.createElement('div');body.className='user-admin-card-body';
   const uid=document.createElement('div');uid.className='user-admin-id';uid.textContent=`UID: ${u.user_id}`;
   const meta=document.createElement('div');meta.className='user-admin-meta';
-  const confirmed=u.email_confirmed_at?'이메일 인증 완료':'이메일 미인증';
+  const confirmed='민트 전용 계정';
   meta.textContent=`${confirmed} · 펫: ${u.pet_name||'없음'} · 마지막 클라우드 저장: ${adminUserDate(u.save_updated_at)}`;
 
   const actions=document.createElement('div');actions.className='user-admin-actions';
@@ -1127,7 +1192,7 @@ function renderAdminUsers(){
   const suspend=document.createElement('button');suspend.type='button';suspend.className=u.suspended?'ghost':'danger';suspend.textContent=u.suspended?'🔓 이용 정지 해제':'⛔ 이용 정지';suspend.onclick=()=>adminSetSuspended(u,!u.suspended);
 
   const danger=document.createElement('div');danger.className='user-admin-danger-zone';
-  const del=document.createElement('button');del.type='button';del.className='danger';del.textContent='🗑 계정 완전 삭제';del.onclick=()=>adminDeleteUserAccount(u);
+  const del=document.createElement('button');del.type='button';del.className='danger';del.textContent='🗑 민트 계정 삭제';del.onclick=()=>adminDeleteUserAccount(u);
   danger.append(del);
 
   actions.append(pointTitle,amount,add,subBtn,set,charTitle,select,qty,grant,toolsTitle,copyId,reset,suspend,danger);
@@ -1140,21 +1205,12 @@ async function loadAdminUsers(){
  if(!db||!admin)return;
  const status=$('userAdminStatus');
  status.className='muted mini';
- status.textContent='Supabase Auth의 가입 유저 전체 목록을 불러오는 중...';
+ status.textContent='민트가챠 가입 유저 목록을 불러오는 중...';
 
- let data=null,error=null,source='';
- let result=await db.rpc('admin_list_users_v4');
- if(!result.error){
-  data=result.data;source='v4'
- }else{
-  const fallback3=await db.rpc('admin_list_users_v3');
-  if(!fallback3.error){data=fallback3.data;source='v3'}
-  else{
-   const fallback2=await db.rpc('admin_list_users_v2');
-   if(!fallback2.error){data=fallback2.data;source='v2'}
-   else error=result.error
-  }
- }
+ let data=null,error=null;
+ const result=await db.rpc('mint_admin_list_users_v4');
+ if(!result.error)data=result.data;
+ else error=result.error;
 
  if(error){
   adminUsers=[];
@@ -1164,7 +1220,7 @@ async function loadAdminUsers(){
   $('userAdminNoSave').textContent='-';
   $('userAdminList').replaceChildren();
   status.className='user-admin-error';
-  status.textContent='⚠️ 가입 유저 목록을 읽지 못했어요.\n'+error.message+'\n\n아래에 같이 준 user_list_repair.sql을 Supabase SQL Editor에서 한 번 실행해 주세요.';
+  status.textContent='⚠️ 민트 가입 유저 목록을 읽지 못했어요.\n'+error.message+'\n\nmint_clean_setup.sql 실행 여부를 확인해 주세요.';
   return
  }
 
@@ -1176,12 +1232,12 @@ async function loadAdminUsers(){
   $('userAdminNoSave').textContent='0';
   $('userAdminList').replaceChildren();
   status.className='user-admin-error';
-  status.textContent='⚠️ 서버가 가입 유저를 0명으로 반환했어요. 관리자 로그인 계정도 Auth 유저이므로 정상이라면 최소 1명은 보여야 합니다.\nuser_list_repair.sql을 이 사이트와 같은 Supabase 프로젝트에서 실행한 뒤 새로고침해 주세요.';
+  status.textContent='아직 민트가챠에 가입한 일반 유저가 없어요.';
   return
  }
 
  status.className='user-admin-ok';
- status.textContent=`✅ Supabase Auth에서 가입 계정 ${adminUsers.length.toLocaleString()}명을 불러왔어요.`;
+ status.textContent=`✅ 민트가챠 가입 계정 ${adminUsers.length.toLocaleString()}명을 불러왔어요.`;
  renderAdminUsers()
 }
 function parseAdminPointInput(value,allowZero=false){
@@ -1195,7 +1251,7 @@ async function adminChangePointsV2(u,mode,value){
 
  if(mode==='add'){
   if(!confirm(`${u.email||'이 유저'}에게 ${amount.toLocaleString()} P를 지급할까요?\n\n지급 내역은 서버에 대기 상태로 저장되고, 해당 유저가 사이트를 열거나 새로고침하면 자동 반영됩니다.`))return;
-  const {data,error}=await db.rpc('admin_queue_user_points',{p_user_id:u.user_id,p_amount_text:String(amount)});
+  const {data,error}=await db.rpc('mint_admin_queue_user_points',{p_user_id:u.user_id,p_amount_text:String(amount)});
   if(error)return notice('포인트 지급 실패: '+error.message+' · user_point_delivery_queue.sql을 먼저 실행해 주세요.');
   notice(`${u.email||'유저'}에게 +${amount.toLocaleString()} P 지급 등록 완료! · 현재 지급 대기 ${Number(data||amount).toLocaleString()} P`);
   await loadAdminUsers();
@@ -1204,11 +1260,7 @@ async function adminChangePointsV2(u,mode,value){
 
  const action=mode==='subtract'?`${amount.toLocaleString()} P를 차감`:`잔액을 ${amount.toLocaleString()} P로 설정`;
  if(!confirm(`${u.email||'이 유저'}의 포인트를 ${action}할까요?`))return;
- let result=await db.rpc('admin_change_user_points_v2',{p_user_id:u.user_id,p_mode:mode,p_amount_text:String(amount)});
- if(result.error){
-  const fallback=await db.rpc('admin_change_user_points',{p_user_id:u.user_id,p_mode:mode,p_amount:amount});
-  if(!fallback.error)result=fallback
- }
+ const result=await db.rpc('mint_admin_change_user_points_v2',{p_user_id:u.user_id,p_mode:mode,p_amount_text:String(amount)});
  if(result.error)return notice('포인트 변경 실패: '+result.error.message);
  notice(`${u.email||'유저'} 포인트 변경 완료 · 현재 ${Number(result.data).toLocaleString()} P`);
  await loadAdminUsers()
@@ -1218,30 +1270,30 @@ async function adminGrantCharacterV2(u,characterId,qtyValue){
  const qty=Number(qtyValue);if(!Number.isSafeInteger(qty)||qty<1||qty>100)return notice('캐릭터 지급 수량은 1~100장으로 입력해 주세요.');
  const c=characters.find(x=>String(x.id)===String(characterId));if(!c)return notice('캐릭터를 찾을 수 없어요.');
  if(!confirm(`${u.email||'이 유저'}에게 ${c.name} ${qty}장을 지급할까요?`))return;
- const {error}=await db.rpc('admin_grant_user_character_v2',{p_user_id:u.user_id,p_character_id:characterId,p_amount:qty});
+ const {error}=await db.rpc('mint_admin_grant_user_character_v2',{p_user_id:u.user_id,p_character_id:characterId,p_amount:qty});
  if(error)return notice('캐릭터 지급 실패: '+error.message);
  notice(`${c.name} ${qty}장 지급 완료!`);await loadAdminUsers()
 }
 async function adminResetUserSave(u){
  if(!confirm(`${u.email||'이 유저'}의 클라우드 세이브를 초기 상태로 되돌릴까요?\n포인트·보유 캐릭터·펫 등 클라우드 데이터가 초기화됩니다.`))return;
  if(!confirm('정말 초기화할까요? 이 작업은 되돌리기 어렵습니다.'))return;
- const {error}=await db.rpc('admin_reset_user_save',{p_user_id:u.user_id});
+ const {error}=await db.rpc('mint_admin_reset_user_save',{p_user_id:u.user_id});
  if(error)return notice('클라우드 초기화 실패: '+error.message);notice('클라우드 세이브 초기화 완료');await loadAdminUsers()
 }
 async function adminSetSuspended(u,suspended){
  if(!confirm(`${u.email||'이 유저'}의 사이트 이용을 ${suspended?'정지':'다시 허용'}할까요?`))return;
- const {error}=await db.rpc('admin_set_user_suspended',{p_user_id:u.user_id,p_suspended:suspended});
+ const {error}=await db.rpc('mint_admin_set_user_suspended',{p_user_id:u.user_id,p_suspended:suspended});
  if(error)return notice('계정 상태 변경 실패: '+error.message);notice(suspended?'사이트 이용을 정지했어요.':'사이트 이용 정지를 해제했어요.');await loadAdminUsers()
 }
 async function adminDeleteUserAccount(u){
  const label=u.email||String(u.user_id);
- const typed=prompt(`⚠️ 계정을 완전히 삭제합니다.\nAuth 계정과 클라우드 세이브가 함께 삭제되며 되돌릴 수 없습니다.\n\n계속하려면 아래 이메일(또는 UID)을 똑같이 입력하세요.\n${label}`);
+ const typed=prompt(`⚠️ 민트가챠 계정만 삭제합니다.\n민트 계정과 민트 클라우드 세이브만 삭제되며 지눌가챠에는 영향이 없습니다.\n\n계속하려면 아래 이메일(또는 UID)을 똑같이 입력하세요.\n${label}`);
  if(typed===null)return;
- if(typed.trim()!==label)return notice('입력값이 일치하지 않아 계정을 삭제하지 않았어요.');
- if(!confirm(`마지막 확인입니다.\n${label}\n계정을 정말 완전히 삭제할까요?`))return;
- const {error}=await db.rpc('admin_delete_user_account',{p_user_id:u.user_id});
- if(error)return notice('계정 삭제 실패: '+error.message);
- notice(`${label} 계정을 삭제했어요.`);await loadAdminUsers()
+ if(typed.trim()!==label)return notice('입력값이 일치하지 않아 민트 계정을 삭제하지 않았어요.');
+ if(!confirm(`마지막 확인입니다.\n${label}\n민트 계정만 정말 삭제할까요?`))return;
+ const {error}=await db.rpc('mint_admin_delete_user_account',{p_user_id:u.user_id});
+ if(error)return notice('민트 계정 삭제 실패: '+error.message);
+ notice(`${label} 민트 계정을 삭제했어요.`);await loadAdminUsers()
 }
 $('userAdminRefresh').onclick=loadAdminUsers;
 $('userAdminSort').addEventListener('change',renderAdminUsers);
@@ -1255,7 +1307,7 @@ $('editCancel').onclick=closeEditor;
 let orderDraft=null,orderSaving=false;
 function ensureOrderDraft(){if(!orderDraft)orderDraft={};for(const rarity of ['SSR','SR','R','LIMITED']){if(!Array.isArray(orderDraft[rarity]))orderDraft[rarity]=orderedMembers(rarity).map(c=>c.id)}return orderDraft}
 function moveOrder(rarity,from,to){const ids=ensureOrderDraft()[rarity];if(from<0||to<0||from>=ids.length||to>=ids.length||from===to)return;ids.splice(to,0,ids.splice(from,1)[0]);renderAdmin()}
-async function saveOrder(rarity,button){if(!admin||orderSaving)return;const ids=[...ensureOrderDraft()[rarity]];orderSaving=true;button.disabled=true;try{for(let i=0;i<ids.length;i++){const {data,error}=await db.from('characters').update({sort_order:i+1}).eq('id',ids[i]).select('id');if(error||!data?.length)throw new Error(error?.message||'정렬 저장 권한을 확인해 주세요.')}await load();notice(rarity+' 순서 저장 완료! 모든 방문자에게 반영됩니다.')}catch(err){notice('순서 저장 실패: '+err.message+' (일부만 저장됐을 수 있으니 새로고침 후 확인해 주세요.)')}finally{orderSaving=false;button.disabled=false}}
+async function saveOrder(rarity,button){if(!admin||orderSaving)return;const ids=[...ensureOrderDraft()[rarity]];orderSaving=true;button.disabled=true;try{for(let i=0;i<ids.length;i++){const {data,error}=await db.from('mint_characters').update({sort_order:i+1}).eq('id',ids[i]).select('id');if(error||!data?.length)throw new Error(error?.message||'정렬 저장 권한을 확인해 주세요.')}await load();notice(rarity+' 순서 저장 완료! 모든 방문자에게 반영됩니다.')}catch(err){notice('순서 저장 실패: '+err.message+' (일부만 저장됐을 수 있으니 새로고침 후 확인해 주세요.)')}finally{orderSaving=false;button.disabled=false}}
 function addOrderDrag(handle,row,rarity,id){let timer=null,active=false,startX=0,startY=0,pointer=null;function cleanup(){clearTimeout(timer);timer=null;active=false;pointer=null;row.classList.remove('dragging');document.removeEventListener('pointermove',move);document.removeEventListener('pointerup',end);document.removeEventListener('pointercancel',end)}function start(e){if(orderSaving||e.button!==0)return;pointer=e.pointerId;startX=e.clientX;startY=e.clientY;const activate=()=>{active=true;row.classList.add('dragging');handle.setAttribute('aria-label','이동 중');};if(e.pointerType==='touch')timer=setTimeout(activate,350);else activate();document.addEventListener('pointermove',move,{passive:false});document.addEventListener('pointerup',end);document.addEventListener('pointercancel',end)}function move(e){if(e.pointerId!==pointer)return;if(!active){if(Math.hypot(e.clientX-startX,e.clientY-startY)>12)cleanup();return}e.preventDefault();const target=document.elementFromPoint(e.clientX,e.clientY)?.closest('.admin-item[data-order-id]');if(target&&target.dataset.rarity===rarity&&target.dataset.orderId!==id){const ids=ensureOrderDraft()[rarity];const from=ids.indexOf(id),to=ids.indexOf(target.dataset.orderId);if(from!==-1&&to!==-1){ids.splice(to,0,ids.splice(from,1)[0]);const section=row.parentElement;const rows=[...section.querySelectorAll('.admin-item[data-order-id]')];const targetRow=rows.find(x=>x.dataset.orderId===target.dataset.orderId);if(targetRow){if(to>from)targetRow.after(row);else targetRow.before(row)}}}}function end(e){if(e.pointerId!==pointer)return;const wasActive=active;cleanup();handle.setAttribute('aria-label','꾹 눌러 순서 이동');if(wasActive)renderAdmin()}handle.addEventListener('pointerdown',start);handle.addEventListener('contextmenu',e=>e.preventDefault())}
 function renderAdmin(){
  for(const k of ['ssr','sr','r','pity'])$(k).value=settings[k];
@@ -1294,8 +1346,8 @@ function renderAdmin(){
  if(admin&&adminUsers.length)renderAdminUsers();
 }
 function checkImage(file){return !file||file.size<=10*1024*1024&&['image/png','image/jpeg','image/webp','image/gif'].includes(file.type)}
-$('editForm').addEventListener('submit',async e=>{e.preventDefault();if(!admin||!editingId)return notice('관리자 로그인이 필요합니다.');const original=characters.find(c=>c.id===editingId);if(!original)return notice('수정할 캐릭터를 찾을 수 없습니다.');const name=$('editName').value.trim();if(!name)return notice('이름을 입력해 주세요.');const file=$('editImage').files[0];if(!checkImage(file))return notice('이미지는 PNG/JPG/WEBP/GIF 10MB 이하만 가능합니다.');const payload={name,rarity:$('editRarity').value,is_limited:$('editLimited').checked,limited_start:$('editLimited').checked&&$('editLimitedStart').value?new Date($('editLimitedStart').value).toISOString():null,limited_end:$('editLimited').checked&&$('editLimitedEnd').value?new Date($('editLimitedEnd').value).toISOString():null,dialogues:$('editDialogues').value.split('\n').map(x=>x.trim()).filter(Boolean)};const saveButton=$('editSave');saveButton.disabled=true;let newPath=null;try{if(file){newPath=`${crypto.randomUUID()}.${file.type.split('/')[1]==='jpeg'?'jpg':file.type.split('/')[1]}`;const {error:uploadError}=await db.storage.from('character-images').upload(newPath,file,{contentType:file.type});if(uploadError){notice('새 이미지 업로드 실패: '+uploadError.message);return}payload.image_path=newPath;payload.image_url=db.storage.from('character-images').getPublicUrl(newPath).data.publicUrl}const {data,error}=await db.from('characters').update(payload).eq('id',original.id).select('id');if(error||!data?.length){if(newPath)await db.storage.from('character-images').remove([newPath]);notice('수정 실패: '+(error?.message||'수정 권한 또는 RLS 정책을 확인해 주세요.'));return}const oldPath=file?original.image_path:null;closeEditor();await load();notice('캐릭터 수정 완료! 모든 방문자에게 반영됩니다.');if(oldPath&&oldPath!==newPath){const {error:removeError}=await db.storage.from('character-images').remove([oldPath]);if(removeError)notice('수정은 완료됐지만 이전 이미지 정리에 실패했습니다: '+removeError.message)}}catch(err){notice('수정 오류: '+err.message)}finally{saveButton.disabled=false}});
-$('settingsForm').addEventListener('submit',async e=>{e.preventDefault();if(!admin)return;const payload={ssr:Number($('ssr').value),sr:Number($('sr').value),r:Number($('r').value),pity:Number($('pity').value),home_character_id:$('homeSelect').value||null};if(Object.values(payload).slice(0,3).some(v=>!Number.isFinite(v)||v<0||v>100)||Math.abs(payload.ssr+payload.sr+payload.r-100)>0.000001||!Number.isInteger(payload.pity)||payload.pity<1)return notice('확률 합계는 정확히 100%, 천장은 1 이상의 정수여야 합니다.');const {error}=await db.from('site_settings').update(payload).eq('id',1);if(error)return notice(error.message);await load();notice('공용 설정 저장 완료')});
+$('editForm').addEventListener('submit',async e=>{e.preventDefault();if(!admin||!editingId)return notice('관리자 로그인이 필요합니다.');const original=characters.find(c=>c.id===editingId);if(!original)return notice('수정할 캐릭터를 찾을 수 없습니다.');const name=$('editName').value.trim();if(!name)return notice('이름을 입력해 주세요.');const file=$('editImage').files[0];if(!checkImage(file))return notice('이미지는 PNG/JPG/WEBP/GIF 10MB 이하만 가능합니다.');const payload={name,rarity:$('editRarity').value,is_limited:$('editLimited').checked,limited_start:$('editLimited').checked&&$('editLimitedStart').value?new Date($('editLimitedStart').value).toISOString():null,limited_end:$('editLimited').checked&&$('editLimitedEnd').value?new Date($('editLimitedEnd').value).toISOString():null,dialogues:$('editDialogues').value.split('\n').map(x=>x.trim()).filter(Boolean)};const saveButton=$('editSave');saveButton.disabled=true;let newPath=null;try{if(file){newPath=`${crypto.randomUUID()}.${file.type.split('/')[1]==='jpeg'?'jpg':file.type.split('/')[1]}`;const {error:uploadError}=await db.storage.from('mint-character-images').upload(newPath,file,{contentType:file.type});if(uploadError){notice('새 이미지 업로드 실패: '+uploadError.message);return}payload.image_path=newPath;payload.image_url=db.storage.from('mint-character-images').getPublicUrl(newPath).data.publicUrl}const {data,error}=await db.from('mint_characters').update(payload).eq('id',original.id).select('id');if(error||!data?.length){if(newPath)await db.storage.from('mint-character-images').remove([newPath]);notice('수정 실패: '+(error?.message||'수정 권한 또는 RLS 정책을 확인해 주세요.'));return}const oldPath=file?original.image_path:null;closeEditor();await load();notice('캐릭터 수정 완료! 모든 방문자에게 반영됩니다.');if(oldPath&&oldPath!==newPath){const {error:removeError}=await db.storage.from('mint-character-images').remove([oldPath]);if(removeError)notice('수정은 완료됐지만 이전 이미지 정리에 실패했습니다: '+removeError.message)}}catch(err){notice('수정 오류: '+err.message)}finally{saveButton.disabled=false}});
+$('settingsForm').addEventListener('submit',async e=>{e.preventDefault();if(!admin)return;const payload={ssr:Number($('ssr').value),sr:Number($('sr').value),r:Number($('r').value),pity:Number($('pity').value),home_character_id:$('homeSelect').value||null};if(Object.values(payload).slice(0,3).some(v=>!Number.isFinite(v)||v<0||v>100)||Math.abs(payload.ssr+payload.sr+payload.r-100)>0.000001||!Number.isInteger(payload.pity)||payload.pity<1)return notice('확률 합계는 정확히 100%, 천장은 1 이상의 정수여야 합니다.');const {error}=await db.from('mint_site_settings').update(payload).eq('id',1);if(error)return notice(error.message);await load();notice('공용 설정 저장 완료')});
 function syncLimitedRRate(){
  const a=Number($('limitedRate')?.value||0),b=Number($('limitedSSR')?.value||0),c=Number($('limitedSR')?.value||0);
  const r=Math.max(0,Math.round((100-a-b-c)*100)/100);
@@ -1322,12 +1374,12 @@ $('limitedSettingsForm').addEventListener('submit',async e=>{
   return notice('한정 가챠 확률 4개의 합계는 정확히 100%여야 합니다.');
  if(!Number.isInteger(payload.limited_pity)||payload.limited_pity<1)
   return notice('한정 교환 LPT는 1 이상의 정수여야 합니다.');
- const {error}=await db.from('site_settings').update(payload).eq('id',1);
+ const {error}=await db.from('mint_site_settings').update(payload).eq('id',1);
  if(error)return notice('한정 가챠 설정 저장 실패: '+error.message);
  await load();notice('✨ 한정 가챠 확률 및 LPT 설정 저장 완료!');
 });
-$('characterForm').addEventListener('submit',async e=>{e.preventDefault();if(!admin)return;const file=$('charImage').files[0];if(!file||file.size>10*1024*1024||!['image/png','image/jpeg','image/webp','image/gif'].includes(file.type))return notice('이미지는 PNG/JPG/WEBP/GIF 10MB 이하만 가능합니다.');const path=`${crypto.randomUUID()}.${file.type.split('/')[1]==='jpeg'?'jpg':file.type.split('/')[1]}`;const {error:uploadError}=await db.storage.from('character-images').upload(path,file,{contentType:file.type});if(uploadError)return notice('이미지 업로드 실패: '+uploadError.message);const url=db.storage.from('character-images').getPublicUrl(path).data.publicUrl;const {error}=await db.from('characters').insert({name:$('charName').value.trim(),rarity:$('rarity').value,image_url:url,image_path:path,is_limited:$('charLimited').checked,limited_start:$('charLimited').checked&&$('charLimitedStart').value?new Date($('charLimitedStart').value).toISOString():null,limited_end:$('charLimited').checked&&$('charLimitedEnd').value?new Date($('charLimitedEnd').value).toISOString():null,dialogues:$('dialogues').value.split('\n').map(s=>s.trim()).filter(Boolean)});if(error){await db.storage.from('character-images').remove([path]);return notice('등록 실패: '+error.message)}$('characterForm').reset();await load();notice('캐릭터가 모든 방문자에게 등록되었습니다.')});
-async function deleteCharacter(c){if(!admin||!confirm(`${c.name} 캐릭터를 삭제할까요?`))return;const {error}=await db.from('characters').delete().eq('id',c.id);if(error)return notice('삭제 실패: '+error.message);if(c.image_path){const {error:storageError}=await db.storage.from('character-images').remove([c.image_path]);if(storageError)notice('캐릭터는 삭제됐지만 이미지 정리에 실패했습니다: '+storageError.message)}await load();notice('캐릭터 삭제 완료')}
+$('characterForm').addEventListener('submit',async e=>{e.preventDefault();if(!admin)return;const file=$('charImage').files[0];if(!file||file.size>10*1024*1024||!['image/png','image/jpeg','image/webp','image/gif'].includes(file.type))return notice('이미지는 PNG/JPG/WEBP/GIF 10MB 이하만 가능합니다.');const path=`${crypto.randomUUID()}.${file.type.split('/')[1]==='jpeg'?'jpg':file.type.split('/')[1]}`;const {error:uploadError}=await db.storage.from('mint-character-images').upload(path,file,{contentType:file.type});if(uploadError)return notice('이미지 업로드 실패: '+uploadError.message);const url=db.storage.from('mint-character-images').getPublicUrl(path).data.publicUrl;const {error}=await db.from('mint_characters').insert({name:$('charName').value.trim(),rarity:$('rarity').value,image_url:url,image_path:path,is_limited:$('charLimited').checked,limited_start:$('charLimited').checked&&$('charLimitedStart').value?new Date($('charLimitedStart').value).toISOString():null,limited_end:$('charLimited').checked&&$('charLimitedEnd').value?new Date($('charLimitedEnd').value).toISOString():null,dialogues:$('dialogues').value.split('\n').map(s=>s.trim()).filter(Boolean)});if(error){await db.storage.from('mint-character-images').remove([path]);return notice('등록 실패: '+error.message)}$('characterForm').reset();await load();notice('캐릭터가 모든 방문자에게 등록되었습니다.')});
+async function deleteCharacter(c){if(!admin||!confirm(`${c.name} 캐릭터를 삭제할까요?`))return;const {error}=await db.from('mint_characters').delete().eq('id',c.id);if(error)return notice('삭제 실패: '+error.message);if(c.image_path){const {error:storageError}=await db.storage.from('mint-character-images').remove([c.image_path]);if(storageError)notice('캐릭터는 삭제됐지만 이미지 정리에 실패했습니다: '+storageError.message)}await load();notice('캐릭터 삭제 완료')}
 
 // 보유 캐릭터 기반 기억력 게임: 기존 수집/가챠 기록은 수정하지 않습니다.
 local.gameRecords??={};
@@ -1597,7 +1649,7 @@ function runnerFrame(t){if(!runner.active)return;if(runner.paused){runner.last=t
 $('runnerStart').onclick=()=>{if(runner.active)return;arcadeCharacters();runnerSprite();Object.assign(runner,{active:true,paused:false,last:performance.now(),elapsed:0,score:0,y:0,vy:0,jumps:0,obstacles:[],spawn:380,passed:0,holding:false,holdTime:0});$('runnerStart').disabled=true;$('runnerResult').textContent='달리는 중! 장애물을 뛰어넘으세요.';runner.raf=requestAnimationFrame(runnerFrame)};
 for(const id of ['runnerJump','runnerCanvas']){const target=$(id);target.addEventListener('pointerdown',e=>{if(e.pointerType==='mouse'&&e.button!==0)return;e.preventDefault();runnerJump();try{target.setPointerCapture(e.pointerId)}catch{}});for(const event of ['pointerup','pointercancel','lostpointercapture'])target.addEventListener(event,runnerRelease)}$('runnerCharacter').onchange=runnerSprite;
 const rhythm={held:new Set(),hp:100,effects:[],active:false,paused:false,raf:0,start:0,pauseAt:0,elapsed:0,notes:[],score:0,combo:0,judged:0,quality:0,feedback:'',feedbackUntil:0,audio:null,img:null,beatIndex:0,duration:60000,beat:500,media:null,difficulty:'normal',misses:0};
-const rhythmTravel=1600;let rhythmOffset=0;try{const saved=Number(localStorage.getItem("rhythmTimingOffset"));if(Number.isFinite(saved)&&saved>=-200&&saved<=200)rhythmOffset=saved}catch{}$("rhythmOffset").value=String(rhythmOffset);$("rhythmOffsetValue").textContent=(rhythmOffset>0?"+":"")+rhythmOffset+" ms";function setRhythmOffset(value){rhythmOffset=Math.max(-200,Math.min(200,Number(value)||0));$("rhythmOffset").value=String(rhythmOffset);$("rhythmOffsetValue").textContent=(rhythmOffset>0?"+":"")+rhythmOffset+" ms";try{localStorage.setItem("rhythmTimingOffset",String(rhythmOffset))}catch{}drawRhythm()}$("rhythmOffset").addEventListener("input",e=>setRhythmOffset(e.target.value));$("rhythmOffsetReset").onclick=()=>setRhythmOffset(0);let rhythmSongs=[];let rhythmScrollSpeed=2;try{const saved=Number(localStorage.getItem('rhythmScrollSpeed'));if(Number.isFinite(saved)&&saved>=.5&&saved<=8)rhythmScrollSpeed=saved}catch{}$('rhythmSpeed').value=String(rhythmScrollSpeed);$('rhythmSpeedValue').textContent=rhythmScrollSpeed.toFixed(1)+'×';$('rhythmSpeed').addEventListener('input',e=>{rhythmScrollSpeed=Number(e.target.value);$('rhythmSpeedValue').textContent=rhythmScrollSpeed.toFixed(1)+'×';try{localStorage.setItem('rhythmScrollSpeed',String(rhythmScrollSpeed))}catch{}drawRhythm()});
+const rhythmTravel=1600;let rhythmOffset=0;try{const saved=Number(localStorage.getItem("rhythmTimingOffset"));if(Number.isFinite(saved)&&saved>=-200&&saved<=200)rhythmOffset=saved}catch{}$("rhythmOffset").value=String(rhythmOffset);$("rhythmOffsetValue").textContent=(rhythmOffset>0?"+":"")+rhythmOffset+" ms";function setRhythmOffset(value){rhythmOffset=Math.max(-200,Math.min(200,Number(value)||0));$("rhythmOffset").value=String(rhythmOffset);$("rhythmOffsetValue").textContent=(rhythmOffset>0?"+":"")+rhythmOffset+" ms";try{localStorage.setItem("rhythmTimingOffset",String(rhythmOffset))}catch{}drawRhythm()}$("rhythmOffset").addEventListener("input",e=>setRhythmOffset(e.target.value));$("rhythmOffsetReset").onclick=()=>setRhythmOffset(0);let rhythmSongs=[];let rhythmScrollSpeed=2;try{const saved=Number(localStorage.getItem('mintRhythmScrollSpeed'));if(Number.isFinite(saved)&&saved>=.5&&saved<=8)rhythmScrollSpeed=saved}catch{}$('rhythmSpeed').value=String(rhythmScrollSpeed);$('rhythmSpeedValue').textContent=rhythmScrollSpeed.toFixed(1)+'×';$('rhythmSpeed').addEventListener('input',e=>{rhythmScrollSpeed=Number(e.target.value);$('rhythmSpeedValue').textContent=rhythmScrollSpeed.toFixed(1)+'×';try{localStorage.setItem('mintRhythmScrollSpeed',String(rhythmScrollSpeed))}catch{}drawRhythm()});
 function rhythmSprite(){rhythm.img=null;const c=arcadeOwned().find(c=>String(c.id)===$('rhythmCharacter').value);if(c?.image_url){const image=new Image();image.onload=()=>{if(rhythm.img===image)drawRhythm()};image.src=c.image_url;rhythm.img=image}}
 function rhythmTone(freq,when,volume=.06){const a=rhythm.audio;if(!a)return;const osc=a.createOscillator(),gain=a.createGain();osc.type='sine';osc.frequency.value=freq;gain.gain.setValueAtTime(volume,when);gain.gain.exponentialRampToValueAtTime(.001,when+.12);osc.connect(gain).connect(a.destination);osc.start(when);osc.stop(when+.13)}
 function rhythmHpUI(){const hp=Math.max(0,rhythm.hp);$('rhythmHpText').textContent=hp+' / 100';$('rhythmHpFill').style.width=hp+'%';$('rhythmHpFill').style.background=hp<=30?'linear-gradient(90deg,#ef4444,#fb7185)':hp<=60?'linear-gradient(90deg,#f59e0b,#facc15)':'linear-gradient(90deg,#22c55e,#86efac)'}
@@ -1613,13 +1665,13 @@ function rhythmFrame(t){if(!rhythm.active)return;if(rhythm.paused){rhythm.raf=re
 function rhythmBasicChart(difficulty){const step={easy:1000,normal:500,hard:375,special:250}[difficulty]||500,notes=[];for(let time=2400,i=0;time<58000;time+=step,i++){const lane=(i*7+Math.floor(i/4)*3)%4;notes.push({time,lane})}return notes}
 function rhythmSelectedSong(){return rhythmSongs.find(s=>String(s.id)===$('rhythmSong').value)}
 function rhythmSongInfo(){const song=rhythmSelectedSong(),difficulty=$('rhythmDifficulty').value;const chart=song?.charts?.[difficulty];$('rhythmSongInfo').textContent=song?`${song.artist} · ${Math.round(song.duration/60)}분 ${Math.round(song.duration%60)}초 · ${difficulty.toUpperCase()} ${chart?.length||0}개 노트`:'기본 비트 · '+difficulty.toUpperCase()+' 난이도'}
-async function loadRhythmSongs(){if(!db)return;const {data,error}=await db.from('rhythm_songs').select('id,title,artist,audio_path,duration,charts,created_at').order('created_at',{ascending:false});if(error){console.warn('리듬 곡 로드:',error.message);$('rhythmSongInfo').textContent='등록곡을 불러오지 못했어요. SQL 설치를 확인해 주세요.';return}rhythmSongs=data||[];const old=$('rhythmSong').value;$('rhythmSong').replaceChildren(new Option('기본 비트 (60초)',''));for(const song of rhythmSongs)$('rhythmSong').add(new Option(`${song.title} — ${song.artist}`,String(song.id)));if([...$('rhythmSong').options].some(o=>o.value===old))$('rhythmSong').value=old;rhythmSongInfo();renderRhythmAdmin()}
-function renderRhythmAdmin(){const list=$('rhythmAdminList');list.replaceChildren();if(!admin)return;for(const song of rhythmSongs){const row=document.createElement('div');row.className='admin-item';const text=document.createElement('span');text.textContent=`🎵 ${song.title} — ${song.artist} (${Math.round(song.duration)}초)`;const del=document.createElement('button');del.type='button';del.className='danger';del.textContent='삭제';del.onclick=async()=>{if(!admin||!confirm(`${song.title} 노래를 삭제할까요?`))return;const {error}=await db.from('rhythm_songs').delete().eq('id',song.id);if(error)return notice('노래 삭제 실패: '+error.message);const {error:storageError}=await db.storage.from('rhythm-audio').remove([song.audio_path]);if(storageError)notice('곡은 삭제됐지만 음원 파일 정리에 실패했어요: '+storageError.message);await loadRhythmSongs();notice('노래 삭제 완료')};row.append(text,del);list.append(row)}}
+async function loadRhythmSongs(){if(!db)return;const {data,error}=await db.from('mint_rhythm_songs').select('id,title,artist,audio_path,duration,charts,created_at').order('created_at',{ascending:false});if(error){console.warn('리듬 곡 로드:',error.message);$('rhythmSongInfo').textContent='등록곡을 불러오지 못했어요. SQL 설치를 확인해 주세요.';return}rhythmSongs=data||[];const old=$('rhythmSong').value;$('rhythmSong').replaceChildren(new Option('기본 비트 (60초)',''));for(const song of rhythmSongs)$('rhythmSong').add(new Option(`${song.title} — ${song.artist}`,String(song.id)));if([...$('rhythmSong').options].some(o=>o.value===old))$('rhythmSong').value=old;rhythmSongInfo();renderRhythmAdmin()}
+function renderRhythmAdmin(){const list=$('rhythmAdminList');list.replaceChildren();if(!admin)return;for(const song of rhythmSongs){const row=document.createElement('div');row.className='admin-item';const text=document.createElement('span');text.textContent=`🎵 ${song.title} — ${song.artist} (${Math.round(song.duration)}초)`;const del=document.createElement('button');del.type='button';del.className='danger';del.textContent='삭제';del.onclick=async()=>{if(!admin||!confirm(`${song.title} 노래를 삭제할까요?`))return;const {error}=await db.from('mint_rhythm_songs').delete().eq('id',song.id);if(error)return notice('노래 삭제 실패: '+error.message);const {error:storageError}=await db.storage.from('mint-rhythm-audio').remove([song.audio_path]);if(storageError)notice('곡은 삭제됐지만 음원 파일 정리에 실패했어요: '+storageError.message);await loadRhythmSongs();notice('노래 삭제 완료')};row.append(text,del);list.append(row)}}
 // Offline analysis: 20 ms RMS envelopes, adaptive onset peaks and approximate beat grid.
 async function autoRhythmCharts(file){const context=new (window.AudioContext||window.webkitAudioContext)();try{const buffer=await context.decodeAudioData(await file.arrayBuffer());if(buffer.duration<5||buffer.duration>600)throw Error('5초~10분 길이의 음원만 등록할 수 있어요.');const sampleRate=buffer.sampleRate,channels=Array.from({length:buffer.numberOfChannels},(_,i)=>buffer.getChannelData(i));const hop=Math.max(256,Math.floor(sampleRate*.02)),env=[];for(let start=0;start<buffer.length;start+=hop){let sum=0,count=0;for(let j=start;j<Math.min(start+hop,buffer.length);j+=4){let v=0;for(const ch of channels)v+=ch[j];v/=channels.length;sum+=v*v;count++}env.push(Math.sqrt(sum/Math.max(1,count)))}const onset=env.map((v,i)=>Math.max(0,v-(env[Math.max(0,i-2)]*.65+env[Math.max(0,i-1)]*.35)));const sorted=[...onset].sort((a,b)=>a-b),threshold=sorted[Math.floor(sorted.length*.72)]||0;let peaks=[];for(let i=4;i<onset.length-4;i++){if(onset[i]>Math.max(threshold*.85,.002)&&onset[i]>=onset[i-1]&&onset[i]>onset[i+1]&&onset[i]>=onset[i-2]&&onset[i]>onset[i+2])peaks.push({time:i*hop/sampleRate*1000,strength:onset[i]})}peaks.sort((a,b)=>a.time-b.time);const clean=[];for(const peak of peaks){if(peak.time<1800||peak.time>buffer.duration*1000-450)continue;const prev=clean.at(-1);if(prev&&peak.time-prev.time<110){if(peak.strength>prev.strength)clean[clean.length-1]=peak}else clean.push(peak)}if(clean.length<8){for(let t=2000;t<buffer.duration*1000-450;t+=500)clean.push({time:t,strength:1})}const chart={};for(const [difficulty,minGap,fraction] of [['easy',620,.35],['normal',350,.6],['hard',220,.83],['special',115,1]]){const target=[...clean].sort((a,b)=>b.strength-a.strength).slice(0,Math.max(8,Math.floor(clean.length*fraction))).sort((a,b)=>a.time-b.time);const notes=[];for(const peak of target){if(notes.length&&peak.time-notes.at(-1).time<minGap)continue;notes.push({time:Math.round(peak.time),lane:(notes.length*7+Math.floor(notes.length/4)*3)%4})}if(difficulty==='special'){const extra=[];for(let i=1;i<notes.length;i++){const gap=notes[i].time-notes[i-1].time;if(gap>420&&gap<1000)extra.push({time:Math.round((notes[i].time+notes[i-1].time)/2),lane:(notes[i].lane+2)%4})}notes.push(...extra);notes.sort((a,b)=>a.time-b.time)}notes.sort((a,b)=>a.time-b.time);chart[difficulty]=notes.slice(0,2500)}return {duration:buffer.duration,charts:chart}}finally{await context.close()}}
-$('rhythmUploadForm').addEventListener('submit',async e=>{e.preventDefault();if(!admin||!db)return notice('관리자 로그인이 필요해요.');const title=$('rhythmUploadTitle').value.trim(),artist=$('rhythmUploadArtist').value.trim(),file=$('rhythmUploadFile').files[0];if(!title||!artist||!file)return;if(file.size>20*1024*1024||!(/\.(mp3|wav|ogg)$/i.test(file.name)))return notice('MP3/WAV/OGG 20MB 이하 파일만 등록할 수 있어요.');const button=$('rhythmUploadButton'),status=$('rhythmUploadStatus');button.disabled=true;let path=null;try{status.textContent='🎼 음원 분석 중... (파일 크기에 따라 시간이 걸려요)';const {duration,charts}=await autoRhythmCharts(file);status.textContent='☁️ 음원 업로드 중...';path=`${crypto.randomUUID()}.${file.name.split('.').pop().toLowerCase()}`;const {error:uploadError}=await db.storage.from('rhythm-audio').upload(path,file,{contentType:file.type||'audio/mpeg'});if(uploadError)throw uploadError;status.textContent='💾 노래와 자동 채보 저장 중...';const {error}=await db.from('rhythm_songs').insert({title,artist,audio_path:path,duration,charts});if(error)throw error;$('rhythmUploadForm').reset();await loadRhythmSongs();status.textContent=`등록 완료! EASY ${charts.easy.length} / NORMAL ${charts.normal.length} / HARD ${charts.hard.length} / SPECIAL ${charts.special.length}개 노트`;notice('🎵 자동 채보 생성 및 노래 등록 완료!')}catch(err){if(path)await db.storage.from('rhythm-audio').remove([path]);status.textContent='실패: '+err.message;notice('노래 등록 실패: '+err.message+' · SQL 및 Storage 설정을 확인해 주세요.')}finally{button.disabled=false}});
+$('rhythmUploadForm').addEventListener('submit',async e=>{e.preventDefault();if(!admin||!db)return notice('관리자 로그인이 필요해요.');const title=$('rhythmUploadTitle').value.trim(),artist=$('rhythmUploadArtist').value.trim(),file=$('rhythmUploadFile').files[0];if(!title||!artist||!file)return;if(file.size>20*1024*1024||!(/\.(mp3|wav|ogg)$/i.test(file.name)))return notice('MP3/WAV/OGG 20MB 이하 파일만 등록할 수 있어요.');const button=$('rhythmUploadButton'),status=$('rhythmUploadStatus');button.disabled=true;let path=null;try{status.textContent='🎼 음원 분석 중... (파일 크기에 따라 시간이 걸려요)';const {duration,charts}=await autoRhythmCharts(file);status.textContent='☁️ 음원 업로드 중...';path=`${crypto.randomUUID()}.${file.name.split('.').pop().toLowerCase()}`;const {error:uploadError}=await db.storage.from('mint-rhythm-audio').upload(path,file,{contentType:file.type||'audio/mpeg'});if(uploadError)throw uploadError;status.textContent='💾 노래와 자동 채보 저장 중...';const {error}=await db.from('mint_rhythm_songs').insert({title,artist,audio_path:path,duration,charts});if(error)throw error;$('rhythmUploadForm').reset();await loadRhythmSongs();status.textContent=`등록 완료! EASY ${charts.easy.length} / NORMAL ${charts.normal.length} / HARD ${charts.hard.length} / SPECIAL ${charts.special.length}개 노트`;notice('🎵 자동 채보 생성 및 노래 등록 완료!')}catch(err){if(path)await db.storage.from('mint-rhythm-audio').remove([path]);status.textContent='실패: '+err.message;notice('노래 등록 실패: '+err.message+' · mint_clean_setup.sql 및 Mint Storage 설정을 확인해 주세요.')}finally{button.disabled=false}});
 $('rhythmSong').onchange=rhythmSongInfo;$('rhythmDifficulty').onchange=rhythmSongInfo;
-$('rhythmStart').onclick=async()=>{if(rhythm.active)return;arcadeCharacters();rhythmSprite();const song=rhythmSelectedSong(),difficulty=$('rhythmDifficulty').value;let media=null;try{if(song){const url=db.storage.from('rhythm-audio').getPublicUrl(song.audio_path).data.publicUrl;media=new Audio(url);media.preload='auto';await new Promise((resolve,reject)=>{media.oncanplay=resolve;media.onerror=()=>reject(Error('음원을 불러오지 못했어요. Storage 공개 설정을 확인해 주세요.'));media.load()});media.currentTime=0;media.muted=true;await media.play();media.pause();media.currentTime=0;media.muted=false}else{rhythm.audio??=new (window.AudioContext||window.webkitAudioContext)();await rhythm.audio.resume()}}catch(err){media?.pause();return notice('음악 시작 실패: '+err.message)}const notes=(song?.charts?.[difficulty]||rhythmBasicChart(difficulty)).map(n=>({time:n.time,lane:n.lane,hit:false}));if(!notes.length){media?.pause();return notice('선택한 난이도의 채보가 비어 있어요.')}Object.assign(rhythm,{active:true,paused:false,start:performance.now(),elapsed:0,notes,held:new Set(),hp:100,effects:[],score:0,combo:0,judged:0,quality:0,feedback:'',beatIndex:0,misses:0,difficulty, duration:song?song.duration*1000:60000,beat:500,media,countdown:true});$('rhythmStart').disabled=true;$('rhythmStop').disabled=false;$('rhythmSong').disabled=true;$('rhythmDifficulty').disabled=true;$('rhythmResult').textContent=`${difficulty.toUpperCase()} · ${notes.length}개 노트 · 3초 후 시작!`;drawRhythm();rhythm.raf=requestAnimationFrame(rhythmFrame)};
+$('rhythmStart').onclick=async()=>{if(rhythm.active)return;arcadeCharacters();rhythmSprite();const song=rhythmSelectedSong(),difficulty=$('rhythmDifficulty').value;let media=null;try{if(song){const url=db.storage.from('mint-rhythm-audio').getPublicUrl(song.audio_path).data.publicUrl;media=new Audio(url);media.preload='auto';await new Promise((resolve,reject)=>{media.oncanplay=resolve;media.onerror=()=>reject(Error('음원을 불러오지 못했어요. Storage 공개 설정을 확인해 주세요.'));media.load()});media.currentTime=0;media.muted=true;await media.play();media.pause();media.currentTime=0;media.muted=false}else{rhythm.audio??=new (window.AudioContext||window.webkitAudioContext)();await rhythm.audio.resume()}}catch(err){media?.pause();return notice('음악 시작 실패: '+err.message)}const notes=(song?.charts?.[difficulty]||rhythmBasicChart(difficulty)).map(n=>({time:n.time,lane:n.lane,hit:false}));if(!notes.length){media?.pause();return notice('선택한 난이도의 채보가 비어 있어요.')}Object.assign(rhythm,{active:true,paused:false,start:performance.now(),elapsed:0,notes,held:new Set(),hp:100,effects:[],score:0,combo:0,judged:0,quality:0,feedback:'',beatIndex:0,misses:0,difficulty, duration:song?song.duration*1000:60000,beat:500,media,countdown:true});$('rhythmStart').disabled=true;$('rhythmStop').disabled=false;$('rhythmSong').disabled=true;$('rhythmDifficulty').disabled=true;$('rhythmResult').textContent=`${difficulty.toUpperCase()} · ${notes.length}개 노트 · 3초 후 시작!`;drawRhythm();rhythm.raf=requestAnimationFrame(rhythmFrame)};
 $('rhythmStop').onclick=()=>endRhythm(false);document.querySelectorAll('[data-lane]').forEach(b=>{b.addEventListener('pointerdown',e=>{e.preventDefault();if(e.pointerType==='mouse'&&e.button!==0)return;rhythmHit(Number(b.dataset.lane));try{b.setPointerCapture(e.pointerId)}catch{}});b.addEventListener('pointerup',()=>rhythmRelease(Number(b.dataset.lane)));b.addEventListener('pointercancel',()=>rhythmRelease(Number(b.dataset.lane)))});$('rhythmCharacter').onchange=rhythmSprite;
 document.addEventListener('keydown',e=>{const tag=document.activeElement?.tagName;if(['INPUT','TEXTAREA','SELECT'].includes(tag)||e.repeat)return;if(runner.active&&!runner.paused&&(e.code==='Space'||e.code==='ArrowUp')){e.preventDefault();runnerJump()}if(rhythm.active&&!rhythm.paused){const lane={KeyD:0,KeyF:1,KeyJ:2,KeyK:3}[e.code];if(lane!==undefined){e.preventDefault();rhythmHit(lane)}}});document.addEventListener('keyup',e=>{const lane={KeyD:0,KeyF:1,KeyJ:2,KeyK:3}[e.code];if(lane!==undefined)rhythmRelease(lane)});
 // Suspend timers whenever the page is hidden or a different navigation tab is selected.
@@ -1660,7 +1712,7 @@ document.addEventListener('keydown',e=>{if(e.key==='Escape'&&!$('petGiftOverlay'
 $('petGiftConfirm').addEventListener('click',()=>{const item=characters.find(c=>c.id===petGiftSelectedId&&c.rarity==='R'&&(local.counts[c.id]||0)>0);if(!item)return notice('선택한 아이템을 다시 확인해 주세요.');const id=item.id;closePetGiftPicker();petCare('gift',id)});
 function petCare(action,giftItemId=null){const p=local.pet;if(!p||p.dead)return;petApplyTime(p);if(p.dead)return renderPet();const cfg=PET_ACTIONS[action],now=petNow();if(now-(p.actions?.[action]||0)<cfg.wait)return notice('아직 다음 돌봄 시간이 아니에요.');if(action==='feed'&&p.hunger<10)return notice('아직 배가 고프지 않아요.');let item=null;if(action==='gift'){if(!giftItemId)return openPetGiftPicker();item=characters.find(c=>c.id===giftItemId&&c.rarity==='R'&&(local.counts[c.id]||0)>0);if(!item)return notice('선택한 R 아이템이 없거나 수량이 부족해요.')}
 const def=petCatalog.find(x=>x.id===p.id);if(!def)return;const oldStage=petStage(p),oldMood=p.mood;p.xp=Math.min(6800,p.xp+cfg.xp);p.aff=Math.min(100,(p.aff||0)+cfg.aff);p.mood=Math.min(100,(p.mood||0)+cfg.mood);if(action==='feed')p.hunger=Math.max(0,p.hunger-30);if(action==='bath')p.dirt=0;if(action==='play')p.lastPlay=now;if(action==='walk')p.lastWalk=now;if(action==='gift')local.counts[item.id]--;p.lastCare=now;p.sick=false;p.actions??={};p.actions[action]=now;p.speech=petSay(def,action,item?.id);if(oldMood===0&&p.mood>0)p.speech=petSay(def,'recover');if(petStage(p)>oldStage)p.speech=petSay(def,oldStage===0?'hatch':'grow');if(action==='walk'){const roll=crypto.getRandomValues(new Uint32Array(1))[0]/4294967296;if(roll<.25){const pool=characters.filter(c=>c.rarity==='R');if(pool.length){const found=pool[Math.floor(roll*1000000)%pool.length];local.counts[found.id]=(local.counts[found.id]||0)+1;p.speech+=` · 🎁 ${found.name} 발견!`}}else if(roll<.6){const points=50+Math.floor(crypto.getRandomValues(new Uint32Array(1))[0]/4294967296*651);if(Number.isSafeInteger(local.points+points)){local.points+=points;p.speech+=` · 🪙 ${points}P 발견!`}}}const completed=petArchiveAdult(p);save();render();renderPet();notice(completed?'🎉 성체 완성! 보관함에 자동 저장했어요. 다른 알을 선택할 수 있어요.':`${def.name}: ${p.speech} (+${cfg.xp} EXP)`)}
-async function loadPetCatalog(){if(!db)return;petLoading=true;const {data,error}=await db.from('pet_species').select('*').order('created_at');petLoading=false;if(error){console.warn('펫 목록:',error.message);$('petArea').textContent='펫 목록 로드 실패: '+error.message+' · pet_setup.sql 실행을 확인해 주세요.';return}petCatalog=data||[];renderPet();renderPetAdmin()}
+async function loadPetCatalog(){if(!db)return;petLoading=true;const {data,error}=await db.from('mint_pet_species').select('*').order('created_at');petLoading=false;if(error){console.warn('펫 목록:',error.message);$('petArea').textContent='펫 목록 로드 실패: '+error.message+' · pet_setup.sql 실행을 확인해 주세요.';return}petCatalog=data||[];renderPet();renderPetAdmin()}
 const petImageNames={egg:'알 · 기본',egg_dirty:'알 · 꼬질꼬질',baby:'아기 · 기본',baby_sad:'아기 · 슬픔',baby_dirty:'아기 · 꼬질꼬질',baby_happy:'아기 · 기쁨',child:'어린이 · 기본',child_sad:'어린이 · 슬픔',child_dirty:'어린이 · 꼬질꼬질',child_happy:'어린이 · 기쁨',adult:'성인 · 기본',adult_sad:'성인 · 슬픔',adult_dirty:'성인 · 꼬질꼬질',adult_happy:'성인 · 기쁨',grave:'사망 · 무덤'};
 const petRequiredImages=new Set(['egg','baby','child','adult']);
 // Each growth stage has four independent images; egg has base and dirty images.
@@ -1686,9 +1738,9 @@ $('petAddSpecialGift').onclick=()=>petAddGiftRow();
 function petLoadDialogues(dialogues){const d=dialogues&&typeof dialogues==='object'&&!Array.isArray(dialogues)?dialogues:PET_DIALOGUES;petDialogueDraft={};for(const k of Object.keys(petDialogueLabels))petDialogueDraft[k]=Array.isArray(d[k])?[...d[k]]:typeof d[k]==='string'?[d[k]]:[...(PET_DIALOGUES[k]||[])];petDialogueCategory.value='feed';$('petDialogueLines').value=petLines(petDialogueDraft.feed);$('petSpecialGiftRows').replaceChildren();for(const [itemKey,lines] of Object.entries(d.specialGifts||{})){const item=characters.find(c=>c.id===itemKey)||characters.find(c=>c.rarity==='R'&&c.name===itemKey);petAddGiftRow(item?.id||itemKey,lines)}}
 function petCollectDialogues(){petRememberLines();const d={...petDialogueDraft,specialGifts:{}};const seen=new Set();for(const row of $('petSpecialGiftRows').children){const id=row.querySelector('.pet-gift-item').value;const lines=petSplitLines(row.querySelector('.pet-gift-lines').value);if(!id){if(lines.length)throw Error('전용 대사를 입력한 칸에서 R 아이템을 선택해 주세요.');continue}if(seen.has(id))throw Error('같은 R 아이템을 두 번 선택했어요. 한 칸에 대사를 여러 줄 입력해 주세요.');seen.add(id);if(lines.length)d.specialGifts[id]=lines}return d}
 function petResetForm(){ $('petAdminForm').reset();petDroppedFiles.clear();for(const k of Object.keys(petImageNames))petShowFile(k,null);$('petEditId').value='';petLoadDialogues(PET_DIALOGUES)}$('petAdminReset').onclick=petResetForm;petResetForm();
-function renderPetAdmin(){const list=$('petAdminList');list.replaceChildren();if(!admin)return;for(const def of petCatalog){const card=document.createElement('div');card.className='pet-admin-card';const title=document.createElement('strong');title.textContent=def.name+(def.published?' · 공개':' · 비공개');card.append(title);for(const k of Object.keys(petImageNames)){if(!def['image_'+k])continue;const im=document.createElement('img');im.src=def['image_'+k];im.alt=petImageNames[k];im.title=petImageNames[k];card.append(im)}const edit=document.createElement('button');edit.className='ghost';edit.textContent='수정';edit.onclick=()=>{ $('petEditId').value=def.id;$('petName').value=def.name;$('petDescription').value=def.description||'';petLoadDialogues(def.dialogues);$('petPublished').checked=def.published;$('petAdminForm').scrollIntoView({behavior:'smooth'})};const del=document.createElement('button');del.className='danger';del.textContent='삭제';del.onclick=async()=>{if(!confirm(def.name+' 펫 종류를 삭제할까요? 기존 유저가 키우는 펫은 표시할 수 없게 됩니다.'))return;const {error}=await db.from('pet_species').delete().eq('id',def.id);if(error)return notice('삭제 실패: '+error.message);await loadPetCatalog();notice('펫 삭제 완료')};card.append(edit,del);list.append(card)}}
-$('petAdminForm').onsubmit=async e=>{e.preventDefault();if(!admin||!db)return notice('관리자 로그인이 필요해요.');const id=$('petEditId').value,old=petCatalog.find(x=>x.id===id);let dialogues;try{dialogues=petCollectDialogues()}catch(err){return notice('대사 입력 확인: '+err.message)}const payload={name:$('petName').value.trim(),description:$('petDescription').value.trim(),dialogues,published:$('petPublished').checked};if(!payload.name)return;const uploaded=[];const btn=$('petAdminSave');btn.disabled=true;try{for(const k of Object.keys(petImageNames)){const file=petDroppedFiles.get(k)||$('petFile_'+k).files[0];if(!file){if(petRequiredImages.has(k)&&!old?.['image_'+k])throw Error(petImageNames[k]+' 이미지를 등록해 주세요.');payload['image_'+k]=old?.['image_'+k]||null;continue}if(file.size>10*1024*1024||!['image/png','image/jpeg','image/webp','image/gif'].includes(file.type))throw Error('이미지는 PNG/JPG/WEBP/GIF 10MB 이하만 가능합니다.');const path=`pets/${crypto.randomUUID()}.${file.type==='image/jpeg'?'jpg':file.type.split('/')[1]}`;const {error}=await db.storage.from('character-images').upload(path,file,{contentType:file.type});if(error)throw Error('이미지 업로드: '+error.message);uploaded.push(path);payload['image_'+k]=db.storage.from('character-images').getPublicUrl(path).data.publicUrl}
-const query=id?db.from('pet_species').update(payload).eq('id',id):db.from('pet_species').insert(payload);const {error}=await query;if(error)throw error;petResetForm();await loadPetCatalog();notice('펫 저장 완료!')}catch(err){if(uploaded.length)await db.storage.from('character-images').remove(uploaded);notice('펫 저장 실패: '+err.message)}finally{btn.disabled=false}};
+function renderPetAdmin(){const list=$('petAdminList');list.replaceChildren();if(!admin)return;for(const def of petCatalog){const card=document.createElement('div');card.className='pet-admin-card';const title=document.createElement('strong');title.textContent=def.name+(def.published?' · 공개':' · 비공개');card.append(title);for(const k of Object.keys(petImageNames)){if(!def['image_'+k])continue;const im=document.createElement('img');im.src=def['image_'+k];im.alt=petImageNames[k];im.title=petImageNames[k];card.append(im)}const edit=document.createElement('button');edit.className='ghost';edit.textContent='수정';edit.onclick=()=>{ $('petEditId').value=def.id;$('petName').value=def.name;$('petDescription').value=def.description||'';petLoadDialogues(def.dialogues);$('petPublished').checked=def.published;$('petAdminForm').scrollIntoView({behavior:'smooth'})};const del=document.createElement('button');del.className='danger';del.textContent='삭제';del.onclick=async()=>{if(!confirm(def.name+' 펫 종류를 삭제할까요? 기존 유저가 키우는 펫은 표시할 수 없게 됩니다.'))return;const {error}=await db.from('mint_pet_species').delete().eq('id',def.id);if(error)return notice('삭제 실패: '+error.message);await loadPetCatalog();notice('펫 삭제 완료')};card.append(edit,del);list.append(card)}}
+$('petAdminForm').onsubmit=async e=>{e.preventDefault();if(!admin||!db)return notice('관리자 로그인이 필요해요.');const id=$('petEditId').value,old=petCatalog.find(x=>x.id===id);let dialogues;try{dialogues=petCollectDialogues()}catch(err){return notice('대사 입력 확인: '+err.message)}const payload={name:$('petName').value.trim(),description:$('petDescription').value.trim(),dialogues,published:$('petPublished').checked};if(!payload.name)return;const uploaded=[];const btn=$('petAdminSave');btn.disabled=true;try{for(const k of Object.keys(petImageNames)){const file=petDroppedFiles.get(k)||$('petFile_'+k).files[0];if(!file){if(petRequiredImages.has(k)&&!old?.['image_'+k])throw Error(petImageNames[k]+' 이미지를 등록해 주세요.');payload['image_'+k]=old?.['image_'+k]||null;continue}if(file.size>10*1024*1024||!['image/png','image/jpeg','image/webp','image/gif'].includes(file.type))throw Error('이미지는 PNG/JPG/WEBP/GIF 10MB 이하만 가능합니다.');const path=`pets/${crypto.randomUUID()}.${file.type==='image/jpeg'?'jpg':file.type.split('/')[1]}`;const {error}=await db.storage.from('mint-character-images').upload(path,file,{contentType:file.type});if(error)throw Error('이미지 업로드: '+error.message);uploaded.push(path);payload['image_'+k]=db.storage.from('mint-character-images').getPublicUrl(path).data.publicUrl}
+const query=id?db.from('mint_pet_species').update(payload).eq('id',id):db.from('mint_pet_species').insert(payload);const {error}=await query;if(error)throw error;petResetForm();await loadPetCatalog();notice('펫 저장 완료!')}catch(err){if(uploaded.length)await db.storage.from('mint-character-images').remove(uploaded);notice('펫 저장 실패: '+err.message)}finally{btn.disabled=false}};
 
 window.addEventListener('focus',()=>{if(userSession){refreshUserSession();claimTargetedPointGrants(true)}});document.addEventListener('visibilitychange',()=>{if(document.hidden){if(userSession&&cloudHydrated&&!cloudLoading)cloudSave(false)}else if(userSession){claimTargetedPointGrants(true)}});setInterval(()=>{if(userSession)claimTargetedPointGrants(true)},60000);setInterval(()=>{if(userSession&&cloudHydrated&&!cloudLoading)cloudSave(false)},30000);
 if(ready){await load();arcadeCharacters();await claimGlobalPoints();await authCheck();await refreshUserSession();if(userSession&&!cloudHydrated){const synced=await cloudLoadOrMigrate(false);await refreshUserSession();if(synced)await claimTargetedPointGrants(false)}else if(cloudHydrated){await claimTargetedPointGrants(false)}await loadRhythmSongs();await loadPetCatalog();db.auth.onAuthStateChange(()=>{setTimeout(async()=>{await authCheck();await refreshUserSession();if(userSession&&!cloudHydrated){const synced=await cloudLoadOrMigrate(false);await refreshUserSession();if(synced)await claimTargetedPointGrants(false)}else if(cloudHydrated){await claimTargetedPointGrants(false)}},0)})}else{$('status').textContent='설정 필요';render()}
