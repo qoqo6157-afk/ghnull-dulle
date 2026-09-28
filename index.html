@@ -126,7 +126,10 @@
 .pang-flash{position:absolute;inset:-20%;background:radial-gradient(circle,#fff 0 4%,#ffea7aaa 12%,#ff6ca955 35%,transparent 65%);animation:pangFlash .48s ease-out forwards}@keyframes pangFlash{0%{opacity:0;transform:scale(.25)}30%{opacity:1}100%{opacity:0;transform:scale(1.5)}}
 .pang-skillbar{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:5px;max-width:510px;margin:9px auto}.pang-skillbar button{position:relative;padding:8px 3px;min-height:54px;font-size:11px;line-height:1.2}.pang-skillbar button.active{background:linear-gradient(135deg,#7657df,#d957aa);box-shadow:0 0 0 2px #eadfff inset}.pang-skillbar button:disabled{opacity:.45}.pang-skill-count{display:block;margin-top:3px;font-size:9px;opacity:.85}
 .pang-special-guide{max-width:510px;margin:9px auto;padding:9px 11px;border:1px solid #e2d8ff;border-radius:12px;background:#faf8ff;font-size:11px;line-height:1.55;color:#686b80}.pang-special-guide strong{color:#594486}
-@media(max-width:480px){.pang-board{gap:3px}.pang-tile{border-radius:8px}.pang-skillbar{gap:3px}.pang-skillbar button{font-size:10px;padding:6px 2px;min-height:49px}.pang-special-icon{min-width:16px;min-height:16px}}
+.pang-equip-box{display:grid;grid-template-columns:78px 1fr;gap:10px;align-items:center;max-width:510px;margin:10px auto;padding:10px;border:1px solid #e2d8ff;border-radius:14px;background:#faf8ff}
+.pang-equip-box img{width:78px;height:78px;object-fit:contain;border-radius:12px;background:#fff}.pang-equip-box img.hidden{display:none}
+.pang-equip-name{font-weight:900}.pang-equip-bonus{margin:3px 0 0;font-size:11px;font-weight:900;color:#777b90}.pang-equip-bonus.full{color:#c13b94;text-shadow:0 0 8px #ff9bd955}
+@media(max-width:480px){.pang-board{gap:3px}.pang-tile{border-radius:8px}.pang-skillbar{gap:3px}.pang-skillbar button{font-size:10px;padding:6px 2px;min-height:49px}.pang-special-icon{min-width:16px;min-height:16px}.pang-equip-box{grid-template-columns:64px 1fr}.pang-equip-box img{width:64px;height:64px}}
 
 .casino-picker{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}.casino-picker button{background:#eeeefa;color:#393b8d}.casino-picker button.active{background:#595bd7;color:#fff}.casino-balance{background:#eeeefa;padding:14px;border-radius:14px;font-weight:700;color:#393b8d}.casino-options{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:7px}.casino-options button{padding:12px 5px;background:#eeeefa;color:#393b8d;border:2px solid transparent}.casino-options button.active{border-color:#595bd7;background:#d9d9ff}.casino-reels{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;background:#292641;padding:14px;border-radius:18px}.casino-reels span{display:grid;place-items:center;aspect-ratio:1;background:#fff;border-radius:12px;font-size:clamp(28px,8vw,54px)}.casino-result{margin-top:12px;padding:14px;border-radius:12px;background:#f0f0fb;min-height:50px}.casino-bet{max-width:240px}.casino-warning{font-size:12px;color:#777b90}.casino-allin{margin-left:8px;padding:10px 12px}.casino-bet{width:min(100%,240px)}
 .blackjack-panel{position:relative;overflow:hidden;background:radial-gradient(circle at 50% 15%,#1f6b50 0,#124737 42%,#0a3027 100%);color:#fff;border:1px solid #ffffff22}
@@ -252,7 +255,13 @@
 <div id="pangSection" class="panel hidden">
 <h2>💥 캐릭터 팡!</h2>
 <p class="muted">옆 캐릭터를 바꿔 3개 이상 맞혀 보세요. 특수 블록을 만들고 서로 조합하면 훨씬 크게 터져요!</p>
-<div class="points-box"><strong>🪙 내 포인트: <span id="pangPoints">0</span> P</strong><p class="muted mini">30번 이동 · 3,000점 이상 클리어 · 완료 점수에 따라 100~600P · ★★★ 풀돌 SSR 보유 보너스 최대 +20%</p></div>
+<div class="points-box"><strong>🪙 내 포인트: <span id="pangPoints">0</span> P</strong><p class="muted mini">30번 이동 · 3,000점 이상 클리어 · 완료 점수에 따라 100~600P · ★★★ 풀돌 SSR 장착 시 포인트 보상 +20%</p></div>
+<label for="pangCharacter">장착 캐릭터 (보유 SSR)</label>
+<select id="pangCharacter"></select>
+<div class="pang-equip-box">
+  <img id="pangCharacterImg" class="hidden" alt="장착 캐릭터">
+  <div><div id="pangCharacterName" class="pang-equip-name">장착 가능한 SSR 없음</div><p id="pangCharacterBonus" class="pang-equip-bonus">SSR을 획득하면 장착할 수 있어요.</p></div>
+</div>
 <div class="game-controls"><button type="button" id="pangStart">게임 시작</button><button type="button" id="pangRestart" class="ghost" disabled>다시 시작</button></div>
 <div class="game-stats"><div class="game-stat"><span class="mini muted">점수</span><b id="pangScore">0</b></div><div class="game-stat"><span class="mini muted">남은 이동</span><b id="pangMoves">30</b></div><div class="game-stat"><span class="mini muted">콤보</span><b id="pangCombo">0</b></div></div>
 
@@ -425,7 +434,7 @@ const SUPABASE_ANON_KEY='sb_publishable_lAvF0YPrCfGs0lNW06QIHA_aChjh1iS';
 const ready=SUPABASE_URL.startsWith('https://')&&!SUPABASE_ANON_KEY.startsWith('PASTE_');
 const db=ready?createClient(SUPABASE_URL,SUPABASE_ANON_KEY):null;
 const $=id=>document.getElementById(id);let characters=[],settings={ssr:3,sr:17,r:80,pity:90,limited_rate:3,limited_ssr:3,limited_sr:17,limited_r:77,limited_pity:90,home_character_id:null},admin=false,session=null;
-const key='my-gacha-secure-v1';let local;try{local=JSON.parse(localStorage.getItem(key)||'{}')}catch{local={}};local.counts??={};local.sinceSSR??=0;local.homeCharacterId??=null;local.points=Number.isSafeInteger(local.points)&&local.points>=0?local.points:3000;local.pendingGacha??=null;local.pityPoints=Number.isSafeInteger(local.pityPoints)&&local.pityPoints>=0?local.pityPoints:Math.max(0,Math.floor(Number(local.sinceSSR)||0));local.attendance=local.attendance&&typeof local.attendance==='object'?local.attendance:{lastDate:null,day:0};local.lastGlobalGrantId=Number.isSafeInteger(local.lastGlobalGrantId)&&local.lastGlobalGrantId>=0?local.lastGlobalGrantId:0;local.homeCharacterIds=Array.isArray(local.homeCharacterIds)?local.homeCharacterIds.slice(0,3):(local.homeCharacterId?[local.homeCharacterId]:[]);local.limitedPoints=Number.isSafeInteger(local.limitedPoints)&&local.limitedPoints>=0?local.limitedPoints:0;local.limitedEventKey??=null;local.limitBreaks=local.limitBreaks&&typeof local.limitBreaks==='object'?local.limitBreaks:{};local.homeArtModes=local.homeArtModes&&typeof local.homeArtModes==='object'?local.homeArtModes:{};local.tetrisBest=Number.isSafeInteger(local.tetrisBest)&&local.tetrisBest>=0?local.tetrisBest:0;local.tetrisBestLines=Number.isSafeInteger(local.tetrisBestLines)&&local.tetrisBestLines>=0?local.tetrisBestLines:0;
+const key='my-gacha-secure-v1';let local;try{local=JSON.parse(localStorage.getItem(key)||'{}')}catch{local={}};local.counts??={};local.sinceSSR??=0;local.homeCharacterId??=null;local.points=Number.isSafeInteger(local.points)&&local.points>=0?local.points:3000;local.pendingGacha??=null;local.pityPoints=Number.isSafeInteger(local.pityPoints)&&local.pityPoints>=0?local.pityPoints:Math.max(0,Math.floor(Number(local.sinceSSR)||0));local.attendance=local.attendance&&typeof local.attendance==='object'?local.attendance:{lastDate:null,day:0};local.lastGlobalGrantId=Number.isSafeInteger(local.lastGlobalGrantId)&&local.lastGlobalGrantId>=0?local.lastGlobalGrantId:0;local.homeCharacterIds=Array.isArray(local.homeCharacterIds)?local.homeCharacterIds.slice(0,3):(local.homeCharacterId?[local.homeCharacterId]:[]);local.limitedPoints=Number.isSafeInteger(local.limitedPoints)&&local.limitedPoints>=0?local.limitedPoints:0;local.limitedEventKey??=null;local.limitBreaks=local.limitBreaks&&typeof local.limitBreaks==='object'?local.limitBreaks:{};local.homeArtModes=local.homeArtModes&&typeof local.homeArtModes==='object'?local.homeArtModes:{};local.tetrisBest=Number.isSafeInteger(local.tetrisBest)&&local.tetrisBest>=0?local.tetrisBest:0;local.tetrisBestLines=Number.isSafeInteger(local.tetrisBestLines)&&local.tetrisBestLines>=0?local.tetrisBestLines:0;local.pangEquippedCharacterId??=null;
 const attendanceRewards=[400,600,800,1000,1300,1600,2500];
 function attendanceDate(){const d=new Date();return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`}
 function attendanceDayNumber(date){if(!/^\d{4}-\d{2}-\d{2}$/.test(date||''))return null;const [y,m,d]=date.split('-').map(Number);const ms=Date.UTC(y,m-1,d);const check=new Date(ms);return check.getUTCFullYear()===y&&check.getUTCMonth()===m-1&&check.getUTCDate()===d?Math.floor(ms/86400000):null}
@@ -454,6 +463,7 @@ function normalizeCloudSave(data){
  x.homeArtModes=x.homeArtModes&&typeof x.homeArtModes==='object'?x.homeArtModes:{};
  x.tetrisBest=Number.isSafeInteger(x.tetrisBest)&&x.tetrisBest>=0?x.tetrisBest:0;
  x.tetrisBestLines=Number.isSafeInteger(x.tetrisBestLines)&&x.tetrisBestLines>=0?x.tetrisBestLines:0;
+ x.pangEquippedCharacterId=x.pangEquippedCharacterId??null;
  return x
 }
 function bindCloudToCurrentUser(){
@@ -1643,6 +1653,43 @@ $('chooseRunner').onclick=()=>showMiniGame('runner');
 $('chooseTetris').onclick=()=>showMiniGame('tetris');
 $('chooseRhythm').onclick=()=>showMiniGame('rhythm');
 function pangCell(v,s=null){return {v:Number(v),s:s||null}}
+function pangOwnedSSR(){return characters.filter(c=>c.rarity==='SSR'&&(Number(local.counts[c.id])||0)>0)}
+function pangEquippedCharacter(){
+ const id=$('pangCharacter')?.value||local.pangEquippedCharacterId;
+ return pangOwnedSSR().find(c=>String(c.id)===String(id))||null
+}
+function pangPopulateCharacter(){
+ const sel=$('pangCharacter');if(!sel)return;
+ const current=String(local.pangEquippedCharacterId??sel.value??''),owned=pangOwnedSSR();
+ sel.replaceChildren();
+ if(!owned.length){
+  sel.add(new Option('장착 가능한 SSR 없음',''));
+  sel.disabled=true;local.pangEquippedCharacterId=null;save();pangRefreshCharacter();return
+ }
+ sel.disabled=!!pang.active;
+ for(const c of owned){
+  const full=limitBreakLevel(c)>=3;
+  sel.add(new Option(`${c.name}${full?' · ★★★ FULL':''}`,String(c.id)))
+ }
+ if([...sel.options].some(o=>o.value===current))sel.value=current;
+ else{sel.value=String(owned[0].id);local.pangEquippedCharacterId=owned[0].id;save()}
+ pangRefreshCharacter()
+}
+function pangRefreshCharacter(){
+ const img=$('pangCharacterImg'),name=$('pangCharacterName'),bonus=$('pangCharacterBonus'),c=pangEquippedCharacter();
+ if(!img||!name||!bonus)return;
+ if(!c){
+  img.removeAttribute('src');img.classList.add('hidden');name.textContent='장착 가능한 SSR 없음';bonus.textContent='SSR을 획득하면 장착할 수 있어요.';bonus.classList.remove('full');return
+ }
+ img.src=characterDisplayImage(c);img.alt=c.name;img.classList.remove('hidden');
+ const full=limitBreakLevel(c)>=3;
+ name.textContent=c.name+(full?' · ★★★ FULL':' · SSR');
+ bonus.textContent=full?'★★★ 풀돌 장착 보너스 · 게임 종료 포인트 +20%':'일반 SSR 장착 · 추가 보너스 없음';
+ bonus.classList.toggle('full',full)
+}
+$('pangCharacter').onchange=()=>{
+ local.pangEquippedCharacterId=$('pangCharacter').value||null;save();pangRefreshCharacter()
+};
 function pangCloneBoard(board){return board.map(c=>pangCell(c.v,c.s))}
 function pangVal(cell){return cell?.v}
 function pangPool(){const owned=shuffle([...gameOwned()]).slice(0,6).map(c=>({id:String(c.id),image:characterDisplayImage(c),name:c.name}));let i=0;while(owned.length<6){owned.push({id:'practice-pang-'+i,image:null,name:PANG_SYMBOLS[i]});i++}return owned}
@@ -1716,6 +1763,8 @@ function renderPang(){
  if(!$('pangBoard'))return;
  $('pangPoints').textContent=local.points.toLocaleString();$('pangScore').textContent=pang.score.toLocaleString();$('pangMoves').textContent=pang.moves;$('pangCombo').textContent=pang.combo;
  $('pangRestart').disabled=!pang.active;$('pangStart').disabled=pang.active;
+ if($('pangCharacter'))$('pangCharacter').disabled=pang.active||!pangOwnedSSR().length;
+ pangRefreshCharacter();
  document.querySelectorAll('[data-pang-item]').forEach(btn=>{
   const key=btn.dataset.pangItem,count=pang.items[key]||0;btn.disabled=!pang.active||pang.busy||count<=0;btn.classList.toggle('active',pang.itemMode===key);
   const c=btn.querySelector('.pang-skill-count');if(c)c.textContent=count>0?`${count}회`:'사용완료'
@@ -1873,6 +1922,9 @@ async function pangSwap(a,b){
  pang.busy=false;if(pang.moves<=0)finishPang();else renderPang()
 }
 function startPang(){
+ pangPopulateCharacter();
+ if(!pangOwnedSSR().length)return notice('캐릭터 팡은 보유 SSR 캐릭터를 1명 장착해야 시작할 수 있어요.');
+ local.pangEquippedCharacterId=$('pangCharacter').value||null;save();
  pang.token++;pang.active=true;pang.busy=false;pang.selected=-1;pang.moves=PANG_MOVES;pang.score=0;pang.combo=0;pang.pool=pangPool();pang.board=pangFreshBoard();
  pang.itemMode=null;pang.items={slingshot:1,bulldozer:1,box:1,hammer:1,shuffle:1};pang.fxExplode.clear();pang.fxCreated=-1;pangFxClear();
  $('pangResult').classList.add('hidden');$('pangResult').textContent='';$('pangHelp').textContent='3매치로 특수 블록을 만들거나 특수 블록끼리 바꿔서 조합 기술을 써 봐!';$('pangItemHelp').textContent='보조 아이템은 게임당 각각 1번 · 이동 횟수 소모 없음';renderPang()
@@ -1901,13 +1953,14 @@ document.querySelectorAll('[data-pang-item]').forEach(btn=>btn.addEventListener(
 }));
 function finishPang(){
  if(!pang.active)return;pang.active=false;pang.busy=false;pang.itemMode=null;
- const baseReward=pang.score>=12000?600:pang.score>=8000?450:pang.score>=5000?300:pang.score>=3000?200:100,bonus=withFullLimitCollectionBonus(baseReward),reward=bonus.reward;
+ const baseReward=pang.score>=12000?600:pang.score>=8000?450:pang.score>=5000?300:pang.score>=3000?200:100;
+ const equipped=pangEquippedCharacter(),rate=equipped&&limitBreakLevel(equipped)>=3?.20:0,reward=Math.floor(baseReward*(1+rate));
  local.points+=reward;local.pangBest=Math.max(Number(local.pangBest)||0,pang.score);save();
  const result=$('pangResult');result.replaceChildren();result.classList.remove('hidden');const heading=document.createElement('h3');heading.textContent=pang.score>=3000?'🏆 CHARACTER PANG CLEAR!':'🎮 게임 종료!';
- const detail=document.createElement('p');detail.textContent=`최종 ${pang.score.toLocaleString()}점 · 🪙 +${reward} P 획득${rewardBonusText(bonus.rate)} · 최고 ${local.pangBest.toLocaleString()}점`;
+ const detail=document.createElement('p');detail.textContent=`최종 ${pang.score.toLocaleString()}점 · 🪙 +${reward} P 획득${rate?' · ★★★ 장착 보너스 +20%':''} · 최고 ${local.pangBest.toLocaleString()}점`;
  result.append(heading,detail);$('pangHelp').textContent='게임 완료! 특수 블록 조합으로 더 높은 점수에 도전해 봐.';renderPang();render()
 }
-$('pangStart').onclick=startPang;$('pangRestart').onclick=()=>{if(confirm('현재 캐릭터 팡을 포기하고 다시 시작할까요? 포인트는 지급되지 않아요.'))startPang()};renderPang();
+$('pangStart').onclick=startPang;$('pangRestart').onclick=()=>{if(confirm('현재 캐릭터 팡을 포기하고 다시 시작할까요? 포인트는 지급되지 않아요.'))startPang()};pangPopulateCharacter();renderPang();
 
 
 // 카지노: 이 브라우저의 게임 포인트 지갑을 사용하며, 결과당 한 번만 정산합니다.
