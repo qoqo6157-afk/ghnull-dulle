@@ -134,6 +134,21 @@
 /* Runner and rhythm: responsive, touch-friendly canvases */
 #runnerCanvas,#rhythmCanvas{display:block;width:100%;height:auto;border-radius:16px;background:#22243e;touch-action:manipulation;user-select:none}#runnerCanvas{max-width:760px;margin:12px auto}#rhythmCanvas{max-width:480px;margin:12px auto}.rhythm-keys{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:6px;max-width:480px;margin:8px auto}.rhythm-keys button{min-height:65px;font-size:22px;touch-action:none;-webkit-user-select:none;user-select:none;-webkit-touch-callout:none;overscroll-behavior:contain}.rhythm-keys button.hit{background:#e45ba2}.game-picker{grid-template-columns:repeat(2,minmax(0,1fr))}#runnerJump{min-height:65px;touch-action:manipulation}
 
+/* Tetris */
+.tetris-topbar{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap}
+.tetris-topbar h2{margin:0}.tetris-top-actions{display:flex;gap:6px;flex-wrap:wrap}.tetris-top-actions button{width:auto;padding:8px 11px;font-size:12px}
+.tetris-character-box{display:grid;grid-template-columns:82px 1fr;gap:12px;align-items:center;margin:10px 0;padding:10px;border:1px solid #e4e5ef;border-radius:14px;background:#fafaff}
+.tetris-character-box img{width:82px;height:82px;object-fit:contain;border-radius:12px;background:#fff}.tetris-character-box img.hidden{display:none}.tetris-bonus{font-size:12px;font-weight:900;color:#7657df}.tetris-bonus.active{color:#c13b94;text-shadow:0 0 8px #ff9bd966}
+.tetris-layout{display:grid;grid-template-columns:minmax(260px,300px) minmax(150px,1fr);gap:14px;align-items:start;max-width:650px;margin:12px auto}
+.tetris-board-wrap{position:relative;width:min(100%,300px);margin:auto}.tetris-board{display:block;width:100%;height:auto;aspect-ratio:1/2;border-radius:14px;background:#151625;border:2px solid #4b4d70;box-shadow:0 10px 28px #17182a45;touch-action:none}
+.tetris-side{display:grid;gap:9px}.tetris-side-box{padding:9px;border:1px solid #dedfeb;border-radius:12px;background:#fbfbff;text-align:center}.tetris-side-box h4{margin:0 0 5px;font-size:12px}.tetris-mini{display:block;margin:auto;max-width:100%;height:auto;background:#191a2b;border-radius:9px}
+.tetris-stats{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:7px}.tetris-stat{padding:8px;border-radius:10px;background:#f3f1fb;text-align:center}.tetris-stat span{display:block;font-size:10px;color:#777b90}.tetris-stat b{display:block;margin-top:2px;font-size:16px}
+.tetris-action{min-height:34px;margin:8px 0;padding:7px 9px;border-radius:10px;background:#f3efff;color:#5a438b;font-weight:900;text-align:center;display:grid;place-items:center}.tetris-action.pop{animation:tetrisActionPop .38s ease}
+@keyframes tetrisActionPop{0%{transform:scale(.86);opacity:.25}55%{transform:scale(1.07)}100%{transform:scale(1);opacity:1}}
+.tetris-touch{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:6px;max-width:500px;margin:10px auto}.tetris-touch button{min-height:50px;padding:8px 4px;font-size:18px;touch-action:none;user-select:none;-webkit-user-select:none}.tetris-touch .wide2{grid-column:span 2}.tetris-key-help{line-height:1.55}
+@media(max-width:650px){.tetris-layout{grid-template-columns:1fr}.tetris-side{grid-template-columns:repeat(2,minmax(0,1fr));max-width:300px;margin:auto}.tetris-stats{grid-column:1/-1}.tetris-character-box{grid-template-columns:68px 1fr}.tetris-character-box img{width:68px;height:68px}}
+
+
 .rhythm-hp-wrap{margin:14px 0 10px}.rhythm-hp-heading{display:flex;justify-content:space-between;align-items:center;margin-bottom:7px}.rhythm-hp-track{height:18px;border-radius:99px;background:#29263b;overflow:hidden;border:1px solid #ffffff35}.rhythm-hp-fill{height:100%;width:100%;background:linear-gradient(90deg,#22c55e,#86efac);border-radius:99px;transition:width .18s ease,background .18s ease}.rhythm-hp-wrap p{margin:5px 0 0}.rhythm-keys button.hit{background:#a78bfa!important;color:#fff!important;box-shadow:0 0 0 4px #a78bfa66,0 0 24px #a78bfa!important;transform:scale(.95);transition:transform .08s}
 .rhythm-topbar{display:flex;align-items:center;justify-content:space-between;gap:12px}.rhythm-topbar h2{margin:0}.rhythm-topbar .rhythm-quit{flex:0 0 auto;width:auto;min-width:68px;padding:9px 13px;font-size:13px}.rhythm-topbar .rhythm-quit:disabled{opacity:.45;cursor:not-allowed}
 .home-save-image{display:block;margin:12px auto 0;max-width:280px;width:100%}
@@ -179,8 +194,37 @@
 </div><div id="eventBanner" class="panel event-banner hidden" role="button" tabindex="0"><div class="event-banner-stage"><img id="eventBannerImage" alt="이벤트 배너"><div id="eventBannerOverlayText" class="event-banner-overlay-text hidden" aria-hidden="true"></div><button type="button" id="eventBannerPrev" class="event-banner-arrow event-banner-prev" aria-label="이전 배너">‹</button><button type="button" id="eventBannerNext" class="event-banner-arrow event-banner-next" aria-label="다음 배너">›</button><div id="eventBannerDots" class="event-banner-dots"></div></div><div class="event-banner-caption"><p class="muted mini" style="margin:0">눌러서 가챠로 이동 →</p></div></div><div class="panel"><h2>📅 7일 출석 보상</h2><p class="muted">하루에 한 번 출석하고 게임 포인트를 받아요. 연속 출석할수록 보상이 커져요!</p><div class="points-box"><strong id="attendanceStatus">출석 정보를 확인하는 중...</strong><p class="muted mini" id="attendanceHelp"></p></div><div id="attendanceDays" class="attendance-days" aria-label="7일 출석 보상"></div><button type="button" id="attendanceClaim" class="wide">오늘 출석하고 포인트 받기</button><p class="muted mini">매일 기기 현지 날짜 기준으로 1회 · 하루라도 빠지면 1일차부터 다시 시작 · 7일 완료 후 다음 날 1일차로 반복 · 이 브라우저에만 기록됩니다.</p></div><div class="panel"><h1>나만의 캐릭터 컬렉션</h1><p class="muted">캐릭터를 눌러 대사를 듣고, 아래 버튼으로 이미지를 저장할 수 있어요.</p><div class="hero" id="homeHero"><p class="muted">홈 캐릭터를 설정해 주세요.</p></div></div><div class="panel"><h3>오늘은 누굴 만나볼까?</h3><button onclick="navigate('gacha')">가챠 뽑으러 가기 →</button></div></section>
 <section id="gacha" class="hidden"><div class="panel"><h2>캐릭터 가챠</h2><p class="muted" id="rates"></p><p id="pityText"></p><div class="points-box"><strong>✨ 천장 포인트: <span id="pityPoints">0</span> PT</strong><p class="muted mini">뽑기 1회마다 +1 PT · SSR을 뽑아도 유지 · 90 PT(관리자 설정값)로 원하는 SSR 교환</p><button type="button" id="pityExchange" class="ghost wide">✨ SSR 교환소 · 원하는 SSR 선택</button></div><div class="points-box"><strong>🪙 보유 게임 포인트: <span id="gachaPoints">0</span> P</strong><p class="muted mini">1회 100 P · 10회 1,000 P · 게임 클리어로 포인트 획득</p></div><div class="row"><button id="draw1">1회 뽑기 · 100 P</button><button id="draw10">10회 뽑기 · 1,000 P</button></div><p class="muted mini">뽑기 1회마다 천장 포인트 +1 PT. 자연 SSR 획득 시에도 포인트는 유지되며 교환 시 필요한 PT만 차감됩니다.</p></div><div id="results" class="grid result"></div><div id="limitedGachaBox" class="panel limited-box hidden"><h2>✨ 한정 픽업 가챠</h2><p id="limitedPeriod" class="muted"></p><p id="limitedRates" class="muted mini"></p><div class="points-box"><strong class="limited-tag">🌟 한정 천장 포인트: <span id="limitedPoints">0</span> LPT</strong><p class="muted mini">한정 뽑기 1회마다 +1 LPT · 이벤트 종료 시 소멸 · 일반 PT와 별도</p></div><div class="row"><button id="limitedDraw1">한정 1회 · 100 P</button><button id="limitedDraw10">한정 10회 · 1,000 P</button></div><button id="limitedExchange" class="ghost wide">🌟 한정 캐릭터 교환</button><div id="limitedResults" class="grid result"></div></div></section>
 <section id="collection" class="hidden"><div class="panel"><h2>캐릭터 도감</h2><p class="muted">미획득 캐릭터는 비밀로 표시돼요. 가챠에서 획득하면 이미지와 이름이 공개됩니다! 보유 캐릭터는 홈에 설정할 수 있어요.</p><div id="collectionGrid"></div></div></section>
-<section id="game" class="hidden"><div class="panel"><h2>🎮 미니게임</h2><p class="muted">게임을 골라 포인트를 모아 보세요!</p><div class="game-picker"><button type="button" id="chooseMemory" class="active">🃏 카드 짝 맞추기</button><button type="button" id="choosePang">💥 캐릭터 팡!</button><button type="button" id="chooseRunner">🏃 캐릭터 점프</button><button type="button" id="chooseRhythm">🎵 리듬 탭</button></div></div><div id="memorySection" class="panel"><h2>🃏 카드 짝 맞추기</h2><p class="muted">보유 캐릭터로 카드 짝을 맞히고 포인트를 모으세요! 보유 캐릭터가 없어도 쉬움 난이도에서 비공개 연습 카드로 시작할 수 있어요.</p><div class="points-box"><strong>🪙 내 포인트: <span id="gamePoints">0</span> P</strong><p class="muted mini">클리어 보상: 쉬움 +200 P · 보통 +400 P · 어려움 +600 P</p></div><label for="gameDifficulty">난이도</label><select id="gameDifficulty"><option value="4">🌱 쉬움 · 4쌍 / 8장</option><option value="6" selected>🌸 보통 · 6쌍 / 12장</option><option value="8">🔥 어려움 · 8쌍 / 16장</option></select><p class="muted mini" id="gameOwned"></p><div class="game-controls"><button id="gameStart">게임 시작</button><button id="gameRestart" class="ghost" disabled>다시 시작</button></div><div class="game-stats"><div class="game-stat"><span class="mini muted">시간</span><b id="gameTime">00:00</b></div><div class="game-stat"><span class="mini muted">시도</span><b id="gameMoves">0</b></div><div class="game-stat"><span class="mini muted">성공</span><b id="gameMatches">0/6</b></div></div><div id="memoryGrid" class="memory-grid" aria-label="카드 짝 맞추기 게임"></div><div id="gameResult" class="game-result hidden" role="status"></div><p class="muted mini" id="gameRecords"></p><p class="muted mini">게임 기록은 이 브라우저에만 저장됩니다. 보유 캐릭터 종류가 난이도에 필요한 수보다 적으면 시작할 수 없습니다. · ★★★ 풀돌 SSR 보유 1장당 보상 +5% (최대 +20%)</p></div>
-<div id="pangSection" class="panel hidden"><h2>💥 캐릭터 팡!</h2><p class="muted">옆에 있는 캐릭터 두 개를 바꿔 가로·세로 3개 이상 맞혀 보세요. 터치로 밀거나 두 칸을 차례로 눌러도 돼요.</p><div class="points-box"><strong>🪙 내 포인트: <span id="pangPoints">0</span> P</strong><p class="muted mini">30번 이동 · 3,000점 이상 클리어 · 완료 점수에 따라 100~600P</p></div><div class="game-controls"><button type="button" id="pangStart">게임 시작</button><button type="button" id="pangRestart" class="ghost" disabled>다시 시작</button></div><div class="game-stats"><div class="game-stat"><span class="mini muted">점수</span><b id="pangScore">0</b></div><div class="game-stat"><span class="mini muted">남은 이동</span><b id="pangMoves">30</b></div><div class="game-stat"><span class="mini muted">콤보</span><b id="pangCombo">0</b></div></div><div id="pangBoard" class="pang-board" aria-label="캐릭터 팡 퍼즐판"></div><p class="muted mini" id="pangHelp">게임 시작을 눌러 주세요. 보유 캐릭터가 부족하면 비공개 연습 아이콘이 등장해요. · ★★★ 풀돌 SSR 보유 1장당 보상 +5% (최대 +20%)</p><div id="pangResult" class="pang-result hidden" role="status"></div></div><div id="runnerSection" class="panel hidden"><h2>🏃 캐릭터 점프</h2><p class="muted">스페이스/↑ 또는 점프 버튼을 짧게 누르면 낮게, 길게 누르면 높게 점프해요! 공중에서 다시 누르면 2단 점프. · ★★★ 풀돌 SSR로 플레이하면 보상 +20%</p><label for="runnerCharacter">달릴 캐릭터</label><select id="runnerCharacter"></select><div class="game-stats"><div class="game-stat">점수<b id="runnerScore">0</b></div><div class="game-stat">속도<b id="runnerSpeed">1.0×</b></div><div class="game-stat">최고 기록<b id="runnerBest">0</b></div></div><canvas id="runnerCanvas" width="760" height="250" aria-label="캐릭터 달리기 화면"></canvas><div class="game-controls"><button type="button" id="runnerStart">게임 시작</button><button type="button" id="runnerJump" class="ghost">⬆ 누르고 있는 동안 높게 점프!</button></div><p id="runnerResult" class="game-result" role="status">시작을 누르면 달리기가 시작돼요. 최대 보상 700P!</p></div><div id="rhythmSection" class="panel hidden"><div class="rhythm-topbar"><h2>🎵 리듬 탭</h2><button type="button" id="rhythmStop" class="ghost rhythm-quit" disabled>포기</button></div><p class="muted">관리자가 등록한 음악과 자동 생성 채보로 플레이해요. D/F/J/K 또는 화면 버튼을 눌러요! 일반 탭 노트만 등장해요. 타이밍에 맞춰 눌러 주세요!</p><label for="rhythmSong">노래 선택</label><select id="rhythmSong"><option value="">기본 비트 (60초)</option></select><label for="rhythmDifficulty">난이도</label><select id="rhythmDifficulty"><option value="easy">EASY</option><option value="normal" selected>NORMAL</option><option value="hard">HARD</option><option value="special">SPECIAL ✨</option></select><p class="muted mini" id="rhythmSongInfo">기본 비트 · 난이도별 자동 채보</p><label for="rhythmSpeed">노트 낙하 속도 <strong id="rhythmSpeedValue">1.0×</strong></label><input id="rhythmSpeed" type="range" min="0.5" max="8" step="0.1" value="2" aria-label="노트 낙하 속도"><p class="muted mini">노트가 내려오는 속도만 바뀌며 음악 속도·판정·보상은 그대로예요. 게임 중에도 조절할 수 있어요.</p><label for="rhythmOffset">판정 타이밍 보정 <strong id="rhythmOffsetValue">0 ms</strong></label><input id="rhythmOffset" type="range" min="-200" max="200" step="10" value="0" aria-label="판정 타이밍 보정"><p class="muted mini">노트가 너무 일찍 판정되면 +, 너무 늦게 판정되면 − 방향으로 조절하세요. 10ms 단위 · 이 브라우저에 자동 저장 · 게임 중 변경 가능.</p><button type="button" id="rhythmOffsetReset" class="ghost">타이밍 보정 초기화 (0ms)</button><label for="rhythmCharacter">응원 캐릭터</label><select id="rhythmCharacter"></select><div class="game-stats"><div class="game-stat">점수<b id="rhythmScore">0</b></div><div class="game-stat">콤보<b id="rhythmCombo">0</b></div><div class="game-stat">정확도<b id="rhythmAccuracy">0%</b></div></div><div class="rhythm-hp-wrap" aria-label="리듬 게임 체력"><div class="rhythm-hp-heading"><strong>❤️ HP</strong><strong id="rhythmHpText">100 / 100</strong></div><div class="rhythm-hp-track"><div id="rhythmHpFill" class="rhythm-hp-fill"></div></div><p class="muted mini">MISS 시 HP -10 · HP가 0이 되면 게임 오버!</p></div><canvas id="rhythmCanvas" width="480" height="420" aria-label="리듬 게임 4레인"></canvas><div class="rhythm-keys"><button type="button" data-lane="0">D</button><button type="button" data-lane="1">F</button><button type="button" data-lane="2">J</button><button type="button" data-lane="3">K</button></div><div class="game-controls"><button type="button" id="rhythmStart">게임 시작</button></div><p id="rhythmResult" class="game-result" role="status">곡 완주 +1,000P · HARD/SPECIAL 풀콤보 완주 시 총 +2,000P! · 일반 탭 노트만 등장해요.</p></div></section><section id="admin" class="hidden"><div class="panel"><h2>관리자 전용</h2><p class="muted">관리자 이메일과 비밀번호로 로그인합니다. 관리자 여부는 서버의 접근 정책으로 검증됩니다.</p><div id="loginBox"><form id="loginForm"><label>이메일</label><input type="email" id="email" required autocomplete="username"><label>비밀번호</label><input type="password" id="password" required autocomplete="current-password"><p><button class="wide">관리자 로그인</button></p></form></div><div id="adminPanel" class="hidden"><p>관리자 인증 완료 <button class="ghost" id="logout">로그아웃</button></p><details class="admin-fold" id="userAdminFold" open><summary>👥 가입 유저 목록 · 계정 관리</summary><div data-fold-body>
+<section id="game" class="hidden"><div class="panel"><h2>🎮 미니게임</h2><p class="muted">게임을 골라 포인트를 모아 보세요!</p><div class="game-picker"><button type="button" id="chooseMemory" class="active">🃏 카드 짝 맞추기</button><button type="button" id="choosePang">💥 캐릭터 팡!</button><button type="button" id="chooseRunner">🏃 캐릭터 점프</button><button type="button" id="chooseTetris">🧱 테트리스</button><button type="button" id="chooseRhythm">🎵 리듬 탭</button></div></div><div id="memorySection" class="panel"><h2>🃏 카드 짝 맞추기</h2><p class="muted">보유 캐릭터로 카드 짝을 맞히고 포인트를 모으세요! 보유 캐릭터가 없어도 쉬움 난이도에서 비공개 연습 카드로 시작할 수 있어요.</p><div class="points-box"><strong>🪙 내 포인트: <span id="gamePoints">0</span> P</strong><p class="muted mini">클리어 보상: 쉬움 +200 P · 보통 +400 P · 어려움 +600 P</p></div><label for="gameDifficulty">난이도</label><select id="gameDifficulty"><option value="4">🌱 쉬움 · 4쌍 / 8장</option><option value="6" selected>🌸 보통 · 6쌍 / 12장</option><option value="8">🔥 어려움 · 8쌍 / 16장</option></select><p class="muted mini" id="gameOwned"></p><div class="game-controls"><button id="gameStart">게임 시작</button><button id="gameRestart" class="ghost" disabled>다시 시작</button></div><div class="game-stats"><div class="game-stat"><span class="mini muted">시간</span><b id="gameTime">00:00</b></div><div class="game-stat"><span class="mini muted">시도</span><b id="gameMoves">0</b></div><div class="game-stat"><span class="mini muted">성공</span><b id="gameMatches">0/6</b></div></div><div id="memoryGrid" class="memory-grid" aria-label="카드 짝 맞추기 게임"></div><div id="gameResult" class="game-result hidden" role="status"></div><p class="muted mini" id="gameRecords"></p><p class="muted mini">게임 기록은 이 브라우저에만 저장됩니다. 보유 캐릭터 종류가 난이도에 필요한 수보다 적으면 시작할 수 없습니다. · ★★★ 풀돌 SSR 보유 1장당 보상 +5% (최대 +20%)</p></div>
+<div id="pangSection" class="panel hidden"><h2>💥 캐릭터 팡!</h2><p class="muted">옆에 있는 캐릭터 두 개를 바꿔 가로·세로 3개 이상 맞혀 보세요. 터치로 밀거나 두 칸을 차례로 눌러도 돼요.</p><div class="points-box"><strong>🪙 내 포인트: <span id="pangPoints">0</span> P</strong><p class="muted mini">30번 이동 · 3,000점 이상 클리어 · 완료 점수에 따라 100~600P</p></div><div class="game-controls"><button type="button" id="pangStart">게임 시작</button><button type="button" id="pangRestart" class="ghost" disabled>다시 시작</button></div><div class="game-stats"><div class="game-stat"><span class="mini muted">점수</span><b id="pangScore">0</b></div><div class="game-stat"><span class="mini muted">남은 이동</span><b id="pangMoves">30</b></div><div class="game-stat"><span class="mini muted">콤보</span><b id="pangCombo">0</b></div></div><div id="pangBoard" class="pang-board" aria-label="캐릭터 팡 퍼즐판"></div><p class="muted mini" id="pangHelp">게임 시작을 눌러 주세요. 보유 캐릭터가 부족하면 비공개 연습 아이콘이 등장해요. · ★★★ 풀돌 SSR 보유 1장당 보상 +5% (최대 +20%)</p><div id="pangResult" class="pang-result hidden" role="status"></div></div><div id="runnerSection" class="panel hidden"><h2>🏃 캐릭터 점프</h2><p class="muted">스페이스/↑ 또는 점프 버튼을 짧게 누르면 낮게, 길게 누르면 높게 점프해요! 공중에서 다시 누르면 2단 점프. · ★★★ 풀돌 SSR로 플레이하면 보상 +20%</p><label for="runnerCharacter">달릴 캐릭터</label><select id="runnerCharacter"></select><div class="game-stats"><div class="game-stat">점수<b id="runnerScore">0</b></div><div class="game-stat">속도<b id="runnerSpeed">1.0×</b></div><div class="game-stat">최고 기록<b id="runnerBest">0</b></div></div><canvas id="runnerCanvas" width="760" height="250" aria-label="캐릭터 달리기 화면"></canvas><div class="game-controls"><button type="button" id="runnerStart">게임 시작</button><button type="button" id="runnerJump" class="ghost">⬆ 누르고 있는 동안 높게 점프!</button></div><p id="runnerResult" class="game-result" role="status">시작을 누르면 달리기가 시작돼요. 최대 보상 700P!</p></div><div id="tetrisSection" class="panel hidden">
+<div class="tetris-topbar"><h2>🧱 테트리스</h2><div class="tetris-top-actions"><button type="button" id="tetrisPause" class="ghost" disabled>⏸ 일시정지</button><button type="button" id="tetrisRestart" class="ghost" disabled>↻ 다시 시작</button><button type="button" id="tetrisQuit" class="ghost" disabled>포기</button></div></div>
+<p class="muted">7-Bag · HOLD · NEXT 5 · 고스트 피스 · 소프트/하드 드롭 · 레벨/콤보/B2B · SRS 벽차기 · T-SPIN/T-SPIN MINI · 퍼펙트 클리어를 지원해요.</p>
+<label for="tetrisCharacter">플레이 캐릭터</label><select id="tetrisCharacter"></select>
+<div class="tetris-character-box"><img id="tetrisCharacterImg" class="hidden" alt="플레이 캐릭터"><div><strong id="tetrisCharacterName">🌟 연습 캐릭터</strong><p id="tetrisBonus" class="tetris-bonus">일반 보상</p><p class="muted mini" style="margin:4px 0 0">★★★ 풀돌 SSR을 선택하면 게임오버 포인트 보상 +20% · 점수/최고 기록은 그대로예요.</p></div></div>
+<div class="points-box"><strong>🪙 내 포인트: <span id="tetrisPoints">0</span> P</strong><p class="muted mini">1,000점부터 게임오버 보상 지급 · 최고 1,200P + 풀돌 보너스 20%</p></div>
+<div class="tetris-layout">
+  <div class="tetris-board-wrap"><canvas id="tetrisCanvas" class="tetris-board" width="300" height="600" aria-label="테트리스 보드"></canvas></div>
+  <aside class="tetris-side">
+    <div class="tetris-side-box"><h4>HOLD · C / Shift</h4><canvas id="tetrisHoldCanvas" class="tetris-mini" width="120" height="90"></canvas></div>
+    <div class="tetris-side-box"><h4>NEXT 5</h4><canvas id="tetrisNextCanvas" class="tetris-mini" width="120" height="270"></canvas></div>
+    <div class="tetris-stats">
+      <div class="tetris-stat"><span>점수</span><b id="tetrisScore">0</b></div>
+      <div class="tetris-stat"><span>최고</span><b id="tetrisBest">0</b></div>
+      <div class="tetris-stat"><span>레벨</span><b id="tetrisLevel">1</b></div>
+      <div class="tetris-stat"><span>라인</span><b id="tetrisLines">0</b></div>
+      <div class="tetris-stat"><span>콤보</span><b id="tetrisCombo">-</b></div>
+      <div class="tetris-stat"><span>B2B</span><b id="tetrisB2B">-</b></div>
+    </div>
+  </aside>
+</div>
+<div id="tetrisAction" class="tetris-action">게임 시작을 눌러 주세요.</div>
+<div class="game-controls"><button type="button" id="tetrisStart">게임 시작</button></div>
+<div class="tetris-touch" aria-label="테트리스 터치 조작">
+  <button type="button" id="tetrisRotateCCW">↺</button><button type="button" id="tetrisHold">HOLD</button><button type="button" id="tetrisRotateCW">↻</button><button type="button" id="tetrisHard">⬇⬇</button>
+  <button type="button" id="tetrisLeft">←</button><button type="button" id="tetrisDown">↓</button><button type="button" id="tetrisRight">→</button><button type="button" id="tetrisPauseTouch">⏯</button>
+</div>
+<p class="muted mini tetris-key-help">⌨️ ← → 이동 · ↓ 소프트드롭 · ↑/X 시계 회전 · Z 반시계 회전 · Space 하드드롭 · C/Shift HOLD · P/Esc 일시정지<br>바닥에서는 약 0.5초의 락 딜레이가 있고, 이동/회전으로 최대 15회까지 연장할 수 있어요.</p>
+<p id="tetrisResult" class="game-result" role="status">T-SPIN과 4줄 삭제는 B2B 보너스를 받을 수 있어요.</p>
+</div><div id="rhythmSection" class="panel hidden"><div class="rhythm-topbar"><h2>🎵 리듬 탭</h2><button type="button" id="rhythmStop" class="ghost rhythm-quit" disabled>포기</button></div><p class="muted">관리자가 등록한 음악과 자동 생성 채보로 플레이해요. D/F/J/K 또는 화면 버튼을 눌러요! 일반 탭 노트만 등장해요. 타이밍에 맞춰 눌러 주세요!</p><label for="rhythmSong">노래 선택</label><select id="rhythmSong"><option value="">기본 비트 (60초)</option></select><label for="rhythmDifficulty">난이도</label><select id="rhythmDifficulty"><option value="easy">EASY</option><option value="normal" selected>NORMAL</option><option value="hard">HARD</option><option value="special">SPECIAL ✨</option></select><p class="muted mini" id="rhythmSongInfo">기본 비트 · 난이도별 자동 채보</p><label for="rhythmSpeed">노트 낙하 속도 <strong id="rhythmSpeedValue">1.0×</strong></label><input id="rhythmSpeed" type="range" min="0.5" max="8" step="0.1" value="2" aria-label="노트 낙하 속도"><p class="muted mini">노트가 내려오는 속도만 바뀌며 음악 속도·판정·보상은 그대로예요. 게임 중에도 조절할 수 있어요.</p><label for="rhythmOffset">판정 타이밍 보정 <strong id="rhythmOffsetValue">0 ms</strong></label><input id="rhythmOffset" type="range" min="-200" max="200" step="10" value="0" aria-label="판정 타이밍 보정"><p class="muted mini">노트가 너무 일찍 판정되면 +, 너무 늦게 판정되면 − 방향으로 조절하세요. 10ms 단위 · 이 브라우저에 자동 저장 · 게임 중 변경 가능.</p><button type="button" id="rhythmOffsetReset" class="ghost">타이밍 보정 초기화 (0ms)</button><label for="rhythmCharacter">응원 캐릭터</label><select id="rhythmCharacter"></select><div class="game-stats"><div class="game-stat">점수<b id="rhythmScore">0</b></div><div class="game-stat">콤보<b id="rhythmCombo">0</b></div><div class="game-stat">정확도<b id="rhythmAccuracy">0%</b></div></div><div class="rhythm-hp-wrap" aria-label="리듬 게임 체력"><div class="rhythm-hp-heading"><strong>❤️ HP</strong><strong id="rhythmHpText">100 / 100</strong></div><div class="rhythm-hp-track"><div id="rhythmHpFill" class="rhythm-hp-fill"></div></div><p class="muted mini">MISS 시 HP -10 · HP가 0이 되면 게임 오버!</p></div><canvas id="rhythmCanvas" width="480" height="420" aria-label="리듬 게임 4레인"></canvas><div class="rhythm-keys"><button type="button" data-lane="0">D</button><button type="button" data-lane="1">F</button><button type="button" data-lane="2">J</button><button type="button" data-lane="3">K</button></div><div class="game-controls"><button type="button" id="rhythmStart">게임 시작</button></div><p id="rhythmResult" class="game-result" role="status">곡 완주 +1,000P · HARD/SPECIAL 풀콤보 완주 시 총 +2,000P! · 일반 탭 노트만 등장해요.</p></div></section><section id="admin" class="hidden"><div class="panel"><h2>관리자 전용</h2><p class="muted">관리자 이메일과 비밀번호로 로그인합니다. 관리자 여부는 서버의 접근 정책으로 검증됩니다.</p><div id="loginBox"><form id="loginForm"><label>이메일</label><input type="email" id="email" required autocomplete="username"><label>비밀번호</label><input type="password" id="password" required autocomplete="current-password"><p><button class="wide">관리자 로그인</button></p></form></div><div id="adminPanel" class="hidden"><p>관리자 인증 완료 <button class="ghost" id="logout">로그아웃</button></p><details class="admin-fold" id="userAdminFold" open><summary>👥 가입 유저 목록 · 계정 관리</summary><div data-fold-body>
 <p class="muted mini">가입된 유저를 검색하지 않아도 전체 목록으로 바로 보여줍니다. 각 유저를 누르면 포인트·캐릭터·세이브·이용 정지·계정 삭제 관리 메뉴가 열립니다. 비밀번호는 확인할 수 없어요.</p>
 <div class="user-admin-summary-grid">
   <div class="user-admin-summary"><span class="mini muted">전체 가입</span><strong id="userAdminTotal">0</strong></div>
@@ -285,7 +329,7 @@ const SUPABASE_ANON_KEY='sb_publishable_lAvF0YPrCfGs0lNW06QIHA_aChjh1iS';
 const ready=SUPABASE_URL.startsWith('https://')&&!SUPABASE_ANON_KEY.startsWith('PASTE_');
 const db=ready?createClient(SUPABASE_URL,SUPABASE_ANON_KEY):null;
 const $=id=>document.getElementById(id);let characters=[],settings={ssr:3,sr:17,r:80,pity:90,limited_rate:3,limited_ssr:3,limited_sr:17,limited_r:77,limited_pity:90,home_character_id:null},admin=false,session=null;
-const key='my-gacha-secure-v1';let local;try{local=JSON.parse(localStorage.getItem(key)||'{}')}catch{local={}};local.counts??={};local.sinceSSR??=0;local.homeCharacterId??=null;local.points=Number.isSafeInteger(local.points)&&local.points>=0?local.points:3000;local.pendingGacha??=null;local.pityPoints=Number.isSafeInteger(local.pityPoints)&&local.pityPoints>=0?local.pityPoints:Math.max(0,Math.floor(Number(local.sinceSSR)||0));local.attendance=local.attendance&&typeof local.attendance==='object'?local.attendance:{lastDate:null,day:0};local.lastGlobalGrantId=Number.isSafeInteger(local.lastGlobalGrantId)&&local.lastGlobalGrantId>=0?local.lastGlobalGrantId:0;local.homeCharacterIds=Array.isArray(local.homeCharacterIds)?local.homeCharacterIds.slice(0,3):(local.homeCharacterId?[local.homeCharacterId]:[]);local.limitedPoints=Number.isSafeInteger(local.limitedPoints)&&local.limitedPoints>=0?local.limitedPoints:0;local.limitedEventKey??=null;local.limitBreaks=local.limitBreaks&&typeof local.limitBreaks==='object'?local.limitBreaks:{};local.homeArtModes=local.homeArtModes&&typeof local.homeArtModes==='object'?local.homeArtModes:{};
+const key='my-gacha-secure-v1';let local;try{local=JSON.parse(localStorage.getItem(key)||'{}')}catch{local={}};local.counts??={};local.sinceSSR??=0;local.homeCharacterId??=null;local.points=Number.isSafeInteger(local.points)&&local.points>=0?local.points:3000;local.pendingGacha??=null;local.pityPoints=Number.isSafeInteger(local.pityPoints)&&local.pityPoints>=0?local.pityPoints:Math.max(0,Math.floor(Number(local.sinceSSR)||0));local.attendance=local.attendance&&typeof local.attendance==='object'?local.attendance:{lastDate:null,day:0};local.lastGlobalGrantId=Number.isSafeInteger(local.lastGlobalGrantId)&&local.lastGlobalGrantId>=0?local.lastGlobalGrantId:0;local.homeCharacterIds=Array.isArray(local.homeCharacterIds)?local.homeCharacterIds.slice(0,3):(local.homeCharacterId?[local.homeCharacterId]:[]);local.limitedPoints=Number.isSafeInteger(local.limitedPoints)&&local.limitedPoints>=0?local.limitedPoints:0;local.limitedEventKey??=null;local.limitBreaks=local.limitBreaks&&typeof local.limitBreaks==='object'?local.limitBreaks:{};local.homeArtModes=local.homeArtModes&&typeof local.homeArtModes==='object'?local.homeArtModes:{};local.tetrisBest=Number.isSafeInteger(local.tetrisBest)&&local.tetrisBest>=0?local.tetrisBest:0;local.tetrisBestLines=Number.isSafeInteger(local.tetrisBestLines)&&local.tetrisBestLines>=0?local.tetrisBestLines:0;
 const attendanceRewards=[400,600,800,1000,1300,1600,2500];
 function attendanceDate(){const d=new Date();return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`}
 function attendanceDayNumber(date){if(!/^\d{4}-\d{2}-\d{2}$/.test(date||''))return null;const [y,m,d]=date.split('-').map(Number);const ms=Date.UTC(y,m-1,d);const check=new Date(ms);return check.getUTCFullYear()===y&&check.getUTCMonth()===m-1&&check.getUTCDate()===d?Math.floor(ms/86400000):null}
@@ -312,6 +356,8 @@ function normalizeCloudSave(data){
  x.limitedEventKey=x.limitedEventKey??null;
  x.limitBreaks=x.limitBreaks&&typeof x.limitBreaks==='object'?x.limitBreaks:{};
  x.homeArtModes=x.homeArtModes&&typeof x.homeArtModes==='object'?x.homeArtModes:{};
+ x.tetrisBest=Number.isSafeInteger(x.tetrisBest)&&x.tetrisBest>=0?x.tetrisBest:0;
+ x.tetrisBestLines=Number.isSafeInteger(x.tetrisBestLines)&&x.tetrisBestLines>=0?x.tetrisBestLines:0;
  return x
 }
 function bindCloudToCurrentUser(){
@@ -952,7 +998,7 @@ $('limitedExchangeOverlay').addEventListener('click',e=>{if(e.target===$('limite
 document.addEventListener('keydown',e=>{if(e.key==='Escape'&&!$('limitedExchangeOverlay').classList.contains('hidden'))closeLimitedExchange()});
 
 window.navigate=function(tab){for(const id of ['home','gacha','collection','game','pet','casino','admin'])$(id).classList.toggle('hidden',id!==tab);document.querySelectorAll('[data-tab]').forEach(b=>b.classList.toggle('active',b.dataset.tab===tab));if(tab==='collection')renderCollection();if(tab==='game')renderGameInfo();if(tab==='casino')renderCasino();if(tab==='pet')renderPet()};document.querySelectorAll('[data-tab]').forEach(b=>b.addEventListener('click',()=>navigate(b.dataset.tab)));
-function render(){renderAttendance();renderBanner();renderLimited();local.homeCharacterIds=[...new Set(local.homeCharacterIds||[])].filter(id=>characters.some(c=>c.id===id&&(local.counts[c.id]||0)>0)).slice(0,3);const homes=local.homeCharacterIds.map(id=>characters.find(c=>c.id===id)).filter(Boolean);const home=homes.length?homes[Math.floor(Math.random()*homes.length)]:characters.find(c=>c.id===settings.home_character_id);$('homeHero').replaceChildren();if(home){const homeImage=homeCharacterImage(home);const image=document.createElement('img');image.src=homeImage;image.alt=home.name;image.title='눌러서 대사 듣기';const name=document.createElement('strong');name.textContent=home.name;const bubble=document.createElement('div');bubble.className='bubble';bubble.textContent='캐릭터를 눌러보세요!';image.addEventListener('click',()=>{const lines=Array.isArray(home.dialogues)?home.dialogues:[];bubble.textContent=lines.length?lines[Math.floor(Math.random()*lines.length)]:'등록된 대사가 없어요.'});const download=document.createElement('button');download.type='button';download.className='home-save-image';download.textContent='📥 캐릭터 이미지 저장';download.addEventListener('click',async()=>{download.disabled=true;try{const response=await fetch(homeImage);if(!response.ok)throw new Error('이미지 불러오기 실패');const blob=await response.blob();const ext=({'image/png':'png','image/jpeg':'jpg','image/webp':'webp','image/gif':'gif'})[blob.type]||'png';const filename=(home.name||'character').replace(/[\\/:*?"<>|\x00-\x1f]/g,'_')+'.'+ext;const url=URL.createObjectURL(blob);const link=document.createElement('a');link.href=url;link.download=filename;document.body.append(link);link.click();link.remove();setTimeout(()=>URL.revokeObjectURL(url),30000);notice('이미지 저장을 시작했어요!')}catch(err){notice('자동 저장에 실패했어요. 홈 캐릭터 이미지를 길게 누르거나 마우스 오른쪽 버튼으로 저장해 주세요.')}finally{download.disabled=false}});$('homeHero').append(image,name,bubble,download)}else $('homeHero').textContent='관리자가 홈 캐릭터를 설정하면 여기에 표시됩니다.';$('rates').textContent=`SSR ${settings.ssr}% · SR ${settings.sr}% · R ${settings.r}%`;$('pityText').textContent=`✨ 천장 포인트 ${local.pityPoints.toLocaleString()} / ${settings.pity.toLocaleString()} PT · ${local.pityPoints>=settings.pity?'SSR 교환 가능!':`교환까지 ${(settings.pity-local.pityPoints).toLocaleString()} PT`}`;$('pityPoints').textContent=local.pityPoints.toLocaleString();$('pityExchange').disabled=!ready||!characters.some(c=>c.rarity==='SSR'&&!c.is_limited)||local.pityPoints<settings.pity||!!local.pendingGacha;$('headerPoints').textContent=`🪙 ${local.points.toLocaleString()} P`;$('gachaPoints').textContent=local.points.toLocaleString();$('draw1').disabled=!ready||!validPool()||local.points<100||!!local.pendingGacha;$('draw10').disabled=!ready||!validPool()||local.points<1000||!!local.pendingGacha;renderCollection();renderGameInfo();renderCasino();if($('runnerBest'))$('runnerBest').textContent=Number(local.runnerBest||0).toLocaleString();if(admin)renderAdmin()}
+function render(){renderAttendance();renderBanner();renderLimited();local.homeCharacterIds=[...new Set(local.homeCharacterIds||[])].filter(id=>characters.some(c=>c.id===id&&(local.counts[c.id]||0)>0)).slice(0,3);const homes=local.homeCharacterIds.map(id=>characters.find(c=>c.id===id)).filter(Boolean);const home=homes.length?homes[Math.floor(Math.random()*homes.length)]:characters.find(c=>c.id===settings.home_character_id);$('homeHero').replaceChildren();if(home){const homeImage=homeCharacterImage(home);const image=document.createElement('img');image.src=homeImage;image.alt=home.name;image.title='눌러서 대사 듣기';const name=document.createElement('strong');name.textContent=home.name;const bubble=document.createElement('div');bubble.className='bubble';bubble.textContent='캐릭터를 눌러보세요!';image.addEventListener('click',()=>{const lines=Array.isArray(home.dialogues)?home.dialogues:[];bubble.textContent=lines.length?lines[Math.floor(Math.random()*lines.length)]:'등록된 대사가 없어요.'});const download=document.createElement('button');download.type='button';download.className='home-save-image';download.textContent='📥 캐릭터 이미지 저장';download.addEventListener('click',async()=>{download.disabled=true;try{const response=await fetch(homeImage);if(!response.ok)throw new Error('이미지 불러오기 실패');const blob=await response.blob();const ext=({'image/png':'png','image/jpeg':'jpg','image/webp':'webp','image/gif':'gif'})[blob.type]||'png';const filename=(home.name||'character').replace(/[\\/:*?"<>|\x00-\x1f]/g,'_')+'.'+ext;const url=URL.createObjectURL(blob);const link=document.createElement('a');link.href=url;link.download=filename;document.body.append(link);link.click();link.remove();setTimeout(()=>URL.revokeObjectURL(url),30000);notice('이미지 저장을 시작했어요!')}catch(err){notice('자동 저장에 실패했어요. 홈 캐릭터 이미지를 길게 누르거나 마우스 오른쪽 버튼으로 저장해 주세요.')}finally{download.disabled=false}});$('homeHero').append(image,name,bubble,download)}else $('homeHero').textContent='관리자가 홈 캐릭터를 설정하면 여기에 표시됩니다.';$('rates').textContent=`SSR ${settings.ssr}% · SR ${settings.sr}% · R ${settings.r}%`;$('pityText').textContent=`✨ 천장 포인트 ${local.pityPoints.toLocaleString()} / ${settings.pity.toLocaleString()} PT · ${local.pityPoints>=settings.pity?'SSR 교환 가능!':`교환까지 ${(settings.pity-local.pityPoints).toLocaleString()} PT`}`;$('pityPoints').textContent=local.pityPoints.toLocaleString();$('pityExchange').disabled=!ready||!characters.some(c=>c.rarity==='SSR'&&!c.is_limited)||local.pityPoints<settings.pity||!!local.pendingGacha;$('headerPoints').textContent=`🪙 ${local.points.toLocaleString()} P`;$('gachaPoints').textContent=local.points.toLocaleString();$('draw1').disabled=!ready||!validPool()||local.points<100||!!local.pendingGacha;$('draw10').disabled=!ready||!validPool()||local.points<1000||!!local.pendingGacha;renderCollection();renderGameInfo();renderCasino();if($('runnerBest'))$('runnerBest').textContent=Number(local.runnerBest||0).toLocaleString();if($('tetrisBest'))$('tetrisBest').textContent=Number(local.tetrisBest||0).toLocaleString();if(admin)renderAdmin()}
 function validPool(){return ['SSR','SR','R'].every(r=>Number(settings[r.toLowerCase()])===0||characters.some(c=>c.rarity===r&&!c.is_limited))&&characters.some(c=>c.rarity==='SSR'&&!c.is_limited)&&settings.pity>=1}
 function limitBreakLevel(c){if(!c||c.rarity!=='SSR')return 0;const n=Number(local.limitBreaks?.[c.id])||0;return Math.max(0,Math.min(3,Math.floor(n)))}
 function limitBreakStars(c){const lv=limitBreakLevel(c);return '★'.repeat(lv)+'☆'.repeat(3-lv)}
@@ -1471,8 +1517,8 @@ $('gameDifficulty').addEventListener('change',()=>{game.pairs=Number($('gameDiff
 // 캐릭터 팡: 가챠/도감 데이터를 읽기만 하고 보상만 기존 게임 포인트에 지급합니다.
 const pang={active:false,busy:false,board:[],pool:[],selected:-1,moves:30,score:0,combo:0,token:0,pointer:null};
 const PANG_SIZE=6,PANG_MOVES=30,PANG_SYMBOLS=['🌸','🎧','❄️','🔥','🍀','⭐'];
-function showMiniGame(which){for(const [name,section,button] of [['memory','memorySection','chooseMemory'],['pang','pangSection','choosePang'],['runner','runnerSection','chooseRunner'],['rhythm','rhythmSection','chooseRhythm']]){$(section).classList.toggle('hidden',which!==name);$(button).classList.toggle('active',which===name)}if(which==='pang')renderPang();if(which==='runner')drawRunner();if(which==='rhythm')drawRhythm()}
-$('chooseMemory').onclick=()=>showMiniGame('memory');$('choosePang').onclick=()=>showMiniGame('pang');$('chooseRunner').onclick=()=>showMiniGame('runner');$('chooseRhythm').onclick=()=>showMiniGame('rhythm');
+function showMiniGame(which){for(const [name,section,button] of [['memory','memorySection','chooseMemory'],['pang','pangSection','choosePang'],['runner','runnerSection','chooseRunner'],['tetris','tetrisSection','chooseTetris'],['rhythm','rhythmSection','chooseRhythm']]){$(section).classList.toggle('hidden',which!==name);$(button).classList.toggle('active',which===name)}if(which!=='tetris'&&tetris.active&&!tetris.paused)tetrisTogglePause(true);if(which==='pang')renderPang();if(which==='runner')drawRunner();if(which==='tetris'){tetrisRefreshCharacter();drawTetris()}if(which==='rhythm')drawRhythm()}
+$('chooseMemory').onclick=()=>showMiniGame('memory');$('choosePang').onclick=()=>showMiniGame('pang');$('chooseRunner').onclick=()=>showMiniGame('runner');$('chooseTetris').onclick=()=>showMiniGame('tetris');$('chooseRhythm').onclick=()=>showMiniGame('rhythm');
 function pangPool(){const owned=shuffle([...gameOwned()]).slice(0,6).map(c=>({id:String(c.id),image:c.image_url,name:c.name}));let i=0;while(owned.length<6){owned.push({id:'practice-pang-'+i,image:null,name:PANG_SYMBOLS[i]});i++}return owned}
 function pangMatches(board){const found=new Set();for(let r=0;r<PANG_SIZE;r++){let c=0;while(c<PANG_SIZE){let end=c+1;while(end<PANG_SIZE&&board[r*PANG_SIZE+c]===board[r*PANG_SIZE+end])end++;if(end-c>=3)for(let x=c;x<end;x++)found.add(r*PANG_SIZE+x);c=end}}for(let c=0;c<PANG_SIZE;c++){let r=0;while(r<PANG_SIZE){let end=r+1;while(end<PANG_SIZE&&board[r*PANG_SIZE+c]===board[end*PANG_SIZE+c])end++;if(end-r>=3)for(let x=r;x<end;x++)found.add(x*PANG_SIZE+c);r=end}}return found}
 function pangAdjacent(a,b){return a>=0&&b>=0&&a<36&&b<36&&Math.abs(Math.floor(a/6)-Math.floor(b/6))+Math.abs(a%6-b%6)===1}
@@ -1708,7 +1754,7 @@ if(local.blackjackPending){
 
 // Two independent arcade minigames. Rewards use the existing local game-points wallet.
 const arcadeOwned=()=>characters.filter(c=>(local.counts[c.id]||0)>0);
-function arcadeCharacters(){for(const id of ['runnerCharacter','rhythmCharacter']){const sel=$(id),old=sel.value;sel.replaceChildren();const owned=arcadeOwned();if(!owned.length){const opt=new Option('🌟 연습 캐릭터','practice');sel.add(opt)}else for(const c of owned)sel.add(new Option(c.name+(limitBreakLevel(c)>=3?' · ★★★ FULL':''),String(c.id)));if([...sel.options].some(o=>o.value===old))sel.value=old}}
+function arcadeCharacters(){for(const id of ['runnerCharacter','tetrisCharacter','rhythmCharacter']){const sel=$(id);if(!sel)continue;const old=sel.value;sel.replaceChildren();const owned=arcadeOwned();if(!owned.length){const opt=new Option('🌟 연습 캐릭터','practice');sel.add(opt)}else for(const c of owned)sel.add(new Option(c.name+(limitBreakLevel(c)>=3?' · ★★★ FULL':''),String(c.id)));if([...sel.options].some(o=>o.value===old))sel.value=old}if($('tetrisCharacter'))tetrisRefreshCharacter()}
 function arcadeReward(amount){if(!Number.isSafeInteger(local.points+amount))return notice('포인트 저장 한도를 초과했어요.');local.points+=amount;save();render();notice(`🎁 미니게임 보상 +${amount.toLocaleString()}P!`)}
 const runner={active:false,paused:false,raf:0,last:0,elapsed:0,score:0,y:0,vy:0,jumps:0,obstacles:[],spawn:0,passed:0,token:0,img:null,holding:false,holdTime:0};
 function runnerSprite(){runner.img=null;const c=arcadeOwned().find(c=>String(c.id)===$('runnerCharacter').value);if(c?.image_url){const image=new Image();image.onload=()=>{if(runner.img===image)drawRunner()};image.src=characterDisplayImage(c);runner.img=image}}
@@ -1719,6 +1765,339 @@ function endRunner(award=true){if(!runner.active)return;runner.active=false;canc
 function runnerFrame(t){if(!runner.active)return;if(runner.paused){runner.last=t;runner.raf=requestAnimationFrame(runnerFrame);return}const dt=Math.min((t-runner.last)/1000,.04);runner.last=t;runner.elapsed+=dt*1000;const speed=Math.min(550,245+runner.elapsed*.024);runner.score=Math.floor(runner.elapsed*.075)+runner.passed*35;runner.holdTime+=dt;const holdingLift=runner.holding&&runner.vy>0&&runner.holdTime<.24;runner.vy-=(holdingLift?850:1900)*dt;runner.y=Math.max(0,runner.y+runner.vy*dt);if(runner.y===0){runner.vy=0;runner.jumps=0;runner.holding=false;runner.holdTime=0}runner.spawn-=speed*dt;if(runner.spawn<=0){const pit=Math.random()<.16;runner.obstacles.push({x:760,w:pit?46:24+Math.random()*15,h:pit?0:32+Math.random()*20,pit,passed:false});runner.spawn=280+Math.random()*115}for(const o of runner.obstacles){o.x-=speed*dt;if(!o.passed&&o.x+o.w<90){o.passed=true;runner.passed++}if(o.x<130&&o.x+o.w>100&&(o.pit?runner.y<10:runner.y<o.h-5)){endRunner();return}}runner.obstacles=runner.obstacles.filter(o=>o.x+o.w>0);$('runnerScore').textContent=runner.score.toLocaleString();$('runnerSpeed').textContent=(speed/245).toFixed(1)+'×';drawRunner();runner.raf=requestAnimationFrame(runnerFrame)}
 $('runnerStart').onclick=()=>{if(runner.active)return;arcadeCharacters();runnerSprite();Object.assign(runner,{active:true,paused:false,last:performance.now(),elapsed:0,score:0,y:0,vy:0,jumps:0,obstacles:[],spawn:380,passed:0,holding:false,holdTime:0});$('runnerStart').disabled=true;$('runnerResult').textContent='달리는 중! 장애물을 뛰어넘으세요.';runner.raf=requestAnimationFrame(runnerFrame)};
 for(const id of ['runnerJump','runnerCanvas']){const target=$(id);target.addEventListener('pointerdown',e=>{if(e.pointerType==='mouse'&&e.button!==0)return;e.preventDefault();runnerJump();try{target.setPointerCapture(e.pointerId)}catch{}});for(const event of ['pointerup','pointercancel','lostpointercapture'])target.addEventListener(event,runnerRelease)}$('runnerCharacter').onchange=runnerSprite;
+
+// ============================================================
+// TETRIS · 10x20 / 7-bag / SRS / HOLD / NEXT / GHOST / T-SPIN
+// ============================================================
+const TET_COLS=10,TET_VISIBLE=20,TET_HIDDEN=2,TET_ROWS=TET_VISIBLE+TET_HIDDEN,TET_LOCK_DELAY=500,TET_LOCK_RESETS=15;
+const TET_COLORS={I:'#47d7ff',O:'#ffd84a',T:'#ad72ff',S:'#5ee173',Z:'#ff6678',J:'#5e7cff',L:'#ffad5c'};
+const TET_SHAPES={
+ I:[
+  [[0,1],[1,1],[2,1],[3,1]],[[2,0],[2,1],[2,2],[2,3]],[[0,2],[1,2],[2,2],[3,2]],[[1,0],[1,1],[1,2],[1,3]]
+ ],
+ O:[
+  [[1,0],[2,0],[1,1],[2,1]],[[1,0],[2,0],[1,1],[2,1]],[[1,0],[2,0],[1,1],[2,1]],[[1,0],[2,0],[1,1],[2,1]]
+ ],
+ T:[
+  [[1,0],[0,1],[1,1],[2,1]],[[1,0],[1,1],[2,1],[1,2]],[[0,1],[1,1],[2,1],[1,2]],[[1,0],[0,1],[1,1],[1,2]]
+ ],
+ J:[
+  [[0,0],[0,1],[1,1],[2,1]],[[1,0],[2,0],[1,1],[1,2]],[[0,1],[1,1],[2,1],[2,2]],[[1,0],[1,1],[0,2],[1,2]]
+ ],
+ L:[
+  [[2,0],[0,1],[1,1],[2,1]],[[1,0],[1,1],[1,2],[2,2]],[[0,1],[1,1],[2,1],[0,2]],[[0,0],[1,0],[1,1],[1,2]]
+ ],
+ S:[
+  [[1,0],[2,0],[0,1],[1,1]],[[1,0],[1,1],[2,1],[2,2]],[[1,1],[2,1],[0,2],[1,2]],[[0,0],[0,1],[1,1],[1,2]]
+ ],
+ Z:[
+  [[0,0],[1,0],[1,1],[2,1]],[[2,0],[1,1],[2,1],[1,2]],[[0,1],[1,1],[1,2],[2,2]],[[1,0],[0,1],[1,1],[0,2]]
+ ]
+};
+const TET_KICKS_JLSTZ={
+ '0>1':[[0,0],[-1,0],[-1,-1],[0,2],[-1,2]],
+ '1>0':[[0,0],[1,0],[1,1],[0,-2],[1,-2]],
+ '1>2':[[0,0],[1,0],[1,1],[0,-2],[1,-2]],
+ '2>1':[[0,0],[-1,0],[-1,-1],[0,2],[-1,2]],
+ '2>3':[[0,0],[1,0],[1,-1],[0,2],[1,2]],
+ '3>2':[[0,0],[-1,0],[-1,1],[0,-2],[-1,-2]],
+ '3>0':[[0,0],[-1,0],[-1,1],[0,-2],[-1,-2]],
+ '0>3':[[0,0],[1,0],[1,-1],[0,2],[1,2]]
+};
+const TET_KICKS_I={
+ '0>1':[[0,0],[-2,0],[1,0],[-2,1],[1,-2]],
+ '1>0':[[0,0],[2,0],[-1,0],[2,-1],[-1,2]],
+ '1>2':[[0,0],[-1,0],[2,0],[-1,-2],[2,1]],
+ '2>1':[[0,0],[1,0],[-2,0],[1,2],[-2,-1]],
+ '2>3':[[0,0],[2,0],[-1,0],[2,-1],[-1,2]],
+ '3>2':[[0,0],[-2,0],[1,0],[-2,1],[1,-2]],
+ '3>0':[[0,0],[1,0],[-2,0],[1,2],[-2,-1]],
+ '0>3':[[0,0],[-1,0],[2,0],[-1,-2],[2,1]]
+};
+const tetris={
+ active:false,paused:false,raf:0,board:[],piece:null,queue:[],bag:[],hold:null,holdUsed:false,
+ score:0,lines:0,level:1,combo:-1,b2b:false,lastDrop:0,groundedSince:0,lockResets:0,
+ lastRotate:false,lastKickIndex:-1,tspins:0,tetrises:0,perfects:0,
+ bonusRate:0,selectedCharacterId:null,rewarded:false
+};
+function tetEmptyBoard(){return Array.from({length:TET_ROWS},()=>Array(TET_COLS).fill(null))}
+function tetShuffleBag(){const a=['I','O','T','S','Z','J','L'];for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a}
+function tetEnsureQueue(){while(tetris.queue.length<7){if(!tetris.bag.length)tetris.bag=tetShuffleBag();tetris.queue.push(...tetris.bag.splice(0))}}
+function tetCells(piece,rot=piece.rot,x=piece.x,y=piece.y){return TET_SHAPES[piece.type][rot].map(([cx,cy])=>[x+cx,y+cy])}
+function tetCollision(piece,x=piece.x,y=piece.y,rot=piece.rot){
+ for(const [cx,cy] of tetCells(piece,rot,x,y)){
+  if(cx<0||cx>=TET_COLS||cy>=TET_ROWS)return true;
+  if(cy>=0&&tetris.board[cy]?.[cx])return true
+ }
+ return false
+}
+function tetSpawn(type=null){
+ tetEnsureQueue();
+ const next=type||tetris.queue.shift();tetEnsureQueue();
+ tetris.piece={type:next,rot:0,x:3,y:1};
+ tetris.lastRotate=false;tetris.lastKickIndex=-1;tetris.groundedSince=0;tetris.lockResets=0;tetris.lastDrop=performance.now();
+ if(tetCollision(tetris.piece)){endTetris(true);return false}
+ drawTetris();return true
+}
+function tetGravityMs(){return Math.max(45,850*Math.pow(.82,tetris.level-1))}
+function tetIsGrounded(){return !!tetris.piece&&tetCollision(tetris.piece,tetris.piece.x,tetris.piece.y+1,tetris.piece.rot)}
+function tetGroundReset(){
+ if(!tetris.piece)return;
+ if(tetIsGrounded()){
+  if(tetris.lockResets<TET_LOCK_RESETS){tetris.groundedSince=performance.now();tetris.lockResets++}
+ }else tetris.groundedSince=0
+}
+function tetMove(dx,dy,soft=false){
+ if(!tetris.active||tetris.paused||!tetris.piece)return false;
+ const p=tetris.piece;
+ if(tetCollision(p,p.x+dx,p.y+dy,p.rot))return false;
+ p.x+=dx;p.y+=dy;tetris.lastRotate=false;tetris.lastKickIndex=-1;
+ if(soft&&dy>0)tetris.score+=dy;
+ if(dx!==0)tetGroundReset();else if(!tetIsGrounded())tetris.groundedSince=0;
+ tetrisUpdateStats();drawTetris();return true
+}
+function tetRotate(dir){
+ if(!tetris.active||tetris.paused||!tetris.piece)return false;
+ const p=tetris.piece;if(p.type==='O'){tetris.lastRotate=true;tetris.lastKickIndex=0;tetGroundReset();return true}
+ const from=p.rot,to=(from+(dir>0?1:3))%4,key=`${from}>${to}`,kicks=p.type==='I'?(TET_KICKS_I[key]||[[0,0]]):(TET_KICKS_JLSTZ[key]||[[0,0]]);
+ for(let i=0;i<kicks.length;i++){
+  const [dx,dy]=kicks[i];
+  if(!tetCollision(p,p.x+dx,p.y+dy,to)){
+   p.x+=dx;p.y+=dy;p.rot=to;tetris.lastRotate=true;tetris.lastKickIndex=i;tetGroundReset();drawTetris();return true
+  }
+ }
+ return false
+}
+function tetGhostY(){
+ if(!tetris.piece)return 0;let y=tetris.piece.y;
+ while(!tetCollision(tetris.piece,tetris.piece.x,y+1,tetris.piece.rot))y++;
+ return y
+}
+function tetHardDrop(){
+ if(!tetris.active||tetris.paused||!tetris.piece)return;
+ const gy=tetGhostY(),dist=Math.max(0,gy-tetris.piece.y);tetris.piece.y=gy;tetris.score+=dist*2;
+ tetrisUpdateStats();tetLockPiece()
+}
+function tetHold(){
+ if(!tetris.active||tetris.paused||!tetris.piece||tetris.holdUsed)return;
+ const current=tetris.piece.type;
+ if(tetris.hold){const swap=tetris.hold;tetris.hold=current;tetris.holdUsed=true;tetSpawn(swap)}
+ else{tetris.hold=current;tetris.holdUsed=true;tetSpawn()}
+ drawTetris()
+}
+function tetCornerFilled(x,y){return x<0||x>=TET_COLS||y<0||y>=TET_ROWS||!!tetris.board[y][x]}
+function tetDetectTSpin(piece){
+ if(!piece||piece.type!=='T'||!tetris.lastRotate)return null;
+ const cx=piece.x+1,cy=piece.y+1;
+ const corners={nw:tetCornerFilled(cx-1,cy-1),ne:tetCornerFilled(cx+1,cy-1),sw:tetCornerFilled(cx-1,cy+1),se:tetCornerFilled(cx+1,cy+1)};
+ const count=Object.values(corners).filter(Boolean).length;if(count<3)return null;
+ const fronts=[
+  [corners.nw,corners.ne],[corners.ne,corners.se],[corners.sw,corners.se],[corners.nw,corners.sw]
+ ][piece.rot];
+ const full=fronts.filter(Boolean).length===2||tetris.lastKickIndex===4;
+ return full?'full':'mini'
+}
+function tetMerge(){
+ const p=tetris.piece;
+ for(const [x,y] of tetCells(p)){if(y>=0&&y<TET_ROWS&&x>=0&&x<TET_COLS)tetris.board[y][x]=p.type}
+}
+function tetClearLines(){
+ let count=0;
+ for(let y=TET_ROWS-1;y>=0;y--){
+  if(tetris.board[y].every(Boolean)){tetris.board.splice(y,1);tetris.board.unshift(Array(TET_COLS).fill(null));count++;y++}
+ }
+ return count
+}
+function tetPerfectClear(){return tetris.board.every(row=>row.every(v=>!v))}
+function tetAction(text){
+ const el=$('tetrisAction');if(!el)return;el.textContent=text;el.classList.remove('pop');void el.offsetWidth;el.classList.add('pop')
+}
+function tetScoreLock(lines,spin){
+ const lv=tetris.level;
+ let label='',base=0,difficult=false;
+ if(spin==='full'){
+  base=[400,800,1200,1600][lines]||0;
+  label=lines===0?'T-SPIN':lines===1?'T-SPIN SINGLE':lines===2?'T-SPIN DOUBLE':'T-SPIN TRIPLE';
+  if(lines>0)difficult=true;tetris.tspins++
+ }else if(spin==='mini'){
+  base=[100,200,400][lines]||0;
+  label=lines===0?'T-SPIN MINI':lines===1?'T-SPIN MINI SINGLE':'T-SPIN MINI DOUBLE';
+  if(lines>0)difficult=true;tetris.tspins++
+ }else{
+  base=[0,100,300,500,800][lines]||0;
+  label=['','SINGLE','DOUBLE','TRIPLE','TETRIS'][lines]||'';
+  if(lines===4){difficult=true;tetris.tetrises++}
+ }
+ if(difficult&&tetris.b2b){base=Math.floor(base*1.5);label='B2B '+label}
+ if(lines>0){
+  tetris.combo++;
+  if(tetris.combo>0)base+=50*tetris.combo;
+  if(difficult)tetris.b2b=true;else tetris.b2b=false
+ }else{
+  tetris.combo=-1;
+  // T-Spin no-line does not break B2B.
+ }
+ tetris.score+=base*lv;
+ if(lines>0){
+  tetris.lines+=lines;
+  const oldLevel=tetris.level;tetris.level=Math.floor(tetris.lines/10)+1;
+  if(tetris.level>oldLevel)label+=` · LEVEL ${tetris.level}`
+ }
+ if(lines>0&&tetPerfectClear()){
+  const pc=[0,800,1200,1800,2000][lines]||2000;
+  tetris.score+=pc*lv;tetris.perfects++;label+=` · ✨ PERFECT CLEAR`
+ }
+ if(tetris.combo>0&&lines>0)label+=` · ${tetris.combo+1} COMBO`;
+ tetAction(label||'LOCK');
+}
+function tetLockPiece(){
+ if(!tetris.active||!tetris.piece)return;
+ const spin=tetDetectTSpin(tetris.piece);
+ tetMerge();
+ const lines=tetClearLines();
+ tetScoreLock(lines,spin);
+ tetris.piece=null;tetris.holdUsed=false;tetris.groundedSince=0;tetris.lockResets=0;
+ if(tetris.board.slice(0,TET_HIDDEN).some(row=>row.some(Boolean))){endTetris(true);return}
+ if(!tetSpawn())return;
+ tetrisUpdateStats();drawTetris()
+}
+function tetRewardBase(score){
+ return score>=30000?1200:score>=20000?900:score>=10000?600:score>=5000?350:score>=2000?200:score>=1000?100:0
+}
+function endTetris(gameOver=true,quit=false){
+ if(!tetris.active&&!gameOver)return;
+ tetris.active=false;tetris.paused=false;cancelAnimationFrame(tetris.raf);
+ $('tetrisCharacter').disabled=false;$('tetrisStart').disabled=false;$('tetrisPause').disabled=true;$('tetrisRestart').disabled=false;$('tetrisQuit').disabled=true;$('tetrisPauseTouch').disabled=true;$('tetrisPause').textContent='⏸ 일시정지';
+ local.tetrisBest=Math.max(Number(local.tetrisBest||0),Math.floor(tetris.score));
+ local.tetrisBestLines=Math.max(Number(local.tetrisBestLines||0),Math.floor(tetris.lines));
+ let reward=0,base=0;
+ if(gameOver&&!quit&&!tetris.rewarded){
+  base=tetRewardBase(tetris.score);reward=Math.floor(base*(1+tetris.bonusRate));tetris.rewarded=true;
+  if(reward>0&&Number.isSafeInteger(local.points+reward))local.points+=reward
+ }
+ save();render();
+ const bonus=tetris.bonusRate?` · ★★★ 풀돌 +${Math.round(tetris.bonusRate*100)}%`:'';
+ $('tetrisResult').textContent=quit
+  ?`게임을 포기했어요. 보상 없음 · ${Math.floor(tetris.score).toLocaleString()}점`
+  :`GAME OVER · ${Math.floor(tetris.score).toLocaleString()}점 · ${tetris.lines}라인 · T-SPIN ${tetris.tspins}회 · TETRIS ${tetris.tetrises}회 · PERFECT ${tetris.perfects}회${reward?` · +${reward.toLocaleString()}P${bonus}`:' · 보상 기준 1,000점 미달'}`;
+ tetAction(quit?'QUIT':'GAME OVER');tetrisUpdateStats();drawTetris()
+}
+function tetrisTogglePause(forcePause=false){
+ if(!tetris.active)return;
+ const next=forcePause?true:!tetris.paused;if(next===tetris.paused)return;
+ tetris.paused=next;
+ if(tetris.paused){cancelAnimationFrame(tetris.raf);$('tetrisPause').textContent='▶ 계속하기';tetAction('PAUSED')}
+ else{tetris.lastDrop=performance.now();tetris.groundedSince=0;$('tetrisPause').textContent='⏸ 일시정지';tetAction('RESUME');tetris.raf=requestAnimationFrame(tetrisLoop)}
+ drawTetris()
+}
+function tetrisStartGame(){
+ if(tetris.active)return;
+ arcadeCharacters();
+ tetris.board=tetEmptyBoard();tetris.queue=[];tetris.bag=[];tetris.hold=null;tetris.holdUsed=false;
+ tetris.score=0;tetris.lines=0;tetris.level=1;tetris.combo=-1;tetris.b2b=false;tetris.tspins=0;tetris.tetrises=0;tetris.perfects=0;
+ tetris.lastRotate=false;tetris.lastKickIndex=-1;tetris.active=true;tetris.paused=false;tetris.rewarded=false;
+ const selected=selectedFullLimitBonus('tetrisCharacter');tetris.bonusRate=selected.rate;tetris.selectedCharacterId=$('tetrisCharacter').value;
+ $('tetrisCharacter').disabled=true;$('tetrisStart').disabled=true;$('tetrisPause').disabled=false;$('tetrisRestart').disabled=false;$('tetrisQuit').disabled=false;$('tetrisPauseTouch').disabled=false;
+ $('tetrisResult').textContent='플레이 중 · T-SPIN / B2B / 콤보를 노려 보세요!';$('tetrisPause').textContent='⏸ 일시정지';
+ tetEnsureQueue();tetSpawn();tetrisRefreshCharacter();tetrisUpdateStats();drawTetris();cancelAnimationFrame(tetris.raf);tetris.raf=requestAnimationFrame(tetrisLoop)
+}
+function tetrisRestartGame(){
+ if(!confirm('현재 테트리스를 버리고 처음부터 다시 시작할까요? 포인트는 지급되지 않아요.'))return;
+ if(tetris.active){tetris.active=false;cancelAnimationFrame(tetris.raf)}
+ tetris.paused=false;$('tetrisCharacter').disabled=false;tetrisStartGame()
+}
+function tetrisQuitGame(){
+ if(!tetris.active)return;
+ if(!confirm('테트리스를 포기할까요? 포인트는 지급되지 않아요.'))return;
+ endTetris(false,true)
+}
+function tetrisLoop(now){
+ if(!tetris.active||tetris.paused)return;
+ if(!tetris.piece){tetris.raf=requestAnimationFrame(tetrisLoop);return}
+ const interval=tetGravityMs();
+ if(now-tetris.lastDrop>=interval){
+  if(tetMove(0,1,false)){tetris.lastDrop=now}else if(!tetris.groundedSince)tetris.groundedSince=now
+ }
+ if(tetIsGrounded()){
+  if(!tetris.groundedSince)tetris.groundedSince=now;
+  if(now-tetris.groundedSince>=TET_LOCK_DELAY){tetLockPiece();tetris.lastDrop=now}
+ }else tetris.groundedSince=0;
+ drawTetris();tetris.raf=requestAnimationFrame(tetrisLoop)
+}
+function tetDrawCell(ctx,x,y,color,alpha=1,ghost=false){
+ const size=30,px=x*size,py=(y-TET_HIDDEN)*size;if(py+size<=0||py>=600)return;
+ ctx.save();ctx.globalAlpha=alpha;ctx.fillStyle=color;
+ if(ghost){ctx.strokeStyle=color;ctx.lineWidth=2;ctx.strokeRect(px+4,py+4,size-8,size-8)}
+ else{ctx.fillRect(px+1,py+1,size-2,size-2);ctx.fillStyle='#ffffff35';ctx.fillRect(px+3,py+3,size-6,5);ctx.strokeStyle='#00000035';ctx.strokeRect(px+1.5,py+1.5,size-3,size-3)}
+ ctx.restore()
+}
+function drawTetris(){
+ const canvas=$('tetrisCanvas');if(!canvas)return;const ctx=canvas.getContext('2d');
+ ctx.clearRect(0,0,canvas.width,canvas.height);ctx.fillStyle='#151625';ctx.fillRect(0,0,canvas.width,canvas.height);
+ ctx.strokeStyle='#ffffff0d';ctx.lineWidth=1;for(let x=0;x<=TET_COLS;x++){ctx.beginPath();ctx.moveTo(x*30,0);ctx.lineTo(x*30,600);ctx.stroke()}for(let y=0;y<=TET_VISIBLE;y++){ctx.beginPath();ctx.moveTo(0,y*30);ctx.lineTo(300,y*30);ctx.stroke()}
+ for(let y=TET_HIDDEN;y<TET_ROWS;y++)for(let x=0;x<TET_COLS;x++){const type=tetris.board[y]?.[x];if(type)tetDrawCell(ctx,x,y,TET_COLORS[type])}
+ if(tetris.piece){
+  const gy=tetGhostY();for(const [x,y] of tetCells(tetris.piece,tetris.piece.rot,tetris.piece.x,gy))tetDrawCell(ctx,x,y,TET_COLORS[tetris.piece.type],.65,true);
+  for(const [x,y] of tetCells(tetris.piece))tetDrawCell(ctx,x,y,TET_COLORS[tetris.piece.type],1,false)
+ }
+ if(!tetris.active){
+  ctx.fillStyle='#0e0f19aa';ctx.fillRect(0,0,300,600);ctx.fillStyle='#fff';ctx.textAlign='center';ctx.font='900 24px sans-serif';ctx.fillText(tetris.score?'GAME OVER':'TETRIS',150,290);ctx.font='14px sans-serif';ctx.fillStyle='#d9d9ec';ctx.fillText(tetris.score?'다시 시작해서 기록 갱신!':'게임 시작을 눌러 주세요',150,320);ctx.textAlign='start'
+ }else if(tetris.paused){
+  ctx.fillStyle='#0e0f19cc';ctx.fillRect(0,0,300,600);ctx.fillStyle='#fff';ctx.textAlign='center';ctx.font='900 25px sans-serif';ctx.fillText('PAUSED',150,300);ctx.textAlign='start'
+ }
+ drawTetrisSide()
+}
+function tetMiniBounds(type){
+ if(!type)return null;const cells=TET_SHAPES[type][0],xs=cells.map(c=>c[0]),ys=cells.map(c=>c[1]);return {minX:Math.min(...xs),maxX:Math.max(...xs),minY:Math.min(...ys),maxY:Math.max(...ys),cells}
+}
+function tetDrawMiniPiece(ctx,type,ox,oy,cell=22){
+ if(!type)return;const b=tetMiniBounds(type),w=(b.maxX-b.minX+1)*cell,h=(b.maxY-b.minY+1)*cell;
+ const startX=ox-w/2,startY=oy-h/2;
+ for(const [x,y] of b.cells){ctx.fillStyle=TET_COLORS[type];ctx.fillRect(startX+(x-b.minX)*cell+1,startY+(y-b.minY)*cell+1,cell-2,cell-2);ctx.fillStyle='#ffffff35';ctx.fillRect(startX+(x-b.minX)*cell+3,startY+(y-b.minY)*cell+3,cell-6,4)}
+}
+function drawTetrisSide(){
+ const hold=$('tetrisHoldCanvas'),next=$('tetrisNextCanvas');if(!hold||!next)return;
+ let ctx=hold.getContext('2d');ctx.clearRect(0,0,hold.width,hold.height);ctx.fillStyle='#191a2b';ctx.fillRect(0,0,hold.width,hold.height);tetDrawMiniPiece(ctx,tetris.hold,hold.width/2,hold.height/2,22);
+ ctx=next.getContext('2d');ctx.clearRect(0,0,next.width,next.height);ctx.fillStyle='#191a2b';ctx.fillRect(0,0,next.width,next.height);tetEnsureQueue();tetris.queue.slice(0,5).forEach((type,i)=>tetDrawMiniPiece(ctx,type,next.width/2,27+i*53,18))
+}
+function tetrisUpdateStats(){
+ if(!$('tetrisScore'))return;
+ $('tetrisScore').textContent=Math.floor(tetris.score).toLocaleString();$('tetrisBest').textContent=Math.max(Number(local.tetrisBest||0),Math.floor(tetris.score)).toLocaleString();$('tetrisLevel').textContent=tetris.level;$('tetrisLines').textContent=tetris.lines;$('tetrisCombo').textContent=tetris.combo>=0?String(tetris.combo+1):'-';$('tetrisB2B').textContent=tetris.b2b?'ON':'-';$('tetrisPoints').textContent=local.points.toLocaleString()
+}
+function tetrisRefreshCharacter(){
+ const sel=$('tetrisCharacter'),img=$('tetrisCharacterImg'),name=$('tetrisCharacterName'),bonus=$('tetrisBonus');if(!sel||!img||!name||!bonus)return;
+ const c=arcadeOwned().find(x=>String(x.id)===String(sel.value));
+ if(c){img.src=characterDisplayImage(c);img.alt=c.name;img.classList.remove('hidden');name.textContent=c.name+(limitBreakLevel(c)>=3?' · ★★★ FULL':'');const full=c.rarity==='SSR'&&limitBreakLevel(c)>=3;bonus.textContent=full?'★★★ FULL BONUS · 포인트 +20%':'일반 보상';bonus.classList.toggle('active',full)}
+ else{img.removeAttribute('src');img.classList.add('hidden');name.textContent='🌟 연습 캐릭터';bonus.textContent='일반 보상';bonus.classList.remove('active')}
+}
+$('tetrisCharacter').onchange=tetrisRefreshCharacter;
+$('tetrisStart').onclick=tetrisStartGame;$('tetrisPause').onclick=()=>tetrisTogglePause(false);$('tetrisPauseTouch').onclick=()=>tetrisTogglePause(false);$('tetrisRestart').onclick=tetrisRestartGame;$('tetrisQuit').onclick=tetrisQuitGame;
+$('tetrisRotateCCW').onclick=()=>tetRotate(-1);$('tetrisRotateCW').onclick=()=>tetRotate(1);$('tetrisHard').onclick=tetHardDrop;$('tetrisHold').onclick=tetHold;
+function tetBindRepeat(id,fn){
+ const el=$(id);let timer=null,repeat=null;
+ const stop=()=>{clearTimeout(timer);clearInterval(repeat);timer=repeat=null};
+ el.addEventListener('pointerdown',e=>{if(e.pointerType==='mouse'&&e.button!==0)return;e.preventDefault();fn();stop();timer=setTimeout(()=>{repeat=setInterval(fn,55)},160);try{el.setPointerCapture(e.pointerId)}catch{}});
+ ['pointerup','pointercancel','lostpointercapture','pointerleave'].forEach(ev=>el.addEventListener(ev,stop))
+}
+tetBindRepeat('tetrisLeft',()=>tetMove(-1,0));tetBindRepeat('tetrisRight',()=>tetMove(1,0));tetBindRepeat('tetrisDown',()=>tetMove(0,1,true));
+document.addEventListener('keydown',e=>{
+ const tag=document.activeElement?.tagName;if(['INPUT','TEXTAREA','SELECT'].includes(tag))return;
+ const visible=!$('tetrisSection')?.classList.contains('hidden');if(!visible)return;
+ const key=e.code;
+ if(['ArrowLeft','ArrowRight','ArrowDown','ArrowUp','Space','KeyX','KeyZ','KeyC','ShiftLeft','ShiftRight','KeyP','Escape'].includes(key))e.preventDefault();
+ if((key==='KeyP'||key==='Escape')&&!e.repeat){tetrisTogglePause(false);return}
+ if(!tetris.active||tetris.paused)return;
+ if(key==='ArrowLeft')tetMove(-1,0);
+ else if(key==='ArrowRight')tetMove(1,0);
+ else if(key==='ArrowDown')tetMove(0,1,true);
+ else if((key==='ArrowUp'||key==='KeyX')&&!e.repeat)tetRotate(1);
+ else if(key==='KeyZ'&&!e.repeat)tetRotate(-1);
+ else if(key==='Space'&&!e.repeat)tetHardDrop();
+ else if((key==='KeyC'||key==='ShiftLeft'||key==='ShiftRight')&&!e.repeat)tetHold()
+});
+document.addEventListener('visibilitychange',()=>{if(document.hidden&&tetris.active&&!tetris.paused)tetrisTogglePause(true)});
+local.tetrisBest=Number(local.tetrisBest||0);local.tetrisBestLines=Number(local.tetrisBestLines||0);tetris.board=tetEmptyBoard();tetrisUpdateStats();tetrisRefreshCharacter();drawTetris();
+
 const rhythm={held:new Set(),hp:100,effects:[],active:false,paused:false,raf:0,start:0,pauseAt:0,elapsed:0,notes:[],score:0,combo:0,judged:0,quality:0,feedback:'',feedbackUntil:0,audio:null,img:null,beatIndex:0,duration:60000,beat:500,media:null,difficulty:'normal',misses:0};
 const rhythmTravel=1600;let rhythmOffset=0;try{const saved=Number(localStorage.getItem("rhythmTimingOffset"));if(Number.isFinite(saved)&&saved>=-200&&saved<=200)rhythmOffset=saved}catch{}$("rhythmOffset").value=String(rhythmOffset);$("rhythmOffsetValue").textContent=(rhythmOffset>0?"+":"")+rhythmOffset+" ms";function setRhythmOffset(value){rhythmOffset=Math.max(-200,Math.min(200,Number(value)||0));$("rhythmOffset").value=String(rhythmOffset);$("rhythmOffsetValue").textContent=(rhythmOffset>0?"+":"")+rhythmOffset+" ms";try{localStorage.setItem("rhythmTimingOffset",String(rhythmOffset))}catch{}drawRhythm()}$("rhythmOffset").addEventListener("input",e=>setRhythmOffset(e.target.value));$("rhythmOffsetReset").onclick=()=>setRhythmOffset(0);let rhythmSongs=[];let rhythmScrollSpeed=2;try{const saved=Number(localStorage.getItem('rhythmScrollSpeed'));if(Number.isFinite(saved)&&saved>=.5&&saved<=8)rhythmScrollSpeed=saved}catch{}$('rhythmSpeed').value=String(rhythmScrollSpeed);$('rhythmSpeedValue').textContent=rhythmScrollSpeed.toFixed(1)+'×';$('rhythmSpeed').addEventListener('input',e=>{rhythmScrollSpeed=Number(e.target.value);$('rhythmSpeedValue').textContent=rhythmScrollSpeed.toFixed(1)+'×';try{localStorage.setItem('rhythmScrollSpeed',String(rhythmScrollSpeed))}catch{}drawRhythm()});
 function rhythmSprite(){rhythm.img=null;const c=arcadeOwned().find(c=>String(c.id)===$('rhythmCharacter').value);if(c?.image_url){const image=new Image();image.onload=()=>{if(rhythm.img===image)drawRhythm()};image.src=characterDisplayImage(c);rhythm.img=image}}
