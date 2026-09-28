@@ -1618,6 +1618,30 @@ const pang={
  active:false,busy:false,board:[],pool:[],selected:-1,moves:PANG_MOVES,score:0,combo:0,token:0,pointer:null,suppressClick:false,
  fxExplode:new Set(),fxCreated:-1,itemMode:null,items:{slingshot:1,bulldozer:1,box:1,hammer:1,shuffle:1}
 };
+
+// 미니게임 선택 탭
+function showMiniGame(which){
+ for(const [name,section,button] of [
+  ['memory','memorySection','chooseMemory'],
+  ['pang','pangSection','choosePang'],
+  ['runner','runnerSection','chooseRunner'],
+  ['tetris','tetrisSection','chooseTetris'],
+  ['rhythm','rhythmSection','chooseRhythm']
+ ]){
+  $(section).classList.toggle('hidden',which!==name);
+  $(button).classList.toggle('active',which===name)
+ }
+ if(which!=='tetris'&&typeof tetris!=='undefined'&&tetris.active&&!tetris.paused)tetrisTogglePause(true);
+ if(which==='pang')renderPang();
+ if(which==='runner')drawRunner();
+ if(which==='tetris'){tetrisRefreshCharacter();drawTetris()}
+ if(which==='rhythm')drawRhythm()
+}
+$('chooseMemory').onclick=()=>showMiniGame('memory');
+$('choosePang').onclick=()=>showMiniGame('pang');
+$('chooseRunner').onclick=()=>showMiniGame('runner');
+$('chooseTetris').onclick=()=>showMiniGame('tetris');
+$('chooseRhythm').onclick=()=>showMiniGame('rhythm');
 function pangCell(v,s=null){return {v:Number(v),s:s||null}}
 function pangCloneBoard(board){return board.map(c=>pangCell(c.v,c.s))}
 function pangVal(cell){return cell?.v}
