@@ -256,11 +256,11 @@
 <h2>💥 캐릭터 팡!</h2>
 <p class="muted">옆 캐릭터를 바꿔 3개 이상 맞혀 보세요. 특수 블록을 만들고 서로 조합하면 훨씬 크게 터져요!</p>
 <div class="points-box"><strong>🪙 내 포인트: <span id="pangPoints">0</span> P</strong><p class="muted mini">30번 이동 · 3,000점 이상 클리어 · 완료 점수에 따라 100~600P · ★★★ 풀돌 SSR 장착 시 포인트 보상 +20%</p></div>
-<label for="pangCharacter">장착 캐릭터 (보유 SSR)</label>
+<label for="pangCharacter">장착 캐릭터 (내 도감에서 보유 중인 SSR)</label>
 <select id="pangCharacter"></select>
 <div class="pang-equip-box">
   <img id="pangCharacterImg" class="hidden" alt="장착 캐릭터">
-  <div><div id="pangCharacterName" class="pang-equip-name">장착 가능한 SSR 없음</div><p id="pangCharacterBonus" class="pang-equip-bonus">SSR을 획득하면 장착할 수 있어요.</p></div>
+  <div><div id="pangCharacterName" class="pang-equip-name">장착 가능한 SSR 없음</div><p id="pangCharacterBonus" class="pang-equip-bonus">내 도감에 보유한 SSR 카드가 여기에 표시돼요.</p></div>
 </div>
 <div class="game-controls"><button type="button" id="pangStart">게임 시작</button><button type="button" id="pangRestart" class="ghost" disabled>다시 시작</button></div>
 <div class="game-stats"><div class="game-stat"><span class="mini muted">점수</span><b id="pangScore">0</b></div><div class="game-stat"><span class="mini muted">남은 이동</span><b id="pangMoves">30</b></div><div class="game-stat"><span class="mini muted">콤보</span><b id="pangCombo">0</b></div></div>
@@ -1104,7 +1104,7 @@ $('limitedExchangeOverlay').addEventListener('click',e=>{if(e.target===$('limite
 document.addEventListener('keydown',e=>{if(e.key==='Escape'&&!$('limitedExchangeOverlay').classList.contains('hidden'))closeLimitedExchange()});
 
 window.navigate=function(tab){for(const id of ['home','gacha','collection','game','pet','casino','admin'])$(id).classList.toggle('hidden',id!==tab);document.querySelectorAll('[data-tab]').forEach(b=>b.classList.toggle('active',b.dataset.tab===tab));if(tab==='collection')renderCollection();if(tab==='game')renderGameInfo();if(tab==='casino')renderCasino();if(tab==='pet')renderPet()};document.querySelectorAll('[data-tab]').forEach(b=>b.addEventListener('click',()=>navigate(b.dataset.tab)));
-function render(){renderAttendance();renderBanner();renderLimited();local.homeCharacterIds=[...new Set(local.homeCharacterIds||[])].filter(id=>characters.some(c=>c.id===id&&(local.counts[c.id]||0)>0)).slice(0,3);const homes=local.homeCharacterIds.map(id=>characters.find(c=>c.id===id)).filter(Boolean);const home=homes.length?homes[Math.floor(Math.random()*homes.length)]:characters.find(c=>c.id===settings.home_character_id);$('homeHero').replaceChildren();if(home){const homeImage=homeCharacterImage(home);const image=document.createElement('img');image.src=homeImage;image.alt=home.name;image.title='눌러서 대사 듣기';const name=document.createElement('strong');name.textContent=home.name;const bubble=document.createElement('div');bubble.className='bubble';bubble.textContent='캐릭터를 눌러보세요!';image.addEventListener('click',()=>{const lines=Array.isArray(home.dialogues)?home.dialogues:[];bubble.textContent=lines.length?lines[Math.floor(Math.random()*lines.length)]:'등록된 대사가 없어요.'});const download=document.createElement('button');download.type='button';download.className='home-save-image';download.textContent='📥 캐릭터 이미지 저장';download.addEventListener('click',async()=>{download.disabled=true;try{const response=await fetch(homeImage);if(!response.ok)throw new Error('이미지 불러오기 실패');const blob=await response.blob();const ext=({'image/png':'png','image/jpeg':'jpg','image/webp':'webp','image/gif':'gif'})[blob.type]||'png';const filename=(home.name||'character').replace(/[\\/:*?"<>|\x00-\x1f]/g,'_')+'.'+ext;const url=URL.createObjectURL(blob);const link=document.createElement('a');link.href=url;link.download=filename;document.body.append(link);link.click();link.remove();setTimeout(()=>URL.revokeObjectURL(url),30000);notice('이미지 저장을 시작했어요!')}catch(err){notice('자동 저장에 실패했어요. 홈 캐릭터 이미지를 길게 누르거나 마우스 오른쪽 버튼으로 저장해 주세요.')}finally{download.disabled=false}});$('homeHero').append(image,name,bubble,download)}else $('homeHero').textContent='관리자가 홈 캐릭터를 설정하면 여기에 표시됩니다.';$('rates').textContent=`SSR ${settings.ssr}% · SR ${settings.sr}% · R ${settings.r}%`;$('pityText').textContent=`✨ 천장 포인트 ${local.pityPoints.toLocaleString()} / ${settings.pity.toLocaleString()} PT · ${local.pityPoints>=settings.pity?'SSR 교환 가능!':`교환까지 ${(settings.pity-local.pityPoints).toLocaleString()} PT`}`;$('pityPoints').textContent=local.pityPoints.toLocaleString();$('pityExchange').disabled=!ready||!characters.some(c=>c.rarity==='SSR'&&!c.is_limited)||local.pityPoints<settings.pity||!!local.pendingGacha;$('headerPoints').textContent=`🪙 ${local.points.toLocaleString()} P`;$('gachaPoints').textContent=local.points.toLocaleString();$('draw1').disabled=!ready||!validPool()||local.points<100||!!local.pendingGacha;$('draw10').disabled=!ready||!validPool()||local.points<1000||!!local.pendingGacha;renderCollection();renderGameInfo();renderCasino();if($('runnerBest'))$('runnerBest').textContent=Number(local.runnerBest||0).toLocaleString();if($('tetrisBest'))$('tetrisBest').textContent=Number(local.tetrisBest||0).toLocaleString();if(admin)renderAdmin()}
+function render(){renderAttendance();renderBanner();renderLimited();local.homeCharacterIds=[...new Set(local.homeCharacterIds||[])].filter(id=>characters.some(c=>c.id===id&&(local.counts[c.id]||0)>0)).slice(0,3);const homes=local.homeCharacterIds.map(id=>characters.find(c=>c.id===id)).filter(Boolean);const home=homes.length?homes[Math.floor(Math.random()*homes.length)]:characters.find(c=>c.id===settings.home_character_id);$('homeHero').replaceChildren();if(home){const homeImage=homeCharacterImage(home);const image=document.createElement('img');image.src=homeImage;image.alt=home.name;image.title='눌러서 대사 듣기';const name=document.createElement('strong');name.textContent=home.name;const bubble=document.createElement('div');bubble.className='bubble';bubble.textContent='캐릭터를 눌러보세요!';image.addEventListener('click',()=>{const lines=Array.isArray(home.dialogues)?home.dialogues:[];bubble.textContent=lines.length?lines[Math.floor(Math.random()*lines.length)]:'등록된 대사가 없어요.'});const download=document.createElement('button');download.type='button';download.className='home-save-image';download.textContent='📥 캐릭터 이미지 저장';download.addEventListener('click',async()=>{download.disabled=true;try{const response=await fetch(homeImage);if(!response.ok)throw new Error('이미지 불러오기 실패');const blob=await response.blob();const ext=({'image/png':'png','image/jpeg':'jpg','image/webp':'webp','image/gif':'gif'})[blob.type]||'png';const filename=(home.name||'character').replace(/[\\/:*?"<>|\x00-\x1f]/g,'_')+'.'+ext;const url=URL.createObjectURL(blob);const link=document.createElement('a');link.href=url;link.download=filename;document.body.append(link);link.click();link.remove();setTimeout(()=>URL.revokeObjectURL(url),30000);notice('이미지 저장을 시작했어요!')}catch(err){notice('자동 저장에 실패했어요. 홈 캐릭터 이미지를 길게 누르거나 마우스 오른쪽 버튼으로 저장해 주세요.')}finally{download.disabled=false}});$('homeHero').append(image,name,bubble,download)}else $('homeHero').textContent='관리자가 홈 캐릭터를 설정하면 여기에 표시됩니다.';$('rates').textContent=`SSR ${settings.ssr}% · SR ${settings.sr}% · R ${settings.r}%`;$('pityText').textContent=`✨ 천장 포인트 ${local.pityPoints.toLocaleString()} / ${settings.pity.toLocaleString()} PT · ${local.pityPoints>=settings.pity?'SSR 교환 가능!':`교환까지 ${(settings.pity-local.pityPoints).toLocaleString()} PT`}`;$('pityPoints').textContent=local.pityPoints.toLocaleString();$('pityExchange').disabled=!ready||!characters.some(c=>c.rarity==='SSR'&&!c.is_limited)||local.pityPoints<settings.pity||!!local.pendingGacha;$('headerPoints').textContent=`🪙 ${local.points.toLocaleString()} P`;$('gachaPoints').textContent=local.points.toLocaleString();$('draw1').disabled=!ready||!validPool()||local.points<100||!!local.pendingGacha;$('draw10').disabled=!ready||!validPool()||local.points<1000||!!local.pendingGacha;renderCollection();renderGameInfo();renderCasino();if($('pangCharacter'))pangPopulateCharacter();if($('runnerBest'))$('runnerBest').textContent=Number(local.runnerBest||0).toLocaleString();if($('tetrisBest'))$('tetrisBest').textContent=Number(local.tetrisBest||0).toLocaleString();if(admin)renderAdmin()}
 function validPool(){return ['SSR','SR','R'].every(r=>Number(settings[r.toLowerCase()])===0||characters.some(c=>c.rarity===r&&!c.is_limited))&&characters.some(c=>c.rarity==='SSR'&&!c.is_limited)&&settings.pity>=1}
 function limitBreakLevel(c){if(!c||c.rarity!=='SSR')return 0;const n=Number(local.limitBreaks?.[c.id])||0;return Math.max(0,Math.min(3,Math.floor(n)))}
 function limitBreakStars(c){const lv=limitBreakLevel(c);return '★'.repeat(lv)+'☆'.repeat(3-lv)}
@@ -1653,33 +1653,57 @@ $('chooseRunner').onclick=()=>showMiniGame('runner');
 $('chooseTetris').onclick=()=>showMiniGame('tetris');
 $('chooseRhythm').onclick=()=>showMiniGame('rhythm');
 function pangCell(v,s=null){return {v:Number(v),s:s||null}}
-function pangOwnedSSR(){return characters.filter(c=>c.rarity==='SSR'&&(Number(local.counts[c.id])||0)>0)}
+function pangOwnedSSR(){
+ return characters.filter(c=>{
+  const rarity=String(c.rarity||'').trim().toUpperCase();
+  const count=Number(local.counts?.[c.id]??local.counts?.[String(c.id)]??0)||0;
+  return rarity==='SSR'&&count>0
+ })
+}
 function pangEquippedCharacter(){
  const id=$('pangCharacter')?.value||local.pangEquippedCharacterId;
  return pangOwnedSSR().find(c=>String(c.id)===String(id))||null
 }
 function pangPopulateCharacter(){
  const sel=$('pangCharacter');if(!sel)return;
- const current=String(local.pangEquippedCharacterId??sel.value??''),owned=pangOwnedSSR();
- sel.replaceChildren();
+ const owned=pangOwnedSSR();
+ const saved=local.pangEquippedCharacterId;
+ const current=String(saved??sel.value??'');
+ const signature=owned.map(c=>`${c.id}:${limitBreakLevel(c)}`).join('|');
+ const needsRebuild=sel.dataset.signature!==signature||sel.options.length!==Math.max(1,owned.length);
+ if(needsRebuild){
+  sel.replaceChildren();
+  if(!owned.length){
+   sel.add(new Option('장착 가능한 SSR 없음',''));
+  }else{
+   for(const c of owned){
+    const full=limitBreakLevel(c)>=3;
+    sel.add(new Option(`${c.name}${full?' · ★★★ FULL':''}`,String(c.id)))
+   }
+  }
+  sel.dataset.signature=signature
+ }
  if(!owned.length){
-  sel.add(new Option('장착 가능한 SSR 없음',''));
-  sel.disabled=true;local.pangEquippedCharacterId=null;save();pangRefreshCharacter();return
+  sel.disabled=true;
+  if(local.pangEquippedCharacterId!==null){local.pangEquippedCharacterId=null;save()}
+  pangRefreshCharacter();
+  return
  }
  sel.disabled=!!pang.active;
- for(const c of owned){
-  const full=limitBreakLevel(c)>=3;
-  sel.add(new Option(`${c.name}${full?' · ★★★ FULL':''}`,String(c.id)))
+ let next=current;
+ if(![...sel.options].some(o=>o.value===next))next=String(owned[0].id);
+ sel.value=next;
+ if(String(local.pangEquippedCharacterId??'')!==next){
+  local.pangEquippedCharacterId=owned.find(c=>String(c.id)===next)?.id??next;
+  save()
  }
- if([...sel.options].some(o=>o.value===current))sel.value=current;
- else{sel.value=String(owned[0].id);local.pangEquippedCharacterId=owned[0].id;save()}
  pangRefreshCharacter()
 }
 function pangRefreshCharacter(){
  const img=$('pangCharacterImg'),name=$('pangCharacterName'),bonus=$('pangCharacterBonus'),c=pangEquippedCharacter();
  if(!img||!name||!bonus)return;
  if(!c){
-  img.removeAttribute('src');img.classList.add('hidden');name.textContent='장착 가능한 SSR 없음';bonus.textContent='SSR을 획득하면 장착할 수 있어요.';bonus.classList.remove('full');return
+  img.removeAttribute('src');img.classList.add('hidden');name.textContent='장착 가능한 SSR 없음';bonus.textContent='내 도감에 보유한 SSR 카드가 여기에 표시돼요.';bonus.classList.remove('full');return
  }
  img.src=characterDisplayImage(c);img.alt=c.name;img.classList.remove('hidden');
  const full=limitBreakLevel(c)>=3;
