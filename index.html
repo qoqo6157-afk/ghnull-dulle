@@ -97,6 +97,30 @@
 .gacha-door-crest{position:absolute;z-index:8;left:50%;top:47%;width:78px;height:78px;transform:translate(-50%,-50%);border-radius:50%;display:grid;place-items:center;background:radial-gradient(circle,#f6f2ff 0 8%,#8a8db0 10% 16%,#272a42 18% 56%,#8a8db0 58% 62%,#151725 65%);box-shadow:0 0 0 3px #111320,0 0 20px #aeb4ff55;font-size:29px;color:#e6e8ff;text-shadow:0 0 8px #fff;transition:opacity .25s,transform .5s}
 .gacha-door-crest::before{content:"✦"}
 .gacha-door-seam{position:absolute;z-index:7;left:50%;top:7%;bottom:6%;width:3px;transform:translateX(-50%);background:linear-gradient(transparent,#b4b7d288 17% 80%,transparent);box-shadow:0 0 7px #b4b7d255}
+/* Door rarity states */
+.gacha-cinematic.door-r .gacha-door-frame{background:linear-gradient(145deg,#484b65,#1e2032 36%,#6c6f8d 48%,#191b2a 63%,#44475f);box-shadow:0 0 0 4px #aeb2d055 inset,0 24px 60px #0009,0 0 40px #7b80c02c}
+.gacha-cinematic.door-r .gacha-door-crest{box-shadow:0 0 0 3px #111320,0 0 20px #aeb4ff55}
+
+.gacha-cinematic.door-sr .gacha-door-frame{background:linear-gradient(145deg,#806019,#33270d 28%,#d4aa35 47%,#4a360c 68%,#9b7620);box-shadow:0 0 0 4px #ffdf7b66 inset,0 24px 60px #0009,0 0 35px #ffc83b88}
+.gacha-cinematic.door-sr .gacha-door{background:linear-gradient(90deg,#2d2108,#70500f 38%,#a57a1b 55%,#4b350a 78%,#231906);border-color:#f4cf6766}
+.gacha-cinematic.door-sr .gacha-door.right{background:linear-gradient(270deg,#2d2108,#70500f 38%,#a57a1b 55%,#4b350a 78%,#231906)}
+.gacha-cinematic.door-sr .gacha-door-crest{background:radial-gradient(circle,#fff7c7 0 8%,#efcf67 10% 16%,#785914 18% 56%,#efcf67 58% 62%,#2f2207 65%);color:#fff5bc;text-shadow:0 0 8px #fff,0 0 15px #ffd253;box-shadow:0 0 0 3px #2c2108,0 0 28px #ffd25399}
+
+.gacha-cinematic.door-ssr .gacha-door-frame{background:conic-gradient(from 210deg,#ff679f,#ffd65a,#65e6a6,#5bd9ff,#8d77ff,#ff70d7,#ff679f);box-shadow:0 0 0 4px #ffffff77 inset,0 24px 60px #0009,0 0 42px #7ee6ff88,0 0 68px #ff70d666}
+.gacha-cinematic.door-ssr .gacha-door{background:linear-gradient(135deg,#36213f,#20465c 35%,#4f3d76 58%,#3f254f);border-color:#ffffff88;box-shadow:inset 0 0 30px #0008,0 0 16px #75e3ff66}
+.gacha-cinematic.door-ssr .gacha-door.right{background:linear-gradient(225deg,#36213f,#20465c 35%,#4f3d76 58%,#3f254f)}
+.gacha-cinematic.door-ssr .gacha-door-crest{background:conic-gradient(#ff67a2,#ffd858,#69eaa5,#59d7ff,#9077ff,#ff71d4,#ff67a2);color:#fff;text-shadow:0 0 8px #fff;box-shadow:0 0 0 3px #fff8,0 0 24px #fff,0 0 42px #72deff99}
+
+.gacha-cinematic.door-limited .gacha-door-frame{background:conic-gradient(from 180deg,#ff6eaf,#ff9ee4,#9d72ff,#6de4ff,#ffd6f1,#ff6eaf);box-shadow:0 0 0 4px #ffffff88 inset,0 24px 60px #0009,0 0 44px #ff75dbaa,0 0 78px #b46cff88}
+.gacha-cinematic.door-limited .gacha-door{background:linear-gradient(135deg,#5b1948,#351f58 34%,#8b3d83 56%,#3a215b 78%,#4a173c);border-color:#ffbce0aa;box-shadow:inset 0 0 32px #0008,0 0 22px #ff78dc77}
+.gacha-cinematic.door-limited .gacha-door.right{background:linear-gradient(225deg,#5b1948,#351f58 34%,#8b3d83 56%,#3a215b 78%,#4a173c)}
+.gacha-cinematic.door-limited .gacha-door-crest{background:conic-gradient(#fff,#ff76d9,#b56cff,#6bdfff,#fff,#ff76d9);color:#fff;text-shadow:0 0 10px #fff,0 0 20px #ff76d9;box-shadow:0 0 0 3px #ffdaf0,0 0 28px #ff70dbcc,0 0 48px #9f6cffaa}
+.gacha-cinematic.door-limited .gacha-door-wrap::after{content:"LIMITED";position:absolute;left:50%;top:89%;transform:translateX(-50%);z-index:10;padding:5px 12px;border-radius:999px;background:#571641aa;color:#ffd8f0;font-size:11px;font-weight:950;letter-spacing:.18em;border:1px solid #ffb3df88;box-shadow:0 0 18px #ff74d788}
+
+.gacha-cinema-caption::after{content:" · 화면을 터치해서 다음";opacity:.72;font-weight:700}
+.gacha-cinematic.wait-result .gacha-cinema-caption::after{content:" · 터치하면 결과 공개"}
+.gacha-skip{cursor:pointer}
+
 .gacha-cinematic.door-ready .gacha-door-wrap{animation:gachaDoorPulse .54s ease-in-out both}
 @keyframes gachaDoorPulse{0%,100%{filter:none}50%{filter:brightness(1.25);transform:translate(-50%,-50%) scale(1.025)}}
 .gacha-cinematic.door-open .gacha-door.left{transform:rotateY(-102deg) translateX(-6%)}
@@ -485,7 +509,7 @@
   </div>
 </div><div id="gachaCinematic" class="gacha-cinematic hidden" aria-hidden="true" role="dialog" aria-label="가챠 연출">
   <div class="gacha-cinema-stage">
-    <div class="gacha-skip">화면 클릭 · 연출 스킵</div>
+    <button type="button" id="gachaSkipButton" class="gacha-skip">SKIP</button>
     <div id="gachaCinemaCaption" class="gacha-cinema-caption">문이 열리고 있어요...</div>
     <div class="gacha-signal"></div>
     <div class="gacha-limited-emblem"></div>
@@ -1244,23 +1268,26 @@ function gachaOrbPositions(n){
  return out
 }
 function playGachaCinematic(cards,{source='normal'}={}){
- const overlay=$('gachaCinematic'),field=$('gachaOrbField'),caption=$('gachaCinemaCaption');
+ const overlay=$('gachaCinematic'),field=$('gachaOrbField'),caption=$('gachaCinemaCaption'),skip=$('gachaSkipButton');
  if(!overlay||!field||!cards?.length)return Promise.resolve();
 
- const run=++gachaAnimationRun,timers=[];
+ const run=++gachaAnimationRun;
  const hasLimited=cards.some(c=>c?.is_limited);
  const hasSSR=cards.some(c=>!c?.is_limited&&c?.rarity==='SSR');
  const hasSR=cards.some(c=>c?.rarity==='SR');
- // 아주 드문 "금색인데 SSR" 페이크아웃: 실제 SSR이 있는 연출의 1%
- const fakeout=!hasLimited&&hasSSR&&Math.random()<0.01;
- const signal=hasLimited?'limited':fakeout?'gold':hasSSR?'rainbow':hasSR?'gold':'none';
+
+ // 실제 결과와 문 색은 분리.
+ // 보통은 최고 등급대로 문이 나오지만, 실제 SSR/한정이 든 뽑기의 1%는
+ // 일부러 금색 SR 문으로 시작해서 구슬 공개 순간 승격 연출이 나온다.
+ const goldFakeout=(hasLimited||hasSSR)&&Math.random()<0.01;
+ const doorKind=goldFakeout?'sr':hasLimited?'limited':hasSSR?'ssr':hasSR?'sr':'r';
+
  const firstSSRIndex=cards.findIndex(c=>!c?.is_limited&&c?.rarity==='SSR');
  const firstLimitedIndex=cards.findIndex(c=>c?.is_limited);
  const positions=gachaOrbPositions(cards.length);
 
- overlay.className='gacha-cinematic hidden';
+ overlay.className='gacha-cinematic hidden door-'+doorKind;
  field.replaceChildren();
- caption.textContent='문이 나타났다...';
  overlay.setAttribute('aria-hidden','false');
 
  cards.forEach((c,i)=>{
@@ -1269,57 +1296,122 @@ function playGachaCinematic(cards,{source='normal'}={}){
   const [x,y]=positions[i]||[0,0];
   orb.style.setProperty('--x',x+'px');
   orb.style.setProperty('--y',y+'px');
-  orb.style.setProperty('--delay',(1550+i*115)+'ms');
+  orb.style.animation='none';
+  orb.style.opacity='0';
   field.append(orb)
  });
 
  return new Promise(resolve=>{
-  let done=false;
-  const later=(fn,ms)=>{
-   const id=setTimeout(()=>{if(!done&&run===gachaAnimationRun)fn()},ms);
-   timers.push(id);return id
-  };
+  let done=false,step=0,lockedUntil=0;
+
+  const lockBriefly=(ms=520)=>{lockedUntil=performance.now()+ms};
+  const canAdvance=()=>performance.now()>=lockedUntil;
+
   const finish=()=>{
    if(done)return;
    done=true;
-   for(const t of timers)clearTimeout(t);
    overlay.onclick=null;
+   if(skip)skip.onclick=null;
    overlay.className='gacha-cinematic hidden';
    overlay.setAttribute('aria-hidden','true');
    field.replaceChildren();
    resolve()
   };
 
-  overlay.onclick=e=>{e.preventDefault();e.stopPropagation();finish()};
+  const openDoor=()=>{
+   overlay.classList.add('door-ready','door-open');
+   if(doorKind==='sr'){
+    overlay.classList.add('signal-gold','signal-show');
+    caption.textContent='금빛 문이 열린다...!'
+   }else if(doorKind==='ssr'){
+    overlay.classList.add('signal-rainbow','signal-show');
+    caption.textContent='무지개 문이 열린다... SSR 확정!'
+   }else if(doorKind==='limited'){
+    overlay.classList.add('signal-limited','signal-show');
+    caption.textContent='무지개와 핑크빛 문... 한정의 기척!'
+   }else{
+    caption.textContent='문이 조용히 열린다...'
+   }
+   lockBriefly(650)
+  };
+
+  const showOrbs=()=>{
+   const orbs=[...field.querySelectorAll('.gacha-orb')];
+   orbs.forEach((orb,i)=>{
+    orb.style.opacity='';
+    const isLimited=orb.classList.contains('limited');
+    const isSSR=orb.classList.contains('ssr');
+    const fly=`gachaOrbFly .78s cubic-bezier(.16,.74,.2,1.18) ${i*105}ms forwards`;
+    const extra=isSSR
+      ? `,gachaOrbRainbow 1.15s linear ${(.7+i*.105).toFixed(3)}s infinite`
+      : isLimited
+        ? `,gachaOrbLimited 1s ease-in-out ${(.65+i*.105).toFixed(3)}s infinite alternate`
+        : '';
+    orb.style.animation=fly+extra
+   });
+
+   if(goldFakeout){
+    const upgradeIndex=firstLimitedIndex>=0?firstLimitedIndex:firstSSRIndex;
+    setTimeout(()=>{
+     if(done||run!==gachaAnimationRun)return;
+     overlay.classList.add('fakeout-upgrade');
+     if(firstLimitedIndex>=0){
+      overlay.classList.add('signal-limited','limited-burst');
+      caption.textContent='...?! 금빛이 갈라지며 LIMITED로 승격했다!'
+     }else{
+      overlay.classList.add('signal-rainbow');
+      caption.textContent='...?! 금빛이 무지개로 승격했다!'
+     }
+    },420+Math.max(0,upgradeIndex)*105)
+   }else if(hasLimited&&firstLimitedIndex>=0){
+    setTimeout(()=>{
+     if(done||run!==gachaAnimationRun)return;
+     overlay.classList.add('limited-burst');
+     caption.textContent='✦ LIMITED ✦ 한정 캐릭터 확정!'
+    },420+firstLimitedIndex*105)
+   }else if(hasSSR){
+    caption.textContent='무지개 구슬이 있다...!'
+   }else if(hasSR){
+    caption.textContent='금색 구슬이 있다...!'
+   }else{
+    caption.textContent='구슬을 확인해 보자!'
+   }
+
+   overlay.classList.add('wait-result');
+   lockBriefly(760+Math.min(cards.length,10)*45)
+  };
+
+  const advance=e=>{
+   if(e){e.preventDefault();e.stopPropagation()}
+   if(done||!canAdvance())return;
+
+   if(step===0){
+    step=1;
+    openDoor();
+    return
+   }
+   if(step===1){
+    step=2;
+    showOrbs();
+    return
+   }
+   finish()
+  };
+
+  overlay.onclick=advance;
+  if(skip)skip.onclick=e=>{
+   e.preventDefault();
+   e.stopPropagation();
+   finish()
+  };
+
   overlay.classList.remove('hidden');
-
-  later(()=>{overlay.classList.add('door-ready');caption.textContent='문 너머에서 빛이 새어 나온다...'},520);
-  later(()=>{
-   overlay.classList.add('door-open');
-   if(signal==='gold'){overlay.classList.add('signal-gold');caption.textContent='금빛이 촤악—!'}
-   else if(signal==='rainbow'){overlay.classList.add('signal-rainbow');caption.textContent='무지개빛이 촤악—! SSR 확정!'}
-   else if(signal==='limited'){overlay.classList.add('signal-limited');caption.textContent='공간이 뒤틀린다... 한정의 기척!'}
-   else caption.textContent='구슬이 나타난다...'
-  },1020);
-  if(signal!=='none')later(()=>overlay.classList.add('signal-show'),1280);
-  later(()=>{caption.textContent=hasLimited?'✨ 특별한 구슬이 섞여 있다...':'구슬을 확인해 보자!'},1520);
-
-  if(fakeout&&firstSSRIndex>=0){
-   later(()=>{
-    overlay.classList.add('fakeout-upgrade','signal-rainbow');
-    caption.textContent='...?! 금빛이 무지개로 승격했다!'
-   },1750+firstSSRIndex*115)
-  }
-  if(hasLimited&&firstLimitedIndex>=0){
-   later(()=>{
-    overlay.classList.add('limited-burst');
-    caption.textContent='✦ LIMITED ✦ 한정 캐릭터 확정!'
-   },1750+firstLimitedIndex*115)
-  }
-
-  const total=cards.length<=1?2850:3550+Math.min(cards.length,10)*55;
-  later(()=>{overlay.classList.add('reveal-end');caption.textContent='결과 공개!'},total-420);
-  later(finish,total)
+  caption.textContent=
+   doorKind==='sr'?'금빛 문이 나타났다...':
+   doorKind==='ssr'?'무지개 문이 나타났다...':
+   doorKind==='limited'?'무지개와 핑크빛 문이 나타났다...':
+   '문이 나타났다...';
+  lockBriefly(420)
  })
 }
 
