@@ -231,7 +231,33 @@
 /* Memory game */
 .points-box{background:#f0f0fb;border-radius:14px;padding:13px;margin:12px 0}.points-box p{margin:6px 0 0}.points-balance{color:#595bd7;white-space:nowrap;margin-right:7px;font-size:14px}.game-stats{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;margin:14px 0}.game-stat{background:#f0f0fb;border-radius:12px;padding:10px 4px;text-align:center}.game-stat b{display:block;font-size:20px}.memory-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:9px;max-width:570px;margin:18px auto}.memory-card{position:relative;aspect-ratio:3/4;border-radius:12px;padding:0;overflow:hidden;background:#595bd7;color:white;border:2px solid transparent;min-width:0;display:flex;align-items:center;justify-content:center;transition:background .15s}.memory-card .back{font-size:clamp(16px,4vw,30px);font-weight:800}.memory-card .face{display:none;width:100%;height:100%;background:#fff;color:#242738;flex-direction:column;align-items:center;justify-content:center}.memory-card .face img{width:100%;height:78%;object-fit:contain;min-height:0}.memory-card .face span{font-size:10px;font-weight:700;max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;padding:2px}.memory-card.revealed .back{display:none}.memory-card.revealed .face{display:flex}.memory-card.matched{border-color:#42b68a;background:#e6fff4}.memory-card:disabled{opacity:1;cursor:default}.game-result{background:#f0f0fb;border-radius:16px;padding:18px;text-align:center;margin-top:15px}.game-controls{display:flex;gap:8px;flex-wrap:wrap}.game-controls>*{flex:1;min-width:125px}@media(max-width:420px){.memory-grid{gap:6px}.memory-card{border-radius:8px}.memory-card .face span{font-size:9px}.game-stats{gap:5px}}
 /* SSR pity selection */
-.pity-overlay{position:fixed;inset:0;z-index:100;background:#17192bd9;display:flex;align-items:center;justify-content:center;padding:15px}.pity-dialog{background:#fff;border-radius:20px;padding:20px;width:min(100%,680px);max-height:90vh;overflow:auto}.pity-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(125px,1fr));gap:10px;margin:16px 0}.pity-choice{padding:9px;background:#fff;color:#242738;border:2px solid #e7e8f0;display:flex;flex-direction:column;align-items:center;gap:5px;min-width:0}.pity-choice img{width:100%;height:145px;object-fit:contain}.pity-choice.selected{border-color:#595bd7;background:#eeeefa}.pity-choice strong{overflow-wrap:anywhere;font-size:13px}.pity-dialog .wide{margin-top:8px}
+.pity-overlay{position:fixed;inset:0;z-index:100;background:#17192bd9;display:flex;align-items:center;justify-content:center;padding:15px}.pity-dialog{background:#fff;border-radius:20px;padding:20px;width:min(100%,680px);max-height:90vh;overflow:auto}.pity-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(125px,1fr));gap:10px;margin:16px 0}.pity-choice{padding:9px;background:#fff;color:#242738;border:2px solid #e7e8f0;display:flex;flex-direction:column;align-items:center;gap:5px;min-width:0}.pity-choice img{width:100%;height:145px;object-fit:contain}
+.pity-choice{position:relative;overflow:hidden}
+.pity-choice::before{
+  content:"";
+  position:absolute;
+  left:9px;right:9px;top:9px;
+  height:145px;
+  border-radius:12px;
+  background:linear-gradient(145deg,#f4f5fb,#e7eaf4);
+  border:1px solid #eef0f7;
+  z-index:0;
+  pointer-events:none;
+}
+.pity-choice img.pity-silhouette{
+  position:relative;
+  z-index:1;
+  filter:brightness(0) saturate(0) opacity(.82)!important;
+  transform:scale(.96);
+  transition:filter .18s ease,transform .18s ease,opacity .18s ease;
+}
+.pity-choice:hover img.pity-silhouette,
+.pity-choice.selected img.pity-silhouette{
+  filter:brightness(0) saturate(0) opacity(.96)!important;
+  transform:scale(.99);
+}
+.pity-choice strong,.pity-choice span{position:relative;z-index:1}
+.pity-choice.selected{border-color:#595bd7;background:#eeeefa}.pity-choice strong{overflow-wrap:anywhere;font-size:13px}.pity-dialog .wide{margin-top:8px}
 .limited-exchange-dialog{width:min(100%,680px)}
 .limited-exchange-head{display:flex;align-items:flex-start;justify-content:space-between;gap:12px}
 .limited-exchange-cost{display:inline-flex;align-items:center;gap:5px;padding:6px 10px;border-radius:999px;background:#fff3cf;color:#8b6507;font-weight:800;font-size:12px;white-space:nowrap}
@@ -1878,6 +1904,7 @@ function showLimitedExchange(){
   const img=document.createElement('img');
   img.src=c.image_url;
   img.alt=c.name;
+  img.classList.add('pity-silhouette');
 
   const name=document.createElement('strong');
   name.textContent=c.name;
@@ -2348,7 +2375,7 @@ function showPitySelection(){
  const legacyPending=local.pendingGacha?.waiting; if(!legacyPending&&(local.pityPoints<settings.pity||!characters.some(c=>c.rarity==='SSR'&&!c.is_limited)))return;
  const choices=$('pityChoices');choices.replaceChildren();chosenPityId=null;
  const pool=orderedMembers('SSR');
- for(const c of pool){const button=document.createElement('button');button.type='button';button.className='pity-choice';button.setAttribute('aria-pressed','false');const img=document.createElement('img');img.src=c.image_url;img.alt=c.name;const name=document.createElement('strong');name.textContent=c.name;const owned=document.createElement('span');owned.className='muted mini';owned.textContent=(local.counts[c.id]||0)>0?`보유 ${local.counts[c.id]}장`:'미획득';button.append(img,name,owned);button.onclick=()=>{chosenPityId=c.id;choices.querySelectorAll('button').forEach(x=>{x.classList.remove('selected');x.setAttribute('aria-pressed','false')});button.classList.add('selected');button.setAttribute('aria-pressed','true');$('pitySelected').textContent=`선택한 캐릭터: ${c.name}`;$('pityConfirm').disabled=false};choices.append(button)}
+ for(const c of pool){const button=document.createElement('button');button.type='button';button.className='pity-choice';button.setAttribute('aria-pressed','false');const img=document.createElement('img');img.src=c.image_url;img.alt=c.name;img.classList.add('pity-silhouette');const name=document.createElement('strong');name.textContent=c.name;const owned=document.createElement('span');owned.className='muted mini';owned.textContent=(local.counts[c.id]||0)>0?`보유 ${local.counts[c.id]}장`:'미획득';button.append(img,name,owned);button.onclick=()=>{chosenPityId=c.id;choices.querySelectorAll('button').forEach(x=>{x.classList.remove('selected');x.setAttribute('aria-pressed','false')});button.classList.add('selected');button.setAttribute('aria-pressed','true');$('pitySelected').textContent=`선택한 캐릭터: ${c.name}`;$('pityConfirm').disabled=false};choices.append(button)}
  $('pitySelected').textContent=pool.length?'선택한 캐릭터: 없음':'선택 가능한 SSR이 없어요. 관리자에게 문의해 주세요.';$('pityConfirm').disabled=true;$('pityCancel').classList.toggle('hidden',!!legacyPending);$('pityConfirm').textContent=legacyPending?'기존 천장 SSR 받기':`${settings.pity} PT로 이 SSR 교환하기`;$('pityOverlay').classList.remove('hidden');
 }
 function addGachaResult(c){const old=Number(local.counts[c.id])||0;local.counts[c.id]=old+1;local.pendingGacha.results.push({id:c.id,old});local.sinceSSR=c.rarity==='SSR'?0:local.sinceSSR+1;save()}
