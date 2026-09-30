@@ -215,6 +215,16 @@
  .collection-detail-info{gap:9px}
 }
 
+
+/* Collection category jump nav */
+.collection-category-nav{position:sticky;top:8px;z-index:24;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:7px;margin:14px 0 18px;padding:8px;border-radius:18px;background:rgba(255,255,255,.78);border:1px solid rgba(255,255,255,.88);box-shadow:0 10px 28px rgba(83,91,133,.10);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px)}
+.collection-category-nav button{min-width:0;padding:9px 6px!important;border-radius:13px!important;background:rgba(241,243,255,.82)!important;color:#626984!important;box-shadow:none!important;border:1px solid rgba(126,135,184,.10)!important;font-size:11px!important;font-weight:900!important}
+.collection-category-nav button:hover{transform:none!important;background:rgba(232,235,255,.96)!important}
+.collection-category-nav button.active{background:linear-gradient(135deg,#8588f4,#b87cdd)!important;color:#fff!important;box-shadow:0 8px 18px rgba(126,116,224,.20)!important}
+.collection-category-nav .collection-cat-count{display:block;margin-top:2px;font-size:9px;font-weight:800;opacity:.72}
+.rarity-section{scroll-margin-top:92px}
+@media(max-width:480px){.collection-category-nav{top:4px;gap:4px;padding:6px;border-radius:15px}.collection-category-nav button{padding:8px 3px!important;font-size:10px!important}.collection-category-nav .collection-cat-count{font-size:8px}}
+
 /* Collection: hide unowned character art and names until obtained. */
 .locked-card{background:#f0f1f5;border-color:#dfe1e9}.locked-art{width:100%;height:160px;display:flex;align-items:center;justify-content:center;background:linear-gradient(145deg,#d9dce5,#aeb3c3);border-radius:9px;color:#fff;font-size:56px;font-weight:800;filter:grayscale(1)}.locked-card strong{color:#858a9a}
 /* Memory game */
@@ -799,7 +809,7 @@
 <p class="muted mini">로그인하면 클라우드 세이브를 자동으로 불러오고 바로 <b>자동 저장</b>이 시작됩니다. 가챠·포인트·펫·게임 진행도가 바뀔 때마다 저장되며, 30초마다 한 번 더 안전 저장합니다. 수동 저장은 필요하지 않아요.</p>
 </div><div id="eventBanner" class="panel event-banner hidden" role="button" tabindex="0"><div class="event-banner-stage"><img id="eventBannerImage" alt="이벤트 배너"><div id="eventBannerOverlayText" class="event-banner-overlay-text hidden" aria-hidden="true"></div><button type="button" id="eventBannerPrev" class="event-banner-arrow event-banner-prev" aria-label="이전 배너">‹</button><button type="button" id="eventBannerNext" class="event-banner-arrow event-banner-next" aria-label="다음 배너">›</button><div id="eventBannerDots" class="event-banner-dots"></div></div><div class="event-banner-caption"><p class="muted mini" style="margin:0">눌러서 가챠로 이동 →</p></div></div><div class="panel"><h2>📅 7일 출석 보상</h2><p class="muted">하루에 한 번 출석하고 게임 포인트를 받아요. 연속 출석할수록 보상이 커져요!</p><div class="points-box"><strong id="attendanceStatus">출석 정보를 확인하는 중...</strong><p class="muted mini" id="attendanceHelp"></p></div><div id="attendanceDays" class="attendance-days" aria-label="7일 출석 보상"></div><button type="button" id="attendanceClaim" class="wide">오늘 출석하고 포인트 받기</button><p class="muted mini">매일 기기 현지 날짜 기준으로 1회 · 하루라도 빠지면 1일차부터 다시 시작 · 7일 완료 후 다음 날 1일차로 반복 · 이 브라우저에만 기록됩니다.</p></div><div class="panel"><h1>나만의 캐릭터 컬렉션</h1><p class="muted">캐릭터를 눌러 대사를 듣고, 아래 버튼으로 이미지를 저장할 수 있어요.</p><div class="hero" id="homeHero"><p class="muted">홈 캐릭터를 설정해 주세요.</p></div></div><div class="panel"><h3>오늘은 누굴 만나볼까?</h3><button onclick="navigate('gacha')">가챠 뽑으러 가기 →</button></div></section>
 <section id="gacha" class="hidden"><div class="panel"><h2>캐릭터 가챠</h2><p class="muted" id="rates"></p><p id="pityText"></p><div class="points-box"><strong>✨ 천장 포인트: <span id="pityPoints">0</span> PT</strong><p class="muted mini">뽑기 1회마다 +1 PT · SSR을 뽑아도 유지 · 90 PT(관리자 설정값)로 원하는 SSR 교환</p><button type="button" id="pityExchange" class="ghost wide">✨ SSR 교환소 · 원하는 SSR 선택</button></div><div class="points-box"><strong>🪙 보유 게임 포인트: <span id="gachaPoints">0</span> P</strong><p class="muted mini">1회 100 P · 10회 1,000 P · 게임 클리어로 포인트 획득</p></div><div class="row"><button id="draw1">1회 뽑기 · 100 P</button><button id="draw10">10회 뽑기 · 1,000 P</button></div><p class="muted mini">뽑기 1회마다 천장 포인트 +1 PT. 자연 SSR 획득 시에도 포인트는 유지되며 교환 시 필요한 PT만 차감됩니다.</p></div><div id="results" class="grid result"></div><div id="limitedGachaBox" class="panel limited-box hidden"><h2>✨ 한정 픽업 가챠</h2><p id="limitedPeriod" class="muted"></p><p id="limitedRates" class="muted mini"></p><div class="points-box"><strong class="limited-tag">🌟 한정 천장 포인트: <span id="limitedPoints">0</span> LPT</strong><p class="muted mini">한정 뽑기 1회마다 +1 LPT · 이벤트 종료 시 소멸 · 일반 PT와 별도</p></div><div class="row"><button id="limitedDraw1">한정 1회 · 100 P</button><button id="limitedDraw10">한정 10회 · 1,000 P</button></div><button id="limitedExchange" class="ghost wide">🌟 한정 캐릭터 교환</button><div id="limitedResults" class="grid result"></div></div></section>
-<section id="collection" class="hidden"><div class="panel"><h2>캐릭터 도감</h2><p class="muted">미획득 캐릭터는 비밀로 표시돼요. 가챠에서 획득하면 이미지와 이름이 공개됩니다! 보유 캐릭터는 홈에 설정할 수 있어요.</p><div id="collectionGrid"></div></div></section>
+<section id="collection" class="hidden"><div class="panel"><h2>캐릭터 도감</h2><p class="muted">미획득 캐릭터는 비밀로 표시돼요. 가챠에서 획득하면 이미지와 이름이 공개됩니다! 보유 캐릭터는 홈에 설정할 수 있어요.</p><div id="collectionCategoryNav" class="collection-category-nav" aria-label="도감 카테고리"><button type="button" data-collection-category="SSR">SSR<span id="collectionCatCountSSR" class="collection-cat-count">0명</span></button><button type="button" data-collection-category="SR">SR<span id="collectionCatCountSR" class="collection-cat-count">0명</span></button><button type="button" data-collection-category="R">R<span id="collectionCatCountR" class="collection-cat-count">0명</span></button><button type="button" data-collection-category="LIMITED">✨ 한정<span id="collectionCatCountLIMITED" class="collection-cat-count">0명</span></button></div><div id="collectionGrid"></div></div></section>
 <section id="game" class="hidden"><div class="panel"><h2>🎮 미니게임</h2><p class="muted">게임을 골라 포인트를 모아 보세요!</p><div class="game-picker"><button type="button" id="chooseMemory" class="active">🃏 카드 짝 맞추기</button><button type="button" id="choosePang">💥 캐릭터 팡!</button><button type="button" id="chooseRunner">🏃 캐릭터 점프</button><button type="button" id="chooseTetris">🧱 테트리스</button><button type="button" id="chooseRhythm">🎵 리듬 탭</button></div></div><div id="memorySection" class="panel"><h2>🃏 카드 짝 맞추기</h2><p class="muted">보유 캐릭터로 카드 짝을 맞히고 포인트를 모으세요! 보유 캐릭터가 없어도 쉬움 난이도에서 비공개 연습 카드로 시작할 수 있어요.</p><div class="points-box"><strong>🪙 내 포인트: <span id="gamePoints">0</span> P</strong><p class="muted mini">클리어 보상: 쉬움 +200 P · 보통 +400 P · 어려움 +600 P</p></div><label for="gameDifficulty">난이도</label><select id="gameDifficulty"><option value="4">🌱 쉬움 · 4쌍 / 8장</option><option value="6" selected>🌸 보통 · 6쌍 / 12장</option><option value="8">🔥 어려움 · 8쌍 / 16장</option></select><p class="muted mini" id="gameOwned"></p><div class="game-controls"><button id="gameStart">게임 시작</button><button id="gameRestart" class="ghost" disabled>다시 시작</button></div><div class="game-stats"><div class="game-stat"><span class="mini muted">시간</span><b id="gameTime">00:00</b></div><div class="game-stat"><span class="mini muted">시도</span><b id="gameMoves">0</b></div><div class="game-stat"><span class="mini muted">성공</span><b id="gameMatches">0/6</b></div></div><div id="memoryGrid" class="memory-grid" aria-label="카드 짝 맞추기 게임"></div><div id="gameResult" class="game-result hidden" role="status"></div><p class="muted mini" id="gameRecords"></p><p class="muted mini">게임 기록은 이 브라우저에만 저장됩니다. 보유 캐릭터 종류가 난이도에 필요한 수보다 적으면 시작할 수 없습니다. · ★★★ 풀돌 SSR 보유 1장당 보상 +5% (최대 +20%)</p></div>
 <div id="pangSection" class="panel hidden">
 <h2>💥 캐릭터 팡!</h2>
@@ -1789,10 +1799,12 @@ function playGachaCinematic(cards,{source='normal'}={}){
  const hasSR=cards.some(c=>c?.rarity==='SR');
 
  // 실제 결과와 문 색은 분리.
- // 보통은 최고 등급대로 문이 나오지만, 실제 SSR/한정이 든 뽑기의 1%는
- // 일부러 금색 SR 문으로 시작해서 구슬 공개 순간 승격 연출이 나온다.
- const goldFakeout=(hasLimited||hasSSR)&&Math.random()<0.01;
- const doorKind=goldFakeout?'sr':hasLimited?'limited':hasSSR?'ssr':hasSR?'sr':'r';
+ // 보통은 최고 등급대로 문이 나오지만, 실제 SSR/한정이 든 뽑기에서 아주 낮은 확률로
+ // 일반 흰색 문 또는 금색 SR 문이 먼저 나왔다가 구슬 공개 순간 승격한다.
+ const fakeDoorRoll=(hasLimited||hasSSR)?Math.random():1;
+ const fakeDoorKind=fakeDoorRoll<0.005?'r':fakeDoorRoll<0.015?'sr':null; // 흰색 0.5% · 금색 1.0%
+ const surpriseFakeout=!!fakeDoorKind;
+ const doorKind=fakeDoorKind||(hasLimited?'limited':hasSSR?'ssr':hasSR?'sr':'r');
 
  const firstSSRIndex=cards.findIndex(c=>!c?.is_limited&&c?.rarity==='SSR');
  const firstLimitedIndex=cards.findIndex(c=>c?.is_limited);
@@ -1862,17 +1874,18 @@ function playGachaCinematic(cards,{source='normal'}={}){
     orb.style.animation=fly+extra
    });
 
-   if(goldFakeout){
+   if(surpriseFakeout){
     const upgradeIndex=firstLimitedIndex>=0?firstLimitedIndex:firstSSRIndex;
     setTimeout(()=>{
      if(done||run!==gachaAnimationRun)return;
      overlay.classList.add('fakeout-upgrade');
+     const fakeLabel=fakeDoorKind==='r'?'평범한 문':'금빛 문';
      if(firstLimitedIndex>=0){
       overlay.classList.add('signal-limited','limited-burst');
-      caption.textContent='...?! 금빛이 갈라지며 LIMITED로 승격했다!'
+      caption.textContent=`...?! ${fakeLabel}에서 LIMITED로 승격했다!`
      }else{
       overlay.classList.add('signal-rainbow');
-      caption.textContent='...?! 금빛이 무지개로 승격했다!'
+      caption.textContent=`...?! ${fakeLabel}에서 무지개로 승격했다!`
      }
     },420+Math.max(0,upgradeIndex)*105)
    }else if(hasLimited&&firstLimitedIndex>=0){
@@ -2047,7 +2060,23 @@ $('collectionDetailClose').onclick=closeCollectionDetail;
 $('collectionDetailOverlay').addEventListener('click',e=>{if(e.target===$('collectionDetailOverlay'))closeCollectionDetail()});
 document.addEventListener('keydown',e=>{if(e.key==='Escape'&&!$('collectionDetailOverlay').classList.contains('hidden'))closeCollectionDetail()});
 
-function renderCollection(){const grid=$('collectionGrid');grid.replaceChildren();if(!characters.length){grid.textContent='등록된 캐릭터가 없어요.';return}for(const rarity of ['SSR','SR','R','LIMITED']){const section=document.createElement('section');section.className='rarity-section';const heading=document.createElement('h3');heading.className='rarity-heading';const title=document.createElement('span');title.textContent=rarity==='LIMITED'?'✨ 한정':rarity;const badge=document.createElement('span');badge.className='tag';const members=orderedMembers(rarity);badge.textContent=`${members.length}명`;heading.append(title,badge);section.append(heading);if(!members.length){const empty=document.createElement('p');empty.className='rarity-empty';empty.textContent='등록된 캐릭터가 없어요.';section.append(empty)}else{const cards=document.createElement('div');cards.className='grid';for(const c of members){const count=Number(local.counts[c.id])||0;const wrapper=document.createElement('div');wrapper.innerHTML=count>0?card(c,count):`<div class="card locked-card" aria-label="미획득 캐릭터"><div class="locked-art" aria-hidden="true">?</div><div class="tag">${escapeHtml(c.rarity)}</div><strong>???</strong><p class="muted mini">🔒 미획득</p></div>`;const item=wrapper.firstElementChild;if(count>0){
+
+function collectionSectionId(rarity){return 'collectionSection'+rarity}
+function refreshCollectionCategoryNav(){
+ for(const rarity of ['SSR','SR','R','LIMITED']){
+  const count=orderedMembers(rarity).length;
+  const el=$('collectionCatCount'+rarity);if(el)el.textContent=`${count}명`
+ }
+}
+function jumpCollectionCategory(rarity){
+ const section=$(collectionSectionId(rarity));
+ if(!section)return;
+ document.querySelectorAll('[data-collection-category]').forEach(btn=>btn.classList.toggle('active',btn.dataset.collectionCategory===rarity));
+ section.scrollIntoView({behavior:'smooth',block:'start'})
+}
+document.querySelectorAll('[data-collection-category]').forEach(btn=>btn.addEventListener('click',()=>jumpCollectionCategory(btn.dataset.collectionCategory)));
+
+function renderCollection(){const grid=$('collectionGrid');grid.replaceChildren();refreshCollectionCategoryNav();if(!characters.length){grid.textContent='등록된 캐릭터가 없어요.';return}for(const rarity of ['SSR','SR','R','LIMITED']){const section=document.createElement('section');section.className='rarity-section';section.id=collectionSectionId(rarity);section.dataset.collectionRarity=rarity;const heading=document.createElement('h3');heading.className='rarity-heading';const title=document.createElement('span');title.textContent=rarity==='LIMITED'?'✨ 한정':rarity;const badge=document.createElement('span');badge.className='tag';const members=orderedMembers(rarity);badge.textContent=`${members.length}명`;heading.append(title,badge);section.append(heading);if(!members.length){const empty=document.createElement('p');empty.className='rarity-empty';empty.textContent='등록된 캐릭터가 없어요.';section.append(empty)}else{const cards=document.createElement('div');cards.className='grid';for(const c of members){const count=Number(local.counts[c.id])||0;const wrapper=document.createElement('div');wrapper.innerHTML=count>0?card(c,count):`<div class="card locked-card" aria-label="미획득 캐릭터"><div class="locked-art" aria-hidden="true">?</div><div class="tag">${escapeHtml(c.rarity)}</div><strong>???</strong><p class="muted mini">🔒 미획득</p></div>`;const item=wrapper.firstElementChild;if(count>0){
  item.classList.add('collection-card-open');
  item.tabIndex=0;
  item.setAttribute('role','button');
