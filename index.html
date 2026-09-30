@@ -1802,7 +1802,7 @@ function playGachaCinematic(cards,{source='normal'}={}){
  // 보통은 최고 등급대로 문이 나오지만, 실제 SSR/한정이 든 뽑기에서 아주 낮은 확률로
  // 일반 흰색 문 또는 금색 SR 문이 먼저 나왔다가 구슬 공개 순간 승격한다.
  const fakeDoorRoll=(hasLimited||hasSSR)?Math.random():1;
- const fakeDoorKind=fakeDoorRoll<0.005?'r':fakeDoorRoll<0.015?'sr':null; // 흰색 0.5% · 금색 1.0%
+ const fakeDoorKind=fakeDoorRoll<0.05?'r':fakeDoorRoll<0.15?'sr':null; // 흰색 5% · 금색 10%
  const surpriseFakeout=!!fakeDoorKind;
  const doorKind=fakeDoorKind||(hasLimited?'limited':hasSSR?'ssr':hasSR?'sr':'r');
 
