@@ -185,6 +185,17 @@
 .collection-detail-owned{margin:0;color:#747b92;font-size:12px}
 .collection-detail-section{padding:13px;border-radius:18px;background:rgba(255,255,255,.64);border:1px solid rgba(255,255,255,.85);box-shadow:0 8px 20px rgba(99,109,150,.07)}
 .collection-detail-section-title{margin:0 0 9px;font-size:12px;font-weight:950;color:#626a88}
+.collection-detail-section-head{display:flex;align-items:center;justify-content:space-between;gap:8px;flex-wrap:wrap;margin-bottom:9px}
+.collection-detail-section-head .collection-detail-section-title{margin:0}
+.collection-detail-view-actions{display:flex;gap:5px;flex-wrap:wrap}
+.collection-detail-view-actions button{width:auto!important;padding:7px 9px!important;font-size:10px!important}
+.collection-detail-view-actions button.active{background:linear-gradient(135deg,#7c79ec,#d776bd)!important;color:#fff!important}
+.collection-detail-dialogue{min-height:58px;padding:12px 13px;border-radius:15px;background:linear-gradient(180deg,rgba(244,246,255,.82),rgba(255,247,252,.74));border:1px solid rgba(151,158,202,.12);color:#515a77;font-size:13px;line-height:1.6;cursor:pointer}
+.collection-detail-dialogue:hover{background:linear-gradient(180deg,rgba(240,243,255,.92),rgba(255,243,250,.86))}
+.collection-detail-dialogue-hint{margin:6px 0 0;color:#8a90a5;font-size:10px}
+.pet-save-image{display:block;width:min(100%,280px);margin:8px auto 12px}
+.pet-egg .pet-archive-save{width:100%;margin-top:7px;padding:8px 9px;font-size:11px}
+
 .collection-detail-stars{font-size:23px;letter-spacing:3px;font-weight:950;color:#b78621}
 .collection-detail-stars.full{color:#8f5de4;text-shadow:0 0 10px #c7a9ff99}
 .collection-detail-status{margin:5px 0 10px;color:#747b92;font-size:11px;line-height:1.5}
@@ -993,6 +1004,17 @@
           <div id="collectionDetailStars" class="collection-detail-stars">☆☆☆</div>
           <p id="collectionDetailLimitInfo" class="collection-detail-status"></p>
           <button type="button" id="collectionDetailEnhance" class="wide">강화</button>
+        </div>
+        <div class="collection-detail-section">
+          <div class="collection-detail-section-head">
+            <p class="collection-detail-section-title">💬 캐릭터 대사</p>
+            <div id="collectionDetailViewArtChoice" class="collection-detail-view-actions hidden">
+              <button type="button" id="collectionDetailViewBase" class="ghost">풀돌 전</button>
+              <button type="button" id="collectionDetailViewFull" class="ghost">풀돌 후</button>
+            </div>
+          </div>
+          <div id="collectionDetailDialogue" class="collection-detail-dialogue" role="button" tabindex="0">캐릭터를 눌러 대사를 들어보세요!</div>
+          <p class="collection-detail-dialogue-hint">큰 일러스트나 대사창을 누르면 등록된 대사가 랜덤으로 나와요.</p>
         </div>
         <div class="collection-detail-section">
           <p class="collection-detail-section-title">🏠 홈 캐릭터 설정</p>
@@ -1908,9 +1930,23 @@ function playGachaCinematic(cards,{source='normal'}={}){
 function orderedMembers(rarity){const pool=rarity==='LIMITED'?characters.filter(c=>c.is_limited):characters.filter(c=>c.rarity===rarity&&!c.is_limited);return pool.sort((a,b)=>(Number(a.sort_order)||0)-(Number(b.sort_order)||0)||String(a.created_at||'').localeCompare(String(b.created_at||''))||String(a.id).localeCompare(String(b.id)))}
 
 let collectionDetailId=null;
+let collectionDetailViewMode='auto';
+function collectionDetailDisplayImage(c){
+ if(!c)return '';
+ if(limitBreakLevel(c)>=3&&c.full_limit_image_url){
+  if(collectionDetailViewMode==='base')return c.image_url||'';
+  if(collectionDetailViewMode==='full')return c.full_limit_image_url||c.image_url||'';
+ }
+ return characterDisplayImage(c)
+}
+function collectionDetailSpeak(c){
+ const lines=Array.isArray(c?.dialogues)?c.dialogues.filter(Boolean):[];
+ $('collectionDetailDialogue').textContent=lines.length?lines[Math.floor(Math.random()*lines.length)]:'등록된 대사가 없어요.'
+}
 function collectionDetailCharacter(){return characters.find(c=>String(c.id)===String(collectionDetailId))||null}
 function closeCollectionDetail(){
  collectionDetailId=null;
+ collectionDetailViewMode='auto';
  $('collectionDetailOverlay')?.classList.add('hidden');
  document.body.style.overflow=''
 }
@@ -1923,7 +1959,37 @@ function refreshCollectionDetail(){
  const lv=limitBreakLevel(c),dupes=Math.max(0,count-1),selected=local.homeCharacterIds.includes(c.id);
  const canChooseArt=lv>=3&&!!c.full_limit_image_url;
 
- $('collectionDetailArt').src=characterDisplayImage(c);
+ if(!canChooseArt)collectionDetailViewMode='auto';
+ else if(!['base','full'].includes(collectionDetailViewMode))collectionDetailViewMode='full';
+
+ const detailArt=$('collectionDetailArt');
+ detailArt.src=collectionDetailDisplayImage(c);
+ detailArt.alt=c.name+(collectionDetailViewMode==='base'?' 풀돌 전':'');
+ detailArt.onclick=()=>collectionDetailSpeak(c);
+
+ const viewChoice=$('collectionDetailViewArtChoice');
+ viewChoice.classList.toggle('hidden',!canChooseArt);
+ if(canChooseArt){
+  $('collectionDetailViewBase').classList.toggle('active',collectionDetailViewMode==='base');
+  $('collectionDetailViewFull').classList.toggle('active',collectionDetailViewMode==='full');
+  $('collectionDetailViewBase').onclick=()=>{
+   collectionDetailViewMode='base';
+   refreshCollectionDetail()
+  };
+  $('collectionDetailViewFull').onclick=()=>{
+   collectionDetailViewMode='full';
+   refreshCollectionDetail()
+  }
+ }
+ const dialogue=$('collectionDetailDialogue');
+ dialogue.onclick=()=>collectionDetailSpeak(c);
+ dialogue.onkeydown=e=>{
+  if(e.key==='Enter'||e.key===' '){
+   e.preventDefault();
+   collectionDetailSpeak(c)
+  }
+ };
+
  $('collectionDetailArt').alt=c.name;
  $('collectionDetailName').textContent=c.name;
  $('collectionDetailRarity').textContent=(c.is_limited?'✨ 한정 · ':'')+c.rarity;
@@ -1971,6 +2037,8 @@ function refreshCollectionDetail(){
 function showCollectionDetail(c){
  if(!c||(Number(local.counts[c.id])||0)<1)return;
  collectionDetailId=c.id;
+ collectionDetailViewMode=limitBreakLevel(c)>=3&&c.full_limit_image_url?'full':'auto';
+ $('collectionDetailDialogue').textContent='캐릭터를 눌러 대사를 들어보세요!';
  refreshCollectionDetail();
  $('collectionDetailOverlay').classList.remove('hidden');
  document.body.style.overflow='hidden'
@@ -2037,7 +2105,10 @@ async function enhanceSSR(c){
  render();
  renderCollection();
  arcadeCharacters();
- if(String(collectionDetailId)===String(c.id))refreshCollectionDetail();
+ if(String(collectionDetailId)===String(c.id)){
+  if(level+1>=3&&c.full_limit_image_url)collectionDetailViewMode='full';
+  refreshCollectionDetail()
+ }
  showLimitBreakEffect(c,level+1);
 }
 
@@ -3531,15 +3602,46 @@ const petNow=()=>Date.now();
 function petSay(def,key,itemId){const d=def?.dialogues||{};const item=characters.find(c=>c.id===itemId);const value=(key==='gift'&&itemId&&(d.specialGifts?.[itemId]||d.specialGifts?.[item?.name]))||d[key]||PET_DIALOGUES[key]||[];const choices=Array.isArray(value)?value:[value];return String(choices.filter(Boolean)[Math.floor(Math.random()*choices.filter(Boolean).length)]||'...')}
 function petStage(p){return p.xp<300?0:p.xp<1800?1:p.xp<6800?2:3}
 // Finished adults are archived once; the archive survives switching to another egg.
+
+async function downloadGameImage(url,filenameBase='image'){
+ if(!url)return notice('저장할 이미지를 찾을 수 없어요.');
+ try{
+  const response=await fetch(url);
+  if(!response.ok)throw new Error('이미지 불러오기 실패');
+  const blob=await response.blob();
+  const ext=({'image/png':'png','image/jpeg':'jpg','image/webp':'webp','image/gif':'gif'})[blob.type]||'png';
+  const safe=String(filenameBase||'image').replace(/[\\/:*?"<>|\x00-\x1f]/g,'_');
+  const objectUrl=URL.createObjectURL(blob);
+  const link=document.createElement('a');
+  link.href=objectUrl;
+  link.download=safe+'.'+ext;
+  document.body.append(link);
+  link.click();
+  link.remove();
+  setTimeout(()=>URL.revokeObjectURL(objectUrl),30000);
+  notice('이미지 저장을 시작했어요!')
+ }catch(err){
+  notice('자동 저장에 실패했어요. 잠시 후 다시 시도해 주세요.')
+ }
+}
 function petArchiveAdult(p){if(!p||p.xp<6800)return false;local.petArchive=Array.isArray(local.petArchive)?local.petArchive:[];if(!p.archiveId)p.archiveId=crypto.randomUUID();if(local.petArchive.some(entry=>entry.archiveId===p.archiveId))return false;const def=petCatalog.find(x=>x.id===p.id);local.petArchive.push({archiveId:p.archiveId,id:p.id,name:def?.name||'이름 없는 펫',image:petImage(def,3,p),xp:p.xp,aff:p.aff,createdAt:p.createdAt,completedAt:petNow()});save();return true}
-function petArchiveGallery(area){const archive=Array.isArray(local.petArchive)?local.petArchive:[];if(!archive.length)return;const section=document.createElement('section');section.className='panel';const heading=document.createElement('h3');heading.textContent=`🏅 육성 완료 펫 보관함 (${archive.length}마리)`;section.append(heading);const grid=document.createElement('div');grid.className='pet-egg-grid';for(const entry of [...archive].reverse()){const card=document.createElement('div');card.className='pet-egg';const image=document.createElement('img');image.src=entry.image||petCatalog.find(x=>x.id===entry.id)?.image_adult||'';image.alt=entry.name+' 성체';const name=document.createElement('strong');name.textContent=entry.name;const info=document.createElement('p');info.className='muted mini';info.textContent=`성체 완성 · ${Number(entry.xp||6800).toLocaleString()} EXP · ${new Date(entry.completedAt).toLocaleDateString('ko-KR')}`;card.append(image,name,info);grid.append(card)}section.append(grid);area.append(section)}
+function petArchiveGallery(area){const archive=Array.isArray(local.petArchive)?local.petArchive:[];if(!archive.length)return;const section=document.createElement('section');section.className='panel';const heading=document.createElement('h3');heading.textContent=`🏅 육성 완료 펫 보관함 (${archive.length}마리)`;section.append(heading);const grid=document.createElement('div');grid.className='pet-egg-grid';for(const entry of [...archive].reverse()){const card=document.createElement('div');card.className='pet-egg';const image=document.createElement('img');image.src=entry.image||petCatalog.find(x=>x.id===entry.id)?.image_adult||'';image.alt=entry.name+' 성체';const name=document.createElement('strong');name.textContent=entry.name;const info=document.createElement('p');info.className='muted mini';info.textContent=`성체 완성 · ${Number(entry.xp||6800).toLocaleString()} EXP · ${new Date(entry.completedAt).toLocaleDateString('ko-KR')}`;const saveImg=document.createElement('button');saveImg.type='button';saveImg.className='ghost pet-archive-save';saveImg.textContent='📥 이미지 저장';saveImg.disabled=!image.src;saveImg.onclick=()=>downloadGameImage(image.currentSrc||image.src,entry.name+' 성체');card.append(image,name,info,saveImg);grid.append(card)}section.append(grid);area.append(section)}
 function petApplyTime(p){if(!p||p.dead)return;const now=petNow(),start=Math.min(now,Number(p.lastCare)||now),hours=(now-start)/3600000;const sincePlay=(now-(Number(p.lastPlay)||start))/3600000,sinceWalk=(now-(Number(p.lastWalk)||start))/3600000;p.hunger=Math.min(100,Math.max(p.hunger||0,Math.floor(hours*100/22)));p.dirt=Math.min(100,Math.max(p.dirt||0,Math.floor(hours*100/22)));p.mood=Math.max(0,Math.min(100,Math.min(p.mood??80,100-(sincePlay>=12?20:0)-(sinceWalk>=24?30:0))));if(sincePlay>=24&&sinceWalk>=24)p.mood=0;p.sick=hours>=48;if(hours>=72){p.dead=true;p.deathAt=now;p.cause=p.mood===0&&sincePlay>=72&&sinceWalk>=72?'우울증':p.hunger>=100&&p.actions?.feed&&now-p.actions.feed>=259200000?'굶주림':p.sick?'질병':'장기 방치'}save()}
 function petStatus(p){if(p.sick)return 'sick';if(p.hunger>=100&&p.dirt>=100)return 'both';if(p.mood<=0)return 'depressed';const now=petNow();if(now-(p.lastPlay||p.lastCare)>=86400000&&now-(p.lastWalk||p.lastCare)>=86400000)return 'noBoth';if(p.hunger>=100)return 'hungry';if(p.dirt>=100)return 'dirty';if(now-(p.lastWalk||p.lastCare)>=86400000)return 'noWalk';if(now-(p.lastPlay||p.lastCare)>=43200000)return 'noPlay';return 'feed'}
 function petVisualState(p){if(!p||p.dead)return 'base';if((p.dirt||0)>=70)return 'dirty';if((p.mood??80)<=30)return 'sad';if((p.mood??80)>=75&&(p.dirt||0)<50&&(p.hunger||0)<80)return 'happy';return 'base'}
 function petImage(def,stage,p=null){const stageKey=['egg','baby','child','adult'][stage];if(stage===0)return (petVisualState(p)==='dirty'&&def?.image_egg_dirty)||def?.image_egg||'';const state=petVisualState(p);return (state!=='base'&&def?.[`image_${stageKey}_${state}`])||def?.['image_'+stageKey]||''}
 function petMeter(label,value,invert=false){const d=document.createElement('div');d.className='pet-stat';const v=Math.min(100,Math.max(0,value));d.innerHTML=`<strong>${label} ${Math.round(v)}/100</strong><br><meter min="0" max="100" value="${v}" ${invert?'low="20" high="80" optimum="0"':''}></meter>`;return d}
 function renderPet(){const area=$('petArea');if(!area)return;area.replaceChildren();const p=local.pet;if(!p){const intro=document.createElement('p');intro.textContent=petCatalog.length?'키우고 싶은 알을 선택해 주세요!':'아직 등록된 펫이 없어요. 관리자가 펫을 등록하고 SQL을 설치해야 해요.';area.append(intro);const grid=document.createElement('div');grid.className='pet-egg-grid';for(const def of petCatalog.filter(x=>x.published)){const card=document.createElement('div');card.className='pet-egg';const img=document.createElement('img');img.src=petImage(def,0);img.alt=def.name+' 알';const name=document.createElement('strong');name.textContent=def.name;const desc=document.createElement('p');desc.className='muted mini';desc.textContent=def.description||'';const b=document.createElement('button');b.textContent='이 알 선택';b.onclick=()=>{if(local.pet||!confirm(def.name+' 알을 선택할까요? 현재는 한 마리씩 키울 수 있어요.'))return;const now=petNow();local.pet={id:def.id,xp:0,aff:0,mood:80,hunger:0,dirt:0,createdAt:now,lastCare:now,lastPlay:now,lastWalk:now,actions:{},dead:false};save();renderPet()};card.append(img,name,desc,b);grid.append(card)}area.append(grid);petArchiveGallery(area);return}
-petApplyTime(p);if(petArchiveAdult(p))save();const def=petCatalog.find(x=>x.id===p.id);if(!def){area.textContent='선택한 펫을 목록에서 찾을 수 없어요. 관리자가 해당 펫을 복구해야 합니다.';return}const stage=petStage(p);const title=document.createElement('h3');title.textContent=`${def.name} · ${['🥚 알','🐣 아기','🐥 어린이','🐤 성인'][stage]}`;area.append(title);if(!p.dead){const touchHint=document.createElement('p');touchHint.className='muted mini';touchHint.textContent='👆 펫의 머리·얼굴·몸을 터치하면 부위별 반응 대사가 나와요. 꼬질꼬질 상태에서는 터치해도 꼬질꼬질 표정이 유지돼요.';area.append(touchHint)}const img=document.createElement('img');img.className='pet-avatar';if(p.dead){if(def.image_grave){img.src=def.image_grave;img.alt=def.name+' 무덤';area.append(img)}else{const grave=document.createElement('div');grave.className='pet-grave-fallback';grave.setAttribute('role','img');grave.setAttribute('aria-label',def.name+' 무덤');grave.textContent='🪦';area.append(grave)}}else{img.src=petImage(def,stage,p);img.alt=def.name+' '+({happy:'행복',sad:'속상함',dirty:'꼬질꼬질',base:'기본'}[petVisualState(p)]||'기본')+' 상태';img.classList.add('pet-touchable');img.title='머리·얼굴·몸을 터치해 보세요.';img.tabIndex=0;area.append(img)}const speech=document.createElement('div');speech.className='pet-dialogue';speech.textContent=p.dead?petSay(def,'death'):p.speech||petSay(def,petStatus(p));area.append(speech);if(!p.dead){const touchPet=(clientY=null)=>{const visual=petVisualState(p);if(visual!=='dirty'){img.src=petImage(def,stage,null);img.alt=def.name+' 기본 표정'}else{img.src=petImage(def,stage,p);img.alt=def.name+' 꼬질꼬질 상태'}let key='touchHead';if(clientY!==null){const rect=img.getBoundingClientRect();const ratio=rect.height>0?(clientY-rect.top)/rect.height:0;if(ratio>0.60)key='touchBody';else if(ratio>0.35)key='touchFace'}speech.textContent=petSay(def,key)};img.addEventListener('click',e=>touchPet(e.clientY));img.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();touchPet(null)}})}if(p.dead){const end=document.createElement('p');end.textContent=`💀 ${def.name} · ${['알','아기','어린이','성인'][stage]} 단계 사망 · 사망 원인: ${p.cause||'알 수 없음'} · 함께한 시간: ${Math.max(1,Math.ceil(((p.deathAt||petNow())-(p.createdAt||p.lastCare||petNow()))/86400000))}일`;const again=document.createElement('button');again.textContent='🥚 펫 다시 키우기 · 새 알 선택';again.onclick=()=>{if(!confirm('이전 펫과 작별하고 새 알을 선택할까요?'))return;local.pet=null;save();renderPet()};area.append(end,again);petArchiveGallery(area);return}
+petApplyTime(p);if(petArchiveAdult(p))save();const def=petCatalog.find(x=>x.id===p.id);if(!def){area.textContent='선택한 펫을 목록에서 찾을 수 없어요. 관리자가 해당 펫을 복구해야 합니다.';return}const stage=petStage(p);const title=document.createElement('h3');title.textContent=`${def.name} · ${['🥚 알','🐣 아기','🐥 어린이','🐤 성인'][stage]}`;area.append(title);if(!p.dead){const touchHint=document.createElement('p');touchHint.className='muted mini';touchHint.textContent='👆 펫의 머리·얼굴·몸을 터치하면 부위별 반응 대사가 나와요. 꼬질꼬질 상태에서는 터치해도 꼬질꼬질 표정이 유지돼요.';area.append(touchHint)}const img=document.createElement('img');img.className='pet-avatar';if(p.dead){if(def.image_grave){img.src=def.image_grave;img.alt=def.name+' 무덤';area.append(img)}else{const grave=document.createElement('div');grave.className='pet-grave-fallback';grave.setAttribute('role','img');grave.setAttribute('aria-label',def.name+' 무덤');grave.textContent='🪦';area.append(grave)}}else{img.src=petImage(def,stage,p);img.alt=def.name+' '+({happy:'행복',sad:'속상함',dirty:'꼬질꼬질',base:'기본'}[petVisualState(p)]||'기본')+' 상태';img.classList.add('pet-touchable');img.title='머리·얼굴·몸을 터치해 보세요.';img.tabIndex=0;area.append(img)}const speech=document.createElement('div');speech.className='pet-dialogue';speech.textContent=p.dead?petSay(def,'death'):p.speech||petSay(def,petStatus(p));area.append(speech);
+if(img.isConnected&&img.src){
+ const petSave=document.createElement('button');
+ petSave.type='button';
+ petSave.className='ghost pet-save-image';
+ petSave.textContent='📥 현재 펫 이미지 저장';
+ petSave.onclick=()=>downloadGameImage(img.currentSrc||img.src,`${def.name}-${['알','아기','어린이','성인'][stage]}-${petVisualState(p)}`);
+ area.append(petSave)
+}
+if(!p.dead){const touchPet=(clientY=null)=>{const visual=petVisualState(p);if(visual!=='dirty'){img.src=petImage(def,stage,null);img.alt=def.name+' 기본 표정'}else{img.src=petImage(def,stage,p);img.alt=def.name+' 꼬질꼬질 상태'}let key='touchHead';if(clientY!==null){const rect=img.getBoundingClientRect();const ratio=rect.height>0?(clientY-rect.top)/rect.height:0;if(ratio>0.60)key='touchBody';else if(ratio>0.35)key='touchFace'}speech.textContent=petSay(def,key)};img.addEventListener('click',e=>touchPet(e.clientY));img.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();touchPet(null)}})}if(p.dead){const end=document.createElement('p');end.textContent=`💀 ${def.name} · ${['알','아기','어린이','성인'][stage]} 단계 사망 · 사망 원인: ${p.cause||'알 수 없음'} · 함께한 시간: ${Math.max(1,Math.ceil(((p.deathAt||petNow())-(p.createdAt||p.lastCare||petNow()))/86400000))}일`;const again=document.createElement('button');again.textContent='🥚 펫 다시 키우기 · 새 알 선택';again.onclick=()=>{if(!confirm('이전 펫과 작별하고 새 알을 선택할까요?'))return;local.pet=null;save();renderPet()};area.append(end,again);petArchiveGallery(area);return}
 const exp=document.createElement('p');const goal=PET_XP[stage];exp.textContent=stage===3?`누적 경험치 ${p.xp.toLocaleString()} EXP · 성체 달성!`:`경험치 ${p.xp.toLocaleString()} / ${goal.toLocaleString()} EXP`;area.append(exp);if(stage===3){const archived=petArchiveAdult(p);if(archived)notice('🎉 성체 육성 완료! 보관함에 자동 저장했어요.');const switchButton=document.createElement('button');switchButton.className='wide';switchButton.textContent='🥚 다른 펫 알 선택하고 새로 키우기';switchButton.onclick=()=>{petArchiveAdult(p);if(!confirm('완성한 펫은 보관함에 남겨 두고 새로운 알을 선택할까요?'))return;local.pet=null;save();renderPet()};area.append(switchButton)}if(stage!==3){const m=document.createElement('meter');m.min=stage?PET_XP[stage-1]:0;m.max=goal;m.value=p.xp;m.style.width='100%';area.append(m)}area.append(petMeter('💗 호감도',p.aff),petMeter('🍽️ 배고픔',p.hunger,true),petMeter('🛁 더러움',p.dirt,true),petMeter('😊 기분',p.mood));const warning=document.createElement('p');warning.className='muted mini';warning.textContent=p.sick?'🦠 질병 위험! 72시간 방치 전에 돌봐 주세요.': '마지막 돌봄 후 약 22시간이면 배고픔·더러움 최대, 48시간 질병, 72시간 사망합니다.';area.append(warning);
 // Allow changing eggs mid-growth. Unfinished progress is discarded only after explicit confirmation.
 if(stage!==3){const changePet=document.createElement('button');changePet.type='button';changePet.className='ghost wide';changePet.style.margin='10px 0';changePet.textContent='🥚 다른 펫으로 바꿔 키우기';changePet.addEventListener('click',()=>{const current=local.pet;if(!current||current.dead)return;petApplyTime(current);if(current.dead){renderPet();return}if(petStage(current)===3){petArchiveAdult(current);save();if(!confirm('완성한 펫은 보관함에 남겨 두고 다른 알을 선택할까요?'))return}else if(!confirm(`${def.name}의 현재 육성 기록(${current.xp.toLocaleString()} EXP)은 사라지고 복구할 수 없어요. 다른 알을 선택할까요?`))return;local.pet=null;save();renderPet();notice('새로운 펫 알을 선택해 주세요.');});area.append(changePet)}
