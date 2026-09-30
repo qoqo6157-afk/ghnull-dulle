@@ -271,6 +271,42 @@
 /* 캐릭터 이미지의 일반적인 저장 동작 제한 (스크린샷·개발자 도구까지 차단하지는 못함) */
 .card img,.pity-choice img,.admin-item img,.edit-panel img,.memory-card img{ -webkit-user-select:none;user-select:none;-webkit-user-drag:none;-webkit-touch-callout:none; }
 
+
+/* Detective Case Files */
+.detective-shell{--det-ink:#293047;--det-muted:#747c94;--det-line:#dfe3ef;--det-paper:#fffefa;--det-accent:#6466c9;--det-red:#b95163}
+.detective-top{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-bottom:12px}
+.detective-titleline{min-width:0}.detective-titleline h2{margin:0 0 5px}.detective-case-no{display:inline-flex;align-items:center;gap:6px;padding:5px 9px;border-radius:999px;background:#f0effb;color:#5e5fae;font-size:10px;font-weight:900;letter-spacing:.08em}
+.detective-actions{display:flex;gap:6px;flex-wrap:wrap}.detective-actions button{width:auto;padding:8px 11px;font-size:11px}
+.detective-partner{display:grid;grid-template-columns:72px minmax(0,1fr);gap:10px;align-items:center;margin:12px 0;padding:10px;border:1px solid #e2e4ef;border-radius:16px;background:linear-gradient(145deg,#fbfbff,#fff9fc)}
+.detective-partner img{width:72px;height:72px;object-fit:contain;border-radius:12px;background:#fff;border:1px solid #ececf4}.detective-partner img.hidden{display:none}
+.detective-partner-name{font-weight:900}.detective-partner-bonus{margin:3px 0 0;font-size:11px;color:#7a7f93}.detective-partner-bonus.full{color:#b13d8a;font-weight:900}
+.detective-progress{height:7px;border-radius:999px;background:#eceef5;overflow:hidden;margin:10px 0 6px}.detective-progress>i{display:block;height:100%;width:0;background:linear-gradient(90deg,#6e70d8,#b767b0);border-radius:inherit;transition:width .25s ease}
+.detective-tabs{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:5px;margin:14px 0}.detective-tabs button{min-width:0;padding:9px 5px;font-size:10px;background:#f1f1f8;color:#61677f;border:1px solid #e4e5ef}.detective-tabs button.active{background:#5f62c7;color:#fff;border-color:#5f62c7}
+.detective-view{animation:detViewIn .22s ease both}@keyframes detViewIn{from{opacity:0;transform:translateY(5px)}to{opacity:1;transform:none}}
+.detective-brief{position:relative;overflow:hidden;padding:18px;border:1px solid #e5e1d9;border-radius:18px;background:linear-gradient(145deg,#fffefa,#fbf8f1);box-shadow:0 7px 20px #38311d0b}
+.detective-brief::before{content:"CASE FILE";position:absolute;right:-16px;top:16px;transform:rotate(8deg);padding:6px 24px;border:2px solid #c76570;color:#b85260;font-size:10px;font-weight:950;letter-spacing:.18em;opacity:.45}
+.detective-brief h3{margin:0 0 7px;font-size:20px}.detective-brief p{line-height:1.65}.detective-facts{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:7px;margin-top:12px}.detective-fact{padding:10px;border-radius:12px;background:#ffffffb8;border:1px solid #ebe7de}.detective-fact span{display:block;font-size:9px;color:#8a8790}.detective-fact b{display:block;margin-top:3px;font-size:12px}
+.detective-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+.detective-location,.detective-suspect,.detective-clue{position:relative;text-align:left;border:1px solid #e2e4ee;border-radius:16px;background:#fff;padding:13px;box-shadow:0 5px 16px #3c42600a}
+.detective-location button,.detective-suspect button{margin-top:9px;width:100%;padding:8px 9px;font-size:11px}
+.detective-location.done{background:#f8fbfa;border-color:#cfe7db}.detective-location-icon,.detective-suspect-icon{font-size:25px}.detective-location h4,.detective-suspect h4{margin:5px 0 4px;font-size:14px}.detective-location p,.detective-suspect p{margin:3px 0;font-size:11px;line-height:1.55;color:#747b90}
+.detective-found{display:inline-flex;margin-top:4px;padding:3px 7px;border-radius:999px;background:#eef0fb;color:#6065ad;font-size:9px;font-weight:900}
+.detective-statement{margin-top:8px;padding:9px;border-left:3px solid #7779cf;border-radius:0 10px 10px 0;background:#f7f7fd;font-size:11px;line-height:1.6;color:#555d78}
+.detective-profile-line{margin-top:6px;padding-top:6px;border-top:1px dashed #e1e3ed;font-size:10px;color:#777e91}
+.detective-board{display:grid;grid-template-columns:minmax(0,1.35fr) minmax(210px,.65fr);gap:12px;align-items:start}
+.detective-evidence-list{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+.detective-clue{cursor:pointer;min-height:116px;transition:transform .14s ease,border-color .14s ease,box-shadow .14s ease}.detective-clue:hover{transform:translateY(-1px)}.detective-clue.selected{border-color:#6c6fd1;box-shadow:0 0 0 2px #6c6fd122 inset,0 7px 18px #5557a71a;background:#fafaff}
+.detective-clue .icon{font-size:20px}.detective-clue h4{margin:5px 0 4px;font-size:12px}.detective-clue p{margin:0;font-size:10px;line-height:1.5;color:#747b90}.detective-clue .where{margin-top:7px;font-size:9px;color:#9196a8}
+.detective-connect{position:sticky;top:10px;padding:12px;border:1px solid #e2e4ee;border-radius:16px;background:#fafaff}.detective-connect h4{margin:0 0 8px}.detective-slot{min-height:52px;padding:8px;border:1px dashed #cfd2e2;border-radius:11px;background:#fff;display:flex;align-items:center;font-size:10px;color:#777d91;margin:5px 0}.detective-connect button{width:100%;margin-top:7px;padding:9px;font-size:11px}
+.detective-deductions{margin-top:10px}.detective-deduction{padding:9px 10px;margin:6px 0;border-radius:11px;background:#f2effb;border:1px solid #e1daf1;font-size:10px;line-height:1.5;color:#5d527a}.detective-deduction strong{display:block;color:#4e426d;margin-bottom:2px}
+.detective-empty{padding:20px;border:1px dashed #d9dce8;border-radius:14px;text-align:center;color:#858b9f;font-size:11px;background:#fafbfe}
+.detective-final{display:grid;grid-template-columns:minmax(0,1fr) minmax(230px,.72fr);gap:12px}.detective-final-form{padding:14px;border:1px solid #e1e3ee;border-radius:16px;background:#fbfbff}.detective-final-form label{margin-top:9px}.detective-final-form select{margin-bottom:5px}.detective-final button{width:100%;margin-top:10px}
+.detective-notes{padding:14px;border-radius:16px;background:#fffdf5;border:1px solid #e8e1cc}.detective-notes h4{margin:0 0 8px}.detective-notes ul{padding-left:18px;margin:0}.detective-notes li{margin:5px 0;font-size:10px;line-height:1.55;color:#696b75}
+.detective-result{margin-top:12px;padding:13px;border-radius:14px;background:#f1f1fa;border:1px solid #dedfeb;font-size:12px;line-height:1.6}.detective-result.success{background:#edf9f3;border-color:#c8e7d8;color:#3f6d57}.detective-result.fail{background:#fff4f5;border-color:#efcdd3;color:#8f4954}
+.detective-solved{padding:18px;text-align:center;border-radius:18px;background:linear-gradient(145deg,#eef9f4,#f7f2ff);border:1px solid #d8e8df}.detective-solved .seal{font-size:36px}.detective-solved h3{margin:5px 0}.detective-solved p{font-size:11px;line-height:1.65;color:#687183}
+.detective-log{min-height:38px;margin:8px 0;padding:9px 11px;border-radius:11px;background:#f4f5fa;color:#697087;font-size:10px;line-height:1.5}
+@media(max-width:640px){.detective-tabs{grid-template-columns:repeat(3,minmax(0,1fr))}.detective-grid,.detective-board,.detective-final{grid-template-columns:1fr}.detective-evidence-list{grid-template-columns:1fr}.detective-connect{position:static}.detective-facts{grid-template-columns:1fr}.detective-partner{grid-template-columns:58px 1fr}.detective-partner img{width:58px;height:58px}}
+
 /* Character Pang */
 .game-picker{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin:12px 0}.game-picker button{min-height:78px;background:#eeeefa;color:#393b8d;border:2px solid transparent}.game-picker button.active{border-color:#595bd7;background:#dedefb}.pang-board-wrap{position:relative;max-width:510px;margin:14px auto;isolation:isolate}
 .pang-board{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:4px;width:100%;margin:0;touch-action:none;user-select:none;-webkit-user-select:none;-webkit-touch-callout:none}
@@ -1035,7 +1071,7 @@
 </div><div id="eventBanner" class="panel event-banner hidden" role="button" tabindex="0"><div class="event-banner-stage"><img id="eventBannerImage" alt="이벤트 배너"><div id="eventBannerOverlayText" class="event-banner-overlay-text hidden" aria-hidden="true"></div><button type="button" id="eventBannerPrev" class="event-banner-arrow event-banner-prev" aria-label="이전 배너">‹</button><button type="button" id="eventBannerNext" class="event-banner-arrow event-banner-next" aria-label="다음 배너">›</button><div id="eventBannerDots" class="event-banner-dots"></div></div><div class="event-banner-caption"><p class="muted mini" style="margin:0">눌러서 가챠로 이동 →</p></div></div><div class="panel"><h2>📅 7일 출석 보상</h2><p class="muted">하루에 한 번 출석하고 게임 포인트를 받아요. 연속 출석할수록 보상이 커져요!</p><div class="points-box"><strong id="attendanceStatus">출석 정보를 확인하는 중...</strong><p class="muted mini" id="attendanceHelp"></p></div><div id="attendanceDays" class="attendance-days" aria-label="7일 출석 보상"></div><button type="button" id="attendanceClaim" class="wide">오늘 출석하고 포인트 받기</button><p class="muted mini">매일 기기 현지 날짜 기준으로 1회 · 하루라도 빠지면 1일차부터 다시 시작 · 7일 완료 후 다음 날 1일차로 반복 · 이 브라우저에만 기록됩니다.</p></div><div class="panel"><h1>나만의 캐릭터 컬렉션</h1><p class="muted">캐릭터를 눌러 대사를 듣고, 아래 버튼으로 이미지를 저장할 수 있어요.</p><div class="hero" id="homeHero"><p class="muted">홈 캐릭터를 설정해 주세요.</p></div></div><div class="panel"><h3>오늘은 누굴 만나볼까?</h3><button onclick="navigate('gacha')">가챠 뽑으러 가기 →</button></div></section>
 <section id="gacha" class="hidden"><div class="panel"><h2>캐릭터 가챠</h2><p class="muted" id="rates"></p><p id="pityText"></p><div class="points-box"><strong>✨ 천장 포인트: <span id="pityPoints">0</span> PT</strong><p class="muted mini">뽑기 1회마다 +1 PT · SSR을 뽑아도 유지 · 90 PT(관리자 설정값)로 원하는 SSR 교환</p><button type="button" id="pityExchange" class="ghost wide">✨ SSR 교환소 · 원하는 SSR 선택</button></div><div class="points-box"><strong>🪙 보유 게임 포인트: <span id="gachaPoints">0</span> P</strong><p class="muted mini">1회 100 P · 10회 1,000 P · 게임 클리어로 포인트 획득</p></div><div class="row"><button id="draw1">1회 뽑기 · 100 P</button><button id="draw10">10회 뽑기 · 1,000 P</button></div><p class="muted mini">뽑기 1회마다 천장 포인트 +1 PT. 자연 SSR 획득 시에도 포인트는 유지되며 교환 시 필요한 PT만 차감됩니다.</p></div><div id="results" class="grid result"></div><div id="limitedGachaBox" class="panel limited-box hidden"><h2>✨ 한정 픽업 가챠</h2><p id="limitedPeriod" class="muted"></p><p id="limitedRates" class="muted mini"></p><div class="points-box"><strong class="limited-tag">🌟 한정 천장 포인트: <span id="limitedPoints">0</span> LPT</strong><p class="muted mini">한정 뽑기 1회마다 +1 LPT · 이벤트 종료 시 소멸 · 일반 PT와 별도</p></div><div class="row"><button id="limitedDraw1">한정 1회 · 100 P</button><button id="limitedDraw10">한정 10회 · 1,000 P</button></div><button id="limitedExchange" class="ghost wide">🌟 한정 캐릭터 교환</button><div id="limitedResults" class="grid result"></div></div></section>
 <section id="collection" class="hidden"><div class="panel"><h2>캐릭터 도감</h2><p class="muted">미획득 캐릭터는 비밀로 표시돼요. 가챠에서 획득하면 이미지와 이름이 공개됩니다! 보유 캐릭터는 홈에 설정할 수 있어요.</p><div id="collectionCategoryNav" class="collection-category-nav" aria-label="도감 카테고리"><button type="button" data-collection-category="SSR">SSR<span id="collectionCatCountSSR" class="collection-cat-count">0명</span></button><button type="button" data-collection-category="SR">SR<span id="collectionCatCountSR" class="collection-cat-count">0명</span></button><button type="button" data-collection-category="R">R<span id="collectionCatCountR" class="collection-cat-count">0명</span></button><button type="button" data-collection-category="LIMITED">✨ 한정<span id="collectionCatCountLIMITED" class="collection-cat-count">0명</span></button></div><div id="collectionGrid"></div></div></section>
-<section id="game" class="hidden"><div class="panel"><h2>🎮 미니게임</h2><p class="muted">게임을 골라 포인트를 모아 보세요!</p><div class="game-picker"><button type="button" id="chooseMemory" class="active">🃏 카드 짝 맞추기</button><button type="button" id="choosePang">💥 캐릭터 팡!</button><button type="button" id="chooseRunner">🏃 캐릭터 점프</button><button type="button" id="chooseTetris">🧱 테트리스</button><button type="button" id="chooseRhythm">🎵 리듬 탭</button></div></div><div id="memorySection" class="panel"><h2>🃏 카드 짝 맞추기</h2><p class="muted">보유 캐릭터로 카드 짝을 맞히고 포인트를 모으세요! 보유 캐릭터가 없어도 쉬움 난이도에서 비공개 연습 카드로 시작할 수 있어요.</p><div class="points-box"><strong>🪙 내 포인트: <span id="gamePoints">0</span> P</strong><p class="muted mini">클리어 보상: 쉬움 +200 P · 보통 +400 P · 어려움 +600 P</p></div><label for="gameDifficulty">난이도</label><select id="gameDifficulty"><option value="4">🌱 쉬움 · 4쌍 / 8장</option><option value="6" selected>🌸 보통 · 6쌍 / 12장</option><option value="8">🔥 어려움 · 8쌍 / 16장</option></select><p class="muted mini" id="gameOwned"></p><div class="game-controls"><button id="gameStart">게임 시작</button><button id="gameRestart" class="ghost" disabled>다시 시작</button></div><div class="game-stats"><div class="game-stat"><span class="mini muted">시간</span><b id="gameTime">00:00</b></div><div class="game-stat"><span class="mini muted">시도</span><b id="gameMoves">0</b></div><div class="game-stat"><span class="mini muted">성공</span><b id="gameMatches">0/6</b></div></div><div id="memoryGrid" class="memory-grid" aria-label="카드 짝 맞추기 게임"></div><div id="gameResult" class="game-result hidden" role="status"></div><p class="muted mini" id="gameRecords"></p><p class="muted mini">게임 기록은 이 브라우저에만 저장됩니다. 보유 캐릭터 종류가 난이도에 필요한 수보다 적으면 시작할 수 없습니다. · ★★★ 풀돌 SSR 보유 1장당 보상 +5% (최대 +20%)</p></div>
+<section id="game" class="hidden"><div class="panel"><h2>🎮 미니게임</h2><p class="muted">게임을 골라 포인트를 모아 보세요!</p><div class="game-picker"><button type="button" id="chooseMemory" class="active">🃏 카드 짝 맞추기</button><button type="button" id="choosePang">💥 캐릭터 팡!</button><button type="button" id="chooseRunner">🏃 캐릭터 점프</button><button type="button" id="chooseTetris">🧱 테트리스</button><button type="button" id="chooseRhythm">🎵 리듬 탭</button><button type="button" id="chooseDetective">🔎 사건 수사</button></div></div><div id="memorySection" class="panel"><h2>🃏 카드 짝 맞추기</h2><p class="muted">보유 캐릭터로 카드 짝을 맞히고 포인트를 모으세요! 보유 캐릭터가 없어도 쉬움 난이도에서 비공개 연습 카드로 시작할 수 있어요.</p><div class="points-box"><strong>🪙 내 포인트: <span id="gamePoints">0</span> P</strong><p class="muted mini">클리어 보상: 쉬움 +200 P · 보통 +400 P · 어려움 +600 P</p></div><label for="gameDifficulty">난이도</label><select id="gameDifficulty"><option value="4">🌱 쉬움 · 4쌍 / 8장</option><option value="6" selected>🌸 보통 · 6쌍 / 12장</option><option value="8">🔥 어려움 · 8쌍 / 16장</option></select><p class="muted mini" id="gameOwned"></p><div class="game-controls"><button id="gameStart">게임 시작</button><button id="gameRestart" class="ghost" disabled>다시 시작</button></div><div class="game-stats"><div class="game-stat"><span class="mini muted">시간</span><b id="gameTime">00:00</b></div><div class="game-stat"><span class="mini muted">시도</span><b id="gameMoves">0</b></div><div class="game-stat"><span class="mini muted">성공</span><b id="gameMatches">0/6</b></div></div><div id="memoryGrid" class="memory-grid" aria-label="카드 짝 맞추기 게임"></div><div id="gameResult" class="game-result hidden" role="status"></div><p class="muted mini" id="gameRecords"></p><p class="muted mini">게임 기록은 이 브라우저에만 저장됩니다. 보유 캐릭터 종류가 난이도에 필요한 수보다 적으면 시작할 수 없습니다. · ★★★ 풀돌 SSR 보유 1장당 보상 +5% (최대 +20%)</p></div>
 <div id="pangSection" class="panel hidden">
 <h2>💥 캐릭터 팡!</h2>
 <p class="muted">옆 캐릭터를 바꿔 3개 이상 맞혀 보세요. 특수 블록을 만들고 서로 조합하면 훨씬 크게 터져요!</p>
@@ -1113,7 +1149,43 @@
 • 보드 오른쪽 위 <strong>PAUSE</strong> → 일시정지 / 계속하기<br>
 게임 중 보드를 만지는 동안에는 페이지가 움직이지 않고, 길게 눌러도 복사/선택 메뉴가 뜨지 않게 막아뒀어요.</div>
 <p id="tetrisResult" class="game-result" role="status">T-SPIN과 4줄 삭제는 B2B 보너스를 받을 수 있어요.</p>
-</div><div id="rhythmSection" class="panel hidden"><div class="rhythm-topbar"><h2>🎵 리듬 탭</h2><button type="button" id="rhythmStop" class="ghost rhythm-quit" disabled>포기</button></div><p class="muted">관리자가 등록한 음악과 자동 생성 채보로 플레이해요. D/F/J/K 또는 화면 버튼을 눌러요! 일반 탭 노트만 등장해요. 타이밍에 맞춰 눌러 주세요!</p><label for="rhythmSong">노래 선택</label><select id="rhythmSong"><option value="">기본 비트 (60초)</option></select><label for="rhythmDifficulty">난이도</label><select id="rhythmDifficulty"><option value="easy">EASY</option><option value="normal" selected>NORMAL</option><option value="hard">HARD</option><option value="special">SPECIAL ✨</option></select><p class="muted mini" id="rhythmSongInfo">기본 비트 · 난이도별 자동 채보</p><label for="rhythmSpeed">노트 낙하 속도 <strong id="rhythmSpeedValue">1.0×</strong></label><input id="rhythmSpeed" type="range" min="0.5" max="8" step="0.1" value="2" aria-label="노트 낙하 속도"><p class="muted mini">노트가 내려오는 속도만 바뀌며 음악 속도·판정·보상은 그대로예요. 게임 중에도 조절할 수 있어요.</p><label for="rhythmOffset">판정 타이밍 보정 <strong id="rhythmOffsetValue">0 ms</strong></label><input id="rhythmOffset" type="range" min="-200" max="200" step="10" value="0" aria-label="판정 타이밍 보정"><p class="muted mini">노트가 너무 일찍 판정되면 +, 너무 늦게 판정되면 − 방향으로 조절하세요. 10ms 단위 · 이 브라우저에 자동 저장 · 게임 중 변경 가능.</p><button type="button" id="rhythmOffsetReset" class="ghost">타이밍 보정 초기화 (0ms)</button><label for="rhythmCharacter">응원 캐릭터</label><select id="rhythmCharacter"></select><div class="game-stats"><div class="game-stat">점수<b id="rhythmScore">0</b></div><div class="game-stat">콤보<b id="rhythmCombo">0</b></div><div class="game-stat">정확도<b id="rhythmAccuracy">0%</b></div></div><div class="rhythm-hp-wrap" aria-label="리듬 게임 체력"><div class="rhythm-hp-heading"><strong>❤️ HP</strong><strong id="rhythmHpText">100 / 100</strong></div><div class="rhythm-hp-track"><div id="rhythmHpFill" class="rhythm-hp-fill"></div></div><p class="muted mini">MISS 시 HP -10 · HP가 0이 되면 게임 오버!</p></div><canvas id="rhythmCanvas" width="480" height="420" aria-label="리듬 게임 4레인"></canvas><div class="rhythm-keys"><button type="button" data-lane="0">D</button><button type="button" data-lane="1">F</button><button type="button" data-lane="2">J</button><button type="button" data-lane="3">K</button></div><div class="game-controls"><button type="button" id="rhythmStart">게임 시작</button></div><p id="rhythmResult" class="game-result" role="status">곡 완주 +1,000P · HARD/SPECIAL 풀콤보 완주 시 총 +2,000P! · 일반 탭 노트만 등장해요.</p></div></section><section id="admin" class="hidden"><div class="panel"><h2>관리자 전용</h2><p class="muted">관리자 이메일과 비밀번호로 로그인합니다. 관리자 여부는 서버의 접근 정책으로 검증됩니다.</p><div id="loginBox"><form id="loginForm"><label>이메일</label><input type="email" id="email" required autocomplete="username"><label>비밀번호</label><input type="password" id="password" required autocomplete="current-password"><p><button class="wide">관리자 로그인</button></p></form></div><div id="adminPanel" class="hidden"><p>관리자 인증 완료 <button class="ghost" id="logout">로그아웃</button></p><details class="admin-fold" id="userAdminFold" open><summary>👥 가입 유저 목록 · 계정 관리</summary><div data-fold-body>
+</div><div id="rhythmSection" class="panel hidden"><div class="rhythm-topbar"><h2>🎵 리듬 탭</h2><button type="button" id="rhythmStop" class="ghost rhythm-quit" disabled>포기</button></div><p class="muted">관리자가 등록한 음악과 자동 생성 채보로 플레이해요. D/F/J/K 또는 화면 버튼을 눌러요! 일반 탭 노트만 등장해요. 타이밍에 맞춰 눌러 주세요!</p><label for="rhythmSong">노래 선택</label><select id="rhythmSong"><option value="">기본 비트 (60초)</option></select><label for="rhythmDifficulty">난이도</label><select id="rhythmDifficulty"><option value="easy">EASY</option><option value="normal" selected>NORMAL</option><option value="hard">HARD</option><option value="special">SPECIAL ✨</option></select><p class="muted mini" id="rhythmSongInfo">기본 비트 · 난이도별 자동 채보</p><label for="rhythmSpeed">노트 낙하 속도 <strong id="rhythmSpeedValue">1.0×</strong></label><input id="rhythmSpeed" type="range" min="0.5" max="8" step="0.1" value="2" aria-label="노트 낙하 속도"><p class="muted mini">노트가 내려오는 속도만 바뀌며 음악 속도·판정·보상은 그대로예요. 게임 중에도 조절할 수 있어요.</p><label for="rhythmOffset">판정 타이밍 보정 <strong id="rhythmOffsetValue">0 ms</strong></label><input id="rhythmOffset" type="range" min="-200" max="200" step="10" value="0" aria-label="판정 타이밍 보정"><p class="muted mini">노트가 너무 일찍 판정되면 +, 너무 늦게 판정되면 − 방향으로 조절하세요. 10ms 단위 · 이 브라우저에 자동 저장 · 게임 중 변경 가능.</p><button type="button" id="rhythmOffsetReset" class="ghost">타이밍 보정 초기화 (0ms)</button><label for="rhythmCharacter">응원 캐릭터</label><select id="rhythmCharacter"></select><div class="game-stats"><div class="game-stat">점수<b id="rhythmScore">0</b></div><div class="game-stat">콤보<b id="rhythmCombo">0</b></div><div class="game-stat">정확도<b id="rhythmAccuracy">0%</b></div></div><div class="rhythm-hp-wrap" aria-label="리듬 게임 체력"><div class="rhythm-hp-heading"><strong>❤️ HP</strong><strong id="rhythmHpText">100 / 100</strong></div><div class="rhythm-hp-track"><div id="rhythmHpFill" class="rhythm-hp-fill"></div></div><p class="muted mini">MISS 시 HP -10 · HP가 0이 되면 게임 오버!</p></div><canvas id="rhythmCanvas" width="480" height="420" aria-label="리듬 게임 4레인"></canvas><div class="rhythm-keys"><button type="button" data-lane="0">D</button><button type="button" data-lane="1">F</button><button type="button" data-lane="2">J</button><button type="button" data-lane="3">K</button></div><div class="game-controls"><button type="button" id="rhythmStart">게임 시작</button></div><p id="rhythmResult" class="game-result" role="status">곡 완주 +1,000P · HARD/SPECIAL 풀콤보 완주 시 총 +2,000P! · 일반 탭 노트만 등장해요.</p></div>
+<div id="detectiveSection" class="panel hidden detective-shell">
+  <div class="detective-top">
+    <div class="detective-titleline">
+      <span id="detectiveCaseNo" class="detective-case-no">CASE FILE · 대기 중</span>
+      <h2>🔎 사건 수사실</h2>
+      <p class="muted" style="margin:3px 0 0">시간 제한 없음 · 현장을 조사하고 증거를 연결해 진범을 찾아내세요.</p>
+    </div>
+    <div class="detective-actions">
+      <button type="button" id="detectiveNewCase">새 사건 배정</button>
+      <button type="button" id="detectiveResetCase" class="ghost">현재 사건 초기화</button>
+    </div>
+  </div>
+
+  <div class="points-box"><strong>🪙 내 포인트: <span id="detectivePoints">0</span> P</strong><p class="muted mini">사건 해결 기본 +900P · 오답 추리마다 보상 -75P (최저 600P) · ★★★ 풀돌 SSR 수사 파트너 선택 시 최종 보상 +20%</p></div>
+
+  <label for="detectivePartner">수사 파트너 · 보유 SSR</label>
+  <select id="detectivePartner"><option value="">단독 수사</option></select>
+  <div class="detective-partner">
+    <img id="detectivePartnerImg" class="hidden" alt="수사 파트너">
+    <div><div id="detectivePartnerName" class="detective-partner-name">🕵️ 단독 수사</div><p id="detectivePartnerBonus" class="detective-partner-bonus">일반 보상</p></div>
+  </div>
+
+  <div class="detective-progress"><i id="detectiveProgressFill"></i></div>
+  <p id="detectiveProgressText" class="muted mini" style="margin:0">새 사건을 배정받아 주세요.</p>
+
+  <div class="detective-tabs">
+    <button type="button" class="active" data-detective-tab="brief">📁 사건개요</button>
+    <button type="button" data-detective-tab="scene">🔦 현장수사</button>
+    <button type="button" data-detective-tab="suspects">👤 용의자</button>
+    <button type="button" data-detective-tab="board">🧷 증거보드</button>
+    <button type="button" data-detective-tab="final">⚖️ 최종추리</button>
+  </div>
+
+  <div id="detectiveView" class="detective-view"></div>
+  <div id="detectiveLog" class="detective-log" role="status">사건 파일이 비어 있습니다.</div>
+</div></section><section id="admin" class="hidden"><div class="panel"><h2>관리자 전용</h2><p class="muted">관리자 이메일과 비밀번호로 로그인합니다. 관리자 여부는 서버의 접근 정책으로 검증됩니다.</p><div id="loginBox"><form id="loginForm"><label>이메일</label><input type="email" id="email" required autocomplete="username"><label>비밀번호</label><input type="password" id="password" required autocomplete="current-password"><p><button class="wide">관리자 로그인</button></p></form></div><div id="adminPanel" class="hidden"><p>관리자 인증 완료 <button class="ghost" id="logout">로그아웃</button></p><details class="admin-fold" id="userAdminFold" open><summary>👥 가입 유저 목록 · 계정 관리</summary><div data-fold-body>
 <p class="muted mini">가입된 유저를 검색하지 않아도 전체 목록으로 바로 보여줍니다. 각 유저를 누르면 포인트·캐릭터·세이브·이용 정지·계정 삭제 관리 메뉴가 열립니다. 비밀번호는 확인할 수 없어요.</p>
 <div class="user-admin-summary-grid">
   <div class="user-admin-summary"><span class="mini muted">전체 가입</span><strong id="userAdminTotal">0</strong></div>
@@ -1283,7 +1355,7 @@ const SUPABASE_ANON_KEY='sb_publishable_lAvF0YPrCfGs0lNW06QIHA_aChjh1iS';
 const ready=SUPABASE_URL.startsWith('https://')&&!SUPABASE_ANON_KEY.startsWith('PASTE_');
 const db=ready?createClient(SUPABASE_URL,SUPABASE_ANON_KEY):null;
 const $=id=>document.getElementById(id);let characters=[],settings={ssr:3,sr:17,r:80,pity:90,limited_rate:3,limited_ssr:3,limited_sr:17,limited_r:77,limited_pity:90,home_character_id:null},admin=false,session=null;
-const key='my-gacha-secure-v1';let local;try{local=JSON.parse(localStorage.getItem(key)||'{}')}catch{local={}};local.counts??={};local.sinceSSR??=0;local.homeCharacterId??=null;local.points=Number.isSafeInteger(local.points)&&local.points>=0?local.points:3000;local.pendingGacha??=null;local.pityPoints=Number.isSafeInteger(local.pityPoints)&&local.pityPoints>=0?local.pityPoints:Math.max(0,Math.floor(Number(local.sinceSSR)||0));local.attendance=local.attendance&&typeof local.attendance==='object'?local.attendance:{lastDate:null,day:0};local.lastGlobalGrantId=Number.isSafeInteger(local.lastGlobalGrantId)&&local.lastGlobalGrantId>=0?local.lastGlobalGrantId:0;local.homeCharacterIds=Array.isArray(local.homeCharacterIds)?local.homeCharacterIds.slice(0,3):(local.homeCharacterId?[local.homeCharacterId]:[]);local.limitedPoints=Number.isSafeInteger(local.limitedPoints)&&local.limitedPoints>=0?local.limitedPoints:0;local.limitedEventKey??=null;local.limitBreaks=local.limitBreaks&&typeof local.limitBreaks==='object'?local.limitBreaks:{};local.homeArtModes=local.homeArtModes&&typeof local.homeArtModes==='object'?local.homeArtModes:{};local.tetrisBest=Number.isSafeInteger(local.tetrisBest)&&local.tetrisBest>=0?local.tetrisBest:0;local.tetrisBestLines=Number.isSafeInteger(local.tetrisBestLines)&&local.tetrisBestLines>=0?local.tetrisBestLines:0;local.pangEquippedCharacterId??=null;
+const key='my-gacha-secure-v1';let local;try{local=JSON.parse(localStorage.getItem(key)||'{}')}catch{local={}};local.counts??={};local.sinceSSR??=0;local.homeCharacterId??=null;local.points=Number.isSafeInteger(local.points)&&local.points>=0?local.points:3000;local.pendingGacha??=null;local.pityPoints=Number.isSafeInteger(local.pityPoints)&&local.pityPoints>=0?local.pityPoints:Math.max(0,Math.floor(Number(local.sinceSSR)||0));local.attendance=local.attendance&&typeof local.attendance==='object'?local.attendance:{lastDate:null,day:0};local.lastGlobalGrantId=Number.isSafeInteger(local.lastGlobalGrantId)&&local.lastGlobalGrantId>=0?local.lastGlobalGrantId:0;local.homeCharacterIds=Array.isArray(local.homeCharacterIds)?local.homeCharacterIds.slice(0,3):(local.homeCharacterId?[local.homeCharacterId]:[]);local.limitedPoints=Number.isSafeInteger(local.limitedPoints)&&local.limitedPoints>=0?local.limitedPoints:0;local.limitedEventKey??=null;local.limitBreaks=local.limitBreaks&&typeof local.limitBreaks==='object'?local.limitBreaks:{};local.homeArtModes=local.homeArtModes&&typeof local.homeArtModes==='object'?local.homeArtModes:{};local.tetrisBest=Number.isSafeInteger(local.tetrisBest)&&local.tetrisBest>=0?local.tetrisBest:0;local.tetrisBestLines=Number.isSafeInteger(local.tetrisBestLines)&&local.tetrisBestLines>=0?local.tetrisBestLines:0;local.pangEquippedCharacterId??=null;local.detective=local.detective&&typeof local.detective==='object'?local.detective:{};
 const attendanceRewards=[400,600,800,1000,1300,1600,2500];
 function attendanceDate(){const d=new Date();return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`}
 function attendanceDayNumber(date){if(!/^\d{4}-\d{2}-\d{2}$/.test(date||''))return null;const [y,m,d]=date.split('-').map(Number);const ms=Date.UTC(y,m-1,d);const check=new Date(ms);return check.getUTCFullYear()===y&&check.getUTCMonth()===m-1&&check.getUTCDate()===d?Math.floor(ms/86400000):null}
@@ -1312,7 +1384,7 @@ function normalizeCloudSave(data){
  x.homeArtModes=x.homeArtModes&&typeof x.homeArtModes==='object'?x.homeArtModes:{};
  x.tetrisBest=Number.isSafeInteger(x.tetrisBest)&&x.tetrisBest>=0?x.tetrisBest:0;
  x.tetrisBestLines=Number.isSafeInteger(x.tetrisBestLines)&&x.tetrisBestLines>=0?x.tetrisBestLines:0;
- x.pangEquippedCharacterId=x.pangEquippedCharacterId??null;
+ x.pangEquippedCharacterId=x.pangEquippedCharacterId??null;x.detective=x.detective&&typeof x.detective==='object'?x.detective:{};
  return x
 }
 function bindCloudToCurrentUser(){
@@ -2802,6 +2874,301 @@ function finishGame(){game.elapsed=gameElapsed();game.active=false;clearInterval
 $('gameDifficulty').addEventListener('change',()=>{game.pairs=Number($('gameDifficulty').value);renderGameInfo()});$('gameStart').onclick=startGame;$('gameRestart').onclick=()=>{if(confirm('현재 게임을 다시 시작할까요?'))startGame()};renderGameInfo();
 
 
+
+// ============================================================
+// Detective Case Files — 시간 제한 없는 증거 수집 / 연결 / 추리 게임
+// ============================================================
+const DETECTIVE_CASES=[
+ {
+  id:'museum',title:'백야 미술관의 빈 액자',subtitle:'폐관 후 18분, 대표작 「월광의 정원」이 사라졌다.',
+  object:'회화 「월광의 정원」',time:'01:43',sceneName:'제3전시실',
+  intro:'외부 침입 흔적은 없고, 유리 케이스는 멀쩡하다. 범인은 내부 구조와 보안 절차를 알고 있었을 가능성이 높다.',
+  locations:[
+   {id:'scene',icon:'🖼️',name:'제3전시실',desc:'작품이 사라진 현장. 진열 구조와 바닥 흔적을 확인한다.'},
+   {id:'security',icon:'🖥️',name:'보안실',desc:'출입 로그와 카메라 캐시가 남아 있다.'},
+   {id:'office',icon:'🗄️',name:'자료보관실',desc:'감정 기록, 계약서, 내부 메모가 보관된 곳.'},
+   {id:'hall',icon:'🚪',name:'직원 통로',desc:'직원들만 사용하는 후면 동선. 작은 흔적이 자주 남는다.'}
+  ],
+  motives:['금전','은폐','명예','복수'],
+  suspects:[
+   {id:'curator',icon:'🧑‍💼',name:'윤서진',role:'수석 큐레이터',code:'C-12',feature:'라일락 향 핸드크림의 미세 왁스',motive:'은폐',motiveDetail:'최근 감정 보고서의 치명적인 오류가 드러날 위기에 있었다.',alibi:'폐관 후 사무실에서 기증자 메일을 정리했다고 주장한다.',red:'기증자와 언쟁한 메일이 있지만 사건 시각과 직접 연결되지는 않는다.'},
+   {id:'guard',icon:'🛡️',name:'한도윤',role:'야간 경비',code:'S-04',feature:'검은 니트 장갑의 파란 합성섬유',motive:'금전',motiveDetail:'최근 급한 채무 때문에 큰돈이 필요했다.',alibi:'01:30부터 02:00까지 1층 순찰 중이었다고 주장한다.',red:'근무 교대 기록이 한 차례 늦었지만 동료 확인이 있다.'},
+   {id:'restorer',icon:'🎨',name:'서유라',role:'복원사',code:'R-31',feature:'청록색 복원용 안료 분말',motive:'명예',motiveDetail:'자신의 복원 기법을 둘러싼 평가 문제로 작품 공개를 막고 싶어 했다.',alibi:'복원실에서 다음 전시 작품의 표면 검사를 했다고 주장한다.',red:'작품 보험가액을 여러 번 조회했지만 업무상 필요한 기록이었다.'},
+   {id:'reporter',icon:'📷',name:'이태오',role:'문화부 기자',code:'P-07',feature:'은색 카메라 스트랩의 반사 섬유',motive:'복수',motiveDetail:'미술관이 자신의 이전 보도를 공개적으로 반박한 뒤 감정이 악화됐다.',alibi:'폐관 직전 건물을 나와 인근 카페에서 기사 초안을 썼다고 주장한다.',red:'전시실 사진을 몰래 촬영한 정황은 있으나 폐관 전 촬영이었다.'}
+  ]
+ },
+ {
+  id:'hotel',title:'라일락 호텔 707호의 사라진 원고',subtitle:'잠긴 객실에서 출간 전 원고 한 부가 흔적 없이 사라졌다.',
+  object:'미발표 장편 원고 「검은 계절」',time:'23:18',sceneName:'707호',
+  intro:'객실 문은 자동 잠금 상태였고 창문도 닫혀 있었다. 원고는 작가가 샤워하는 12분 사이에 사라졌다.',
+  locations:[
+   {id:'scene',icon:'🚪',name:'707호 객실',desc:'책상, 금고, 문 잠금 장치를 확인한다.'},
+   {id:'security',icon:'📹',name:'CCTV 관리실',desc:'복도 영상 캐시와 객실 전자키 기록을 조사한다.'},
+   {id:'office',icon:'📚',name:'비즈니스 라운지',desc:'계약 서류와 프린터 사용 기록이 남아 있다.'},
+   {id:'hall',icon:'🛎️',name:'서비스 복도',desc:'직원 카트와 비상계단으로 이어지는 좁은 통로.'}
+  ],
+  motives:['금전','은폐','명예','복수'],
+  suspects:[
+   {id:'manager',icon:'📎',name:'강세린',role:'작가 매니저',code:'M-18',feature:'자주색 실크 스카프의 가는 실밥',motive:'은폐',motiveDetail:'작가 몰래 체결한 2차 판권 계약이 원고 내용 때문에 발각될 상황이었다.',alibi:'사건 시각 로비에서 출판사와 통화 중이었다고 주장한다.',red:'원고 백업 파일을 요청한 기록이 있으나 작가의 사전 허락이 있었다.'},
+   {id:'director',icon:'🏨',name:'오현우',role:'호텔 지배인',code:'H-02',feature:'황동 마스터키 케이스의 금속 광택 분말',motive:'금전',motiveDetail:'호텔 투자 손실로 거액의 개인 채무가 생겼다.',alibi:'연회장 민원 대응 때문에 5층에 있었다고 주장한다.',red:'707호 마스터키를 점검했지만 점검 시각은 오후였다.'},
+   {id:'editor',icon:'✒️',name:'최유진',role:'담당 편집자',code:'E-27',feature:'민트색 교정펜의 미세 잉크 얼룩',motive:'명예',motiveDetail:'원고의 핵심 아이디어를 자신의 기획으로 발표하려는 욕심이 있었다.',alibi:'비즈니스 라운지에서 교정지를 읽고 있었다고 주장한다.',red:'원고 일부를 개인 메일로 보낸 흔적은 공식 교정 업무였다.'},
+   {id:'service',icon:'☕',name:'김태민',role:'룸서비스 팀장',code:'R-44',feature:'시나몬 커피 파우더',motive:'복수',motiveDetail:'작가의 이전 폭언으로 징계를 받은 뒤 강한 악감정을 품고 있었다.',alibi:'사건 시각 9층 주문을 전달하고 있었다고 주장한다.',red:'707호 주문 내역을 따로 메모했지만 알레르기 요청 때문이었다.'}
+  ]
+ },
+ {
+  id:'lab',title:'새벽 연구동의 잠긴 시제품',subtitle:'봉인된 테스트룸에서 차세대 센서 모듈이 사라졌다.',
+  object:'프로토타입 센서 Aster-9',time:'03:06',sceneName:'B동 테스트룸',
+  intro:'봉인 스티커는 겉보기에는 손상되지 않았다. 시스템상 출입자는 없었지만, 새벽에 짧은 전원 이상이 기록됐다.',
+  locations:[
+   {id:'scene',icon:'🧪',name:'B동 테스트룸',desc:'보관 케이스, 봉인 스티커, 실험대 주변을 조사한다.'},
+   {id:'security',icon:'🗃️',name:'접근 제어 서버실',desc:'배지 로그와 전원 장애 기록을 대조한다.'},
+   {id:'office',icon:'💻',name:'공동 연구실',desc:'실험 노트, 계약 문서, 삭제된 메시지를 복구한다.'},
+   {id:'hall',icon:'📦',name:'하역 통로',desc:'외부 반출이 가능한 유일한 야간 동선.'}
+  ],
+  motives:['금전','은폐','명예','복수'],
+  suspects:[
+   {id:'lead',icon:'🥼',name:'박시온',role:'책임연구원',code:'L-09',feature:'코발트색 니트릴 장갑 파우더',motive:'은폐',motiveDetail:'시제품의 치명적 결함을 보고하지 않은 사실이 감사에서 드러날 예정이었다.',alibi:'새벽 내내 화상회의실에서 해외팀 회의를 했다고 주장한다.',red:'시제품 폐기 검토 문서를 작성했지만 공식 안전 절차에 따른 것이었다.'},
+   {id:'researcher',icon:'🔬',name:'이나경',role:'선임연구원',code:'A-22',feature:'레이저 커팅 아크릴의 투명 분진',motive:'명예',motiveDetail:'핵심 설계의 공로가 다른 연구원에게 돌아간 것에 불만이 있었다.',alibi:'공동 연구실에서 데이터 정리를 하고 있었다고 주장한다.',red:'외장 케이스 도면을 개인 장치로 열람했지만 실험 승인 기록이 있다.'},
+   {id:'security',icon:'🧰',name:'조현석',role:'보안 엔지니어',code:'S-15',feature:'구리색 정전기 방지 섬유',motive:'금전',motiveDetail:'경쟁 업체와 접촉한 뒤 거액의 입금 제안을 받았다.',alibi:'전원 이상 알람을 확인하러 A동 전기실에 있었다고 주장한다.',red:'접근 서버 관리자 권한을 사용했지만 정기 패치 작업 로그와 일치한다.'},
+   {id:'investor',icon:'💼',name:'배지수',role:'투자사 기술담당',code:'V-30',feature:'시더우드 향수의 수지성 잔향',motive:'복수',motiveDetail:'투자 계약 파기 과정에서 연구소와 심각한 분쟁을 겪었다.',alibi:'호텔로 돌아간 뒤 화상 통화를 했다고 주장한다.',red:'테스트룸 사진을 요구했지만 투자 실사 자료 요청 범위 안이었다.'}
+  ]
+ }
+];
+
+let detectiveTab='brief';
+
+function detectiveState(){
+ const d=local.detective&&typeof local.detective==='object'?local.detective:{};
+ d.templateId=typeof d.templateId==='string'?d.templateId:null;
+ d.culpritIndex=Number.isInteger(d.culpritIndex)?Math.max(0,Math.min(3,d.culpritIndex)):0;
+ d.serial=Number.isInteger(d.serial)&&d.serial>=0?d.serial:0;
+ d.discovered=Array.isArray(d.discovered)?d.discovered:[];
+ d.interviewed=Array.isArray(d.interviewed)?d.interviewed:[];
+ d.deductions=Array.isArray(d.deductions)?d.deductions:[];
+ d.selected=Array.isArray(d.selected)?d.selected.slice(0,2):[];
+ d.wrong=Number.isInteger(d.wrong)&&d.wrong>=0?d.wrong:0;
+ d.solved=!!d.solved;
+ d.rewardClaimed=!!d.rewardClaimed;
+ d.partnerId=d.partnerId??null;
+ d.solvedCount=Number.isInteger(d.solvedCount)&&d.solvedCount>=0?d.solvedCount:0;
+ local.detective=d;
+ return d
+}
+function detectiveTemplate(){const d=detectiveState();return DETECTIVE_CASES.find(x=>x.id===d.templateId)||null}
+function detectiveCase(){
+ const t=detectiveTemplate();if(!t)return null;
+ const d=detectiveState(),culprit=t.suspects[d.culpritIndex]||t.suspects[0];
+ const clueBase=[
+  {id:'scene',location:'scene',icon:'🔍',title:'조작된 현장',summary:'현장의 작은 불일치가 외부 침입처럼 보이게 만든 흔적을 보여준다.',detail:`${t.sceneName}의 잠금/봉인 상태를 자세히 보니, 바깥에서 강제로 연 흔적이 아니라 내부 절차를 알고 있는 사람이 다시 닫아 둔 흔적에 가깝다.`},
+  {id:'trace',location:'scene',icon:'🧬',title:'미세 흔적',summary:'현장 가장자리에서 출처가 특정될 수 있는 미세 흔적을 확보했다.',detail:`작품/시제품이 있던 자리 근처에서 「${culprit.feature}」와 일치하는 흔적이 발견됐다. 눈으로는 거의 보이지 않는 수준이다.`},
+  {id:'access',location:'security',icon:'🔐',title:'출입 인증 기록',summary:'삭제 직전의 접근 로그 일부가 복구됐다.',detail:`사건 시각 ${t.time} 전후, 제한구역 인증 코드 「${culprit.code}」가 사용된 기록이 복구됐다. 사용자 이름은 로그에서 지워져 있다.`},
+  {id:'timing',location:'security',icon:'🕒',title:'끊긴 시간선',summary:'누군가의 알리바이가 사건 시각과 맞지 않는다.',detail:`보조 카메라/시스템 캐시를 대조하면 ${t.time} 무렵 ${culprit.role}가 주장한 장소의 기록이 약 11분간 비어 있다. 같은 시간 제한구역 쪽 센서가 한 차례 반응했다.`},
+  {id:'motive',location:'office',icon:'📄',title:'삭제된 문서 조각',summary:'사건을 일으킬 만한 동기가 숨어 있다.',detail:`복구된 메모에는 「${culprit.motiveDetail}」라는 정황이 남아 있다. 작성자 표시는 지워졌지만 해당 직무와 연결되는 표현이 포함돼 있다.`}
+ ];
+ const others=t.suspects.filter(s=>s.id!==culprit.id);
+ others.forEach((s,i)=>clueBase.push({
+  id:'red'+i,location:'hall',icon:['🧵','🧾','📌'][i]||'📌',
+  title:`${s.role} 관련 흔적`,summary:'수상해 보이지만 사건 시각과 직접 연결되는지는 불분명하다.',
+  detail:`${s.name}과 관련된 기록이 발견됐다. ${s.red} 따라서 이것만으로 범행을 입증하기는 어렵다.`
+ }));
+ const links=[
+  {id:'presence',a:'scene',b:'trace',title:'현장 접촉',text:'외부 침입이 아니라 내부자가 현장을 다뤘고, 특정 개인의 미세 흔적까지 남아 있다.'},
+  {id:'opportunity',a:'access',b:'timing',title:'알리바이 붕괴',text:'제한구역 인증 기록과 비어 있는 시간선이 겹친다. 누군가의 “다른 곳에 있었다”는 주장이 흔들린다.'},
+  {id:'motive',a:'motive',b:'access',title:'동기와 기회',text:'사건을 일으킬 이유가 있는 인물과 제한구역 접근 기록이 하나의 선으로 이어진다.'}
+ ];
+ return {...t,culprit,clues:clueBase,links,keyEvidenceIds:['access','trace','motive']}
+}
+function detectiveOwnedPartners(){return characters.filter(c=>String(c.rarity||'').toUpperCase()==='SSR'&&(Number(local.counts?.[c.id])||0)>0)}
+function detectivePartner(){
+ const d=detectiveState();return detectiveOwnedPartners().find(c=>String(c.id)===String(d.partnerId))||null
+}
+function detectivePopulatePartner(){
+ const sel=$('detectivePartner');if(!sel)return;
+ const owned=detectiveOwnedPartners(),d=detectiveState(),current=String(d.partnerId??'');
+ const sig=owned.map(c=>`${c.id}:${limitBreakLevel(c)}`).join('|');
+ if(sel.dataset.sig!==sig){
+  sel.replaceChildren();
+  const blank=document.createElement('option');blank.value='';blank.textContent='🕵️ 단독 수사';sel.append(blank);
+  owned.forEach(c=>{const o=document.createElement('option');o.value=String(c.id);o.textContent=`${limitBreakLevel(c)>=3?'★★★ ':''}${c.name}`;sel.append(o)});
+  sel.dataset.sig=sig
+ }
+ sel.value=owned.some(c=>String(c.id)===current)?current:'';
+ if(sel.value!==current){d.partnerId=sel.value||null;save()}
+ const partner=detectivePartner();
+ const img=$('detectivePartnerImg'),name=$('detectivePartnerName'),bonus=$('detectivePartnerBonus');
+ if(partner){
+  img.src=characterDisplayImage(partner);img.classList.remove('hidden');
+  name.textContent=`🤝 ${partner.name} · 수사 파트너`;
+  const full=limitBreakLevel(partner)>=3;bonus.textContent=full?'★★★ 풀돌 파트너 · 사건 해결 보상 +20%':'일반 수사 파트너 · 추가 보너스 없음';bonus.classList.toggle('full',full)
+ }else{
+  img.removeAttribute('src');img.classList.add('hidden');name.textContent='🕵️ 단독 수사';bonus.textContent='일반 보상';bonus.classList.remove('full')
+ }
+}
+function detectiveSetLog(text){const el=$('detectiveLog');if(el)el.textContent=text}
+function detectiveStartNew(force=false){
+ const d=detectiveState();
+ if(!force&&d.templateId&&!d.solved&&(d.discovered.length||d.interviewed.length||d.deductions.length)){
+  if(!confirm('현재 수사 기록을 버리고 새 사건을 배정받을까요?'))return
+ }
+ const previous=d.templateId;
+ let candidates=DETECTIVE_CASES.filter(x=>x.id!==previous);
+ if(!candidates.length)candidates=DETECTIVE_CASES;
+ const t=candidates[Math.floor(Math.random()*candidates.length)];
+ local.detective={
+  templateId:t.id,culpritIndex:Math.floor(Math.random()*t.suspects.length),serial:(d.serial||0)+1,
+  discovered:[],interviewed:[],deductions:[],selected:[],wrong:0,solved:false,rewardClaimed:false,
+  partnerId:d.partnerId??null,solvedCount:d.solvedCount||0
+ };
+ detectiveTab='brief';save();renderDetective();detectiveSetLog('새 사건 파일을 배정받았습니다. 서두를 필요 없어요. 사건개요부터 천천히 확인해 보세요.')
+}
+function detectiveReset(){
+ const d=detectiveState();if(!d.templateId)return detectiveStartNew(true);
+ if(!confirm('현재 사건의 조사 기록만 처음부터 다시 시작할까요?'))return;
+ local.detective={...d,discovered:[],interviewed:[],deductions:[],selected:[],wrong:0,solved:false,rewardClaimed:false};
+ detectiveTab='brief';save();renderDetective();detectiveSetLog('사건 조사 기록을 초기화했습니다.')
+}
+function detectiveProgress(caseData){
+ const d=detectiveState();if(!caseData)return 0;
+ const total=caseData.clues.length+caseData.suspects.length+caseData.links.length;
+ const done=d.discovered.length+d.interviewed.length+d.deductions.length;
+ return Math.max(0,Math.min(100,Math.round(done/total*100)))
+}
+function detectiveSetTab(tab){
+ detectiveTab=['brief','scene','suspects','board','final'].includes(tab)?tab:'brief';
+ document.querySelectorAll('[data-detective-tab]').forEach(b=>b.classList.toggle('active',b.dataset.detectiveTab===detectiveTab));
+ renderDetectiveView()
+}
+function detectiveRenderBrief(c){
+ return `<div class="detective-brief"><h3>${escapeHtml(c.title)}</h3><p class="muted">${escapeHtml(c.subtitle)}</p><p>${escapeHtml(c.intro)}</p><div class="detective-facts"><div class="detective-fact"><span>사라진 대상</span><b>${escapeHtml(c.object)}</b></div><div class="detective-fact"><span>핵심 시각</span><b>${escapeHtml(c.time)}</b></div><div class="detective-fact"><span>용의자</span><b>${c.suspects.length}명</b></div></div><p class="muted mini" style="margin:13px 0 0">💡 정답을 빨리 찍는 게임이 아니에요. 현장 → 용의자 → 증거 연결 순서로 천천히 조사하면 됩니다.</p></div>`
+}
+function detectiveRenderScene(c){
+ const d=detectiveState();
+ const cards=c.locations.map(loc=>{
+  const clues=c.clues.filter(x=>x.location===loc.id),found=clues.filter(x=>d.discovered.includes(x.id)).length,done=found===clues.length;
+  return `<div class="detective-location${done?' done':''}"><div class="detective-location-icon">${loc.icon}</div><h4>${escapeHtml(loc.name)}</h4><p>${escapeHtml(loc.desc)}</p><span class="detective-found">${done?'조사 완료':`증거 ${found}/${clues.length}`}</span><button type="button" data-detective-location="${loc.id}" class="${done?'ghost':''}">${done?'다시 살펴보기':'🔦 조사하기'}</button></div>`
+ }).join('');
+ return `<div class="detective-grid">${cards}</div>`
+}
+function detectiveRenderSuspects(c){
+ const d=detectiveState();
+ return `<div class="detective-grid">${c.suspects.map(s=>{
+  const seen=d.interviewed.includes(s.id);
+  return `<div class="detective-suspect"><div class="detective-suspect-icon">${s.icon}</div><h4>${escapeHtml(s.name)} · ${escapeHtml(s.role)}</h4><p>${seen?'신원 확인 완료':'기본 신원만 확인됨'}</p>${seen?`<div class="detective-profile-line">인증 코드 <b>${escapeHtml(s.code)}</b> · 특징: ${escapeHtml(s.feature)}</div><div class="detective-statement">“${escapeHtml(s.alibi)}”</div>`:''}<button type="button" data-detective-suspect="${s.id}" class="${seen?'ghost':''}">${seen?'진술 다시 보기':'💬 질문하기'}</button></div>`
+ }).join('')}</div>`
+}
+function detectiveRenderBoard(c){
+ const d=detectiveState(),discovered=c.clues.filter(x=>d.discovered.includes(x.id));
+ const clues=discovered.length?`<div class="detective-evidence-list">${discovered.map(x=>`<div class="detective-clue${d.selected.includes(x.id)?' selected':''}" role="button" tabindex="0" data-detective-clue="${x.id}"><div class="icon">${x.icon}</div><h4>${escapeHtml(x.title)}</h4><p>${escapeHtml(x.summary)}</p><div class="where">${escapeHtml(c.locations.find(l=>l.id===x.location)?.name||'')}</div></div>`).join('')}</div>`:`<div class="detective-empty">아직 확보한 증거가 없어요. 현장수사에서 장소를 조사해 보세요.</div>`;
+ const chosen=d.selected.map(id=>c.clues.find(x=>x.id===id)).filter(Boolean);
+ const deductions=d.deductions.length?d.deductions.map(id=>c.links.find(x=>x.id===id)).filter(Boolean).map(x=>`<div class="detective-deduction"><strong>✓ ${escapeHtml(x.title)}</strong>${escapeHtml(x.text)}</div>`).join(''):`<div class="detective-empty">증거 두 개를 선택해 연결하면 추리가 기록됩니다.</div>`;
+ return `<div class="detective-board"><div>${clues}</div><aside class="detective-connect"><h4>🧷 증거 연결</h4><div class="detective-slot">${chosen[0]?`${chosen[0].icon} ${escapeHtml(chosen[0].title)}`:'첫 번째 증거 선택'}</div><div class="detective-slot">${chosen[1]?`${chosen[1].icon} ${escapeHtml(chosen[1].title)}`:'두 번째 증거 선택'}</div><button type="button" id="detectiveConnect" ${chosen.length===2?'':'disabled'}>두 증거 연결하기</button><div class="detective-deductions"><h4 style="margin:12px 0 6px">📌 확정 추리</h4>${deductions}</div></aside></div>`
+}
+function detectiveRenderFinal(c){
+ const d=detectiveState();
+ if(d.solved){
+  const partner=detectivePartner(),full=partner&&limitBreakLevel(partner)>=3;
+  return `<div class="detective-solved"><div class="seal">✅</div><h3>CASE CLOSED</h3><p><b>${escapeHtml(c.culprit.name)}</b>이(가) 진범이었습니다.<br>${escapeHtml(c.culprit.motiveDetail)}<br><br>확보한 출입 기록과 현장 흔적, 무너진 알리바이가 하나로 이어졌어요.${full?`<br>★★★ ${escapeHtml(partner.name)} 파트너 보너스 적용 완료.`:''}</p><button type="button" id="detectiveNextCase">다음 사건 배정</button></div>`
+ }
+ const enough=d.deductions.length>=2;
+ const clueOptions=c.clues.filter(x=>d.discovered.includes(x.id)).map(x=>`<option value="${x.id}">${x.icon} ${escapeHtml(x.title)}</option>`).join('');
+ const notes=[
+  `확보 증거 ${d.discovered.length}/${c.clues.length}`,
+  `진술 확인 ${d.interviewed.length}/${c.suspects.length}`,
+  `확정 추리 ${d.deductions.length}/${c.links.length}`,
+  d.wrong?`오답 추리 ${d.wrong}회 · 현재 기본 보상 ${Math.max(600,900-d.wrong*75)}P`:'첫 추리 성공 시 기본 900P'
+ ];
+ if(d.wrong>=2)notes.push('힌트: 출입 인증 코드, 현장의 미세 흔적, 용의자 진술을 서로 비교해 보세요.');
+ return `<div class="detective-final"><div class="detective-final-form"><h3 style="margin-top:0">⚖️ 사건 결론</h3><p class="muted mini">${enough?'필요한 추리 연결이 확보됐어요. 범인·동기·핵심 증거를 선택하세요.':'최소 2개의 확정 추리를 만들어야 최종 지목을 할 수 있어요.'}</p><label for="detectiveAccuseSuspect">범인</label><select id="detectiveAccuseSuspect"><option value="">선택</option>${c.suspects.map(s=>`<option value="${s.id}">${escapeHtml(s.name)} · ${escapeHtml(s.role)}</option>`).join('')}</select><label for="detectiveAccuseMotive">동기</label><select id="detectiveAccuseMotive"><option value="">선택</option>${c.motives.map(m=>`<option value="${m}">${escapeHtml(m)}</option>`).join('')}</select><label for="detectiveAccuseEvidence">핵심 증거</label><select id="detectiveAccuseEvidence"><option value="">선택</option>${clueOptions}</select><button type="button" id="detectiveAccuse" ${enough?'':'disabled'}>🔎 최종 지목</button><div id="detectiveFinalResult" class="detective-result ${d.wrong?'fail':''}">${d.wrong?'추리가 한 번 이상 성립하지 않았어요. 기록을 다시 검토해 보세요.':'틀려도 사건이 끝나지 않습니다. 천천히 다시 조사할 수 있어요.'}</div></div><aside class="detective-notes"><h4>🗒️ 수사 메모</h4><ul>${notes.map(x=>`<li>${escapeHtml(x)}</li>`).join('')}</ul></aside></div>`
+}
+function renderDetectiveView(){
+ const view=$('detectiveView');if(!view)return;
+ const c=detectiveCase();
+ if(!c){
+  view.innerHTML=`<div class="detective-empty"><strong>배정된 사건이 없습니다.</strong><br><br>「새 사건 배정」을 누르면 무작위 사건 파일이 생성돼요.<br>시간 제한은 없고, 언제든 저장된 진행도에서 이어할 수 있어요.</div>`;
+  return
+ }
+ view.classList.remove('detective-view');void view.offsetWidth;view.classList.add('detective-view');
+ if(detectiveTab==='brief')view.innerHTML=detectiveRenderBrief(c);
+ else if(detectiveTab==='scene')view.innerHTML=detectiveRenderScene(c);
+ else if(detectiveTab==='suspects')view.innerHTML=detectiveRenderSuspects(c);
+ else if(detectiveTab==='board')view.innerHTML=detectiveRenderBoard(c);
+ else view.innerHTML=detectiveRenderFinal(c);
+
+ view.querySelectorAll('[data-detective-location]').forEach(b=>b.addEventListener('click',()=>detectiveInvestigate(b.dataset.detectiveLocation)));
+ view.querySelectorAll('[data-detective-suspect]').forEach(b=>b.addEventListener('click',()=>detectiveInterview(b.dataset.detectiveSuspect)));
+ view.querySelectorAll('[data-detective-clue]').forEach(card=>{
+  const pick=()=>detectiveToggleClue(card.dataset.detectiveClue);
+  card.addEventListener('click',pick);card.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();pick()}})
+ });
+ $('detectiveConnect')?.addEventListener('click',detectiveConnectEvidence);
+ $('detectiveAccuse')?.addEventListener('click',detectiveAccuse);
+ $('detectiveNextCase')?.addEventListener('click',()=>detectiveStartNew(true))
+}
+function detectiveInvestigate(locationId){
+ const c=detectiveCase();if(!c)return;
+ const d=detectiveState(),available=c.clues.filter(x=>x.location===locationId),next=available.find(x=>!d.discovered.includes(x.id));
+ if(!next){detectiveSetLog('이 장소에서는 더 이상 새로운 증거가 나오지 않았습니다.');return}
+ d.discovered.push(next.id);save();renderDetective();
+ detectiveSetLog(`${next.icon} 증거 확보 · ${next.title} — ${next.detail}`)
+}
+function detectiveInterview(suspectId){
+ const c=detectiveCase();if(!c)return;
+ const d=detectiveState(),s=c.suspects.find(x=>x.id===suspectId);if(!s)return;
+ if(!d.interviewed.includes(s.id)){d.interviewed.push(s.id);save()}
+ renderDetective();
+ const related=c.clues.find(x=>x.id==='access');
+ const hasAccess=d.discovered.includes('access');
+ detectiveSetLog(`${s.name}: “${s.alibi}”${hasAccess?` · 현재 확보한 출입 기록의 코드와 이 인물의 코드(${s.code})를 비교할 수 있습니다.`:''}`)
+}
+function detectiveToggleClue(id){
+ const d=detectiveState();
+ if(d.selected.includes(id))d.selected=d.selected.filter(x=>x!==id);
+ else{if(d.selected.length>=2)d.selected.shift();d.selected.push(id)}
+ save();renderDetectiveView()
+}
+function detectiveConnectEvidence(){
+ const c=detectiveCase();if(!c)return;
+ const d=detectiveState();if(d.selected.length!==2)return;
+ const [a,b]=d.selected,link=c.links.find(x=>(x.a===a&&x.b===b)||(x.a===b&&x.b===a));
+ if(link){
+  if(!d.deductions.includes(link.id)){d.deductions.push(link.id);detectiveSetLog(`📌 추리 성립 · ${link.title}: ${link.text}`)}
+  else detectiveSetLog('이미 확정한 연결입니다.')
+ }else detectiveSetLog('두 증거 사이의 직접적인 연결은 약해 보여요. 다른 조합을 시도해 보세요.');
+ d.selected=[];save();renderDetective()
+}
+function detectiveAccuse(){
+ const c=detectiveCase();if(!c)return;
+ const d=detectiveState();if(d.solved||d.deductions.length<2)return;
+ const suspect=$('detectiveAccuseSuspect')?.value,motive=$('detectiveAccuseMotive')?.value,evidence=$('detectiveAccuseEvidence')?.value;
+ if(!suspect||!motive||!evidence){detectiveSetLog('범인 · 동기 · 핵심 증거를 모두 선택해 주세요.');return}
+ const correct=suspect===c.culprit.id&&motive===c.culprit.motive&&c.keyEvidenceIds.includes(evidence);
+ if(!correct){
+  d.wrong++;save();renderDetective();
+  detectiveSetLog(d.wrong>=2?'추리가 성립하지 않았습니다. 힌트가 수사 메모에 추가됐어요.':'추리가 성립하지 않았습니다. 사건은 끝나지 않으니 다시 조사해 보세요.');
+  return
+ }
+ const base=Math.max(600,900-d.wrong*75),partner=detectivePartner(),bonus=partner&&limitBreakLevel(partner)>=3?Math.round(base*.2):0,reward=base+bonus;
+ if(!Number.isSafeInteger(local.points+reward)){notice('포인트 한도를 초과하여 보상을 지급할 수 없어요.');return}
+ local.points+=reward;d.solved=true;d.rewardClaimed=true;d.solvedCount=(d.solvedCount||0)+1;save();render();renderDetective();
+ detectiveSetLog(`✅ CASE CLOSED · ${c.culprit.name} 지목 성공! +${reward.toLocaleString()}P${bonus?` (파트너 보너스 +${bonus.toLocaleString()}P)`:''}`)
+}
+function renderDetective(){
+ const points=$('detectivePoints');if(!points)return;
+ const d=detectiveState(),c=detectiveCase();
+ points.textContent=Number(local.points||0).toLocaleString();
+ detectivePopulatePartner();
+ $('detectiveCaseNo').textContent=c?`CASE FILE #${String(d.serial||1).padStart(3,'0')} · ${c.title}`:'CASE FILE · 대기 중';
+ const progress=detectiveProgress(c);$('detectiveProgressFill').style.width=progress+'%';
+ $('detectiveProgressText').textContent=c?`수사 진행도 ${progress}% · 증거 ${d.discovered.length}/${c.clues.length} · 진술 ${d.interviewed.length}/${c.suspects.length} · 추리 ${d.deductions.length}/${c.links.length}${d.solved?' · 해결 완료':''}`:'새 사건을 배정받아 주세요.';
+ document.querySelectorAll('[data-detective-tab]').forEach(b=>b.classList.toggle('active',b.dataset.detectiveTab===detectiveTab));
+ renderDetectiveView()
+}
+$('detectiveNewCase').onclick=()=>detectiveStartNew(false);
+$('detectiveResetCase').onclick=detectiveReset;
+$('detectivePartner').addEventListener('change',e=>{const d=detectiveState();d.partnerId=e.target.value||null;save();renderDetective()});
+document.querySelectorAll('[data-detective-tab]').forEach(b=>b.addEventListener('click',()=>detectiveSetTab(b.dataset.detectiveTab)));
+
+
 // 캐릭터 팡 PLUS: 특수 블록 / 조합 / 폭발 이펙트 / 보조 아이템
 const PANG_SIZE=6,PANG_MOVES=30,PANG_SYMBOLS=['🌸','🎧','❄️','🔥','🍀','⭐'];
 const PANG_SPECIAL_ICON={moon:'☾',star:'✦',sun:'☀',mirror:'◉',nova:'✹'};
@@ -2818,7 +3185,8 @@ function showMiniGame(which){
   ['pang','pangSection','choosePang'],
   ['runner','runnerSection','chooseRunner'],
   ['tetris','tetrisSection','chooseTetris'],
-  ['rhythm','rhythmSection','chooseRhythm']
+  ['rhythm','rhythmSection','chooseRhythm'],
+  ['detective','detectiveSection','chooseDetective']
  ]){
   $(section).classList.toggle('hidden',which!==name);
   $(button).classList.toggle('active',which===name)
@@ -2827,13 +3195,15 @@ function showMiniGame(which){
  if(which==='pang')renderPang();
  if(which==='runner')drawRunner();
  if(which==='tetris'){tetrisRefreshCharacter();drawTetris()}
- if(which==='rhythm')drawRhythm()
+ if(which==='rhythm')drawRhythm();
+ if(which==='detective')renderDetective()
 }
 $('chooseMemory').onclick=()=>showMiniGame('memory');
 $('choosePang').onclick=()=>showMiniGame('pang');
 $('chooseRunner').onclick=()=>showMiniGame('runner');
 $('chooseTetris').onclick=()=>showMiniGame('tetris');
 $('chooseRhythm').onclick=()=>showMiniGame('rhythm');
+$('chooseDetective').onclick=()=>showMiniGame('detective');
 function pangCell(v,s=null){return {v:Number(v),s:s||null}}
 function pangOwnedSSR(){
  return characters.filter(c=>{
