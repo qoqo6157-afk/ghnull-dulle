@@ -165,6 +165,45 @@
 
 .wide{width:100%}.mini{font-size:12px}.edit-panel{margin:14px 0;padding:16px;border:2px solid #a9a9ed;border-radius:16px;background:#fafaff}.edit-panel img{width:110px;height:140px;object-fit:contain}.admin-item{display:flex;align-items:center;gap:12px;margin:10px 0;padding:10px;border:1px solid #e7e8f0;border-radius:12px}.admin-item img{width:52px;height:65px;object-fit:contain}.admin-item .order-handle{flex:0 0 auto;touch-action:none;user-select:none;cursor:grab;padding:10px 6px;background:#eeeefa;color:#393b8d}.admin-item.dragging{opacity:.55;border:2px dashed #595bd7}.admin-item .order-arrows{display:flex;flex-direction:column;gap:3px}.admin-item .order-arrows button{padding:3px 8px}.order-save{margin:10px 0;width:100%}.order-help{font-size:12px;color:#777b90}.admin-item .item-name{flex:1;min-width:0;overflow-wrap:anywhere}@media(max-width:450px){.admin-item{gap:5px;padding:6px}.admin-item img{width:40px;height:52px}.admin-item .actions{gap:3px}.admin-item .actions button{padding:7px 5px;font-size:12px}}.admin-item .actions{display:flex;gap:6px;margin-left:auto}.admin-item button{padding:9px}.edit-panel .row button{flex:1}button:focus-visible,input:focus-visible{outline:3px solid #a8a8ff}@media(max-width:450px){.nav button{min-width:0;flex:1;padding:10px 3px;font-size:12px}.hero img{height:340px}}
 
+
+/* Collection character detail popup */
+.collection-card-open{cursor:pointer;transition:transform .16s ease,box-shadow .16s ease}
+.collection-card-open:hover{transform:translateY(-2px);box-shadow:0 12px 26px #59608718}
+.collection-card-open:focus-visible{outline:3px solid #9b91ff88;outline-offset:3px}
+.collection-detail-overlay{position:fixed;inset:0;z-index:170;display:flex;align-items:center;justify-content:center;padding:16px;background:rgba(70,76,110,.24);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px)}
+.collection-detail-dialog{position:relative;width:min(96vw,760px);max-height:92dvh;overflow:auto;border:1px solid rgba(255,255,255,.82);border-radius:28px;padding:18px;background:linear-gradient(180deg,rgba(255,255,255,.88),rgba(250,247,255,.74));box-shadow:0 28px 80px rgba(77,83,126,.24),inset 0 1px 0 rgba(255,255,255,.95)}
+.collection-detail-close{position:sticky;z-index:8;float:right;top:0;width:40px;height:40px;padding:0!important;border-radius:999px!important;background:rgba(255,255,255,.78)!important;color:#626985!important;border:1px solid rgba(139,146,190,.16)!important;box-shadow:0 8px 20px rgba(90,96,140,.10)!important;font-size:20px!important;line-height:1}
+.collection-detail-grid{display:grid;grid-template-columns:minmax(260px,1.08fr) minmax(240px,.92fr);gap:18px;align-items:start;clear:both}
+.collection-detail-artbox{position:relative;min-height:520px;border-radius:24px;display:grid;place-items:center;overflow:hidden;background:linear-gradient(150deg,rgba(223,238,255,.78),rgba(245,235,255,.78) 48%,rgba(255,232,244,.78));border:1px solid rgba(255,255,255,.92);box-shadow:inset 0 1px 0 rgba(255,255,255,.96),0 14px 32px rgba(112,123,169,.10)}
+.collection-detail-artbox::before{content:"";position:absolute;inset:-20%;background:radial-gradient(circle at 30% 20%,rgba(255,255,255,.75),transparent 28%),radial-gradient(circle at 75% 72%,rgba(188,215,255,.30),transparent 35%);pointer-events:none}
+.collection-detail-art{position:relative;z-index:1;width:100%;height:520px;object-fit:contain;padding:12px;-webkit-user-drag:none}
+.collection-detail-full-badge{position:absolute;z-index:3;left:14px;top:14px;padding:7px 11px;border-radius:999px;background:linear-gradient(135deg,rgba(137,117,255,.90),rgba(239,118,197,.88));color:#fff;font-size:11px;font-weight:950;letter-spacing:.03em;box-shadow:0 8px 22px rgba(139,111,222,.22)}
+.collection-detail-info{display:flex;flex-direction:column;gap:12px;padding:6px 2px 2px}
+.collection-detail-head{padding:3px 2px 11px;border-bottom:1px solid rgba(104,111,150,.10)}
+.collection-detail-rarity{display:inline-flex;align-items:center;padding:6px 10px;border-radius:999px;background:rgba(113,123,255,.10);color:#5963d6;font-size:11px;font-weight:900}
+.collection-detail-name{margin:8px 0 2px;font-size:27px;font-weight:950;letter-spacing:-.03em;color:#2d3347}
+.collection-detail-owned{margin:0;color:#747b92;font-size:12px}
+.collection-detail-section{padding:13px;border-radius:18px;background:rgba(255,255,255,.64);border:1px solid rgba(255,255,255,.85);box-shadow:0 8px 20px rgba(99,109,150,.07)}
+.collection-detail-section-title{margin:0 0 9px;font-size:12px;font-weight:950;color:#626a88}
+.collection-detail-stars{font-size:23px;letter-spacing:3px;font-weight:950;color:#b78621}
+.collection-detail-stars.full{color:#8f5de4;text-shadow:0 0 10px #c7a9ff99}
+.collection-detail-status{margin:5px 0 10px;color:#747b92;font-size:11px;line-height:1.5}
+.collection-detail-actions{display:grid;grid-template-columns:1fr;gap:7px}
+.collection-detail-art-actions{display:grid;grid-template-columns:1fr 1fr;gap:7px}
+.collection-detail-art-actions button{padding:9px 7px!important;font-size:11px!important}
+.collection-detail-art-actions button.active{background:linear-gradient(135deg,#7b76ee,#d871bd)!important;color:#fff!important}
+.collection-detail-home-count{margin:8px 0 0;font-size:10px;color:#858ba0;text-align:center}
+.collection-detail-hint{margin:0;padding:9px 11px;border-radius:13px;background:rgba(239,241,255,.65);color:#747b92;font-size:11px;line-height:1.55}
+@media(max-width:680px){
+ .collection-detail-overlay{padding:8px;align-items:flex-end}
+ .collection-detail-dialog{width:100%;max-height:94dvh;border-radius:25px 25px 14px 14px;padding:14px}
+ .collection-detail-grid{grid-template-columns:1fr;gap:12px}
+ .collection-detail-artbox{min-height:0;height:min(52dvh,430px)}
+ .collection-detail-art{height:100%;max-height:430px}
+ .collection-detail-name{font-size:23px}
+ .collection-detail-info{gap:9px}
+}
+
 /* Collection: hide unowned character art and names until obtained. */
 .locked-card{background:#f0f1f5;border-color:#dfe1e9}.locked-art{width:100%;height:160px;display:flex;align-items:center;justify-content:center;background:linear-gradient(145deg,#d9dce5,#aeb3c3);border-radius:9px;color:#fff;font-size:56px;font-weight:800;filter:grayscale(1)}.locked-card strong{color:#858a9a}
 /* Memory game */
@@ -935,6 +974,44 @@
     </div>
     <div id="gachaOrbField" class="gacha-orb-field"></div>
   </div>
+</div><div id="collectionDetailOverlay" class="collection-detail-overlay hidden" role="dialog" aria-modal="true" aria-labelledby="collectionDetailName">
+  <div class="collection-detail-dialog">
+    <button type="button" id="collectionDetailClose" class="collection-detail-close" aria-label="닫기">×</button>
+    <div class="collection-detail-grid">
+      <div class="collection-detail-artbox">
+        <div id="collectionDetailFullBadge" class="collection-detail-full-badge hidden">★★★ FULL LIMIT</div>
+        <img id="collectionDetailArt" class="collection-detail-art" alt="">
+      </div>
+      <div class="collection-detail-info">
+        <div class="collection-detail-head">
+          <div id="collectionDetailRarity" class="collection-detail-rarity"></div>
+          <h2 id="collectionDetailName" class="collection-detail-name"></h2>
+          <p id="collectionDetailOwned" class="collection-detail-owned"></p>
+        </div>
+        <div id="collectionDetailLimitSection" class="collection-detail-section hidden">
+          <p class="collection-detail-section-title">✨ SSR 한계돌파</p>
+          <div id="collectionDetailStars" class="collection-detail-stars">☆☆☆</div>
+          <p id="collectionDetailLimitInfo" class="collection-detail-status"></p>
+          <button type="button" id="collectionDetailEnhance" class="wide">강화</button>
+        </div>
+        <div class="collection-detail-section">
+          <p class="collection-detail-section-title">🏠 홈 캐릭터 설정</p>
+          <div id="collectionDetailArtChoice" class="hidden">
+            <div class="collection-detail-art-actions">
+              <button type="button" id="collectionDetailBaseArt" class="ghost">풀돌 전 일러</button>
+              <button type="button" id="collectionDetailFullArt" class="ghost">★★★ 풀돌 후 일러</button>
+            </div>
+            <p id="collectionDetailArtStatus" class="collection-detail-status"></p>
+          </div>
+          <div class="collection-detail-actions">
+            <button type="button" id="collectionDetailHome"></button>
+          </div>
+          <p id="collectionDetailHomeCount" class="collection-detail-home-count"></p>
+        </div>
+        <p class="collection-detail-hint">카드 밖의 어두운 영역을 누르거나 × 버튼을 누르면 닫혀요.</p>
+      </div>
+    </div>
+  </div>
 </div><div id="limitBreakOverlay" class="limit-break-overlay hidden" role="dialog" aria-modal="true" aria-labelledby="limitBreakTitle"><div class="limit-break-stage"><div id="limitBreakFullFlash" class="limit-break-full-flash hidden"></div><div class="limit-break-art-wrap"><div class="limit-break-burst"></div><div class="limit-break-ring"></div><img id="limitBreakArt" class="limit-break-art" alt=""></div><div id="limitBreakTitle" class="limit-break-title">LIMIT BREAK!</div><div id="limitBreakLevel" class="limit-break-level">★☆☆</div><div id="limitBreakCopy" class="limit-break-copy"></div><button id="limitBreakClose" type="button" class="ghost wide" style="margin-top:14px">확인</button></div></div><div id="accountOverlay" class="pity-overlay hidden" role="dialog" aria-modal="true"><div class="pity-dialog"><h2>👤 로그인 · 계정 데이터 연동</h2><p class="muted">로그인하면 이 계정의 클라우드 세이브와 연결됩니다. 처음 연동할 때는 현재 기기 데이터와 클라우드 데이터 중 어떤 것을 사용할지 선택할 수 있어요. 기존 브라우저 데이터는 먼저 삭제하지 않습니다.</p><label>이메일</label><input id="userEmail" type="email" autocomplete="username"><label>비밀번호</label><input id="userPassword" type="password" autocomplete="current-password"><div class="row"><button id="userSignIn">로그인</button><button id="userSignUp" class="ghost">회원가입</button></div><button id="accountClose" class="ghost wide">닫기</button></div></div><nav class="nav" aria-label="하단 메뉴"><button data-tab="home" class="active">⌂<br>홈</button><button data-tab="gacha">✧<br>가챠</button><button data-tab="collection">▦<br>도감</button><button data-tab="game">🎮<br>게임</button><button data-tab="pet">🥚<br>펫</button><button data-tab="casino">🎰<br>카지노</button><button data-tab="admin">⚙<br>관리</button></nav>
 <script type="module">
 // 이미지에 한정해 우클릭 메뉴 및 끌어서 저장을 제한합니다. 관리자의 파일 선택·업로드는 방해하지 않습니다.
@@ -1639,13 +1716,14 @@ function setHomeCharacter(c,mode=null){
  if(limitBreakLevel(c)>=3&&c.full_limit_image_url&&['base','full'].includes(mode))local.homeArtModes[c.id]=mode;
  local.homeCharacterId=local.homeCharacterIds[0]||null;
  save();render();
+ if(String(collectionDetailId)===String(c.id))refreshCollectionDetail();
  const label=limitBreakLevel(c)>=3&&c.full_limit_image_url?(homeArtMode(c)==='full'?'풀돌 후 일러스트':'풀돌 전 일러스트'):'기본 일러스트';
  notice(`${c.name}을(를) 홈에 설정했어요. · ${label}`)
 }
 function removeHomeCharacter(c){
  local.homeCharacterIds=local.homeCharacterIds.filter(id=>id!==c.id);
  local.homeCharacterId=local.homeCharacterIds[0]||null;
- save();render();notice('홈 캐릭터 설정을 해제했어요.')
+ save();render();if(String(collectionDetailId)===String(c.id))refreshCollectionDetail();notice('홈 캐릭터 설정을 해제했어요.')
 }
 function fullLimitOwnedCount(){return characters.filter(c=>c.rarity==='SSR'&&(Number(local.counts[c.id])||0)>0&&limitBreakLevel(c)>=3).length}
 function fullLimitCollectionBonusRate(){return Math.min(.20,fullLimitOwnedCount()*.05)}
@@ -1828,7 +1906,87 @@ function playGachaCinematic(cards,{source='normal'}={}){
 }
 
 function orderedMembers(rarity){const pool=rarity==='LIMITED'?characters.filter(c=>c.is_limited):characters.filter(c=>c.rarity===rarity&&!c.is_limited);return pool.sort((a,b)=>(Number(a.sort_order)||0)-(Number(b.sort_order)||0)||String(a.created_at||'').localeCompare(String(b.created_at||''))||String(a.id).localeCompare(String(b.id)))}
-function renderCollection(){const grid=$('collectionGrid');grid.replaceChildren();if(!characters.length){grid.textContent='등록된 캐릭터가 없어요.';return}for(const rarity of ['SSR','SR','R','LIMITED']){const section=document.createElement('section');section.className='rarity-section';const heading=document.createElement('h3');heading.className='rarity-heading';const title=document.createElement('span');title.textContent=rarity==='LIMITED'?'✨ 한정':rarity;const badge=document.createElement('span');badge.className='tag';const members=orderedMembers(rarity);badge.textContent=`${members.length}명`;heading.append(title,badge);section.append(heading);if(!members.length){const empty=document.createElement('p');empty.className='rarity-empty';empty.textContent='등록된 캐릭터가 없어요.';section.append(empty)}else{const cards=document.createElement('div');cards.className='grid';for(const c of members){const count=Number(local.counts[c.id])||0;const wrapper=document.createElement('div');wrapper.innerHTML=count>0?card(c,count):`<div class="card locked-card" aria-label="미획득 캐릭터"><div class="locked-art" aria-hidden="true">?</div><div class="tag">${escapeHtml(c.rarity)}</div><strong>???</strong><p class="muted mini">🔒 미획득</p></div>`;const item=wrapper.firstElementChild;if(count>0){if(c.rarity==='SSR'){const lv=limitBreakLevel(c),dupes=Math.max(0,count-1);const box=document.createElement('div');box.className='limit-break-box';const stars=document.createElement('div');stars.className='limit-break-stars'+(lv>=3?' full':'');stars.textContent=limitBreakStars(c)+(lv>=3?' · FULL':'');const info=document.createElement('div');info.className='limit-break-info';info.textContent=lv>=3?`3성 풀돌 완료 · 남은 중복 ${dupes}장`:`강화 ${lv}/3 · 사용 가능 중복 ${dupes}장`;const enhance=document.createElement('button');enhance.type='button';enhance.className='limit-break-btn';enhance.disabled=lv>=3||dupes<1;enhance.textContent=lv>=3?'★★★ 풀돌 완료':dupes<1?'중복 SSR 1장 필요':'✨ 중복 1장으로 강화';enhance.onclick=()=>enhanceSSR(c);box.append(stars,info,enhance);item.append(box)}
+
+let collectionDetailId=null;
+function collectionDetailCharacter(){return characters.find(c=>String(c.id)===String(collectionDetailId))||null}
+function closeCollectionDetail(){
+ collectionDetailId=null;
+ $('collectionDetailOverlay')?.classList.add('hidden');
+ document.body.style.overflow=''
+}
+function refreshCollectionDetail(){
+ const c=collectionDetailCharacter();
+ if(!c)return closeCollectionDetail();
+ const count=Number(local.counts[c.id])||0;
+ if(count<1)return closeCollectionDetail();
+
+ const lv=limitBreakLevel(c),dupes=Math.max(0,count-1),selected=local.homeCharacterIds.includes(c.id);
+ const canChooseArt=lv>=3&&!!c.full_limit_image_url;
+
+ $('collectionDetailArt').src=characterDisplayImage(c);
+ $('collectionDetailArt').alt=c.name;
+ $('collectionDetailName').textContent=c.name;
+ $('collectionDetailRarity').textContent=(c.is_limited?'✨ 한정 · ':'')+c.rarity;
+ $('collectionDetailOwned').textContent=`보유 ${count}장${count>1?` · 사용 가능 중복 ${dupes}장`:''}`;
+ $('collectionDetailFullBadge').classList.toggle('hidden',lv<3);
+
+ const limitSection=$('collectionDetailLimitSection');
+ limitSection.classList.toggle('hidden',c.rarity!=='SSR');
+ if(c.rarity==='SSR'){
+  $('collectionDetailStars').textContent=limitBreakStars(c)+(lv>=3?' · FULL':'');
+  $('collectionDetailStars').classList.toggle('full',lv>=3);
+  $('collectionDetailLimitInfo').textContent=lv>=3
+   ?`3성 풀돌 완료 · 남은 중복 ${dupes}장`
+   :`강화 ${lv}/3 · 사용 가능 중복 ${dupes}장 · 강화 1회당 같은 SSR 중복 1장 소모`;
+  const enhance=$('collectionDetailEnhance');
+  enhance.disabled=lv>=3||dupes<1;
+  enhance.textContent=lv>=3?'★★★ 풀돌 완료':dupes<1?'중복 SSR 1장 필요':'✨ 중복 1장으로 강화';
+  enhance.onclick=()=>enhanceSSR(c)
+ }
+
+ const artChoice=$('collectionDetailArtChoice');
+ artChoice.classList.toggle('hidden',!canChooseArt);
+ if(canChooseArt){
+  const mode=homeArtMode(c);
+  $('collectionDetailBaseArt').classList.toggle('active',selected&&mode==='base');
+  $('collectionDetailFullArt').classList.toggle('active',selected&&mode==='full');
+  $('collectionDetailArtStatus').textContent=selected
+   ?`현재 홈 일러스트: ${mode==='full'?'★★★ 풀돌 후':'풀돌 전'}`
+   :'홈에 설정할 때 사용할 일러스트를 선택할 수 있어요.';
+  $('collectionDetailBaseArt').onclick=()=>{setHomeCharacter(c,'base');collectionDetailId=c.id;refreshCollectionDetail()};
+  $('collectionDetailFullArt').onclick=()=>{setHomeCharacter(c,'full');collectionDetailId=c.id;refreshCollectionDetail()}
+ }
+
+ const homeBtn=$('collectionDetailHome');
+ homeBtn.className=selected?'wide ghost':'wide';
+ homeBtn.textContent=selected?'🏠 홈 설정 해제':`🏠 홈에 설정 (${local.homeCharacterIds.length}/3)`;
+ homeBtn.disabled=!selected&&local.homeCharacterIds.length>=3;
+ homeBtn.onclick=()=>{
+  selected?removeHomeCharacter(c):setHomeCharacter(c,canChooseArt?homeArtMode(c):null);
+  collectionDetailId=c.id;
+  refreshCollectionDetail()
+ };
+ $('collectionDetailHomeCount').textContent=`현재 홈 캐릭터 ${local.homeCharacterIds.length}/3`;
+}
+function showCollectionDetail(c){
+ if(!c||(Number(local.counts[c.id])||0)<1)return;
+ collectionDetailId=c.id;
+ refreshCollectionDetail();
+ $('collectionDetailOverlay').classList.remove('hidden');
+ document.body.style.overflow='hidden'
+}
+$('collectionDetailClose').onclick=closeCollectionDetail;
+$('collectionDetailOverlay').addEventListener('click',e=>{if(e.target===$('collectionDetailOverlay'))closeCollectionDetail()});
+document.addEventListener('keydown',e=>{if(e.key==='Escape'&&!$('collectionDetailOverlay').classList.contains('hidden'))closeCollectionDetail()});
+
+function renderCollection(){const grid=$('collectionGrid');grid.replaceChildren();if(!characters.length){grid.textContent='등록된 캐릭터가 없어요.';return}for(const rarity of ['SSR','SR','R','LIMITED']){const section=document.createElement('section');section.className='rarity-section';const heading=document.createElement('h3');heading.className='rarity-heading';const title=document.createElement('span');title.textContent=rarity==='LIMITED'?'✨ 한정':rarity;const badge=document.createElement('span');badge.className='tag';const members=orderedMembers(rarity);badge.textContent=`${members.length}명`;heading.append(title,badge);section.append(heading);if(!members.length){const empty=document.createElement('p');empty.className='rarity-empty';empty.textContent='등록된 캐릭터가 없어요.';section.append(empty)}else{const cards=document.createElement('div');cards.className='grid';for(const c of members){const count=Number(local.counts[c.id])||0;const wrapper=document.createElement('div');wrapper.innerHTML=count>0?card(c,count):`<div class="card locked-card" aria-label="미획득 캐릭터"><div class="locked-art" aria-hidden="true">?</div><div class="tag">${escapeHtml(c.rarity)}</div><strong>???</strong><p class="muted mini">🔒 미획득</p></div>`;const item=wrapper.firstElementChild;if(count>0){
+ item.classList.add('collection-card-open');
+ item.tabIndex=0;
+ item.setAttribute('role','button');
+ item.setAttribute('aria-label',`${c.name} 크게 보기`);
+ item.addEventListener('click',e=>{if(e.target.closest('button'))return;showCollectionDetail(c)});
+ item.addEventListener('keydown',e=>{if((e.key==='Enter'||e.key===' ')&&!e.target.closest('button')){e.preventDefault();showCollectionDetail(c)}});
+ if(c.rarity==='SSR'){const lv=limitBreakLevel(c),dupes=Math.max(0,count-1);const box=document.createElement('div');box.className='limit-break-box';const stars=document.createElement('div');stars.className='limit-break-stars'+(lv>=3?' full':'');stars.textContent=limitBreakStars(c)+(lv>=3?' · FULL':'');const info=document.createElement('div');info.className='limit-break-info';info.textContent=lv>=3?`3성 풀돌 완료 · 남은 중복 ${dupes}장`:`강화 ${lv}/3 · 사용 가능 중복 ${dupes}장`;const enhance=document.createElement('button');enhance.type='button';enhance.className='limit-break-btn';enhance.disabled=lv>=3||dupes<1;enhance.textContent=lv>=3?'★★★ 풀돌 완료':dupes<1?'중복 SSR 1장 필요':'✨ 중복 1장으로 강화';enhance.onclick=e=>{e.stopPropagation();enhanceSSR(c)};box.append(stars,info,enhance);item.append(box)}
 const selected=local.homeCharacterIds.includes(c.id);
 const canChooseArt=limitBreakLevel(c)>=3&&!!c.full_limit_image_url;
 if(canChooseArt){
@@ -1836,20 +1994,20 @@ if(canChooseArt){
  const choiceTitle=document.createElement('div');choiceTitle.className='home-art-choice-title';choiceTitle.textContent='🏠 홈에 사용할 일러스트';
  const choiceRow=document.createElement('div');choiceRow.className='home-art-choice-row';
  const baseBtn=document.createElement('button');baseBtn.type='button';baseBtn.className='ghost'+(selected&&homeArtMode(c)==='base'?' active':'');baseBtn.textContent='풀돌 전 일러';
- baseBtn.onclick=()=>setHomeCharacter(c,'base');
+ baseBtn.onclick=e=>{e.stopPropagation();setHomeCharacter(c,'base')};
  const fullBtn=document.createElement('button');fullBtn.type='button';fullBtn.className='ghost'+(selected&&homeArtMode(c)==='full'?' active':'');fullBtn.textContent='★★★ 풀돌 후 일러';
- fullBtn.onclick=()=>setHomeCharacter(c,'full');
+ fullBtn.onclick=e=>{e.stopPropagation();setHomeCharacter(c,'full')};
  choiceRow.append(baseBtn,fullBtn);
  choice.append(choiceTitle,choiceRow);
  if(selected){
   const current=document.createElement('div');current.className='home-art-current';current.textContent=`현재 홈: ${homeArtMode(c)==='full'?'풀돌 후 일러스트':'풀돌 전 일러스트'}`;
-  const remove=document.createElement('button');remove.type='button';remove.className='wide ghost';remove.style.marginTop='7px';remove.textContent='홈 설정 해제';remove.onclick=()=>removeHomeCharacter(c);
+  const remove=document.createElement('button');remove.type='button';remove.className='wide ghost';remove.style.marginTop='7px';remove.textContent='홈 설정 해제';remove.onclick=e=>{e.stopPropagation();removeHomeCharacter(c)};
   choice.append(current,remove)
  }
  item.append(choice)
 }else{
  const button=document.createElement('button');button.type='button';button.className='wide'+(selected?' ghost':'');button.textContent=selected?'홈 설정 해제':`홈에 설정 (${local.homeCharacterIds.length}/3)`;
- button.onclick=()=>selected?removeHomeCharacter(c):setHomeCharacter(c,null);
+ button.onclick=e=>{e.stopPropagation();selected?removeHomeCharacter(c):setHomeCharacter(c,null)};
  item.append(button)
 }}cards.append(item)}section.append(cards)}grid.append(section)}}function showLimitBreakEffect(c,newLevel){
  $('limitBreakArt').src=characterDisplayImage(c);
@@ -1879,6 +2037,7 @@ async function enhanceSSR(c){
  render();
  renderCollection();
  arcadeCharacters();
+ if(String(collectionDetailId)===String(c.id))refreshCollectionDetail();
  showLimitBreakEffect(c,level+1);
 }
 
