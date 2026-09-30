@@ -190,6 +190,9 @@
 .collection-detail-view-actions{display:flex;gap:5px;flex-wrap:wrap}
 .collection-detail-view-actions button{width:auto!important;padding:7px 9px!important;font-size:10px!important}
 .collection-detail-view-actions button.active{background:linear-gradient(135deg,#7c79ec,#d776bd)!important;color:#fff!important}
+.collection-detail-view-actions{position:relative;z-index:6}
+.collection-detail-view-actions button{pointer-events:auto!important;position:relative;z-index:7}
+.collection-detail-view-status{margin:6px 0 0;font-size:10px;font-weight:850;color:#747b92}
 .collection-detail-dialogue{min-height:58px;padding:12px 13px;border-radius:15px;background:linear-gradient(180deg,rgba(244,246,255,.82),rgba(255,247,252,.74));border:1px solid rgba(151,158,202,.12);color:#515a77;font-size:13px;line-height:1.6;cursor:pointer}
 .collection-detail-dialogue:hover{background:linear-gradient(180deg,rgba(240,243,255,.92),rgba(255,243,250,.86))}
 .collection-detail-dialogue-hint{margin:6px 0 0;color:#8a90a5;font-size:10px}
@@ -1321,6 +1324,7 @@
             </div>
           </div>
           <div id="collectionDetailDialogue" class="collection-detail-dialogue" role="button" tabindex="0">캐릭터를 눌러 대사를 들어보세요!</div>
+          <p id="collectionDetailViewStatus" class="collection-detail-view-status hidden"></p>
           <p class="collection-detail-dialogue-hint">큰 일러스트나 대사창을 누르면 등록된 대사가 랜덤으로 나와요.</p>
         </div>
         <div class="collection-detail-section">
@@ -2251,6 +2255,44 @@ function collectionDetailDisplayImage(c){
  }
  return characterDisplayImage(c)
 }
+function updateCollectionDetailArtView(c){
+ if(!c)return;
+ const canChoose=limitBreakLevel(c)>=3&&!!c.full_limit_image_url;
+ const detailArt=$('collectionDetailArt');
+ const viewChoice=$('collectionDetailViewArtChoice');
+ const status=$('collectionDetailViewStatus');
+
+ viewChoice.classList.toggle('hidden',!canChoose);
+ status.classList.toggle('hidden',!canChoose);
+
+ if(!canChoose){
+  collectionDetailViewMode='auto';
+  detailArt.src=characterDisplayImage(c);
+  detailArt.alt=c.name;
+  return
+ }
+
+ if(!['base','full'].includes(collectionDetailViewMode))collectionDetailViewMode='full';
+
+ const targetUrl=collectionDetailViewMode==='base'
+  ?(c.image_url||'')
+  :(c.full_limit_image_url||c.image_url||'');
+
+ detailArt.src=targetUrl;
+ detailArt.alt=`${c.name} ${collectionDetailViewMode==='base'?'풀돌 전':'풀돌 후'} 일러스트`;
+
+ $('collectionDetailViewBase').classList.toggle('active',collectionDetailViewMode==='base');
+ $('collectionDetailViewFull').classList.toggle('active',collectionDetailViewMode==='full');
+ status.textContent=`현재 보기: ${collectionDetailViewMode==='base'?'풀돌 전 일러스트':'★★★ 풀돌 후 일러스트'}`;
+}
+function setCollectionDetailViewMode(mode,e=null){
+ if(e){e.preventDefault();e.stopPropagation()}
+ const c=collectionDetailCharacter();
+ if(!c||limitBreakLevel(c)<3||!c.full_limit_image_url)return;
+ if(mode!=='base'&&mode!=='full')return;
+ collectionDetailViewMode=mode;
+ updateCollectionDetailArtView(c)
+}
 function collectionDetailSpeak(c){
  const lines=Array.isArray(c?.dialogues)?c.dialogues.filter(Boolean):[];
  $('collectionDetailDialogue').textContent=lines.length?lines[Math.floor(Math.random()*lines.length)]:'등록된 대사가 없어요.'
@@ -2275,24 +2317,9 @@ function refreshCollectionDetail(){
  else if(!['base','full'].includes(collectionDetailViewMode))collectionDetailViewMode='full';
 
  const detailArt=$('collectionDetailArt');
- detailArt.src=collectionDetailDisplayImage(c);
- detailArt.alt=c.name+(collectionDetailViewMode==='base'?' 풀돌 전':'');
+ updateCollectionDetailArtView(c);
  detailArt.onclick=()=>collectionDetailSpeak(c);
 
- const viewChoice=$('collectionDetailViewArtChoice');
- viewChoice.classList.toggle('hidden',!canChooseArt);
- if(canChooseArt){
-  $('collectionDetailViewBase').classList.toggle('active',collectionDetailViewMode==='base');
-  $('collectionDetailViewFull').classList.toggle('active',collectionDetailViewMode==='full');
-  $('collectionDetailViewBase').onclick=()=>{
-   collectionDetailViewMode='base';
-   refreshCollectionDetail()
-  };
-  $('collectionDetailViewFull').onclick=()=>{
-   collectionDetailViewMode='full';
-   refreshCollectionDetail()
-  }
- }
  const dialogue=$('collectionDetailDialogue');
  dialogue.onclick=()=>collectionDetailSpeak(c);
  dialogue.onkeydown=e=>{
@@ -2302,7 +2329,6 @@ function refreshCollectionDetail(){
   }
  };
 
- $('collectionDetailArt').alt=c.name;
  $('collectionDetailName').textContent=c.name;
  $('collectionDetailRarity').textContent=(c.is_limited?'✨ 한정 · ':'')+c.rarity;
  $('collectionDetailOwned').textContent=`보유 ${count}장${count>1?` · 사용 가능 중복 ${dupes}장`:''}`;
@@ -2356,6 +2382,8 @@ function showCollectionDetail(c){
  document.body.style.overflow='hidden'
 }
 $('collectionDetailClose').onclick=closeCollectionDetail;
+$('collectionDetailViewBase').addEventListener('click',e=>setCollectionDetailViewMode('base',e));
+$('collectionDetailViewFull').addEventListener('click',e=>setCollectionDetailViewMode('full',e));
 $('collectionDetailOverlay').addEventListener('click',e=>{if(e.target===$('collectionDetailOverlay'))closeCollectionDetail()});
 document.addEventListener('keydown',e=>{if(e.key==='Escape'&&!$('collectionDetailOverlay').classList.contains('hidden'))closeCollectionDetail()});
 
