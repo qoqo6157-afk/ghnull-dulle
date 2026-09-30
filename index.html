@@ -294,6 +294,10 @@
 .detective-location button,.detective-suspect button{margin-top:9px;width:100%;padding:8px 9px;font-size:11px}
 .detective-location.done{background:#f8fbfa;border-color:#cfe7db}.detective-location-icon,.detective-suspect-icon{font-size:25px}.detective-location h4,.detective-suspect h4{margin:5px 0 4px;font-size:14px}.detective-location p,.detective-suspect p{margin:3px 0;font-size:11px;line-height:1.55;color:#747b90}
 .detective-found{display:inline-flex;margin-top:4px;padding:3px 7px;border-radius:999px;background:#eef0fb;color:#6065ad;font-size:9px;font-weight:900}
+.detective-review-list{margin-top:8px;padding:8px 9px;border-radius:10px;background:#f7f8fc;border:1px solid #e8eaf2}
+.detective-review-list b{display:block;margin-bottom:3px;font-size:9px;color:#646b83}
+.detective-review-list span{display:block;font-size:9px;line-height:1.5;color:#7b8297}
+
 .detective-statement{margin-top:8px;padding:9px;border-left:3px solid #7779cf;border-radius:0 10px 10px 0;background:#f7f7fd;font-size:11px;line-height:1.6;color:#555d78}
 .detective-profile-line{margin-top:6px;padding-top:6px;border-top:1px dashed #e1e3ed;font-size:10px;color:#777e91}
 .detective-board{display:grid;grid-template-columns:minmax(0,1.35fr) minmax(210px,.65fr);gap:12px;align-items:start}
@@ -1166,7 +1170,7 @@
     </div>
   </div>
 
-  <div class="points-box"><strong>🪙 내 포인트: <span id="detectivePoints">0</span> P</strong><p class="muted mini">사건 해결 기본 +900P · 오답 추리마다 보상 -75P (최저 600P) · ★★★ 풀돌 SSR 수사 파트너 선택 시 최종 보상 +20%</p></div>
+  <div class="points-box"><strong>🪙 내 포인트: <span id="detectivePoints">0</span> P</strong><p class="muted mini">사건 해결 기본 +4,200P · 오답 추리마다 -300P (기본 보상 최저 3,000P) · ★★★ 풀돌 SSR 수사 파트너 +20% · 최종 보상 최대 5,000P</p></div>
 
   <label for="detectivePartner">수사 파트너 · 보유 SSR</label>
   <select id="detectivePartner"><option value="">단독 수사</option></select>
@@ -2906,6 +2910,10 @@ $('gameDifficulty').addEventListener('change',()=>{game.pairs=Number($('gameDiff
 // ============================================================
 // Detective Case Files — 시간 제한 없는 증거 수집 / 연결 / 추리 게임
 // ============================================================
+const DETECTIVE_REWARD_BASE=4200;
+const DETECTIVE_REWARD_PENALTY=300;
+const DETECTIVE_REWARD_MIN=3000;
+const DETECTIVE_REWARD_MAX=5000;
 const DETECTIVE_CASES=[
  {
   id:'museum',title:'백야 미술관의 빈 액자',subtitle:'폐관 후 18분, 대표작 「월광의 정원」이 사라졌다.',
@@ -3072,8 +3080,11 @@ function detectiveRenderBrief(c){
 function detectiveRenderScene(c){
  const d=detectiveState();
  const cards=c.locations.map(loc=>{
-  const clues=c.clues.filter(x=>x.location===loc.id),found=clues.filter(x=>d.discovered.includes(x.id)).length,done=found===clues.length;
-  return `<div class="detective-location${done?' done':''}"><div class="detective-location-icon">${loc.icon}</div><h4>${escapeHtml(loc.name)}</h4><p>${escapeHtml(loc.desc)}</p><span class="detective-found">${done?'조사 완료':`증거 ${found}/${clues.length}`}</span><button type="button" data-detective-location="${loc.id}" class="${done?'ghost':''}">${done?'다시 살펴보기':'🔦 조사하기'}</button></div>`
+  const clues=c.clues.filter(x=>x.location===loc.id),foundClues=clues.filter(x=>d.discovered.includes(x.id)),found=foundClues.length,done=found===clues.length;
+  const review=foundClues.length
+   ?`<div class="detective-review-list"><b>확인한 증거</b>${foundClues.map(x=>`<span>${x.icon} ${escapeHtml(x.title)}</span>`).join('')}</div>`
+   :'';
+  return `<div class="detective-location${done?' done':''}"><div class="detective-location-icon">${loc.icon}</div><h4>${escapeHtml(loc.name)}</h4><p>${escapeHtml(loc.desc)}</p><span class="detective-found">${done?'조사 완료':`증거 ${found}/${clues.length}`}</span>${review}<button type="button" data-detective-location="${loc.id}" class="${done?'ghost':''}">${done?'📖 조사 내용 다시 보기':'🔦 조사하기'}</button></div>`
  }).join('');
  return `<div class="detective-grid">${cards}</div>`
 }
@@ -3103,7 +3114,9 @@ function detectiveRenderFinal(c){
   `확보 증거 ${d.discovered.length}/${c.clues.length}`,
   `진술 확인 ${d.interviewed.length}/${c.suspects.length}`,
   `확정 추리 ${d.deductions.length}/${c.links.length}`,
-  d.wrong?`오답 추리 ${d.wrong}회 · 현재 기본 보상 ${Math.max(600,900-d.wrong*75)}P`:'첫 추리 성공 시 기본 900P'
+  d.wrong
+   ?`오답 추리 ${d.wrong}회 · 현재 기본 보상 ${Math.max(DETECTIVE_REWARD_MIN,DETECTIVE_REWARD_BASE-d.wrong*DETECTIVE_REWARD_PENALTY).toLocaleString()}P`
+   :`첫 추리 성공 시 기본 ${DETECTIVE_REWARD_BASE.toLocaleString()}P · 풀돌 파트너 적용 시 최대 ${DETECTIVE_REWARD_MAX.toLocaleString()}P`
  ];
  if(d.wrong>=2)notes.push('힌트: 출입 인증 코드, 현장의 미세 흔적, 용의자 진술을 서로 비교해 보세요.');
  return `<div class="detective-final"><div class="detective-final-form"><h3 style="margin-top:0">⚖️ 사건 결론</h3><p class="muted mini">${enough?'필요한 추리 연결이 확보됐어요. 범인·동기·핵심 증거를 선택하세요.':'최소 2개의 확정 추리를 만들어야 최종 지목을 할 수 있어요.'}</p><label for="detectiveAccuseSuspect">범인</label><select id="detectiveAccuseSuspect"><option value="">선택</option>${c.suspects.map(s=>`<option value="${s.id}">${escapeHtml(s.name)} · ${escapeHtml(s.role)}</option>`).join('')}</select><label for="detectiveAccuseMotive">동기</label><select id="detectiveAccuseMotive"><option value="">선택</option>${c.motives.map(m=>`<option value="${m}">${escapeHtml(m)}</option>`).join('')}</select><label for="detectiveAccuseEvidence">핵심 증거</label><select id="detectiveAccuseEvidence"><option value="">선택</option>${clueOptions}</select><button type="button" id="detectiveAccuse" ${enough?'':'disabled'}>🔎 최종 지목</button><div id="detectiveFinalResult" class="detective-result ${d.wrong?'fail':''}">${d.wrong?'추리가 한 번 이상 성립하지 않았어요. 기록을 다시 검토해 보세요.':'틀려도 사건이 끝나지 않습니다. 천천히 다시 조사할 수 있어요.'}</div></div><aside class="detective-notes"><h4>🗒️ 수사 메모</h4><ul>${notes.map(x=>`<li>${escapeHtml(x)}</li>`).join('')}</ul></aside></div>`
@@ -3135,9 +3148,23 @@ function renderDetectiveView(){
 function detectiveInvestigate(locationId){
  const c=detectiveCase();if(!c)return;
  const d=detectiveState(),available=c.clues.filter(x=>x.location===locationId),next=available.find(x=>!d.discovered.includes(x.id));
- if(!next){detectiveSetLog('이 장소에서는 더 이상 새로운 증거가 나오지 않았습니다.');return}
- d.discovered.push(next.id);save();renderDetective();
- detectiveSetLog(`${next.icon} 증거 확보 · ${next.title} — ${next.detail}`)
+
+ if(next){
+  d.discovered.push(next.id);
+  save();
+  renderDetective();
+  detectiveSetLog(`${next.icon} 증거 확보 · ${next.title} — ${next.detail}`);
+  return
+ }
+
+ const reviewed=available.filter(x=>d.discovered.includes(x.id));
+ if(reviewed.length){
+  const loc=c.locations.find(x=>x.id===locationId);
+  detectiveSetLog(`📖 ${loc?.name||'현장'} 재확인 · `+reviewed.map(x=>`${x.icon} ${x.title}: ${x.detail}`).join('  /  '));
+  return
+ }
+
+ detectiveSetLog('이 장소에서는 아직 확인할 수 있는 증거가 없습니다.')
 }
 function detectiveInterview(suspectId){
  const c=detectiveCase();if(!c)return;
@@ -3175,10 +3202,12 @@ function detectiveAccuse(){
   detectiveSetLog(d.wrong>=2?'추리가 성립하지 않았습니다. 힌트가 수사 메모에 추가됐어요.':'추리가 성립하지 않았습니다. 사건은 끝나지 않으니 다시 조사해 보세요.');
   return
  }
- const base=Math.max(600,900-d.wrong*75),partner=detectivePartner(),bonus=partner&&limitBreakLevel(partner)>=3?Math.round(base*.2):0,reward=base+bonus;
+ const base=Math.max(DETECTIVE_REWARD_MIN,DETECTIVE_REWARD_BASE-d.wrong*DETECTIVE_REWARD_PENALTY);
+ const partner=detectivePartner(),rawBonus=partner&&limitBreakLevel(partner)>=3?Math.round(base*.2):0;
+ const reward=Math.min(DETECTIVE_REWARD_MAX,base+rawBonus),bonus=Math.max(0,reward-base);
  if(!Number.isSafeInteger(local.points+reward)){notice('포인트 한도를 초과하여 보상을 지급할 수 없어요.');return}
  local.points+=reward;d.solved=true;d.rewardClaimed=true;d.solvedCount=(d.solvedCount||0)+1;save();render();renderDetective();
- detectiveSetLog(`✅ CASE CLOSED · ${c.culprit.name} 지목 성공! +${reward.toLocaleString()}P${bonus?` (파트너 보너스 +${bonus.toLocaleString()}P)`:''}`)
+ detectiveSetLog(`✅ CASE CLOSED · ${c.culprit.name} 지목 성공! +${reward.toLocaleString()}P${bonus?` (풀돌 파트너 보너스 +${bonus.toLocaleString()}P)`:''}`)
 }
 function renderDetective(){
  const points=$('detectivePoints');if(!points)return;
