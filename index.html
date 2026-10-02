@@ -283,6 +283,16 @@
 .detective-partner{display:grid;grid-template-columns:72px minmax(0,1fr);gap:10px;align-items:center;margin:12px 0;padding:10px;border:1px solid #e2e4ef;border-radius:16px;background:linear-gradient(145deg,#fbfbff,#fff9fc)}
 .detective-partner img{width:72px;height:72px;object-fit:contain;border-radius:12px;background:#fff;border:1px solid #ececf4}.detective-partner img.hidden{display:none}
 .detective-partner-name{font-weight:900}.detective-partner-bonus{margin:3px 0 0;font-size:11px;color:#7a7f93}.detective-partner-bonus.full{color:#b13d8a;font-weight:900}
+
+.detective-mode-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;margin:12px 0 7px}
+.detective-mode-btn{position:relative;min-height:78px;padding:11px 10px!important;text-align:left!important;border:1px solid #e0e3ee!important;border-radius:14px!important;background:linear-gradient(145deg,#fff,#f7f8fd)!important;color:#3f465f!important}
+.detective-mode-btn strong{display:block;font-size:12px;color:#3e455f}.detective-mode-btn span{display:block;margin-top:4px;font-size:9px;line-height:1.45;color:#858ca2}
+.detective-mode-btn em{position:absolute;right:8px;top:8px;padding:3px 6px;border-radius:999px;background:#eceefa;color:#666ab1;font-size:8px;font-style:normal;font-weight:950}
+.detective-mode-btn.active{border-color:#6b6ed1!important;background:linear-gradient(145deg,#f3f2ff,#fff8fd)!important;box-shadow:0 0 0 2px #6b6ed11b inset}
+.detective-mode-btn.active strong{color:#5559ba}.detective-mode-hint{margin:0 0 10px;padding:8px 10px;border-radius:11px;background:#f7f8fc;border:1px solid #e8eaf2;color:#747b91;font-size:10px;line-height:1.5}
+.detective-mode-chip{display:inline-flex;align-items:center;padding:3px 7px;margin-right:5px;border-radius:999px;background:#eeeff9;color:#6266ad;font-size:8px;font-weight:950;letter-spacing:.04em}
+@media(max-width:520px){.detective-mode-grid{grid-template-columns:1fr}.detective-mode-btn{min-height:62px}}
+
 .detective-progress{height:7px;border-radius:999px;background:#eceef5;overflow:hidden;margin:10px 0 6px}.detective-progress>i{display:block;height:100%;width:0;background:linear-gradient(90deg,#6e70d8,#b767b0);border-radius:inherit;transition:width .25s ease}
 .detective-tabs{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:5px;margin:14px 0}.detective-tabs button{min-width:0;padding:9px 5px;font-size:10px;background:#f1f1f8;color:#61677f;border:1px solid #e4e5ef}.detective-tabs button.active{background:#5f62c7;color:#fff;border-color:#5f62c7}
 .detective-view{animation:detViewIn .22s ease both}@keyframes detViewIn{from{opacity:0;transform:translateY(5px)}to{opacity:1;transform:none}}
@@ -1171,6 +1181,13 @@
   </div>
 
   <div class="points-box"><strong>🪙 내 포인트: <span id="detectivePoints">0</span> P</strong><p class="muted mini">사건 해결 기본 +4,200P · 오답 추리마다 -300P (기본 보상 최저 3,000P) · ★★★ 풀돌 SSR 수사 파트너 +20% · 최종 보상 최대 5,000P</p></div>
+
+  <div class="detective-mode-grid" aria-label="사건 모드">
+    <button type="button" class="detective-mode-btn active" data-detective-mode="story"><em>3 CASES</em><strong>📚 CASE STORY</strong><span>직접 제작된 기존 스토리 사건. 범인은 플레이마다 달라질 수 있어요.</span></button>
+    <button type="button" class="detective-mode-btn" data-detective-mode="endless"><em>∞</em><strong>♾️ ENDLESS CASE</strong><span>장소·사건·수법·용의자·증거를 조합해 계속 새로운 사건을 생성합니다.</span></button>
+    <button type="button" class="detective-mode-btn" data-detective-mode="daily"><em>1 / DAY</em><strong>📅 오늘의 사건</strong><span>날짜 시드로 생성되는 하루 한 사건. 같은 날에는 모두 같은 구성입니다.</span></button>
+  </div>
+  <p id="detectiveModeHint" class="detective-mode-hint">📚 스토리 사건 · 직접 제작된 사건 파일 3종</p>
 
   <label for="detectivePartner">수사 파트너 · 보유 SSR</label>
   <select id="detectivePartner"><option value="">단독 수사</option></select>
@@ -2973,10 +2990,201 @@ const DETECTIVE_CASES=[
 
 let detectiveTab='brief';
 
+const DETECTIVE_MODES={
+ story:{label:'CASE STORY',icon:'📚'},
+ endless:{label:'ENDLESS CASE',icon:'♾️'},
+ daily:{label:'오늘의 사건',icon:'📅'}
+};
+
+const DETECTIVE_SETTINGS=[
+ {id:'cruise',icon:'🚢',name:'세레나 크루즈',scene:'VIP 라운지',security:'선박 보안실',office:'사무장실',hall:'승무원 통로',objects:['블루 다이아몬드 브로치','봉인된 항해 금고 열쇠','VIP 경매품 목록'],roles:['사무장','선박 보안책임자','VIP 전담 승무원','공연 기획자','기관실 감독','여행 작가']},
+ {id:'train',icon:'🚆',name:'오리엔트 특급열차',scene:'1등석 객실',security:'차내 통신실',office:'차장실',hall:'연결 통로',objects:['골동품 회중시계','외교 문서 가방','희귀 우표 컬렉션'],roles:['열차 차장','객실 승무원','철도 보안요원','사업가 비서','여행 사진가','정비기사']},
+ {id:'theater',icon:'🎭',name:'아르카 극장',scene:'주연 대기실',security:'무대 제어실',office:'연출 사무실',hall:'백스테이지 통로',objects:['초연 원본 대본','왕관 소품의 진품 보석','비공개 캐스팅 계약서'],roles:['연출가','무대감독','주연 배우','의상팀장','조명감독','공연기자']},
+ {id:'airport',icon:'✈️',name:'국제공항 VIP 터미널',scene:'VIP 수하물실',security:'보안 관제실',office:'운항 지원실',hall:'직원 전용 통로',objects:['외교관 전용 서류가방','고가 시제품 수하물','봉인된 미술품 케이스'],roles:['보안팀장','수하물 감독','VIP 의전담당','항공사 매니저','세관 협력관','정비 코디네이터']},
+ {id:'resort',icon:'🏝️',name:'루미에르 리조트',scene:'프라이빗 빌라',security:'리조트 관제실',office:'총지배인실',hall:'서비스 통로',objects:['VIP 금고의 에메랄드 세트','비밀 투자 계약서','한정판 와인 경매 증서'],roles:['총지배인','빌라 매니저','보안담당','소믈리에','이벤트 플래너','시설팀장']},
+ {id:'school',icon:'🏫',name:'세이렌 예술학교',scene:'방송실',security:'교내 서버실',office:'교무자료실',hall:'특별동 복도',objects:['콩쿠르 심사 원본','비공개 오디션 녹음본','장학생 선정 문서'],roles:['방송부 지도교사','교무실 직원','학생회 간부','시설관리자','음악과 조교','외부 심사위원']},
+ {id:'hospital',icon:'🏥',name:'센트럴 메디컬센터',scene:'연구 병동 기록실',security:'의료정보 관제실',office:'임상연구 사무실',hall:'직원 전용 복도',objects:['임상시험 원본 데이터','신약 샘플 보관키','익명화 환자 연구기록'],roles:['임상연구 책임자','의료정보 관리자','수간호사','제약사 모니터','시설 보안담당','연구 코디네이터']},
+ {id:'auction',icon:'🏛️',name:'벨라 경매장',scene:'프리뷰 전시실',security:'경매 보안실',office:'감정위원실',hall:'작품 운송 통로',objects:['르네상스 시대 미니어처','희귀 청화백자','미공개 작가의 원화'],roles:['수석 감정사','경매 진행자','작품 운송책임자','보안팀장','컬렉터 대리인','미술전문 기자']},
+ {id:'gameco',icon:'🎮',name:'네온 게임스튜디오',scene:'빌드 테스트룸',security:'개발 서버실',office:'프로젝트실',hall:'야간 출입 통로',objects:['미공개 신작 최종 빌드','캐릭터 원화 원본파일','출시 전 소스 저장장치'],roles:['프로젝트 디렉터','클라이언트 개발자','QA 리드','서버 관리자','외주 아트디렉터','퍼블리싱 매니저']},
+ {id:'library',icon:'📚',name:'왕립 고문서 도서관',scene:'희귀본 열람실',security:'보존구역 관제실',office:'수석 사서실',hall:'서고 연결 통로',objects:['왕실 서신 원본','초판본 희귀 시집','봉인된 고지도'],roles:['수석 사서','보존복원사','고문서 연구원','보안담당','후원재단 직원','역사 전문기자']},
+ {id:'wedding',icon:'💍',name:'벨로체 웨딩홀',scene:'신부 대기실',security:'행사 관제실',office:'웨딩플래너실',hall:'스태프 통로',objects:['가문 대대로 내려온 반지','축의금 보관 봉투','비공개 혼전 계약서'],roles:['웨딩플래너','연회팀장','사진작가','주얼리 코디네이터','신랑측 비서','시설 보안담당']},
+ {id:'studio',icon:'🎬',name:'라이트필름 촬영장',scene:'메인 세트장',security:'촬영 데이터실',office:'제작사무실',hall:'장비 반입 통로',objects:['미공개 최종회 대본','촬영 원본 메모리','주연 배우 계약 원본'],roles:['제작PD','조감독','데이터 매니저','소품팀장','매니지먼트 실장','촬영감독']},
+ {id:'mansion',icon:'🏚️',name:'윈터벨 저택',scene:'2층 서재',security:'저택 보안실',office:'집사 사무실',hall:'비밀 계단 통로',objects:['가문의 유언장 원본','앤티크 사파이어 목걸이','비밀 금고 장부'],roles:['저택 집사','상속인 비서','가문 변호사','보안관리인','골동품 감정사','정원 관리자']},
+ {id:'mall',icon:'🏬',name:'아르코 백화점',scene:'VIP 금고실',security:'통합 관제실',office:'VIP 라운지 사무실',hall:'물류 엘리베이터 통로',objects:['한정판 주얼리 세트','VIP 위탁 보관품','명품 브랜드 신제품 샘플'],roles:['VIP 매니저','보안팀장','브랜드 매니저','물류책임자','개인 쇼퍼','시설 엔지니어']},
+ {id:'observatory',icon:'🔭',name:'노바 천문연구소',scene:'주망원경 제어실',security:'데이터 서버실',office:'연구책임자실',hall:'관측동 연결 통로',objects:['미공개 관측 데이터','운석 표본 캡슐','국제 공동연구 암호키'],roles:['관측 책임자','데이터 과학자','기기 엔지니어','야간 보안담당','공동연구원','연구행정관']},
+ {id:'aquarium',icon:'🐠',name:'블루문 아쿠아리움',scene:'심해 전시 준비실',security:'생물 관제실',office:'연구팀 사무실',hall:'사육사 전용 통로',objects:['희귀 산호 연구 샘플','국제 교환 개체 문서','후원금 비밀 장부'],roles:['수석 사육사','해양연구원','관제 엔지니어','전시기획자','시설 보안담당','후원재단 담당자']}
+];
+
+const DETECTIVE_INCIDENTS=[
+ {id:'theft',title:'사라진 보관품',verb:'사라졌다',intro:'강제 침입 흔적은 거의 없다. 범인은 내부 동선과 보관 절차를 알고 있었을 가능성이 높다.'},
+ {id:'swap',title:'정교한 바꿔치기',verb:'정교한 모조품과 바뀌었다',intro:'겉보기에는 모든 것이 정상이다. 하지만 세부 기록과 실물 사이에 작은 불일치가 남아 있다.'},
+ {id:'leak',title:'유출된 비밀',verb:'외부로 유출됐다',intro:'원본은 남아 있지만 비공개 정보가 밖으로 새어 나갔다. 누군가 짧은 시간 안에 접근하고 흔적을 지웠다.'},
+ {id:'tamper',title:'조작된 기록',verb:'내용이 은밀하게 조작됐다',intro:'문서와 시스템 기록 일부가 서로 맞지 않는다. 단순 오류가 아니라 의도적인 변경 가능성이 있다.'},
+ {id:'sabotage',title:'망가진 핵심 장비',verb:'사용 직전 치밀하게 훼손됐다',intro:'외관상 고장은 우연처럼 보이지만 손상 순서가 이상하다. 내부 작업 절차를 아는 사람의 개입이 의심된다.'},
+ {id:'forgery',title:'진짜처럼 보이는 위조',verb:'위조본으로 교체됐다',intro:'정상 검수 절차까지 통과한 정교한 위조다. 검수 시점과 이동 기록을 다시 맞춰볼 필요가 있다.'},
+ {id:'blackmail',title:'사라진 협박 증거',verb:'증거 보관 직후 사라졌다',intro:'문제의 자료를 없애면 이득을 보는 사람이 여럿이다. 누가 실제로 접근할 수 있었는지 확인해야 한다.'},
+ {id:'seal',title:'깨지지 않은 봉인',verb:'봉인을 훼손하지 않은 채 사라졌다',intro:'봉인은 멀쩡하지만 내부 물품은 없다. 봉인 구조나 교체 절차를 정확히 아는 사람만 가능한 수법이다.'}
+];
+
+const DETECTIVE_METHODS=[
+ {id:'master',name:'복제 인증키',scene:'잠금 장치가 정상적으로 다시 체결된 미세 흔적',access:'삭제 직전의 인증키 사용 로그',timing:'인증 직후 감시 기록이 짧게 끊긴 구간'},
+ {id:'blackout',name:'순간 정전 위장',scene:'전원 복구 뒤 수동으로 되돌린 장치 흔적',access:'정전 직전 실행된 제한구역 접근 요청',timing:'정전 9분 동안 사라진 위치 기록'},
+ {id:'maintenance',name:'정비 동선 악용',scene:'일반 출입구가 아닌 점검 패널의 최근 사용 흔적',access:'정비 권한으로 우회된 출입 로그',timing:'정기 점검표와 맞지 않는 12분의 공백'},
+ {id:'delivery',name:'반입품 위장',scene:'운송 포장재가 현장 규격과 미세하게 다른 흔적',access:'물품 반입 승인번호가 한 차례 재사용된 기록',timing:'배송 확인 직후 비어 있는 감시 시간'},
+ {id:'remote',name:'원격 로그 조작',scene:'현장 장치의 시각과 서버 기록 사이의 시간차',access:'관리자 세션이 비정상적으로 짧게 열린 흔적',timing:'로그가 지워진 10분 동안 남은 보조 센서 기록'},
+ {id:'decoy',name:'가짜 경보 유도',scene:'경보 발생 지점과 실제 이상 지점이 서로 다른 흔적',access:'경보 처리 권한으로 열린 제한구역 기록',timing:'직원들이 다른 곳으로 이동한 사이 생긴 공백'},
+ {id:'schedule',name:'일정표 조작',scene:'예약·점검 스티커가 한 번 떼었다 붙인 흔적',access:'변경된 일정에만 존재하는 임시 출입 승인',timing:'원래 일정과 수정본 사이에 생긴 14분의 빈 구간'},
+ {id:'duplicate',name:'교체품 선반입',scene:'원래 물품과 크기가 같은 빈 포장재 흔적',access:'사건 전날 발급된 임시 보관구역 코드',timing:'교대 직전 짧게 사라진 담당자의 위치 기록'}
+];
+
+const DETECTIVE_NAMES=['김하진','이서윤','박도현','최유나','정시우','한세아','오민재','윤하린','서지훈','강유리','임재현','백수아','신태윤','노예린','문지호','배서현','유건우','송아린','장우진','권세라','차민호','류다은','남주혁','고예진','표시현','진서아','황도윤','안유림'];
+const DETECTIVE_FEATURES=['검은 가죽 장갑의 미세 섬유','라벤더 향 왁스 잔여물','청록색 합성수지 분말','은색 장비 스트랩 섬유','붉은 봉인 왁스 가루','시더우드 향수의 수지성 잔향','민트색 교정펜 잉크','황동 키케이스 금속 분말','보라색 실크 실밥','투명 아크릴 미세 분진','코발트색 장갑 파우더','검푸른 작업복 섬유','진주빛 화장품 펄 입자','커피와 계피 혼합 분말','회색 방진복 섬유','주황색 케이블 피복 조각','백색 장갑의 면섬유','녹색 라벨 접착제 흔적','금색 포장 리본 섬유','푸른 유리 세정제 잔여물','자주색 메모지 종이섬유','검은 카본 분말','은회색 금속 연마제','장미 향 핸드크림 왁스'];
+const DETECTIVE_PERSON_ICONS=['🧑‍💼','👩‍💼','🧑‍🔧','👩‍🔬','🧑‍🎨','👩‍💻','🧑‍✈️','👩‍⚕️','🧑‍🏫','👩‍🎤','🧑‍🍳','👩‍🎓'];
+const DETECTIVE_GENERATED_MOTIVES=['금전','은폐','명예','복수','질투','협박'];
+
+function detectiveHash32(str){
+ let h=2166136261>>>0;
+ for(let i=0;i<str.length;i++){h^=str.charCodeAt(i);h=Math.imul(h,16777619)}
+ return h>>>0
+}
+function detectiveRng(seed){
+ let a=(seed>>>0)||0x9e3779b9;
+ return function(){
+  a=(a+0x6D2B79F5)>>>0;
+  let t=a;t=Math.imul(t^(t>>>15),t|1);t^=t+Math.imul(t^(t>>>7),t|61);
+  return ((t^(t>>>14))>>>0)/4294967296
+ }
+}
+function detectivePick(arr,rng){return arr[Math.floor(rng()*arr.length)]}
+function detectiveShuffle(arr,rng){
+ const x=[...arr];
+ for(let i=x.length-1;i>0;i--){const j=Math.floor(rng()*(i+1));[x[i],x[j]]=[x[j],x[i]]}
+ return x
+}
+function detectiveTodayKey(){
+ const now=new Date(),y=now.getFullYear(),m=String(now.getMonth()+1).padStart(2,'0'),d=String(now.getDate()).padStart(2,'0');
+ return `${y}-${m}-${d}`
+}
+function detectiveMotiveDetail(motive,role,objectName){
+ const map={
+  '금전':`${role}에게 최근 큰 금전 문제가 있었고, 「${objectName}」를 이용하면 단기간에 거액을 마련할 수 있었다.`,
+  '은폐':`${role}가 숨기고 있던 업무상 문제가 「${objectName}」와 연결돼 있었고, 그대로 두면 책임이 드러날 상황이었다.`,
+  '명예':`${role}는 자신의 성과와 평판을 지키기 위해 「${objectName}」의 공개 또는 사용을 막을 이유가 있었다.`,
+  '복수':`${role}는 최근 관계자와 심각한 갈등을 겪었고, 사건을 일으켜 조직에 손해를 입힐 동기가 있었다.`,
+  '질투':`${role}는 다른 인물에게 공로와 기회가 돌아간 것에 강한 불만을 품고 있었고, 「${objectName}」가 그 갈등의 중심에 있었다.`,
+  '협박':`${role}는 공개되면 곤란한 약점을 빌미로 압박받고 있었고, 「${objectName}」를 처리하라는 요구를 받은 정황이 있었다.`
+ };
+ return map[motive]||`${role}에게 사건을 일으킬 개인적 이유가 있었다.`
+}
+function detectiveRedHerring(role,objectName,rng){
+ const samples=[
+  `${role}가 사건 전날 「${objectName}」의 보관 위치를 확인했지만 공식 업무 기록과 일치한다.`,
+  `${role}의 이름이 관련 문서에 남아 있으나 작성 시각은 사건 발생 훨씬 전이다.`,
+  `${role}가 제한구역 근처에 있었던 사진이 있지만 실제 사건 시각과는 맞지 않는다.`,
+  `${role}의 장비가 현장과 같은 종류이지만 별도의 사용 기록이 확인된다.`,
+  `${role}가 관련 정보를 검색한 흔적은 있으나 담당 업무 범위 안의 행동이었다.`
+ ];
+ return detectivePick(samples,rng)
+}
+function detectiveGenerateCase(seed){
+ const rng=detectiveRng(seed);
+ const setting=detectivePick(DETECTIVE_SETTINGS,rng);
+ const incident=detectivePick(DETECTIVE_INCIDENTS,rng);
+ const method=detectivePick(DETECTIVE_METHODS,rng);
+ const objectName=detectivePick(setting.objects,rng);
+ const roles=detectiveShuffle(setting.roles,rng).slice(0,4);
+ const names=detectiveShuffle(DETECTIVE_NAMES,rng).slice(0,4);
+ const features=detectiveShuffle(DETECTIVE_FEATURES,rng).slice(0,4);
+ const icons=detectiveShuffle(DETECTIVE_PERSON_ICONS,rng).slice(0,4);
+ const motives=detectiveShuffle(DETECTIVE_GENERATED_MOTIVES,rng);
+ const culpritIndex=Math.floor(rng()*4);
+ const culpritMotive=motives[0];
+ const hour=Math.floor(rng()*24),minute=Math.floor(rng()*60),time=`${String(hour).padStart(2,'0')}:${String(minute).padStart(2,'0')}`;
+ const codes=roles.map((r,i)=>`${(r.replace(/[^A-Za-z가-힣]/g,'')[0]||'X').toUpperCase()}-${String(10+Math.floor(rng()*89)).padStart(2,'0')}-${i+1}`);
+ const alibiSpots=['휴게실','회의실','외부 로비','장비실','고객 응대 구역','직원 식당','자료실','주차 구역'];
+
+ const suspects=roles.map((role,i)=>{
+  const motive=i===culpritIndex?culpritMotive:motives[(i+1)%motives.length];
+  const alibiSpot=detectivePick(alibiSpots,rng);
+  return {
+   id:`sus${i}`,icon:icons[i],name:names[i],role,code:codes[i],feature:features[i],motive,
+   motiveDetail:detectiveMotiveDetail(motive,role,objectName),
+   alibi:`사건 시각에는 ${alibiSpot}에서 혼자 업무를 처리하고 있었다고 주장한다.`,
+   red:detectiveRedHerring(role,objectName,rng)
+  }
+ });
+ const culprit=suspects[culpritIndex];
+
+ const locations=[
+  {id:'scene',icon:setting.icon,name:setting.scene,desc:`사건의 중심 현장. 「${objectName}」가 있던 자리와 주변 장치를 조사한다.`},
+  {id:'security',icon:'🖥️',name:setting.security,desc:'출입 기록, 보조 센서, 시스템 캐시를 서로 대조한다.'},
+  {id:'office',icon:'🗄️',name:setting.office,desc:'내부 문서와 일정, 삭제된 메모에서 범행 동기를 찾는다.'},
+  {id:'hall',icon:'🚪',name:setting.hall,desc:'용의자들이 오갈 수 있는 보조 동선과 남겨진 흔적을 조사한다.'}
+ ];
+
+ const clues=[
+  {id:'scene',location:'scene',icon:'🔍',title:`${method.name}의 흔적`,summary:'현장의 작은 불일치가 범행 수법을 드러낸다.',detail:`${setting.scene}에서 「${method.scene}」이 확인됐다. 단순 사고보다는 ${method.name}을 이용해 사건을 위장한 정황에 가깝다.`},
+  {id:'trace',location:'scene',icon:'🧬',title:'개인 미세 흔적',summary:'현장 가장자리에서 특정 인물과 연결 가능한 흔적을 확보했다.',detail:`「${objectName}」 주변에서 「${culprit.feature}」와 일치하는 미세 흔적이 검출됐다. 용의자 소지품과 비교하면 출처를 좁힐 수 있다.`},
+  {id:'access',location:'security',icon:'🔐',title:'복구된 접근 기록',summary:'삭제되기 직전의 제한구역 접근 흔적이 남아 있다.',detail:`${setting.security}에서 ${method.access}을 복구했다. 사건 시각 ${time} 전후 사용된 인증 코드는 「${culprit.code}」다.`},
+  {id:'timing',location:'security',icon:'🕒',title:'비어 있는 시간선',summary:'진술과 보조 기록 사이에 설명되지 않는 공백이 있다.',detail:`${method.timing}이 발견됐다. ${time} 무렵 ${culprit.role}의 주장 장소에서는 약 ${8+Math.floor(rng()*8)}분 동안 객관적인 위치 기록이 확인되지 않는다.`},
+  {id:'motive',location:'office',icon:'📄',title:'숨겨진 동기 문서',summary:'사건으로 이득을 얻거나 문제를 감출 이유가 드러난다.',detail:`삭제된 메모를 복원하자 「${culprit.motiveDetail}」라는 정황이 확인됐다. 작성자 표시는 삭제됐지만 해당 직무에서만 알 수 있는 표현이 남아 있다.`}
+ ];
+
+ suspects.filter((_,i)=>i!==culpritIndex).forEach((s,i)=>clues.push({
+  id:`red${i}`,location:'hall',icon:['🧵','🧾','📌'][i]||'📌',title:`${s.role} 관련 흔적`,
+  summary:'수상해 보이지만 사건 시각의 직접 증거는 아닌 흔적이다.',
+  detail:`${s.name}과 관련된 기록이 발견됐다. ${s.red} 따라서 이것만으로 범행을 입증하기는 어렵다.`
+ }));
+
+ const links=[
+  {id:'presence',a:'scene',b:'trace',title:'수법과 현장 접촉',text:`${method.name}의 흔적과 개인 미세 흔적이 함께 남아 있다. 범인은 실제 현장을 직접 다뤘을 가능성이 높다.`},
+  {id:'opportunity',a:'access',b:'timing',title:'접근 기록과 알리바이 붕괴',text:'제한구역 인증 코드와 비어 있는 시간대가 겹친다. 해당 용의자의 진술을 그대로 믿기 어렵다.'},
+  {id:'motive',a:'motive',b:'access',title:'동기와 실행 기회',text:'사건을 일으킬 구체적인 이유가 있는 인물과 제한구역 접근 기록이 하나로 이어진다.'}
+ ];
+
+ const title=`${setting.name} · ${incident.title}`;
+ const subtitle=`${setting.name}에서 「${objectName}」이(가) ${incident.verb}. 사건 시각은 ${time}.`;
+ const signature=`${setting.id}|${incident.id}|${method.id}|${roles[culpritIndex]}|${culpritMotive}`;
+
+ return {
+  id:`gen-${seed>>>0}`,generated:true,seed:seed>>>0,signature,
+  title,subtitle,object:objectName,time,sceneName:setting.scene,
+  intro:`${incident.intro} 이번 사건의 핵심 수법은 아직 밝혀지지 않았다.`,
+  locations,motives:DETECTIVE_GENERATED_MOTIVES,suspects,culprit,clues,links,keyEvidenceIds:['access','trace','motive'],
+  settingName:setting.name,incidentName:incident.title,methodName:method.name
+ }
+}
+
+const DETECTIVE_RUN_KEYS=['templateId','culpritIndex','generatedCase','dailyKey','discovered','interviewed','deductions','selected','wrong','solved','rewardClaimed'];
+
+function detectiveBlankRun(){
+ return {templateId:null,culpritIndex:0,generatedCase:null,dailyKey:null,discovered:[],interviewed:[],deductions:[],selected:[],wrong:0,solved:false,rewardClaimed:false}
+}
+function detectiveSnapshot(d){
+ return {
+  templateId:d.templateId??null,culpritIndex:d.culpritIndex||0,generatedCase:d.generatedCase||null,dailyKey:d.dailyKey||null,
+  discovered:[...(d.discovered||[])],interviewed:[...(d.interviewed||[])],deductions:[...(d.deductions||[])],selected:[...(d.selected||[])],
+  wrong:d.wrong||0,solved:!!d.solved,rewardClaimed:!!d.rewardClaimed
+ }
+}
+function detectiveApplyRun(d,run){
+ const x={...detectiveBlankRun(),...(run||{})};
+ DETECTIVE_RUN_KEYS.forEach(k=>d[k]=x[k]);
+ d.discovered=Array.isArray(d.discovered)?d.discovered:[];
+ d.interviewed=Array.isArray(d.interviewed)?d.interviewed:[];
+ d.deductions=Array.isArray(d.deductions)?d.deductions:[];
+ d.selected=Array.isArray(d.selected)?d.selected.slice(0,2):[];
+}
 function detectiveState(){
  const d=local.detective&&typeof local.detective==='object'?local.detective:{};
+ d.mode=['story','endless','daily'].includes(d.mode)?d.mode:'story';
+ d.modeStates=d.modeStates&&typeof d.modeStates==='object'?d.modeStates:{};
+ d.recentSignatures=Array.isArray(d.recentSignatures)?d.recentSignatures.slice(-8):[];
+ d.dailyClaims=d.dailyClaims&&typeof d.dailyClaims==='object'?d.dailyClaims:{};
  d.templateId=typeof d.templateId==='string'?d.templateId:null;
  d.culpritIndex=Number.isInteger(d.culpritIndex)?Math.max(0,Math.min(3,d.culpritIndex)):0;
+ d.generatedCase=d.generatedCase&&typeof d.generatedCase==='object'?d.generatedCase:null;
+ d.dailyKey=typeof d.dailyKey==='string'?d.dailyKey:null;
  d.serial=Number.isInteger(d.serial)&&d.serial>=0?d.serial:0;
  d.discovered=Array.isArray(d.discovered)?d.discovered:[];
  d.interviewed=Array.isArray(d.interviewed)?d.interviewed:[];
@@ -2990,10 +3198,15 @@ function detectiveState(){
  local.detective=d;
  return d
 }
+function detectiveStoreCurrentMode(d=detectiveState()){d.modeStates[d.mode]=detectiveSnapshot(d)}
+function detectiveHasCase(d=detectiveState()){return !!(d.templateId||d.generatedCase)}
 function detectiveTemplate(){const d=detectiveState();return DETECTIVE_CASES.find(x=>x.id===d.templateId)||null}
+
 function detectiveCase(){
+ const d=detectiveState();
+ if(d.generatedCase)return d.generatedCase;
  const t=detectiveTemplate();if(!t)return null;
- const d=detectiveState(),culprit=t.suspects[d.culpritIndex]||t.suspects[0];
+ const culprit=t.suspects[d.culpritIndex]||t.suspects[0];
  const clueBase=[
   {id:'scene',location:'scene',icon:'🔍',title:'조작된 현장',summary:'현장의 작은 불일치가 외부 침입처럼 보이게 만든 흔적을 보여준다.',detail:`${t.sceneName}의 잠금/봉인 상태를 자세히 보니, 바깥에서 강제로 연 흔적이 아니라 내부 절차를 알고 있는 사람이 다시 닫아 둔 흔적에 가깝다.`},
   {id:'trace',location:'scene',icon:'🧬',title:'미세 흔적',summary:'현장 가장자리에서 출처가 특정될 수 있는 미세 흔적을 확보했다.',detail:`작품/시제품이 있던 자리 근처에서 「${culprit.feature}」와 일치하는 흔적이 발견됐다. 눈으로는 거의 보이지 않는 수준이다.`},
@@ -3014,6 +3227,7 @@ function detectiveCase(){
  ];
  return {...t,culprit,clues:clueBase,links,keyEvidenceIds:['access','trace','motive']}
 }
+
 function detectiveOwnedPartners(){return characters.filter(c=>String(c.rarity||'').toUpperCase()==='SSR'&&(Number(local.counts?.[c.id])||0)>0)}
 function detectivePartner(){
  const d=detectiveState();return detectiveOwnedPartners().find(c=>String(c.id)===String(d.partnerId))||null
@@ -3041,27 +3255,80 @@ function detectivePopulatePartner(){
  }
 }
 function detectiveSetLog(text){const el=$('detectiveLog');if(el)el.textContent=text}
+
+function detectiveMakeEndlessCase(d){
+ let generated=null,seed=0;
+ for(let attempt=0;attempt<40;attempt++){
+  seed=((Date.now()&0xffffffff)^(Math.floor(Math.random()*0xffffffff))^(d.serial*2654435761)^(attempt*2246822519))>>>0;
+  generated=detectiveGenerateCase(seed);
+  if(!d.recentSignatures.includes(generated.signature))break
+ }
+ d.recentSignatures=[...d.recentSignatures,generated.signature].slice(-8);
+ return generated
+}
+function detectiveMakeDailyCase(){
+ const key=detectiveTodayKey(),seed=detectiveHash32(`jnull-detective-daily-v1|${key}`);
+ return {key,caseData:detectiveGenerateCase(seed)}
+}
 function detectiveStartNew(force=false){
  const d=detectiveState();
- if(!force&&d.templateId&&!d.solved&&(d.discovered.length||d.interviewed.length||d.deductions.length)){
-  if(!confirm('현재 수사 기록을 버리고 새 사건을 배정받을까요?'))return
+ const hasProgress=d.discovered.length||d.interviewed.length||d.deductions.length;
+ if(!force&&detectiveHasCase(d)&&!d.solved&&hasProgress){
+  if(!confirm('현재 수사 기록을 처음부터 다시 시작할까요?'))return
  }
- const previous=d.templateId;
- let candidates=DETECTIVE_CASES.filter(x=>x.id!==previous);
- if(!candidates.length)candidates=DETECTIVE_CASES;
- const t=candidates[Math.floor(Math.random()*candidates.length)];
- local.detective={
-  templateId:t.id,culpritIndex:Math.floor(Math.random()*t.suspects.length),serial:(d.serial||0)+1,
-  discovered:[],interviewed:[],deductions:[],selected:[],wrong:0,solved:false,rewardClaimed:false,
-  partnerId:d.partnerId??null,solvedCount:d.solvedCount||0
- };
- detectiveTab='brief';save();renderDetective();detectiveSetLog('새 사건 파일을 배정받았습니다. 서두를 필요 없어요. 사건개요부터 천천히 확인해 보세요.')
+
+ if(d.mode==='daily'){
+  const daily=detectiveMakeDailyCase();
+  if(d.dailyKey===daily.key&&d.generatedCase){
+   if(d.solved){detectiveSetLog('📅 오늘의 사건은 이미 해결했어요. 날짜가 바뀌면 새로운 사건이 생성됩니다.');return}
+   if(!force){detectiveSetLog('📅 오늘의 사건은 하루에 하나예요. 현재 사건을 계속 수사해 주세요.');return}
+  }
+  detectiveApplyRun(d,{
+   generatedCase:daily.caseData,dailyKey:daily.key,
+   rewardClaimed:!!d.dailyClaims[daily.key],solved:!!d.dailyClaims[daily.key]
+  })
+ }else if(d.mode==='endless'){
+  const generated=detectiveMakeEndlessCase(d);
+  detectiveApplyRun(d,{generatedCase:generated})
+ }else{
+  const previous=d.templateId;
+  let candidates=DETECTIVE_CASES.filter(x=>x.id!==previous);
+  if(!candidates.length)candidates=DETECTIVE_CASES;
+  const t=candidates[Math.floor(Math.random()*candidates.length)];
+  detectiveApplyRun(d,{templateId:t.id,culpritIndex:Math.floor(Math.random()*t.suspects.length)})
+ }
+
+ d.serial=(d.serial||0)+1;
+ detectiveTab='brief';
+ save();renderDetective();
+ const mode=DETECTIVE_MODES[d.mode];
+ detectiveSetLog(`${mode.icon} ${mode.label} 사건 파일을 배정받았습니다. 시간 제한은 없어요. 사건개요부터 천천히 확인해 보세요.`)
 }
 function detectiveReset(){
- const d=detectiveState();if(!d.templateId)return detectiveStartNew(true);
+ const d=detectiveState();if(!detectiveHasCase(d))return detectiveStartNew(true);
  if(!confirm('현재 사건의 조사 기록만 처음부터 다시 시작할까요?'))return;
- local.detective={...d,discovered:[],interviewed:[],deductions:[],selected:[],wrong:0,solved:false,rewardClaimed:false};
- detectiveTab='brief';save();renderDetective();detectiveSetLog('사건 조사 기록을 초기화했습니다.')
+ const keepReward=d.mode==='daily'&&d.dailyKey?!!d.dailyClaims[d.dailyKey]:false;
+ d.discovered=[];d.interviewed=[];d.deductions=[];d.selected=[];d.wrong=0;d.solved=false;d.rewardClaimed=keepReward;
+ detectiveTab='brief';save();renderDetective();
+ detectiveSetLog(keepReward?'사건 조사 기록을 초기화했습니다. 오늘의 사건 보상은 이미 수령했기 때문에 재지급되지 않아요.':'사건 조사 기록을 초기화했습니다.')
+}
+function detectiveSwitchMode(mode){
+ if(!['story','endless','daily'].includes(mode))return;
+ const d=detectiveState();
+ if(d.mode===mode){renderDetective();return}
+ detectiveStoreCurrentMode(d);
+ d.mode=mode;
+ const cached=d.modeStates[mode];
+ detectiveApplyRun(d,cached||detectiveBlankRun());
+
+ if(mode==='daily'&&d.dailyKey!==detectiveTodayKey())detectiveApplyRun(d,detectiveBlankRun());
+ save();
+
+ if(!detectiveHasCase(d))detectiveStartNew(true);
+ else{
+  detectiveTab='brief';renderDetective();
+  detectiveSetLog(`${DETECTIVE_MODES[mode].icon} ${DETECTIVE_MODES[mode].label} 진행 기록을 불러왔습니다.`)
+ }
 }
 function detectiveProgress(caseData){
  const d=detectiveState();if(!caseData)return 0;
@@ -3075,15 +3342,15 @@ function detectiveSetTab(tab){
  renderDetectiveView()
 }
 function detectiveRenderBrief(c){
- return `<div class="detective-brief"><h3>${escapeHtml(c.title)}</h3><p class="muted">${escapeHtml(c.subtitle)}</p><p>${escapeHtml(c.intro)}</p><div class="detective-facts"><div class="detective-fact"><span>사라진 대상</span><b>${escapeHtml(c.object)}</b></div><div class="detective-fact"><span>핵심 시각</span><b>${escapeHtml(c.time)}</b></div><div class="detective-fact"><span>용의자</span><b>${c.suspects.length}명</b></div></div><p class="muted mini" style="margin:13px 0 0">💡 정답을 빨리 찍는 게임이 아니에요. 현장 → 용의자 → 증거 연결 순서로 천천히 조사하면 됩니다.</p></div>`
+ const d=detectiveState(),mode=DETECTIVE_MODES[d.mode];
+ const generatedMeta=c.generated?`<p class="muted mini"><span class="detective-mode-chip">${mode.icon} ${mode.label}</span>${escapeHtml(c.settingName||'')} · ${escapeHtml(c.incidentName||'')} · 수법 후보: ${escapeHtml(c.methodName||'미상')}</p>`:`<p class="muted mini"><span class="detective-mode-chip">📚 CASE STORY</span>직접 제작 스토리 사건</p>`;
+ return `<div class="detective-brief"><h3>${escapeHtml(c.title)}</h3><p class="muted">${escapeHtml(c.subtitle)}</p>${generatedMeta}<p>${escapeHtml(c.intro)}</p><div class="detective-facts"><div class="detective-fact"><span>사건 대상</span><b>${escapeHtml(c.object)}</b></div><div class="detective-fact"><span>핵심 시각</span><b>${escapeHtml(c.time)}</b></div><div class="detective-fact"><span>용의자</span><b>${c.suspects.length}명</b></div></div><p class="muted mini" style="margin:13px 0 0">💡 정답을 빨리 찍는 게임이 아니에요. 현장 → 용의자 → 증거 연결 순서로 천천히 조사하면 됩니다.</p></div>`
 }
 function detectiveRenderScene(c){
  const d=detectiveState();
  const cards=c.locations.map(loc=>{
   const clues=c.clues.filter(x=>x.location===loc.id),foundClues=clues.filter(x=>d.discovered.includes(x.id)),found=foundClues.length,done=found===clues.length;
-  const review=foundClues.length
-   ?`<div class="detective-review-list"><b>확인한 증거</b>${foundClues.map(x=>`<span>${x.icon} ${escapeHtml(x.title)}</span>`).join('')}</div>`
-   :'';
+  const review=foundClues.length?`<div class="detective-review-list"><b>확인한 증거</b>${foundClues.map(x=>`<span>${x.icon} ${escapeHtml(x.title)}</span>`).join('')}</div>`:'';
   return `<div class="detective-location${done?' done':''}"><div class="detective-location-icon">${loc.icon}</div><h4>${escapeHtml(loc.name)}</h4><p>${escapeHtml(loc.desc)}</p><span class="detective-found">${done?'조사 완료':`증거 ${found}/${clues.length}`}</span>${review}<button type="button" data-detective-location="${loc.id}" class="${done?'ghost':''}">${done?'📖 조사 내용 다시 보기':'🔦 조사하기'}</button></div>`
  }).join('');
  return `<div class="detective-grid">${cards}</div>`
@@ -3103,29 +3370,32 @@ function detectiveRenderBoard(c){
  return `<div class="detective-board"><div>${clues}</div><aside class="detective-connect"><h4>🧷 증거 연결</h4><div class="detective-slot">${chosen[0]?`${chosen[0].icon} ${escapeHtml(chosen[0].title)}`:'첫 번째 증거 선택'}</div><div class="detective-slot">${chosen[1]?`${chosen[1].icon} ${escapeHtml(chosen[1].title)}`:'두 번째 증거 선택'}</div><button type="button" id="detectiveConnect" ${chosen.length===2?'':'disabled'}>두 증거 연결하기</button><div class="detective-deductions"><h4 style="margin:12px 0 6px">📌 확정 추리</h4>${deductions}</div></aside></div>`
 }
 function detectiveRenderFinal(c){
- const d=detectiveState();
+ const d=detectiveState(),mode=DETECTIVE_MODES[d.mode];
  if(d.solved){
   const partner=detectivePartner(),full=partner&&limitBreakLevel(partner)>=3;
-  return `<div class="detective-solved"><div class="seal">✅</div><h3>CASE CLOSED</h3><p><b>${escapeHtml(c.culprit.name)}</b>이(가) 진범이었습니다.<br>${escapeHtml(c.culprit.motiveDetail)}<br><br>확보한 출입 기록과 현장 흔적, 무너진 알리바이가 하나로 이어졌어요.${full?`<br>★★★ ${escapeHtml(partner.name)} 파트너 보너스 적용 완료.`:''}</p><button type="button" id="detectiveNextCase">다음 사건 배정</button></div>`
+  const next=d.mode==='daily'
+   ?`<p class="muted mini">📅 오늘의 사건은 해결 완료. 날짜가 바뀌면 새로운 일일 사건이 자동 생성됩니다.</p>`
+   :`<button type="button" id="detectiveNextCase">${d.mode==='endless'?'♾️ 다음 무한 사건 생성':'📚 다음 스토리 사건'}</button>`;
+  return `<div class="detective-solved"><div class="seal">✅</div><h3>CASE CLOSED</h3><p><b>${escapeHtml(c.culprit.name)}</b>이(가) 진범이었습니다.<br>${escapeHtml(c.culprit.motiveDetail)}<br><br>확보한 접근 기록과 현장 흔적, 무너진 알리바이가 하나로 이어졌어요.${full?`<br>★★★ ${escapeHtml(partner.name)} 파트너 보너스 적용.`:''}</p>${next}</div>`
  }
  const enough=d.deductions.length>=2;
  const clueOptions=c.clues.filter(x=>d.discovered.includes(x.id)).map(x=>`<option value="${x.id}">${x.icon} ${escapeHtml(x.title)}</option>`).join('');
  const notes=[
+  `현재 모드 ${mode.icon} ${mode.label}`,
   `확보 증거 ${d.discovered.length}/${c.clues.length}`,
   `진술 확인 ${d.interviewed.length}/${c.suspects.length}`,
   `확정 추리 ${d.deductions.length}/${c.links.length}`,
-  d.wrong
-   ?`오답 추리 ${d.wrong}회 · 현재 기본 보상 ${Math.max(DETECTIVE_REWARD_MIN,DETECTIVE_REWARD_BASE-d.wrong*DETECTIVE_REWARD_PENALTY).toLocaleString()}P`
-   :`첫 추리 성공 시 기본 ${DETECTIVE_REWARD_BASE.toLocaleString()}P · 풀돌 파트너 적용 시 최대 ${DETECTIVE_REWARD_MAX.toLocaleString()}P`
+  d.wrong?`오답 추리 ${d.wrong}회 · 현재 기본 보상 ${Math.max(DETECTIVE_REWARD_MIN,DETECTIVE_REWARD_BASE-d.wrong*DETECTIVE_REWARD_PENALTY).toLocaleString()}P`:`첫 추리 성공 시 기본 ${DETECTIVE_REWARD_BASE.toLocaleString()}P · 풀돌 파트너 적용 시 최대 ${DETECTIVE_REWARD_MAX.toLocaleString()}P`
  ];
- if(d.wrong>=2)notes.push('힌트: 출입 인증 코드, 현장의 미세 흔적, 용의자 진술을 서로 비교해 보세요.');
+ if(d.mode==='daily'&&d.dailyKey&&d.dailyClaims[d.dailyKey])notes.push('오늘의 사건 보상은 이미 수령 완료 · 재플레이 시 포인트 재지급 없음');
+ if(d.wrong>=2)notes.push('힌트: 접근 인증 코드, 현장의 미세 흔적, 용의자 진술을 서로 비교해 보세요.');
  return `<div class="detective-final"><div class="detective-final-form"><h3 style="margin-top:0">⚖️ 사건 결론</h3><p class="muted mini">${enough?'필요한 추리 연결이 확보됐어요. 범인·동기·핵심 증거를 선택하세요.':'최소 2개의 확정 추리를 만들어야 최종 지목을 할 수 있어요.'}</p><label for="detectiveAccuseSuspect">범인</label><select id="detectiveAccuseSuspect"><option value="">선택</option>${c.suspects.map(s=>`<option value="${s.id}">${escapeHtml(s.name)} · ${escapeHtml(s.role)}</option>`).join('')}</select><label for="detectiveAccuseMotive">동기</label><select id="detectiveAccuseMotive"><option value="">선택</option>${c.motives.map(m=>`<option value="${m}">${escapeHtml(m)}</option>`).join('')}</select><label for="detectiveAccuseEvidence">핵심 증거</label><select id="detectiveAccuseEvidence"><option value="">선택</option>${clueOptions}</select><button type="button" id="detectiveAccuse" ${enough?'':'disabled'}>🔎 최종 지목</button><div id="detectiveFinalResult" class="detective-result ${d.wrong?'fail':''}">${d.wrong?'추리가 한 번 이상 성립하지 않았어요. 기록을 다시 검토해 보세요.':'틀려도 사건이 끝나지 않습니다. 천천히 다시 조사할 수 있어요.'}</div></div><aside class="detective-notes"><h4>🗒️ 수사 메모</h4><ul>${notes.map(x=>`<li>${escapeHtml(x)}</li>`).join('')}</ul></aside></div>`
 }
 function renderDetectiveView(){
  const view=$('detectiveView');if(!view)return;
  const c=detectiveCase();
  if(!c){
-  view.innerHTML=`<div class="detective-empty"><strong>배정된 사건이 없습니다.</strong><br><br>「새 사건 배정」을 누르면 무작위 사건 파일이 생성돼요.<br>시간 제한은 없고, 언제든 저장된 진행도에서 이어할 수 있어요.</div>`;
+  view.innerHTML=`<div class="detective-empty"><strong>배정된 사건이 없습니다.</strong><br><br>「새 사건 배정」을 누르면 현재 모드에 맞는 사건 파일이 생성돼요.<br>시간 제한은 없고, 언제든 저장된 진행도에서 이어할 수 있어요.</div>`;
   return
  }
  view.classList.remove('detective-view');void view.offsetWidth;view.classList.add('detective-view');
@@ -3148,22 +3418,17 @@ function renderDetectiveView(){
 function detectiveInvestigate(locationId){
  const c=detectiveCase();if(!c)return;
  const d=detectiveState(),available=c.clues.filter(x=>x.location===locationId),next=available.find(x=>!d.discovered.includes(x.id));
-
  if(next){
-  d.discovered.push(next.id);
-  save();
-  renderDetective();
+  d.discovered.push(next.id);save();renderDetective();
   detectiveSetLog(`${next.icon} 증거 확보 · ${next.title} — ${next.detail}`);
   return
  }
-
  const reviewed=available.filter(x=>d.discovered.includes(x.id));
  if(reviewed.length){
   const loc=c.locations.find(x=>x.id===locationId);
   detectiveSetLog(`📖 ${loc?.name||'현장'} 재확인 · `+reviewed.map(x=>`${x.icon} ${x.title}: ${x.detail}`).join('  /  '));
   return
  }
-
  detectiveSetLog('이 장소에서는 아직 확인할 수 있는 증거가 없습니다.')
 }
 function detectiveInterview(suspectId){
@@ -3171,9 +3436,8 @@ function detectiveInterview(suspectId){
  const d=detectiveState(),s=c.suspects.find(x=>x.id===suspectId);if(!s)return;
  if(!d.interviewed.includes(s.id)){d.interviewed.push(s.id);save()}
  renderDetective();
- const related=c.clues.find(x=>x.id==='access');
  const hasAccess=d.discovered.includes('access');
- detectiveSetLog(`${s.name}: “${s.alibi}”${hasAccess?` · 현재 확보한 출입 기록의 코드와 이 인물의 코드(${s.code})를 비교할 수 있습니다.`:''}`)
+ detectiveSetLog(`${s.name}: “${s.alibi}”${hasAccess?` · 현재 확보한 접근 기록의 코드와 이 인물의 코드(${s.code})를 비교할 수 있습니다.`:''}`)
 }
 function detectiveToggleClue(id){
  const d=detectiveState();
@@ -3202,28 +3466,48 @@ function detectiveAccuse(){
   detectiveSetLog(d.wrong>=2?'추리가 성립하지 않았습니다. 힌트가 수사 메모에 추가됐어요.':'추리가 성립하지 않았습니다. 사건은 끝나지 않으니 다시 조사해 보세요.');
   return
  }
+
+ const alreadyDaily=d.mode==='daily'&&d.dailyKey&&!!d.dailyClaims[d.dailyKey];
  const base=Math.max(DETECTIVE_REWARD_MIN,DETECTIVE_REWARD_BASE-d.wrong*DETECTIVE_REWARD_PENALTY);
  const partner=detectivePartner(),rawBonus=partner&&limitBreakLevel(partner)>=3?Math.round(base*.2):0;
- const reward=Math.min(DETECTIVE_REWARD_MAX,base+rawBonus),bonus=Math.max(0,reward-base);
- if(!Number.isSafeInteger(local.points+reward)){notice('포인트 한도를 초과하여 보상을 지급할 수 없어요.');return}
- local.points+=reward;d.solved=true;d.rewardClaimed=true;d.solvedCount=(d.solvedCount||0)+1;save();render();renderDetective();
- detectiveSetLog(`✅ CASE CLOSED · ${c.culprit.name} 지목 성공! +${reward.toLocaleString()}P${bonus?` (풀돌 파트너 보너스 +${bonus.toLocaleString()}P)`:''}`)
+ const calculated=Math.min(DETECTIVE_REWARD_MAX,base+rawBonus);
+ const reward=alreadyDaily?0:calculated,bonus=reward?Math.max(0,reward-base):0;
+
+ if(reward&&!Number.isSafeInteger(local.points+reward)){notice('포인트 한도를 초과하여 보상을 지급할 수 없어요.');return}
+ if(reward)local.points+=reward;
+ d.solved=true;d.rewardClaimed=true;d.solvedCount=(d.solvedCount||0)+1;
+ if(d.mode==='daily'&&d.dailyKey)d.dailyClaims[d.dailyKey]=true;
+ save();render();renderDetective();
+ detectiveSetLog(alreadyDaily
+  ?`✅ CASE CLOSED · ${c.culprit.name} 지목 성공! 오늘의 사건 보상은 이미 수령해서 포인트는 재지급되지 않아요.`
+  :`✅ CASE CLOSED · ${c.culprit.name} 지목 성공! +${reward.toLocaleString()}P${bonus?` (풀돌 파트너 보너스 +${bonus.toLocaleString()}P)`:''}`)
 }
 function renderDetective(){
  const points=$('detectivePoints');if(!points)return;
- const d=detectiveState(),c=detectiveCase();
+ const d=detectiveState(),c=detectiveCase(),mode=DETECTIVE_MODES[d.mode];
  points.textContent=Number(local.points||0).toLocaleString();
  detectivePopulatePartner();
- $('detectiveCaseNo').textContent=c?`CASE FILE #${String(d.serial||1).padStart(3,'0')} · ${c.title}`:'CASE FILE · 대기 중';
+
+ document.querySelectorAll('[data-detective-mode]').forEach(b=>b.classList.toggle('active',b.dataset.detectiveMode===d.mode));
+ const hint=$('detectiveModeHint');
+ if(hint){
+  if(d.mode==='endless')hint.textContent=`♾️ 무한 사건 · 16개 장소 × 8개 사건유형 × 8개 수법 × 랜덤 용의자/동기 조합 · 최근 8개 조합 재등장 방지`;
+  else if(d.mode==='daily')hint.textContent=`📅 오늘의 사건 · ${detectiveTodayKey()} 날짜 시드 고정 · 하루 1회 포인트 보상`;
+  else hint.textContent=`📚 스토리 사건 · 직접 제작된 사건 파일 ${DETECTIVE_CASES.length}종 · 범인은 매번 달라질 수 있음`
+ }
+
+ $('detectiveCaseNo').textContent=c?`${mode.icon} ${mode.label} · FILE #${String(d.serial||1).padStart(3,'0')} · ${c.title}`:`${mode.icon} ${mode.label} · 대기 중`;
  const progress=detectiveProgress(c);$('detectiveProgressFill').style.width=progress+'%';
  $('detectiveProgressText').textContent=c?`수사 진행도 ${progress}% · 증거 ${d.discovered.length}/${c.clues.length} · 진술 ${d.interviewed.length}/${c.suspects.length} · 추리 ${d.deductions.length}/${c.links.length}${d.solved?' · 해결 완료':''}`:'새 사건을 배정받아 주세요.';
  document.querySelectorAll('[data-detective-tab]').forEach(b=>b.classList.toggle('active',b.dataset.detectiveTab===detectiveTab));
  renderDetectiveView()
 }
+
 $('detectiveNewCase').onclick=()=>detectiveStartNew(false);
 $('detectiveResetCase').onclick=detectiveReset;
 $('detectivePartner').addEventListener('change',e=>{const d=detectiveState();d.partnerId=e.target.value||null;save();renderDetective()});
 document.querySelectorAll('[data-detective-tab]').forEach(b=>b.addEventListener('click',()=>detectiveSetTab(b.dataset.detectiveTab)));
+document.querySelectorAll('[data-detective-mode]').forEach(b=>b.addEventListener('click',()=>detectiveSwitchMode(b.dataset.detectiveMode)));
 
 
 // 캐릭터 팡 PLUS: 특수 블록 / 조합 / 폭발 이펙트 / 보조 아이템
