@@ -1573,7 +1573,7 @@ $('userSignUp').onclick=async()=>{const {data,error}=await db.auth.signUp({email
 function activeLimited(){const now=Date.now();return characters.filter(c=>c.is_limited&&c.limited_start&&c.limited_end&&now>=new Date(c.limited_start).getTime()&&now<new Date(c.limited_end).getTime())}
 function limitedKey(pool){if(!pool.length)return null;return pool.map(c=>c.id).sort().join('|')+'@'+Math.max(...pool.map(c=>new Date(c.limited_end).getTime()))}
 function syncLimitedPoints(){const pool=activeLimited(),k=limitedKey(pool);if(local.limitedEventKey!==k){local.limitedPoints=0;local.limitedEventKey=k;save()}return pool}
-let eventBannerIndex=0,eventBannerTimer=null,bannerDraft=[];
+let eventBannerIndex=0,eventBannerTimer=null,eventBannerScheduleTimer=null,bannerDraft=[];
 const bannerFontLoads=new Map();
 
 function safeBannerColor(value){
@@ -1645,7 +1645,7 @@ function legacyBannerItems(){
  const text=String(settings.event_banner_text||'새로운 가챠 이벤트중~!').trim();
  return imgs.map(image=>({
   image,text,neon:'#ff4fd8',effect:'none',
-  fontSize:42,x:50,y:50,fontUrl:'',fontName:''
+  fontSize:42,x:50,y:50,fontUrl:'',fontName:'',startAt:'',endAt:''
  }))
 }
 function bannerItems(){
@@ -1663,13 +1663,45 @@ function bannerItems(){
    x:bannerNum(item?.x,50,0,100),
    y:bannerNum(item?.y,50,0,100),
    fontUrl:String(item?.fontUrl||'').trim(),
-   fontName:String(item?.fontName||'').trim()
+   fontName:String(item?.fontName||'').trim(),
+   startAt:String(item?.startAt||'').trim(),
+   endAt:String(item?.endAt||'').trim()
   })).filter(item=>item.image)
  }
  return legacyBannerItems()
 }
+function bannerTimeMs(value){
+ const t=new Date(String(value||'')).getTime();
+ return Number.isFinite(t)?t:null
+}
+function bannerDateTimeInputValue(value){
+ const t=bannerTimeMs(value);if(t===null)return '';
+ const d=new Date(t),pad=n=>String(n).padStart(2,'0');
+ return `${d.getFullYear()}-${pad(d.getMonth()+1)}-${pad(d.getDate())}T${pad(d.getHours())}:${pad(d.getMinutes())}`
+}
+function bannerInputToIso(value){
+ const v=String(value||'').trim();if(!v)return '';
+ const d=new Date(v);return Number.isNaN(d.getTime())?'':d.toISOString()
+}
+function bannerIsActive(item,now=Date.now()){
+ const start=bannerTimeMs(item?.startAt),end=bannerTimeMs(item?.endAt);
+ return (start===null||now>=start)&&(end===null||now<end)
+}
+function activeBannerItems(){return bannerItems().filter(item=>bannerIsActive(item))}
+function scheduleBannerRefresh(items){
+ clearTimeout(eventBannerScheduleTimer);eventBannerScheduleTimer=null;
+ const now=Date.now(),times=[];
+ for(const item of items){
+  const start=bannerTimeMs(item.startAt),end=bannerTimeMs(item.endAt);
+  if(start!==null&&start>now)times.push(start);
+  if(end!==null&&end>now)times.push(end)
+ }
+ if(!times.length)return;
+ const next=Math.min(...times),delay=Math.min(Math.max(100,next-now+100),2147483000);
+ eventBannerScheduleTimer=setTimeout(()=>renderBanner(),delay)
+}
 function showBannerSlide(index){
- const items=bannerItems(),image=$('eventBannerImage'),dots=$('eventBannerDots'),text=$('eventBannerOverlayText');
+ const items=activeBannerItems(),image=$('eventBannerImage'),dots=$('eventBannerDots'),text=$('eventBannerOverlayText');
  if(!image||!dots||!text)return;
  if(!items.length){
   image.classList.add('hidden');text.classList.add('hidden');dots.replaceChildren();return
@@ -1693,12 +1725,13 @@ function showBannerSlide(index){
 }
 function startBannerSlider(){
  clearInterval(eventBannerTimer);
- const items=bannerItems();
+ const items=activeBannerItems();
  if(items.length>1)eventBannerTimer=setInterval(()=>showBannerSlide(eventBannerIndex+1),5000)
 }
 function renderBanner(){
  const el=$('eventBanner');if(!el)return;
- const items=bannerItems(),on=!!settings.event_banner_enabled&&items.length>0;
+ const allItems=bannerItems(),items=allItems.filter(item=>bannerIsActive(item)),on=!!settings.event_banner_enabled&&items.length>0;
+ scheduleBannerRefresh(allItems);
  el.classList.toggle('hidden',!on);
  if(!on){clearInterval(eventBannerTimer);return}
  eventBannerIndex=0;showBannerSlide(0);
@@ -1709,7 +1742,7 @@ function renderBanner(){
 function blankBannerDraft(){
  return {
   image:'',text:'',neon:'#ff4fd8',effect:'pulse',
-  fontSize:42,x:50,y:50,fontUrl:'',fontName:'',
+  fontSize:42,x:50,y:50,fontUrl:'',fontName:'',startAt:'',endAt:'',
   pendingFile:null,pendingFontFile:null,previewImageUrl:'',previewFontFamily:''
  }
 }
@@ -1814,6 +1847,21 @@ function renderBannerAdmin(){
   effectSelect.append(new Option('없음','none'),new Option('확대 ↔ 축소 반복','pulse'));
   effectSelect.value=item.effect==='pulse'?'pulse':'none';
 
+  // 홈 노출 기간
+  const periodLabel=document.createElement('label');periodLabel.textContent='홈 노출 기간 (날짜 · 시간)';
+  const periodHelp=document.createElement('p');periodHelp.className='banner-subhelp';
+  periodHelp.textContent='비워두면 제한 없이 표시됩니다. 시작/종료 시각이 되면 홈에서 자동으로 노출/숨김 처리돼요.';
+  const periodRow=document.createElement('div');periodRow.className='row';
+  const startWrap=document.createElement('div');
+  const startLabel=document.createElement('label');startLabel.textContent='시작 일시';startLabel.style.marginTop='0';
+  const startInput=document.createElement('input');startInput.type='datetime-local';startInput.value=bannerDateTimeInputValue(item.startAt);
+  startWrap.append(startLabel,startInput);
+  const endWrap=document.createElement('div');
+  const endLabel=document.createElement('label');endLabel.textContent='종료 일시';endLabel.style.marginTop='0';
+  const endInput=document.createElement('input');endInput.type='datetime-local';endInput.value=bannerDateTimeInputValue(item.endAt);
+  endWrap.append(endLabel,endInput);
+  periodRow.append(startWrap,endWrap);
+
   function updatePreview(){
    const imageSrc=item.previewImageUrl||item.image||'';
    if(imageSrc){
@@ -1874,6 +1922,8 @@ function renderBannerAdmin(){
   colorPicker.oninput=()=>syncColor(colorPicker.value);
   colorHex.onchange=()=>syncColor(colorHex.value);
   effectSelect.onchange=()=>{item.effect=effectSelect.value;updatePreview()};
+  startInput.onchange=()=>{item.startAt=bannerInputToIso(startInput.value)};
+  endInput.onchange=()=>{item.endAt=bannerInputToIso(endInput.value)};
 
   livePreview.onclick=e=>{
    const rect=livePreview.getBoundingClientRect();
@@ -1907,6 +1957,7 @@ function renderBannerAdmin(){
    yLabel,yRow,
    colorLabel,colorRow,
    effectLabel,effectSelect,
+   periodLabel,periodHelp,periodRow,
    actions
   );
   list.append(card);
@@ -2550,6 +2601,10 @@ $('bannerForm').addEventListener('submit',async e=>{
  if(submit)submit.disabled=true;
  try{
   for(let i=0;i<bannerDraft.length;i++){
+   const item=bannerDraft[i],start=bannerTimeMs(item.startAt),end=bannerTimeMs(item.endAt);
+   if(start!==null&&end!==null&&end<=start)return notice(`배너 ${i+1}의 종료 일시는 시작 일시보다 늦어야 합니다.`)
+  }
+  for(let i=0;i<bannerDraft.length;i++){
    const item=bannerDraft[i];
 
    // 배너 이미지 업로드
@@ -2590,7 +2645,9 @@ $('bannerForm').addEventListener('submit',async e=>{
    x:bannerNum(item.x,50,0,100),
    y:bannerNum(item.y,50,0,100),
    fontUrl:String(item.fontUrl||'').trim(),
-   fontName:String(item.fontName||'').trim()
+   fontName:String(item.fontName||'').trim(),
+   startAt:bannerTimeMs(item.startAt)===null?'':new Date(bannerTimeMs(item.startAt)).toISOString(),
+   endAt:bannerTimeMs(item.endAt)===null?'':new Date(bannerTimeMs(item.endAt)).toISOString()
   })).filter(item=>item.image);
 
   if($('bannerEnabled').checked&&!cleaned.length)return notice('표시할 배너 이미지 파일을 1개 이상 선택해 주세요.');
@@ -2609,7 +2666,7 @@ $('bannerForm').addEventListener('submit',async e=>{
   }
 
   await load();
-  notice('배너 이미지 + 문구 + 크기/위치 + 글꼴 + 네온/이펙트 저장 완료!')
+  notice('배너 이미지 + 문구 + 크기/위치 + 글꼴 + 네온/이펙트 + 노출 기간 저장 완료!')
  } finally{
   if(submit)submit.disabled=false
  }
