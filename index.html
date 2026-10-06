@@ -2850,6 +2850,16 @@ button.ghost,.ghost{
 .trade-toolbar-actions button{white-space:nowrap}
 @media(max-width:650px){.trade-toolbar{align-items:stretch;flex-direction:column}.trade-toolbar-actions{display:grid;grid-template-columns:1fr 1fr;width:100%}.trade-toolbar-actions button{width:100%;font-size:10px!important;padding:9px 6px!important}}
 </style>
+
+<style id="pang-mobile-scroll-stability">
+/* Character Pang: keep the shake FX on mobile, but stop scroll anchoring from moving the page. */
+.pang-board-wrap,.pang-board,#pangGame{overflow-anchor:none;}
+@media (max-width:720px), (pointer:coarse) and (max-width:900px){
+  .pang-board-wrap{contain:layout paint;}
+  .pang-board{transform-origin:center center!important;}
+}
+</style>
+
 </head><body><div class="app"><header><strong>✦ MY GACHA</strong><div class="account-box"><strong id="headerPoints" class="points-balance">🪙 0 P</strong><span class="muted" id="status">연결 설정 필요</span><button type="button" id="userLoginBtn" class="ghost">👤 로그인</button><button type="button" id="userLogoutBtn" class="ghost hidden">로그아웃</button></div></header><div id="notice" role="status"></div><main>
 <section id="home" class="home-dashboard">
   <div id="eventBanner" class="panel event-banner home-banner hidden" role="button" tabindex="0">
@@ -5841,6 +5851,24 @@ function pangPopText(indices){
  for(const i of indices){const tile=board.children[i];if(!tile)continue;const r=tile.getBoundingClientRect();sx+=r.left-br.left+r.width/2;sy+=r.top-br.top+r.height/2;n++}
  if(!n)return;const el=document.createElement('b');el.className='pang-pop-text'+(pang.combo>1?' combo':'');el.style.left=(sx/n)+'px';el.style.top=(sy/n)+'px';el.textContent=pang.combo>1?`${pang.combo} COMBO!`:'PANG!';layer.append(el)
 }
+function pangIsMobileViewport(){
+ return !!(window.matchMedia?.('(max-width:720px)').matches ||
+        (window.matchMedia?.('(pointer:coarse)').matches && window.innerWidth<=900))
+}
+let pangScrollLockRaf=0,pangScrollLockUntil=0,pangScrollLockY=0;
+function pangLockMobileScrollDuringImpact(ms=460){
+ if(!pangIsMobileViewport())return;
+ const scroller=document.scrollingElement||document.documentElement;
+ if(!pangScrollLockRaf)pangScrollLockY=scroller.scrollTop||window.scrollY||0;
+ pangScrollLockUntil=Math.max(pangScrollLockUntil,performance.now()+ms);
+ const tick=()=>{
+  if(performance.now()>=pangScrollLockUntil){pangScrollLockRaf=0;return}
+  const current=scroller.scrollTop||window.scrollY||0;
+  if(Math.abs(current-pangScrollLockY)>.5)scroller.scrollTop=pangScrollLockY;
+  pangScrollLockRaf=requestAnimationFrame(tick)
+ };
+ if(!pangScrollLockRaf)pangScrollLockRaf=requestAnimationFrame(tick)
+}
 function pangSpecialFx(kind,index){
  const point=Number.isInteger(index)?pangFxPoint(index):null,layer=point?.layer||$('pangFxLayer'),board=point?.board||$('pangBoard');if(!layer||!board)return;
  const cx=point?.cx??board.clientWidth/2,cy=point?.cy??board.clientHeight/2;
@@ -5852,8 +5880,11 @@ function pangSpecialFx(kind,index){
    const halo=document.createElement('i');halo.className='pang-impact-halo '+kind;halo.style.left=cx+'px';halo.style.top=cy+'px';layer.append(halo)
   }
  }
- board.classList.remove('pang-shake','pang-mega-shake');void board.offsetWidth;board.classList.add(kind==='nova'||kind==='mirror'?'pang-mega-shake':'pang-shake');
- setTimeout(()=>board.classList.remove('pang-shake','pang-mega-shake'),460);
+ board.classList.remove('pang-shake','pang-mega-shake');
+ pangLockMobileScrollDuringImpact(kind==='nova'||kind==='mirror'?520:460);
+ void board.offsetWidth;
+ board.classList.add(kind==='nova'||kind==='mirror'?'pang-mega-shake':'pang-shake');
+ setTimeout(()=>board.classList.remove('pang-shake','pang-mega-shake'),460)
  if(Number.isInteger(index))pangBurstAt(index,kind==='nova'?16:kind==='mirror'?13:9)
 }
 async function pangAnimate(indices,label='',kind='normal'){
@@ -5861,7 +5892,13 @@ async function pangAnimate(indices,label='',kind='normal'){
  const list=[...indices],comboBoost=Math.min(1.45,1+Math.max(0,pang.combo-1)*.09),isStrong=kind!=='normal'||list.length>=6||pang.combo>=3;
  for(const i of list.slice(0,18))pangBurstAt(i,isStrong?10:8,comboBoost);
  pangPopText(list);
- const board=$('pangBoard');if(board){board.classList.remove('pang-hit','pang-hit-strong');void board.offsetWidth;board.classList.add(isStrong?'pang-hit-strong':'pang-hit');setTimeout(()=>board.classList.remove('pang-hit','pang-hit-strong'),430)}
+ const board=$('pangBoard');if(board){
+  board.classList.remove('pang-hit','pang-hit-strong');
+  pangLockMobileScrollDuringImpact(isStrong?460:420);
+  void board.offsetWidth;
+  board.classList.add(isStrong?'pang-hit-strong':'pang-hit');
+  setTimeout(()=>board.classList.remove('pang-hit','pang-hit-strong'),430)
+ }
  if(kind!=='normal')pangSpecialFx(kind,list[0]);
  if(label)$('pangHelp').textContent=label;
  await pangSleep(kind==='nova'||kind==='mirror'?520:440);pang.fxExplode.clear();pangFxClear()
