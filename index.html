@@ -1556,24 +1556,211 @@ input[type=range]{accent-color:#49bda0}
   .gacha-cinematic.fakeout-transition .gacha-door-frame::after,.gacha-cinematic.fakeout-transition .gacha-door::before,.gacha-cinematic.fakeout-transition .gacha-door-crest,.gacha-cinematic.fakeout-transition .gacha-door-wrap::before,.gacha-cinematic.orbs-revealing .gacha-orb-field::before,.gacha-cinematic.orbs-revealing .gacha-orb-field::after{animation:none!important}
 }
 
+
+/* ======================================================================
+   HOME DASHBOARD REFRESH 2026 · Mint lounge layout
+   Home-only visual/layout update. Existing IDs and app logic are preserved.
+   ====================================================================== */
+#home.home-dashboard{display:flex;flex-direction:column;gap:16px}
+#home.home-dashboard>.panel,#home .home-main-grid .panel{margin:0!important}
+
+.home-welcome{
+  position:relative;overflow:hidden;display:flex;align-items:center;justify-content:space-between;gap:22px;
+  min-height:150px;padding:27px 30px;border:1px solid rgba(177,222,210,.92);border-radius:28px;
+  background:
+    radial-gradient(circle at 86% 18%,rgba(255,255,255,.78) 0 10%,transparent 31%),
+    radial-gradient(circle at 70% 115%,rgba(91,202,172,.20),transparent 38%),
+    linear-gradient(122deg,#e9faf4 0%,#f8fffc 48%,#e1f6ef 100%);
+  box-shadow:0 18px 46px rgba(42,104,87,.095),inset 0 1px 0 rgba(255,255,255,.94)
+}
+.home-welcome::before{content:"";position:absolute;width:210px;height:210px;right:-54px;top:-94px;border:1px solid rgba(65,174,145,.16);border-radius:50%;box-shadow:0 0 0 28px rgba(82,191,162,.055),0 0 0 58px rgba(82,191,162,.035);pointer-events:none}
+.home-welcome::after{content:"✦";position:absolute;right:27%;top:19px;color:#73cdb5;font-size:25px;opacity:.48;transform:rotate(16deg);pointer-events:none}
+.home-welcome-copy{position:relative;z-index:1;min-width:0}
+.home-kicker,.home-section-kicker{display:block;margin-bottom:6px;color:#30977f;font-size:10px;font-weight:950;letter-spacing:.18em;text-transform:uppercase}
+.home-welcome h1{margin:0 0 7px!important;font-size:31px!important;line-height:1.12;color:#234b42}
+.home-welcome p{margin:0;color:#678079;font-size:13px;line-height:1.65}
+.home-welcome-actions{position:relative;z-index:1;display:flex;gap:8px;flex:0 0 auto}
+.home-welcome-actions button{min-width:122px;padding:11px 16px!important}
+
+#home .home-banner{overflow:hidden;padding:0!important;border-radius:27px!important}
+#home .home-banner .event-banner-stage{aspect-ratio:3.25/1;min-height:180px}
+#home .home-banner .event-banner-stage::after{content:"";position:absolute;inset:0;pointer-events:none;background:linear-gradient(180deg,transparent 58%,rgba(12,48,39,.16));z-index:1}
+#home .home-banner .event-banner-arrow,#home .home-banner .event-banner-dots,#home .home-banner .event-banner-overlay-text{z-index:4}
+#home .home-banner .event-banner-caption{display:flex;align-items:center;gap:9px;padding:10px 15px!important;background:rgba(250,255,253,.98)!important}
+#home .home-banner .event-banner-caption p{margin:0!important}
+.home-banner-label{display:inline-flex;align-items:center;justify-content:center;padding:4px 8px;border-radius:999px;background:#def5ed;color:#2e8e77;font-size:9px;font-weight:950;letter-spacing:.12em}
+
+.home-main-grid{display:grid;grid-template-columns:minmax(0,1.45fr) minmax(300px,.72fr);gap:16px;align-items:stretch}
+.home-side-stack{display:flex;flex-direction:column;gap:16px;min-width:0}
+.home-side-stack>.panel{flex:1}
+.home-character-panel{position:relative;overflow:hidden;min-width:0;padding:23px!important;background:linear-gradient(145deg,rgba(255,255,255,.97),rgba(245,253,250,.94))!important}
+.home-character-panel::before{content:"";position:absolute;width:330px;height:330px;left:-150px;bottom:-190px;border-radius:50%;background:radial-gradient(circle,rgba(100,207,178,.19),rgba(100,207,178,.025) 62%,transparent 70%);pointer-events:none}
+.home-section-head{position:relative;z-index:2;display:flex;align-items:flex-start;justify-content:space-between;gap:12px}
+.home-section-head h2{margin:0!important;font-size:20px!important}
+.home-section-head.compact{align-items:center}
+.home-section-link{flex:0 0 auto;padding:8px 10px!important;font-size:11px!important}
+.home-section-desc{position:relative;z-index:2;margin:7px 0 13px!important;font-size:12px;line-height:1.6}
+.home-mini-badge{display:inline-flex;align-items:center;padding:5px 8px;border-radius:999px;border:1px solid #cae8df;background:#effaf6;color:#3a8e79;font-size:9px;font-weight:900;white-space:nowrap}
+.home-mini-badge.cloud{background:#eff9ff;border-color:#d3e9ec;color:#3b7f78}
+
+#homeHero{position:relative;z-index:1;display:grid!important;grid-template-columns:minmax(230px,.92fr) minmax(220px,1.08fr);grid-template-areas:"art name" "art bubble" "art save";gap:12px 22px;align-items:center;min-height:430px;padding:4px 0 0!important}
+#homeHero>img{grid-area:art;width:100%!important;height:410px!important;max-width:none!important;object-fit:contain!important;padding:10px;border:1px solid #d8ece6;border-radius:24px!important;background:radial-gradient(circle at 48% 34%,#f9fffd 0 34%,#eaf8f3 70%,#def1eb 100%);filter:drop-shadow(0 17px 26px rgba(41,105,87,.11))!important;cursor:pointer}
+#homeHero>strong{grid-area:name;align-self:end;display:block;font-size:29px;line-height:1.18;font-weight:950;color:#274940;letter-spacing:-.04em}
+#homeHero>strong::before{content:"HOME CHARACTER";display:block;margin-bottom:7px;color:#42aa8e;font-size:9px;letter-spacing:.15em;font-weight:950}
+#homeHero>.bubble{grid-area:bubble;align-self:start;min-height:78px;padding:15px 16px!important;border-radius:18px!important;background:linear-gradient(145deg,#f0faf7,#fbfffd)!important;box-shadow:inset 0 1px 0 #fff;line-height:1.65;font-size:13px}
+#homeHero>.bubble::before{content:"💬 ";opacity:.72}
+#homeHero>.home-save-image{grid-area:save;align-self:start;justify-self:start;width:auto!important;padding:10px 13px!important;font-size:11px!important}
+#homeHero>p{grid-column:1/-1;align-self:center;justify-self:center;margin:80px 0!important}
+
+.home-attendance-panel,.home-account-panel{padding:19px!important}
+.home-attendance-status,.home-account-statusbox{margin:12px 0 10px!important;padding:11px 12px!important;border-radius:15px!important}
+.home-attendance-status strong,.home-account-statusbox strong{font-size:12px;line-height:1.45;color:#31574e}
+.home-attendance-status p,.home-account-statusbox p{margin:4px 0 0!important}
+#home .attendance-days{gap:4px;margin:10px 0 11px!important}
+#home .attendance-day{min-width:0;padding:8px 1px!important;border-radius:11px!important;background:#f7fcfa!important;border-color:#dcece7!important;color:#6a807a;font-size:9px!important}
+#home .attendance-day strong{margin-top:3px!important;font-size:10px!important;color:#3d6d61}
+#home .attendance-day.done{background:#e3f7ef!important;border-color:#a9dccd!important;color:#297c67}
+#home .attendance-day.today{background:linear-gradient(180deg,#dcf6ed,#effcf8)!important;outline:2px solid #69c8ae!important;outline-offset:-2px!important;box-shadow:0 5px 12px rgba(59,173,143,.10)}
+#home #attendanceClaim{padding:10px 12px!important;font-size:12px!important}
+.home-fineprint{margin:9px 0 0!important;font-size:9px!important;line-height:1.55!important}
+.home-account-actions{display:grid;grid-template-columns:1fr;gap:7px}
+.home-account-actions button{width:100%;padding:9px 10px!important;font-size:11px!important}
+
+.home-quick-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+.home-quick-card{display:grid!important;grid-template-columns:42px minmax(0,1fr) auto;align-items:center;gap:12px;min-height:74px;padding:13px 15px!important;text-align:left!important;border:1px solid #d5e9e3!important;border-radius:20px!important;background:rgba(255,255,255,.88)!important;color:#385c53!important;box-shadow:0 8px 22px rgba(42,97,82,.06)!important;backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px)}
+.home-quick-card:hover{background:#f8fffc!important;border-color:#b7ded3!important;transform:translateY(-2px)!important;box-shadow:0 12px 26px rgba(42,97,82,.09)!important}
+.home-quick-icon{display:grid;place-items:center;width:42px;height:42px;border-radius:14px;background:linear-gradient(145deg,#dcf5ed,#eefbf7);color:#2e9a7f;font-size:20px;box-shadow:inset 0 1px 0 #fff}
+.home-quick-card span:nth-child(2){display:block;min-width:0}
+.home-quick-card b{display:block;color:#31564d;font-size:13px;line-height:1.25}
+.home-quick-card small{display:block;margin-top:4px;color:#859690;font-size:9px;font-weight:700}
+.home-quick-card em{font-style:normal;color:#63bba4;font-size:18px}
+
+@media(max-width:820px){
+  .home-main-grid{grid-template-columns:1fr}
+  .home-side-stack{display:grid;grid-template-columns:1fr 1fr;align-items:stretch}
+  #homeHero{grid-template-columns:minmax(220px,.85fr) minmax(240px,1.15fr)}
+}
+@media(max-width:650px){
+  #home.home-dashboard{gap:11px}
+  .home-welcome{min-height:0;padding:20px 18px;border-radius:22px;display:block}
+  .home-welcome::after{right:20px;top:14px}
+  .home-welcome h1{font-size:25px!important}
+  .home-welcome p{max-width:86%;font-size:11px}
+  .home-welcome-actions{margin-top:15px;display:grid;grid-template-columns:1fr 1fr}
+  .home-welcome-actions button{min-width:0;padding:10px 8px!important;font-size:11px!important}
+  #home .home-banner{border-radius:20px!important}
+  #home .home-banner .event-banner-stage{aspect-ratio:2.35/1;min-height:0}
+  #home .home-banner .event-banner-caption{padding:8px 10px!important}
+  #home .home-banner .event-banner-caption p{font-size:9px!important}
+  .home-main-grid{gap:11px}
+  .home-side-stack{display:flex;gap:11px}
+  .home-character-panel,.home-attendance-panel,.home-account-panel{padding:16px!important}
+  .home-section-head h2{font-size:17px!important}
+  .home-section-link{font-size:9px!important;padding:7px 8px!important}
+  .home-section-desc{font-size:10px;margin-bottom:9px!important}
+  #homeHero{display:grid!important;grid-template-columns:1fr;grid-template-areas:"art" "name" "bubble" "save";gap:9px;min-height:0}
+  #homeHero>img{height:min(74vw,350px)!important;padding:7px;border-radius:20px!important}
+  #homeHero>strong{font-size:23px;text-align:center;align-self:auto}
+  #homeHero>strong::before{margin-bottom:4px}
+  #homeHero>.bubble{min-height:58px;padding:12px!important;font-size:11px;text-align:center}
+  #homeHero>.home-save-image{justify-self:stretch;width:100%!important}
+  #home .attendance-days{gap:3px}
+  #home .attendance-day{padding:7px 0!important;font-size:8px!important}
+  #home .attendance-day strong{font-size:9px!important}
+  .home-quick-grid{gap:7px}
+  .home-quick-card{display:flex!important;flex-direction:column;justify-content:center;gap:5px;min-height:92px;padding:10px 5px!important;text-align:center!important;border-radius:17px!important}
+  .home-quick-icon{width:34px;height:34px;border-radius:11px;font-size:16px}
+  .home-quick-card b{font-size:10px}
+  .home-quick-card small{font-size:8px}
+  .home-quick-card em{display:none}
+}
+@media(max-width:390px){
+  .home-welcome p{max-width:100%}
+  .home-welcome-actions{grid-template-columns:1fr}
+  .home-section-head{gap:7px}
+  .home-section-link{max-width:115px}
+  #home .attendance-days{grid-template-columns:repeat(7,minmax(0,1fr))}
+  #home .attendance-day{border-radius:8px!important}
+  #home .attendance-day span{font-size:7px}
+  #home .attendance-day strong{font-size:8px!important;letter-spacing:-.04em}
+}
+
 </style></head><body><div class="app"><header><strong>✦ MY GACHA</strong><div class="account-box"><strong id="headerPoints" class="points-balance">🪙 0 P</strong><span class="muted" id="status">연결 설정 필요</span><button type="button" id="userLoginBtn" class="ghost">👤 로그인</button><button type="button" id="userLogoutBtn" class="ghost hidden">로그아웃</button></div></header><div id="notice" role="status"></div><main>
-<section id="home"><div class="panel account-sync-panel">
-<h2>👤 유저 계정 · 데이터 연동</h2>
-<p class="muted">계정으로 로그인하면 같은 세이브를 PC·모바일에서 사용할 수 있어요. 기존 브라우저 데이터는 삭제하지 않습니다.</p>
-<div class="points-box">
-  <strong id="homeAccountStatus">로그인하지 않음</strong>
-  <p id="homeAccountEmail" class="muted mini">로컬 데이터로 이용 중</p>
-</div>
-<div class="row">
-  <button type="button" id="homeAccountOpen">👤 로그인 / 회원가입</button>
-  <button type="button" id="homeCloudLoad" class="ghost hidden">☁️ 클라우드 불러오기 / 연동</button>
-</div>
-<div class="row">
-  
-  <button type="button" id="homeAccountLogout" class="ghost hidden">로그아웃</button>
-</div>
-<p class="muted mini">로그인하면 클라우드 세이브를 자동으로 불러오고 바로 <b>자동 저장</b>이 시작됩니다. 가챠·포인트·펫·게임 진행도가 바뀔 때마다 저장되며, 30초마다 한 번 더 안전 저장합니다. 수동 저장은 필요하지 않아요.</p>
-</div><div id="eventBanner" class="panel event-banner hidden" role="button" tabindex="0"><div class="event-banner-stage"><img id="eventBannerImage" alt="이벤트 배너"><div id="eventBannerOverlayText" class="event-banner-overlay-text hidden" aria-hidden="true"></div><button type="button" id="eventBannerPrev" class="event-banner-arrow event-banner-prev" aria-label="이전 배너">‹</button><button type="button" id="eventBannerNext" class="event-banner-arrow event-banner-next" aria-label="다음 배너">›</button><div id="eventBannerDots" class="event-banner-dots"></div></div><div class="event-banner-caption"><p class="muted mini" style="margin:0">눌러서 가챠로 이동 →</p></div></div><div class="panel"><h2>📅 7일 출석 보상</h2><p class="muted">하루에 한 번 출석하고 게임 포인트를 받아요. 연속 출석할수록 보상이 커져요!</p><div class="points-box"><strong id="attendanceStatus">출석 정보를 확인하는 중...</strong><p class="muted mini" id="attendanceHelp"></p></div><div id="attendanceDays" class="attendance-days" aria-label="7일 출석 보상"></div><button type="button" id="attendanceClaim" class="wide">오늘 출석하고 포인트 받기</button><p class="muted mini">매일 기기 현지 날짜 기준으로 1회 · 하루라도 빠지면 1일차부터 다시 시작 · 7일 완료 후 다음 날 1일차로 반복 · 이 브라우저에만 기록됩니다.</p></div><div class="panel"><h1>나만의 캐릭터 컬렉션</h1><p class="muted">캐릭터를 눌러 대사를 듣고, 아래 버튼으로 이미지를 저장할 수 있어요.</p><div class="hero" id="homeHero"><p class="muted">홈 캐릭터를 설정해 주세요.</p></div></div><div class="panel"><h3>오늘은 누굴 만나볼까?</h3><button onclick="navigate('gacha')">가챠 뽑으러 가기 →</button></div></section>
+<section id="home" class="home-dashboard">
+  <div class="home-welcome">
+    <div class="home-welcome-copy">
+      <span class="home-kicker">MY GACHA · MINT LOUNGE</span>
+      <h1>오늘의 민트 라운지</h1>
+      <p>배너부터 홈 캐릭터, 출석까지 필요한 것만 한눈에 모아봤어요.</p>
+    </div>
+    <div class="home-welcome-actions">
+      <button type="button" onclick="navigate('gacha')">✦ 가챠 시작</button>
+      <button type="button" class="ghost" onclick="navigate('collection')">▦ 도감 보기</button>
+    </div>
+  </div>
+
+  <div id="eventBanner" class="panel event-banner home-banner hidden" role="button" tabindex="0">
+    <div class="event-banner-stage">
+      <img id="eventBannerImage" alt="이벤트 배너">
+      <div id="eventBannerOverlayText" class="event-banner-overlay-text hidden" aria-hidden="true"></div>
+      <button type="button" id="eventBannerPrev" class="event-banner-arrow event-banner-prev" aria-label="이전 배너">‹</button>
+      <button type="button" id="eventBannerNext" class="event-banner-arrow event-banner-next" aria-label="다음 배너">›</button>
+      <div id="eventBannerDots" class="event-banner-dots"></div>
+    </div>
+    <div class="event-banner-caption"><span class="home-banner-label">EVENT</span><p class="muted mini">지금 진행 중인 이벤트 · 눌러서 가챠로 이동 →</p></div>
+  </div>
+
+  <div class="home-main-grid">
+    <article class="panel home-character-panel">
+      <div class="home-section-head">
+        <div><span class="home-section-kicker">MY CHARACTER</span><h2>오늘의 홈 캐릭터</h2></div>
+        <button type="button" class="ghost home-section-link" onclick="navigate('collection')">홈 캐릭터 설정 →</button>
+      </div>
+      <p class="muted home-section-desc">일러스트를 누르면 등록된 대사를 랜덤으로 들을 수 있어요.</p>
+      <div class="hero" id="homeHero"><p class="muted">홈 캐릭터를 설정해 주세요.</p></div>
+    </article>
+
+    <div class="home-side-stack">
+      <article class="panel home-attendance-panel">
+        <div class="home-section-head compact">
+          <div><span class="home-section-kicker">DAILY CHECK</span><h2>7일 출석</h2></div>
+          <span class="home-mini-badge">매일 1회</span>
+        </div>
+        <div class="points-box home-attendance-status">
+          <strong id="attendanceStatus">출석 정보를 확인하는 중...</strong>
+          <p class="muted mini" id="attendanceHelp"></p>
+        </div>
+        <div id="attendanceDays" class="attendance-days" aria-label="7일 출석 보상"></div>
+        <button type="button" id="attendanceClaim" class="wide">오늘 출석하고 포인트 받기</button>
+        <p class="muted mini home-fineprint">연속 출석이 끊기면 1일차부터 다시 시작하고, 7일 완료 후 다시 반복돼요.</p>
+      </article>
+
+      <article class="panel account-sync-panel home-account-panel">
+        <div class="home-section-head compact">
+          <div><span class="home-section-kicker">ACCOUNT</span><h2>계정 · 자동 저장</h2></div>
+          <span class="home-mini-badge cloud">CLOUD</span>
+        </div>
+        <p class="muted home-section-desc">로그인하면 PC와 모바일에서 같은 세이브를 이어서 사용할 수 있어요.</p>
+        <div class="points-box home-account-statusbox">
+          <strong id="homeAccountStatus">로그인하지 않음</strong>
+          <p id="homeAccountEmail" class="muted mini">로컬 데이터로 이용 중</p>
+        </div>
+        <div class="home-account-actions">
+          <button type="button" id="homeAccountOpen">👤 로그인 / 회원가입</button>
+          <button type="button" id="homeCloudLoad" class="ghost hidden">☁️ 클라우드 불러오기 / 연동</button>
+          <button type="button" id="homeAccountLogout" class="ghost hidden">로그아웃</button>
+        </div>
+        <p class="muted mini home-fineprint">로그인 후에는 진행도가 바뀔 때마다 자동 저장되며 30초마다 한 번 더 안전 저장됩니다.</p>
+      </article>
+    </div>
+  </div>
+
+  <div class="home-quick-grid" aria-label="바로가기">
+    <button type="button" class="home-quick-card" onclick="navigate('gacha')"><span class="home-quick-icon">✦</span><span><b>캐릭터 뽑기</b><small>가챠 바로가기</small></span><em>→</em></button>
+    <button type="button" class="home-quick-card" onclick="navigate('collection')"><span class="home-quick-icon">▦</span><span><b>내 도감</b><small>보유 캐릭터 보기</small></span><em>→</em></button>
+    <button type="button" class="home-quick-card" onclick="navigate('game')"><span class="home-quick-icon">🎮</span><span><b>미니게임</b><small>포인트 모으기</small></span><em>→</em></button>
+  </div>
+</section>
 <section id="gacha" class="hidden"><div class="panel"><h2>캐릭터 가챠</h2><p class="muted" id="rates"></p><p id="pityText"></p><div class="points-box"><strong>✨ 천장 포인트: <span id="pityPoints">0</span> PT</strong><p class="muted mini">뽑기 1회마다 +1 PT · SSR을 뽑아도 유지 · 90 PT(관리자 설정값)로 원하는 SSR 교환</p><button type="button" id="pityExchange" class="ghost wide">✨ SSR 교환소 · 원하는 SSR 선택</button></div><div class="points-box"><strong>🪙 보유 게임 포인트: <span id="gachaPoints">0</span> P</strong><p class="muted mini">1회 100 P · 10회 1,000 P · 게임 클리어로 포인트 획득</p></div><div class="row"><button id="draw1">1회 뽑기 · 100 P</button><button id="draw10">10회 뽑기 · 1,000 P</button></div><p class="muted mini">뽑기 1회마다 천장 포인트 +1 PT. 자연 SSR 획득 시에도 포인트는 유지되며 교환 시 필요한 PT만 차감됩니다.</p></div><div id="results" class="grid result"></div><div id="limitedGachaBox" class="panel limited-box hidden"><h2>✨ 한정 픽업 가챠</h2><p id="limitedPeriod" class="muted"></p><p id="limitedRates" class="muted mini"></p><div class="points-box"><strong class="limited-tag">🌟 한정 천장 포인트: <span id="limitedPoints">0</span> LPT</strong><p class="muted mini">한정 뽑기 1회마다 +1 LPT · 이벤트 종료 시 소멸 · 일반 PT와 별도</p></div><div class="row"><button id="limitedDraw1">한정 1회 · 100 P</button><button id="limitedDraw10">한정 10회 · 1,000 P</button></div><button id="limitedExchange" class="ghost wide">🌟 한정 캐릭터 교환</button><div id="limitedResults" class="grid result"></div></div></section>
 <section id="collection" class="hidden"><div class="panel"><h2>캐릭터 도감</h2><p class="muted">미획득 캐릭터는 비밀로 표시돼요. 가챠에서 획득하면 이미지와 이름이 공개됩니다! 보유 캐릭터는 홈에 설정할 수 있어요.</p><div id="collectionCategoryNav" class="collection-category-nav" aria-label="도감 카테고리"><button type="button" data-collection-category="SSR">SSR<span id="collectionCatCountSSR" class="collection-cat-count">0명</span></button><button type="button" data-collection-category="SR">SR<span id="collectionCatCountSR" class="collection-cat-count">0명</span></button><button type="button" data-collection-category="R">R<span id="collectionCatCountR" class="collection-cat-count">0명</span></button><button type="button" data-collection-category="LIMITED">✨ 한정<span id="collectionCatCountLIMITED" class="collection-cat-count">0명</span></button></div><div id="collectionGrid"></div></div></section>
 <section id="game" class="hidden"><div class="panel"><h2>🎮 미니게임</h2><p class="muted">게임을 골라 포인트를 모아 보세요!</p><div class="game-picker"><button type="button" id="chooseMemory" class="active">🃏 카드 짝 맞추기</button><button type="button" id="choosePang">💥 캐릭터 팡!</button><button type="button" id="chooseRunner">🏃 캐릭터 점프</button><button type="button" id="chooseTetris">🧱 테트리스</button><button type="button" id="chooseRhythm">🎵 리듬 탭</button><button type="button" id="chooseDetective">🔎 사건 수사</button></div></div><div id="memorySection" class="panel"><h2>🃏 카드 짝 맞추기</h2><p class="muted">보유 캐릭터로 카드 짝을 맞히고 포인트를 모으세요! 보유 캐릭터가 없어도 쉬움 난이도에서 비공개 연습 카드로 시작할 수 있어요.</p><div class="points-box"><strong>🪙 내 포인트: <span id="gamePoints">0</span> P</strong><p class="muted mini">클리어 보상: 쉬움 +200 P · 보통 +400 P · 어려움 +600 P</p></div><label for="gameDifficulty">난이도</label><select id="gameDifficulty"><option value="4">🌱 쉬움 · 4쌍 / 8장</option><option value="6" selected>🌸 보통 · 6쌍 / 12장</option><option value="8">🔥 어려움 · 8쌍 / 16장</option></select><p class="muted mini" id="gameOwned"></p><div class="game-controls"><button id="gameStart">게임 시작</button><button id="gameRestart" class="ghost" disabled>다시 시작</button></div><div class="game-stats"><div class="game-stat"><span class="mini muted">시간</span><b id="gameTime">00:00</b></div><div class="game-stat"><span class="mini muted">시도</span><b id="gameMoves">0</b></div><div class="game-stat"><span class="mini muted">성공</span><b id="gameMatches">0/6</b></div></div><div id="memoryGrid" class="memory-grid" aria-label="카드 짝 맞추기 게임"></div><div id="gameResult" class="game-result hidden" role="status"></div><p class="muted mini" id="gameRecords"></p><p class="muted mini">게임 기록은 이 브라우저에만 저장됩니다. 보유 캐릭터 종류가 난이도에 필요한 수보다 적으면 시작할 수 없습니다. · ★★★ 풀돌 SSR 보유 1장당 보상 +5% (최대 +20%)</p></div>
