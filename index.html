@@ -1696,20 +1696,151 @@ input[type=range]{accent-color:#49bda0}
 .admin-character-section .rarity-heading{margin-top:0}
 .admin-character-period{display:inline-flex;align-items:center;margin-left:6px;padding:3px 7px;border-radius:999px;background:#e9fbf5;color:#238264;font-size:9px;font-weight:850;vertical-align:middle}
 @media(max-width:520px){.admin-character-tabs{grid-template-columns:repeat(2,minmax(0,1fr));gap:6px;top:4px}.admin-character-tab{padding:9px 5px!important;font-size:11px!important}}
+
+
+/* ======================================================================
+   USER REFINEMENT · 2026-10-07
+   1) Remove mint lounge hero (markup removed)
+   2) Larger frameless home character on desktop, independently sized mobile
+   3) Replace saturated/dark green choice surfaces with pastel mint
+   ====================================================================== */
+
+/* Home character: art is the visual focus, without a boxed image frame. */
+.home-main-grid{grid-template-columns:minmax(0,1.58fr) minmax(292px,.66fr)!important}
+.home-character-panel{padding:24px 25px 28px!important;overflow:visible!important}
+#homeHero{
+  grid-template-columns:minmax(350px,1.18fr) minmax(215px,.82fr)!important;
+  grid-template-areas:"art name" "art bubble" "art save"!important;
+  gap:14px 26px!important;
+  min-height:555px!important;
+  align-items:center!important;
+}
+#homeHero>img{
+  width:100%!important;
+  height:535px!important;
+  max-width:none!important;
+  padding:0!important;
+  border:0!important;
+  border-radius:0!important;
+  background:transparent!important;
+  box-shadow:none!important;
+  filter:drop-shadow(0 20px 28px rgba(50,116,99,.13))!important;
+  object-fit:contain!important;
+}
+
+/* Pastel-mint choice system: no dark/strong green fill on selectable tiles. */
+.game-picker button,
+.casino-picker button,
+.casino-options button,
+.pity-choice,
+.pet-gift-choice,
+.detective-tabs button,
+.detective-mode-btn,
+.collection-category-nav button,
+.home-art-choice-row button,
+.collection-detail-view-actions button,
+.collection-detail-art-actions button,
+.admin-character-tab{
+  background:linear-gradient(180deg,#f5fffb 0%,#eaf9f4 100%)!important;
+  color:#426a60!important;
+  border:1px solid #cdebe2!important;
+  box-shadow:0 5px 13px rgba(75,151,131,.055)!important;
+}
+.game-picker button:hover,
+.casino-picker button:hover,
+.casino-options button:hover,
+.pity-choice:hover,
+.pet-gift-choice:hover,
+.detective-tabs button:hover,
+.detective-mode-btn:hover,
+.collection-category-nav button:hover,
+.home-art-choice-row button:hover,
+.collection-detail-view-actions button:hover,
+.collection-detail-art-actions button:hover,
+.admin-character-tab:hover{
+  background:linear-gradient(180deg,#effcf8 0%,#def5ed 100%)!important;
+  color:#315f54!important;
+  border-color:#adddce!important;
+}
+.game-picker button.active,
+.casino-picker button.active,
+.casino-options button.active,
+.pity-choice.selected,
+.pet-gift-choice.selected,
+.detective-tabs button.active,
+.detective-mode-btn.active,
+.collection-category-nav button.active,
+.home-art-choice-row button.active,
+.collection-detail-view-actions button.active,
+.collection-detail-art-actions button.active,
+.admin-character-tab.active{
+  background:linear-gradient(180deg,#dff8f0 0%,#ccefe4 100%)!important;
+  color:#285a4f!important;
+  border-color:#87d2bd!important;
+  box-shadow:0 0 0 2px rgba(117,207,182,.16) inset,0 7px 16px rgba(85,166,145,.08)!important;
+}
+
+/* The memory card back is also a selectable game surface, so keep it soft. */
+.memory-card{
+  background:linear-gradient(145deg,#d8f4eb,#bfe8dc)!important;
+  color:#315f54!important;
+  border-color:#b6e1d5!important;
+  box-shadow:0 6px 14px rgba(73,143,124,.08)!important;
+}
+.memory-card.matched{background:#e9faf4!important;border-color:#a7dcca!important}
+
+/* Keep ordinary primary actions mint, but remove the deep-green look. */
+button:not(.danger):not(.event-banner-arrow):not(.gacha-skip):not(.collection-detail-close){
+  background:linear-gradient(135deg,#b9eadc,#98ddca)!important;
+  color:#28594f!important;
+  border:1px solid rgba(119,202,180,.38)!important;
+  box-shadow:0 6px 14px rgba(73,148,127,.09),inset 0 1px 0 rgba(255,255,255,.48)!important;
+}
+button:not(.danger):not(.event-banner-arrow):not(.gacha-skip):not(.collection-detail-close):hover:not(:disabled){
+  background:linear-gradient(135deg,#c9f1e6,#a9e5d5)!important;
+  color:#214f45!important;
+}
+button.ghost,.ghost{
+  background:#f4fcf9!important;
+  color:#426b61!important;
+  border-color:#d0eae3!important;
+  box-shadow:none!important;
+}
+
+/* Preserve rarity/cinematic controls that need their own visual meaning. */
+.gacha-cinematic .gacha-skip{background:#0e1020a8!important;color:#fff!important}
+.gacha-cinematic .gacha-door,.gacha-cinematic .gacha-door-frame{border-color:initial}
+
+@media(max-width:820px){
+  .home-main-grid{grid-template-columns:1fr!important}
+  #homeHero{grid-template-columns:minmax(290px,.98fr) minmax(225px,1.02fr)!important;min-height:480px!important}
+  #homeHero>img{height:455px!important}
+}
+@media(max-width:650px){
+  .home-character-panel{padding:16px!important;overflow:hidden!important}
+  #homeHero{
+    grid-template-columns:1fr!important;
+    grid-template-areas:"art" "name" "bubble" "save"!important;
+    gap:9px!important;
+    min-height:0!important;
+  }
+  #homeHero>img{
+    width:100%!important;
+    height:min(78vw,360px)!important;
+    max-height:360px!important;
+    padding:0!important;
+    border:0!important;
+    border-radius:0!important;
+    background:transparent!important;
+    filter:drop-shadow(0 13px 20px rgba(50,116,99,.11))!important;
+  }
+}
+@media(max-width:390px){
+  #homeHero>img{height:min(82vw,325px)!important;max-height:325px!important}
+}
+
 </style></head><body><div class="app"><header><strong>✦ MY GACHA</strong><div class="account-box"><strong id="headerPoints" class="points-balance">🪙 0 P</strong><span class="muted" id="status">연결 설정 필요</span><button type="button" id="userLoginBtn" class="ghost">👤 로그인</button><button type="button" id="userLogoutBtn" class="ghost hidden">로그아웃</button></div></header><div id="notice" role="status"></div><main>
 <section id="home" class="home-dashboard">
-  <div class="home-welcome">
-    <div class="home-welcome-copy">
-      <span class="home-kicker">MY GACHA · MINT LOUNGE</span>
-      <h1>오늘의 민트 라운지</h1>
-      <p>배너부터 홈 캐릭터, 출석까지 필요한 것만 한눈에 모아봤어요.</p>
-    </div>
-    <div class="home-welcome-actions">
-      <button type="button" onclick="navigate('gacha')">✦ 가챠 시작</button>
-      <button type="button" class="ghost" onclick="navigate('collection')">▦ 도감 보기</button>
-    </div>
-  </div>
-
   <div id="eventBanner" class="panel event-banner home-banner hidden" role="button" tabindex="0">
     <div class="event-banner-stage">
       <img id="eventBannerImage" alt="이벤트 배너">
