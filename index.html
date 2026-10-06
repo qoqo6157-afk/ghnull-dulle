@@ -1839,6 +1839,108 @@ button.ghost,.ghost{
   #homeHero>img{height:min(82vw,325px)!important;max-height:325px!important}
 }
 
+
+
+/* ======================================================================
+   USER FIX PACK · gacha 5x2 / scheduled limited collection / Pang polish
+   ====================================================================== */
+
+/* PC 10-pull results: always render as two tidy rows of five. */
+@media (min-width:760px){
+  #results:has(>.gacha-result-card:nth-child(6)),
+  #limitedResults:has(>.gacha-result-card:nth-child(6)){
+    grid-template-columns:repeat(5,minmax(0,1fr))!important;
+    gap:12px!important;
+  }
+}
+
+/* Character Pang: keep the board mint underneath disappearing pieces. */
+.pang-board-wrap{
+  padding:6px!important;
+  border-radius:18px!important;
+  background:linear-gradient(145deg,#e9faf4,#dff5ee)!important;
+  border:1px solid #cdebe2!important;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.8),0 8px 18px rgba(73,148,127,.06)!important;
+}
+.pang-board{border-radius:13px;overflow:visible}
+.pang-tile{
+  background:linear-gradient(145deg,#dff6ef,#cfeee5)!important;
+  border-color:rgba(151,215,197,.45)!important;
+}
+
+/* Never fade the whole tile to transparent: only pop the character art. */
+.pang-tile.pang-explode{
+  z-index:8;
+  overflow:visible!important;
+  animation:pangTileMintPulse .30s ease-out both!important;
+  background:linear-gradient(145deg,#dcf7ef,#c8ecdf)!important;
+  border-color:#aee1d2!important;
+}
+.pang-tile.pang-explode>img,
+.pang-tile.pang-explode>span{
+  animation:pangContentPop .30s cubic-bezier(.2,.75,.25,1) both!important;
+}
+.pang-tile.pang-explode::before{
+  content:"";
+  position:absolute;z-index:6;left:50%;top:50%;width:34%;aspect-ratio:1;
+  border-radius:50%;pointer-events:none;
+  background:radial-gradient(circle,#fff 0 12%,#d9fff3 18%,#9be4cf 43%,rgba(161,222,205,.22) 62%,transparent 70%);
+  box-shadow:0 0 14px rgba(111,207,181,.45);
+  animation:pangMintBurst .34s ease-out both;
+}
+.pang-tile.pang-explode::after{
+  content:"✦";
+  position:absolute;z-index:7;left:50%;top:50%;pointer-events:none;
+  color:#fff;font-size:18px;font-weight:950;
+  text-shadow:0 0 5px #fff,0 0 11px #78d6bd;
+  animation:pangMintSpark .34s ease-out both;
+}
+@keyframes pangTileMintPulse{
+  0%{transform:scale(1);box-shadow:0 0 0 rgba(112,210,183,0)}
+  48%{transform:scale(1.07);box-shadow:0 0 0 5px rgba(160,229,210,.22),0 0 18px rgba(105,202,176,.25)}
+  100%{transform:scale(.98);box-shadow:0 0 0 0 rgba(112,210,183,0)}
+}
+@keyframes pangContentPop{
+  0%{opacity:1;transform:scale(1);filter:brightness(1)}
+  45%{opacity:.9;transform:scale(1.12);filter:brightness(1.2) saturate(1.06)}
+  100%{opacity:0;transform:scale(.68);filter:brightness(1.35) blur(.5px)}
+}
+@keyframes pangMintBurst{
+  0%{opacity:0;transform:translate(-50%,-50%) scale(.2)}
+  28%{opacity:1}
+  100%{opacity:0;transform:translate(-50%,-50%) scale(3.1)}
+}
+@keyframes pangMintSpark{
+  0%{opacity:0;transform:translate(-50%,-50%) scale(.25) rotate(-25deg)}
+  35%{opacity:1}
+  100%{opacity:0;transform:translate(-50%,-50%) scale(1.7) rotate(25deg)}
+}
+.pang-particle{
+  background:radial-gradient(circle,#fff 0 20%,#d7fff2 23% 48%,#8edbc6 62%,#c8bdf2 82%)!important;
+  box-shadow:0 0 8px rgba(255,255,255,.95),0 0 12px rgba(115,210,184,.45)!important;
+}
+.pang-flash{
+  background:radial-gradient(circle,#fff 0 3%,rgba(202,249,235,.92) 10%,rgba(127,216,191,.38) 30%,rgba(190,178,238,.16) 47%,transparent 68%)!important;
+}
+
+/* Automatic no-move reshuffle animation. */
+.pang-board.pang-auto-shuffle .pang-tile{
+  animation:pangShuffleOut .26s ease-in both!important;
+  animation-delay:calc(var(--pang-index,0) * 6ms)!important;
+}
+.pang-board.pang-auto-shuffle-in .pang-tile{
+  animation:pangShuffleIn .38s cubic-bezier(.2,.82,.2,1.15) both!important;
+  animation-delay:calc(var(--pang-index,0) * 7ms)!important;
+}
+@keyframes pangShuffleOut{
+  0%{opacity:1;transform:translateY(0) scale(1) rotate(0)}
+  100%{opacity:.18;transform:translateY(9px) scale(.78) rotate(5deg);filter:blur(1px)}
+}
+@keyframes pangShuffleIn{
+  0%{opacity:0;transform:translateY(-10px) scale(.76) rotate(-5deg);filter:blur(1px)}
+  72%{opacity:1;transform:translateY(1px) scale(1.035) rotate(1deg);filter:none}
+  100%{opacity:1;transform:none;filter:none}
+}
 </style></head><body><div class="app"><header><strong>✦ MY GACHA</strong><div class="account-box"><strong id="headerPoints" class="points-balance">🪙 0 P</strong><span class="muted" id="status">연결 설정 필요</span><button type="button" id="userLoginBtn" class="ghost">👤 로그인</button><button type="button" id="userLogoutBtn" class="ghost hidden">로그아웃</button></div></header><div id="notice" role="status"></div><main>
 <section id="home" class="home-dashboard">
   <div id="eventBanner" class="panel event-banner home-banner hidden" role="button" tabindex="0">
@@ -2819,7 +2921,7 @@ function scheduleLimitedRefresh(){
  for(const c of characters){if(!c.is_limited)continue;for(const value of [c.limited_start,c.limited_end]){const t=new Date(value||'').getTime();if(Number.isFinite(t)&&t>now)times.push(t)}}
  if(!times.length)return;
  const delay=Math.min(2147483000,Math.max(50,Math.min(...times)-now+150));
- limitedScheduleTimer=setTimeout(()=>{renderLimited()},delay)
+ limitedScheduleTimer=setTimeout(()=>{renderLimited();renderCollection()},delay)
 }
 function renderLimited(){
  scheduleLimitedRefresh();
@@ -3192,6 +3294,8 @@ function playGachaCinematic(cards,{source='normal'}={}){
 }
 
 function orderedMembers(rarity){const pool=rarity==='LIMITED'?characters.filter(c=>c.is_limited&&c.rarity==='SSR'):rarity==='SSR'?characters.filter(c=>c.rarity==='SSR'&&!c.is_limited):characters.filter(c=>c.rarity===rarity);return pool.sort((a,b)=>(Number(a.sort_order)||0)-(Number(b.sort_order)||0)||String(a.created_at||'').localeCompare(String(b.created_at||''))||String(a.id).localeCompare(String(b.id)))}
+function collectionLimitedHasStarted(c){if(!c?.is_limited)return true;const start=new Date(c.limited_start||'').getTime();return !Number.isFinite(start)||Date.now()>=start}
+function collectionMembers(rarity){return orderedMembers(rarity).filter(c=>rarity!=='LIMITED'||collectionLimitedHasStarted(c))}
 
 let collectionDetailId=null;
 let collectionDetailViewMode='auto';
@@ -3340,7 +3444,7 @@ let collectionActiveCategory='SSR';
 function collectionSectionId(rarity){return 'collectionSection'+rarity}
 function refreshCollectionCategoryNav(){
  for(const rarity of ['SSR','SR','R','LIMITED']){
-  const count=orderedMembers(rarity).length;
+  const count=collectionMembers(rarity).length;
   const el=$('collectionCatCount'+rarity);if(el)el.textContent=`${count}명`
  }
  document.querySelectorAll('[data-collection-category]').forEach(btn=>btn.classList.toggle('active',btn.dataset.collectionCategory===collectionActiveCategory))
@@ -3352,7 +3456,7 @@ function setCollectionCategory(rarity){
 }
 document.querySelectorAll('[data-collection-category]').forEach(btn=>btn.addEventListener('click',()=>setCollectionCategory(btn.dataset.collectionCategory)));
 
-function renderCollection(){const grid=$('collectionGrid');grid.replaceChildren();refreshCollectionCategoryNav();if(!characters.length){grid.textContent='등록된 캐릭터가 없어요.';return}for(const rarity of [collectionActiveCategory]){const section=document.createElement('section');section.className='rarity-section';section.id=collectionSectionId(rarity);section.dataset.collectionRarity=rarity;const heading=document.createElement('h3');heading.className='rarity-heading';const title=document.createElement('span');title.textContent=rarity==='LIMITED'?'✨ 한정':rarity;const badge=document.createElement('span');badge.className='tag';const members=orderedMembers(rarity);badge.textContent=`${members.length}명`;heading.append(title,badge);section.append(heading);if(!members.length){const empty=document.createElement('p');empty.className='rarity-empty';empty.textContent='등록된 캐릭터가 없어요.';section.append(empty)}else{const cards=document.createElement('div');cards.className='grid';for(const c of members){const count=Number(local.counts[c.id])||0;const wrapper=document.createElement('div');wrapper.innerHTML=count>0?card(c,count):`<div class="card locked-card" aria-label="미획득 캐릭터"><div class="locked-art" aria-hidden="true">?</div><div class="tag">${escapeHtml(c.rarity)}</div><strong>???</strong><p class="muted mini">🔒 미획득</p></div>`;const item=wrapper.firstElementChild;if(count>0){
+function renderCollection(){const grid=$('collectionGrid');grid.replaceChildren();refreshCollectionCategoryNav();if(!characters.length){grid.textContent='등록된 캐릭터가 없어요.';return}for(const rarity of [collectionActiveCategory]){const section=document.createElement('section');section.className='rarity-section';section.id=collectionSectionId(rarity);section.dataset.collectionRarity=rarity;const heading=document.createElement('h3');heading.className='rarity-heading';const title=document.createElement('span');title.textContent=rarity==='LIMITED'?'✨ 한정':rarity;const badge=document.createElement('span');badge.className='tag';const members=collectionMembers(rarity);badge.textContent=`${members.length}명`;heading.append(title,badge);section.append(heading);if(!members.length){const empty=document.createElement('p');empty.className='rarity-empty';empty.textContent='등록된 캐릭터가 없어요.';section.append(empty)}else{const cards=document.createElement('div');cards.className='grid';for(const c of members){const count=Number(local.counts[c.id])||0;const wrapper=document.createElement('div');wrapper.innerHTML=count>0?card(c,count):`<div class="card locked-card" aria-label="미획득 캐릭터"><div class="locked-art" aria-hidden="true">?</div><div class="tag">${escapeHtml(c.rarity)}</div><strong>???</strong><p class="muted mini">🔒 미획득</p></div>`;const item=wrapper.firstElementChild;if(count>0){
  item.classList.add('collection-card-open');
  item.tabIndex=0;
  item.setAttribute('role','button');
@@ -4641,6 +4745,7 @@ function renderPang(){
  pang.board.forEach((cell,i)=>{
   const tile=document.createElement('button');tile.type='button';
   tile.className='pang-tile'+(pang.selected===i?' selected':'')+pangSpecialClass(cell.s)+(pang.fxExplode.has(i)?' pang-explode':'')+(pang.fxCreated===i?' pang-created':'');
+  tile.style.setProperty('--pang-index',i);
   tile.disabled=!pang.active||pang.busy;const character=pang.pool[cell.v];
   tile.setAttribute('aria-label',`${Math.floor(i/PANG_SIZE)+1}행 ${i%PANG_SIZE+1}열 ${character?.name||'블록'}${cell.s?' '+PANG_SPECIAL_NAME[cell.s]:''}`);
   if(character?.image){const image=document.createElement('img');image.src=character.image;image.alt='';image.draggable=false;tile.append(image)}
@@ -4731,6 +4836,21 @@ function pangRefill(remove){
   while(r>=0)board[pangIdx(r--,c)]=pangCell(Math.floor(Math.random()*pang.pool.length))
  }
 }
+async function pangAutoShuffleIfStuck(token=pang.token){
+ if(!pang.active||pangPossible(pang.board))return false;
+ const boardEl=$('pangBoard');
+ $('pangHelp').textContent='🔀 더 이상 맞출 수 있는 블록이 없어 자동으로 다시 섞는 중...';
+ boardEl?.classList.remove('pang-auto-shuffle-in');
+ boardEl?.classList.add('pang-auto-shuffle');
+ await pangSleep(330);if(token!==pang.token)return true;
+ pang.board=pangFreshBoard();
+ boardEl?.classList.remove('pang-auto-shuffle');
+ renderPang();
+ boardEl?.classList.add('pang-auto-shuffle-in');
+ setTimeout(()=>boardEl?.classList.remove('pang-auto-shuffle-in'),520);
+ $('pangHelp').textContent='✨ 가능한 조합이 생기도록 블록을 자동 재배치했어!';
+ return true
+}
 async function pangBlastAndCascade(initial,label='💥 PANG!',kind='normal',token=pang.token){
  let ex=pangExpandSpecials(initial),remove=ex.remove;kind=rankSpecial(kind,ex.strongest);
  if(!remove.size)return;
@@ -4748,7 +4868,8 @@ async function pangBlastAndCascade(initial,label='💥 PANG!',kind='normal',toke
   pangRefill(removal);renderPang();pang.fxCreated=-1;await pangSleep(170);if(token!==pang.token)return;
   analysis=pangAnalyze(pang.board)
  }
- if(!pangPossible(pang.board)){pang.board=pangFreshBoard();$('pangHelp').textContent='🔀 가능한 이동이 없어 자동 셔플!'}else if(pang.combo>1)$('pangHelp').textContent=`✨ ${pang.combo}연쇄 완료!`;
+ const autoShuffled=await pangAutoShuffleIfStuck(token);if(token!==pang.token)return;
+ if(!autoShuffled&&pang.combo>1)$('pangHelp').textContent=`✨ ${pang.combo}연쇄 완료!`;
  renderPang()
 }
 async function pangResolveMatch(analysis,preferred,token){
@@ -4763,8 +4884,8 @@ async function pangResolveMatch(analysis,preferred,token){
   pangRefill(removal);renderPang();pang.fxCreated=-1;await pangSleep(170);if(token!==pang.token)return;
   analysis=pangAnalyze(pang.board)
  }
- if(!pangPossible(pang.board)){pang.board=pangFreshBoard();$('pangHelp').textContent='🔀 가능한 이동이 없어 자동 셔플!'}
- else $('pangHelp').textContent=pang.combo>1?`✨ ${pang.combo}연쇄 콤보 완료!`:'좋아! 특수 블록도 노려 보자.';
+ const autoShuffled=await pangAutoShuffleIfStuck(token);if(token!==pang.token)return;
+ if(!autoShuffled)$('pangHelp').textContent=pang.combo>1?`✨ ${pang.combo}연쇄 콤보 완료!`:'좋아! 특수 블록도 노려 보자.';
 }
 function pangSelect(i){
  if(pang.suppressClick||!pang.active||pang.busy)return;
@@ -4784,9 +4905,10 @@ async function pangSwap(a,b){
   const cascade=pangAnalyze(pang.board);if(cascade.matched.size)await pangResolveMatch(cascade,[],token);
  }else{
   const analysis=pangAnalyze(pang.board,[b,a]);
-  if(!analysis.matched.size){[pang.board[a],pang.board[b]]=[pang.board[b],pang.board[a]];pang.busy=false;$('pangHelp').textContent='3개 이상 맞거나 특수 블록을 움직여야 해!';renderPang();return}
+  if(!analysis.matched.size){[pang.board[a],pang.board[b]]=[pang.board[b],pang.board[a]];const autoShuffled=await pangAutoShuffleIfStuck(token);if(token!==pang.token)return;pang.busy=false;if(!autoShuffled)$('pangHelp').textContent='3개 이상 맞거나 특수 블록을 움직여야 해!';renderPang();return}
   pang.moves--;await pangResolveMatch(analysis,[b,a],token)
  }
+ if(pang.moves>0){await pangAutoShuffleIfStuck(token);if(token!==pang.token)return}
  pang.busy=false;if(pang.moves<=0)finishPang();else renderPang()
 }
 function startPang(){
