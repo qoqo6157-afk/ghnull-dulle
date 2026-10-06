@@ -2638,6 +2638,198 @@ button.ghost,.ghost{
   .memory-card,.memory-card .back,.memory-card .face,.memory-card::before,.memory-card::after{animation:none!important;transition:none!important}
 }
 
+
+
+/* ======================================================================
+   CHARACTER PANG · JUICY POP IMPACT REFRESH · 2026-10-07
+   White blocks + full-image fit + punchy local-only pop FX.
+   ====================================================================== */
+.pang-board-wrap{
+  background:linear-gradient(145deg,#f8fdfb,#eef9f6)!important;
+  border-color:#d7eee7!important;
+  box-shadow:0 12px 28px rgba(79,148,130,.07),inset 0 1px 0 #fff!important;
+}
+.pang-tile,
+.pang-tile:disabled,
+.pang-board.busy .pang-tile{
+  background:#fff!important;
+  border:1px solid #d8e9e4!important;
+  box-shadow:0 3px 10px rgba(49,111,95,.07),inset 0 1px 0 #fff!important;
+  opacity:1!important;
+  filter:none!important;
+}
+.pang-tile:hover:not(:disabled){
+  border-color:#b9ddd3!important;
+  box-shadow:0 6px 15px rgba(56,128,109,.10),inset 0 1px 0 #fff!important;
+}
+.pang-tile img{
+  width:100%!important;height:100%!important;
+  object-fit:contain!important;
+  object-position:center center!important;
+  padding:4px!important;
+  transform:scale(.96);
+  transform-origin:center center;
+}
+.pang-tile.selected{
+  background:#fff!important;
+  border-color:#61ccb0!important;
+  box-shadow:0 0 0 3px rgba(97,204,176,.19),0 8px 18px rgba(52,135,112,.13)!important;
+}
+
+/* A matched tile compresses, punches outward, then snaps away. */
+.pang-tile.pang-explode{
+  z-index:12!important;
+  overflow:visible!important;
+  background:#fff!important;
+  border-color:#80d8bf!important;
+  box-shadow:0 0 0 3px rgba(111,218,188,.18),0 0 24px rgba(91,206,175,.28),0 10px 22px rgba(55,139,116,.12)!important;
+  animation:pangJuicyTilePop .44s cubic-bezier(.16,.9,.22,1.14) both!important;
+}
+.pang-tile.pang-explode>img,
+.pang-tile.pang-explode>span:not(.pang-special-icon){
+  animation:pangJuicyContentPop .44s cubic-bezier(.16,.85,.2,1.18) both!important;
+}
+.pang-tile.pang-explode::before{
+  content:"";
+  position:absolute!important;z-index:20!important;left:50%!important;top:50%!important;
+  width:175%!important;height:175%!important;border:0!important;border-radius:50%!important;
+  background:repeating-conic-gradient(from 4deg,rgba(98,211,180,0) 0 8deg,rgba(98,211,180,.82) 9deg 12deg,rgba(255,214,112,.78) 13deg 15deg,rgba(98,211,180,0) 16deg 27deg)!important;
+  -webkit-mask:radial-gradient(circle,transparent 0 26%,#000 29% 48%,transparent 62%)!important;
+  mask:radial-gradient(circle,transparent 0 26%,#000 29% 48%,transparent 62%)!important;
+  box-shadow:none!important;
+  transform:translate(-50%,-50%) scale(.18) rotate(-16deg)!important;
+  pointer-events:none!important;
+  animation:pangJuicyBurstRays .42s cubic-bezier(.12,.75,.2,1) both!important;
+}
+.pang-tile.pang-explode::after{
+  content:"✦  ✧  ✦"!important;
+  position:absolute!important;z-index:21!important;left:50%!important;top:50%!important;
+  width:150%!important;text-align:center!important;
+  color:#45b899!important;font-size:clamp(13px,2.3vw,21px)!important;font-weight:950!important;letter-spacing:.18em!important;
+  text-shadow:0 0 8px #fff,0 0 14px rgba(72,195,162,.52)!important;
+  transform:translate(-50%,-50%) scale(.35) rotate(-8deg)!important;
+  pointer-events:none!important;
+  animation:pangJuicyStars .44s ease-out both!important;
+}
+@keyframes pangJuicyTilePop{
+  0%{transform:scale(1);opacity:1}
+  16%{transform:scale(.84) rotate(-1.5deg);opacity:1}
+  38%{transform:scale(1.19) rotate(1.5deg);opacity:1}
+  58%{transform:scale(.96);opacity:1}
+  78%{transform:scale(1.08);opacity:.92}
+  100%{transform:scale(.18);opacity:0}
+}
+@keyframes pangJuicyContentPop{
+  0%{transform:scale(.96);opacity:1}
+  18%{transform:scale(.84);opacity:1}
+  42%{transform:scale(1.22);opacity:1}
+  70%{transform:scale(1.06);opacity:.92}
+  100%{transform:scale(.34) rotate(6deg);opacity:0}
+}
+@keyframes pangJuicyBurstRays{
+  0%{opacity:0;transform:translate(-50%,-50%) scale(.18) rotate(-16deg)}
+  24%{opacity:1}
+  100%{opacity:0;transform:translate(-50%,-50%) scale(1.08) rotate(18deg)}
+}
+@keyframes pangJuicyStars{
+  0%{opacity:0;transform:translate(-50%,-50%) scale(.28) rotate(-10deg)}
+  34%{opacity:1;transform:translate(-50%,-50%) scale(1.12) rotate(2deg)}
+  100%{opacity:0;transform:translate(-50%,-72%) scale(1.7) rotate(16deg)}
+}
+
+/* Local shockwaves and confetti only — never a board-wide white flash. */
+.pang-fx-layer{overflow:visible!important;}
+.pang-pop-ring{
+  position:absolute;z-index:18;pointer-events:none;border-radius:50%;
+  width:34px;height:34px;border:3px solid rgba(75,196,163,.88);
+  box-shadow:0 0 0 6px rgba(113,222,193,.12),0 0 18px rgba(68,188,156,.25);
+  transform:translate(-50%,-50%) scale(.25);
+  animation:pangPopRing .46s cubic-bezier(.12,.72,.2,1) forwards;
+}
+.pang-pop-core{
+  position:absolute;z-index:19;pointer-events:none;border-radius:50%;
+  width:20px;height:20px;
+  background:radial-gradient(circle,#fff 0 18%,#fff5c4 21% 34%,rgba(105,221,189,.82) 38% 58%,transparent 64%);
+  transform:translate(-50%,-50%) scale(.2);
+  animation:pangPopCore .34s ease-out forwards;
+}
+@keyframes pangPopRing{
+  0%{opacity:0;transform:translate(-50%,-50%) scale(.25)}
+  25%{opacity:1}
+  100%{opacity:0;transform:translate(-50%,-50%) scale(2.75)}
+}
+@keyframes pangPopCore{
+  0%{opacity:0;transform:translate(-50%,-50%) scale(.2)}
+  30%{opacity:1;transform:translate(-50%,-50%) scale(1.45)}
+  100%{opacity:0;transform:translate(-50%,-50%) scale(2.2)}
+}
+.pang-particle{
+  width:var(--pang-size,8px)!important;height:var(--pang-size,8px)!important;
+  border-radius:3px!important;
+  background:var(--pang-color,#6fd5b8)!important;
+  border:0!important;
+  box-shadow:0 0 7px rgba(76,194,162,.25)!important;
+  animation:pangJuicyParticle .58s cubic-bezier(.16,.7,.18,1) var(--pang-particle-delay,0ms) forwards!important;
+}
+@keyframes pangJuicyParticle{
+  0%{opacity:0;transform:translate(-50%,-50%) scale(.2) rotate(0)}
+  18%{opacity:1;transform:translate(-50%,-50%) scale(1.15) rotate(15deg)}
+  100%{opacity:0;transform:translate(calc(-50% + var(--dx)),calc(-50% + var(--dy))) scale(.35) rotate(var(--pang-rot,150deg))}
+}
+.pang-pop-text{
+  position:absolute;z-index:30;pointer-events:none;
+  transform:translate(-50%,-50%);
+  padding:5px 10px;border-radius:999px;
+  background:rgba(255,255,255,.92);
+  border:1px solid #b9e8db;
+  color:#2a9c7d;font-weight:950;font-size:clamp(12px,2vw,18px);letter-spacing:.04em;
+  box-shadow:0 8px 18px rgba(49,137,113,.13),0 0 0 3px rgba(110,218,188,.09);
+  animation:pangPopText .62s cubic-bezier(.12,.82,.2,1) forwards;
+}
+.pang-pop-text.combo{color:#bf8b24;border-color:#f0d693;background:#fffdf6;}
+@keyframes pangPopText{
+  0%{opacity:0;transform:translate(-50%,-36%) scale(.62)}
+  28%{opacity:1;transform:translate(-50%,-58%) scale(1.12)}
+  62%{opacity:1;transform:translate(-50%,-66%) scale(1)}
+  100%{opacity:0;transform:translate(-50%,-88%) scale(.92)}
+}
+
+/* A short punch on the board gives impact without a harsh screen shake. */
+.pang-board.pang-hit{animation:pangHit .30s cubic-bezier(.2,.8,.2,1)!important;}
+.pang-board.pang-hit-strong{animation:pangHitStrong .38s cubic-bezier(.2,.8,.2,1)!important;}
+@keyframes pangHit{
+  0%,100%{transform:translate(0,0) scale(1)}
+  28%{transform:translate(-2px,1px) scale(.994)}
+  52%{transform:translate(2px,-1px) scale(1.006)}
+  76%{transform:translate(-1px,.5px) scale(.999)}
+}
+@keyframes pangHitStrong{
+  0%,100%{transform:translate(0,0) scale(1)}
+  18%{transform:translate(-4px,2px) scale(.988)}
+  38%{transform:translate(4px,-2px) scale(1.01)}
+  58%{transform:translate(-3px,1px) scale(.996)}
+  78%{transform:translate(2px,-1px) scale(1.004)}
+}
+
+/* New blocks land with a tiny bounce so the cascade stays lively. */
+.pang-tile.pang-drop{animation:pangJuicyDrop .32s cubic-bezier(.16,.82,.2,1.15) both!important;}
+@keyframes pangJuicyDrop{
+  0%{transform:translateY(calc(var(--pang-drop,1) * -108%)) scale(.9);opacity:.2}
+  68%{transform:translateY(4px) scale(1.035);opacity:1}
+  84%{transform:translateY(-2px) scale(.99)}
+  100%{transform:translateY(0) scale(1);opacity:1}
+}
+@media(max-width:480px){
+  .pang-tile img{padding:3px!important;transform:scale(.95)}
+  .pang-pop-text{font-size:12px;padding:4px 8px}
+}
+@media (prefers-reduced-motion:reduce){
+  .pang-tile.pang-explode,.pang-tile.pang-explode>img,.pang-tile.pang-explode>span,
+  .pang-particle,.pang-pop-ring,.pang-pop-core,.pang-pop-text,.pang-board.pang-hit,.pang-board.pang-hit-strong{
+    animation-duration:.01ms!important;animation-delay:0ms!important;
+  }
+}
+
 </style></head><body><div class="app"><header><strong>✦ MY GACHA</strong><div class="account-box"><strong id="headerPoints" class="points-balance">🪙 0 P</strong><span class="muted" id="status">연결 설정 필요</span><button type="button" id="userLoginBtn" class="ghost">👤 로그인</button><button type="button" id="userLogoutBtn" class="ghost hidden">로그아웃</button></div></header><div id="notice" role="status"></div><main>
 <section id="home" class="home-dashboard">
   <div id="eventBanner" class="panel event-banner home-banner hidden" role="button" tabindex="0">
@@ -5475,9 +5667,26 @@ function pangFxPoint(index){
  const layer=$('pangFxLayer'),board=$('pangBoard');if(!layer||!board)return null;const tile=board.children[index];if(!tile)return null;
  const br=board.getBoundingClientRect(),tr=tile.getBoundingClientRect();return {layer,board,cx:tr.left-br.left+tr.width/2,cy:tr.top-br.top+tr.height/2,w:tr.width,h:tr.height}
 }
-function pangBurstAt(index,count=7){
- const point=pangFxPoint(index);if(!point)return;const {layer,cx,cy}=point;
- for(let n=0;n<count;n++){const p=document.createElement('i');p.className='pang-particle';p.style.left=cx+'px';p.style.top=cy+'px';const a=Math.PI*2*n/count+Math.random()*.35,d=22+Math.random()*34;p.style.setProperty('--dx',Math.cos(a)*d+'px');p.style.setProperty('--dy',Math.sin(a)*d+'px');p.style.setProperty('--pang-particle-delay',(Math.random()*70|0)+'ms');layer.append(p)}
+function pangBurstAt(index,count=9,strength=1){
+ const point=pangFxPoint(index);if(!point)return;const {layer,cx,cy,w}=point;
+ const ring=document.createElement('i');ring.className='pang-pop-ring';ring.style.left=cx+'px';ring.style.top=cy+'px';layer.append(ring);
+ const core=document.createElement('i');core.className='pang-pop-core';core.style.left=cx+'px';core.style.top=cy+'px';layer.append(core);
+ const colors=['#64d3b5','#91e3cb','#ffd77a','#ffaaa7','#9fd6ef'];
+ for(let n=0;n<count;n++){
+  const p=document.createElement('i');p.className='pang-particle';p.style.left=cx+'px';p.style.top=cy+'px';
+  const a=Math.PI*2*n/count+(Math.random()-.5)*.45,d=(Math.max(24,w*.42)+Math.random()*32)*strength;
+  p.style.setProperty('--dx',Math.cos(a)*d+'px');p.style.setProperty('--dy',Math.sin(a)*d+'px');
+  p.style.setProperty('--pang-particle-delay',(Math.random()*55|0)+'ms');
+  p.style.setProperty('--pang-size',(6+Math.random()*5).toFixed(1)+'px');
+  p.style.setProperty('--pang-rot',((Math.random()>.5?1:-1)*(110+Math.random()*170)).toFixed(0)+'deg');
+  p.style.setProperty('--pang-color',colors[n%colors.length]);layer.append(p)
+ }
+}
+function pangPopText(indices){
+ const layer=$('pangFxLayer'),board=$('pangBoard');if(!layer||!board||!indices?.length)return;
+ const br=board.getBoundingClientRect();let sx=0,sy=0,n=0;
+ for(const i of indices){const tile=board.children[i];if(!tile)continue;const r=tile.getBoundingClientRect();sx+=r.left-br.left+r.width/2;sy+=r.top-br.top+r.height/2;n++}
+ if(!n)return;const el=document.createElement('b');el.className='pang-pop-text'+(pang.combo>1?' combo':'');el.style.left=(sx/n)+'px';el.style.top=(sy/n)+'px';el.textContent=pang.combo>1?`${pang.combo} COMBO!`:'PANG!';layer.append(el)
 }
 function pangSpecialFx(kind,index){
  const point=Number.isInteger(index)?pangFxPoint(index):null,layer=point?.layer||$('pangFxLayer'),board=point?.board||$('pangBoard');if(!layer||!board)return;
@@ -5495,10 +5704,14 @@ function pangSpecialFx(kind,index){
  if(Number.isInteger(index))pangBurstAt(index,kind==='nova'?16:kind==='mirror'?13:9)
 }
 async function pangAnimate(indices,label='',kind='normal'){
- pang.fxExplode=new Set(indices);renderPang();pangFxClear();for(const i of [...indices].slice(0,18))pangBurstAt(i,6);
- if(kind!=='normal')pangSpecialFx(kind,[...indices][0]);
+ pang.fxExplode=new Set(indices);renderPang();pangFxClear();
+ const list=[...indices],comboBoost=Math.min(1.45,1+Math.max(0,pang.combo-1)*.09),isStrong=kind!=='normal'||list.length>=6||pang.combo>=3;
+ for(const i of list.slice(0,18))pangBurstAt(i,isStrong?10:8,comboBoost);
+ pangPopText(list);
+ const board=$('pangBoard');if(board){board.classList.remove('pang-hit','pang-hit-strong');void board.offsetWidth;board.classList.add(isStrong?'pang-hit-strong':'pang-hit');setTimeout(()=>board.classList.remove('pang-hit','pang-hit-strong'),430)}
+ if(kind!=='normal')pangSpecialFx(kind,list[0]);
  if(label)$('pangHelp').textContent=label;
- await pangSleep(kind==='nova'||kind==='mirror'?470:360);pang.fxExplode.clear();pangFxClear()
+ await pangSleep(kind==='nova'||kind==='mirror'?520:440);pang.fxExplode.clear();pangFxClear()
 }
 function pangLineSet(index,thick=1){
  const out=new Set(),[r,c]=pangRC(index),half=Math.floor(thick/2);
