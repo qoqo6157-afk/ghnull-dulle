@@ -2398,6 +2398,54 @@ button.ghost,.ghost{
   }
 }
 
+
+
+/* ======================================================================
+   PITY EXCHANGE SELECTION · unmistakable white selected card · 2026-10-07
+   SSR pity + limited pity only.
+   ====================================================================== */
+#pityChoices .pity-choice,
+#limitedExchangeChoices .pity-choice{
+  background:linear-gradient(180deg,#e9f9f4 0%,#d8f1e9 100%)!important;
+  border:2px solid #bfe5da!important;
+  color:#426a60!important;
+  box-shadow:0 5px 13px rgba(75,151,131,.06)!important;
+  transform:none!important;
+  transition:background .18s ease,border-color .18s ease,box-shadow .18s ease,transform .18s ease!important;
+}
+#pityChoices .pity-choice::before,
+#limitedExchangeChoices .pity-choice::before{
+  background:linear-gradient(145deg,#f7fffc,#eef9f5)!important;
+  border-color:#d6eee7!important;
+}
+#pityChoices .pity-choice.selected,
+#pityChoices .pity-choice[aria-pressed="true"],
+#pityChoices .pity-choice[data-exchange-selected="true"],
+#limitedExchangeChoices .pity-choice.selected,
+#limitedExchangeChoices .pity-choice[aria-pressed="true"],
+#limitedExchangeChoices .pity-choice[data-exchange-selected="true"]{
+  background:#ffffff!important;
+  border-color:#58c8aa!important;
+  color:#285f53!important;
+  box-shadow:0 0 0 3px rgba(88,200,170,.20),0 14px 26px rgba(55,133,112,.14)!important;
+  transform:translateY(-3px) scale(1.015)!important;
+}
+#pityChoices .pity-choice.selected::before,
+#pityChoices .pity-choice[aria-pressed="true"]::before,
+#pityChoices .pity-choice[data-exchange-selected="true"]::before,
+#limitedExchangeChoices .pity-choice.selected::before,
+#limitedExchangeChoices .pity-choice[aria-pressed="true"]::before,
+#limitedExchangeChoices .pity-choice[data-exchange-selected="true"]::before{
+  background:#ffffff!important;
+  border-color:#d7efe8!important;
+}
+#pityChoices .pity-choice.selected strong,
+#pityChoices .pity-choice[aria-pressed="true"] strong,
+#limitedExchangeChoices .pity-choice.selected strong,
+#limitedExchangeChoices .pity-choice[aria-pressed="true"] strong{
+  color:#214f45!important;
+}
+
 </style></head><body><div class="app"><header><strong>✦ MY GACHA</strong><div class="account-box"><strong id="headerPoints" class="points-balance">🪙 0 P</strong><span class="muted" id="status">연결 설정 필요</span><button type="button" id="userLoginBtn" class="ghost">👤 로그인</button><button type="button" id="userLogoutBtn" class="ghost hidden">로그아웃</button></div></header><div id="notice" role="status"></div><main>
 <section id="home" class="home-dashboard">
   <div id="eventBanner" class="panel event-banner home-banner hidden" role="button" tabindex="0">
@@ -3425,6 +3473,20 @@ async function limitedDraw(n){
 }
 $('limitedDraw1').onclick=()=>limitedDraw(1);$('limitedDraw10').onclick=()=>limitedDraw(10);
 
+
+function setPityExchangeChoiceSelected(container, selectedButton){
+ container.querySelectorAll('.pity-choice').forEach(x=>{
+  const active=x===selectedButton;
+  x.classList.toggle('selected',active);
+  x.setAttribute('aria-pressed',active?'true':'false');
+  x.dataset.exchangeSelected=active?'true':'false';
+  x.style.setProperty('background',active?'#ffffff':'linear-gradient(180deg,#e9f9f4 0%,#d8f1e9 100%)','important');
+  x.style.setProperty('border-color',active?'#58c8aa':'#bfe5da','important');
+  x.style.setProperty('box-shadow',active?'0 0 0 3px rgba(88,200,170,.20), 0 14px 26px rgba(55,133,112,.14)':'0 5px 13px rgba(75,151,131,.06)','important');
+  x.style.setProperty('transform',active?'translateY(-3px) scale(1.015)':'none','important');
+ });
+}
+
 let chosenLimitedExchangeId=null;
 function closeLimitedExchange(){
  $('limitedExchangeOverlay').classList.add('hidden');
@@ -3460,12 +3522,7 @@ function showLimitedExchange(){
   button.append(img,name,owned);
   button.onclick=()=>{
    chosenLimitedExchangeId=c.id;
-   choices.querySelectorAll('button').forEach(x=>{
-    x.classList.remove('selected');
-    x.setAttribute('aria-pressed','false')
-   });
-   button.classList.add('selected');
-   button.setAttribute('aria-pressed','true');
+   setPityExchangeChoiceSelected(choices,button);
    $('limitedExchangeSelected').textContent=`선택한 캐릭터: ${c.name} · 현재 보유 ${count}장`;
    $('limitedExchangeConfirm').disabled=false;
   };
@@ -3984,7 +4041,7 @@ function showPitySelection(){
  const legacyPending=local.pendingGacha?.waiting; if(!legacyPending&&(local.pityPoints<settings.pity||!characters.some(c=>c.rarity==='SSR'&&!c.is_limited)))return;
  const choices=$('pityChoices');choices.replaceChildren();chosenPityId=null;
  const pool=orderedMembers('SSR');
- for(const c of pool){const button=document.createElement('button');button.type='button';button.className='pity-choice';button.setAttribute('aria-pressed','false');const img=document.createElement('img');img.src=c.image_url;img.alt=c.name;img.classList.add('pity-silhouette');const name=document.createElement('strong');name.textContent=c.name;const owned=document.createElement('span');owned.className='muted mini';owned.textContent=(local.counts[c.id]||0)>0?`보유 ${local.counts[c.id]}장`:'미획득';button.append(img,name,owned);button.onclick=()=>{chosenPityId=c.id;choices.querySelectorAll('button').forEach(x=>{x.classList.remove('selected');x.setAttribute('aria-pressed','false')});button.classList.add('selected');button.setAttribute('aria-pressed','true');$('pitySelected').textContent=`선택한 캐릭터: ${c.name}`;$('pityConfirm').disabled=false};choices.append(button)}
+ for(const c of pool){const button=document.createElement('button');button.type='button';button.className='pity-choice';button.setAttribute('aria-pressed','false');const img=document.createElement('img');img.src=c.image_url;img.alt=c.name;img.classList.add('pity-silhouette');const name=document.createElement('strong');name.textContent=c.name;const owned=document.createElement('span');owned.className='muted mini';owned.textContent=(local.counts[c.id]||0)>0?`보유 ${local.counts[c.id]}장`:'미획득';button.append(img,name,owned);button.onclick=()=>{chosenPityId=c.id;setPityExchangeChoiceSelected(choices,button);$('pitySelected').textContent=`선택한 캐릭터: ${c.name}`;$('pityConfirm').disabled=false};choices.append(button)}
  $('pitySelected').textContent=pool.length?'선택한 캐릭터: 없음':'선택 가능한 SSR이 없어요. 관리자에게 문의해 주세요.';$('pityConfirm').disabled=true;$('pityCancel').classList.toggle('hidden',!!legacyPending);$('pityConfirm').textContent=legacyPending?'기존 천장 SSR 받기':`${settings.pity} PT로 이 SSR 교환하기`;$('pityOverlay').classList.remove('hidden');
 }
 function addGachaResult(c){const old=Number(local.counts[c.id])||0;local.counts[c.id]=old+1;local.pendingGacha.results.push({id:c.id,old});local.sinceSSR=c.rarity==='SSR'?0:local.sinceSSR+1;save()}
