@@ -6670,4 +6670,51 @@ const query=id?db.from('pet_species').update(payload).eq('id',id):db.from('pet_s
 
 window.addEventListener('focus',()=>{if(userSession){refreshUserSession();claimTargetedPointGrants(true)}});document.addEventListener('visibilitychange',()=>{if(document.hidden){if(userSession&&cloudHydrated&&!cloudLoading)cloudSave(false)}else if(userSession){claimTargetedPointGrants(true)}});setInterval(()=>{if(userSession)claimTargetedPointGrants(true)},60000);setInterval(()=>{if(userSession&&cloudHydrated&&!cloudLoading)cloudSave(false)},30000);
 if(ready){await load();arcadeCharacters();await claimGlobalPoints();await authCheck();await refreshUserSession();if(userSession&&!cloudHydrated){const synced=await cloudLoadOrMigrate(false);await refreshUserSession();if(synced)await claimTargetedPointGrants(false)}else if(cloudHydrated){await claimTargetedPointGrants(false)}await loadRhythmSongs();await loadPetCatalog();db.auth.onAuthStateChange(()=>{setTimeout(async()=>{await authCheck();await refreshUserSession();if(userSession&&!cloudHydrated){const synced=await cloudLoadOrMigrate(false);await refreshUserSession();if(synced)await claimTargetedPointGrants(false)}else if(cloudHydrated){await claimTargetedPointGrants(false)}},0)})}else{$('status').textContent='설정 필요';render()}
-</script></body></html>
+</script><style id="pang-white-force-override">
+/* Force white Character Pang tiles, even if older mint styles exist */
+.pang-board .pang-tile,
+.pang-board .pang-tile:disabled,
+.pang-board.busy .pang-tile,
+#pangBoard .pang-tile,
+#pangBoard .pang-tile:disabled,
+#pangBoard.busy .pang-tile{
+  background:#ffffff !important;
+  background-image:none !important;
+  border:1px solid #d9ebe6 !important;
+  box-shadow:0 3px 10px rgba(49,111,95,.07), inset 0 1px 0 rgba(255,255,255,.98) !important;
+  opacity:1 !important;
+  filter:none !important;
+}
+.pang-board .pang-tile.selected,
+#pangBoard .pang-tile.selected{
+  background:#ffffff !important;
+  background-image:none !important;
+  border-color:#61ccb0 !important;
+  box-shadow:0 0 0 3px rgba(97,204,176,.20),0 8px 18px rgba(52,135,112,.13) !important;
+}
+.pang-board .pang-tile.pang-explode,
+#pangBoard .pang-tile.pang-explode{
+  background:#ffffff !important;
+  background-image:none !important;
+  border-color:#80d8bf !important;
+}
+.pang-board .pang-tile.special-star,
+.pang-board .pang-tile.special-moon,
+.pang-board .pang-tile.special-sun,
+.pang-board .pang-tile.special-mirror,
+.pang-board .pang-tile.special-nova,
+#pangBoard .pang-tile.special-star,
+#pangBoard .pang-tile.special-moon,
+#pangBoard .pang-tile.special-sun,
+#pangBoard .pang-tile.special-mirror,
+#pangBoard .pang-tile.special-nova{
+  background:#ffffff !important;
+  background-image:none !important;
+}
+.pang-board .pang-tile img,
+#pangBoard .pang-tile img{
+  object-fit:contain !important;
+  object-position:center center !important;
+  padding:4px !important;
+}
+</style></body></html>
