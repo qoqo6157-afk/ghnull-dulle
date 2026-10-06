@@ -1685,6 +1685,17 @@ input[type=range]{accent-color:#49bda0}
   #home .attendance-day strong{font-size:8px!important;letter-spacing:-.04em}
 }
 
+
+
+/* Admin character category tabs */
+.admin-character-tabs{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px;position:sticky;top:8px;z-index:28;margin:4px 0 14px;padding:8px;border:1px solid #cfeee5;border-radius:17px;background:rgba(248,255,253,.94);box-shadow:0 10px 26px rgba(26,120,94,.10);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px)}
+.admin-character-tab{min-width:0;padding:10px 7px!important;border-radius:12px!important;border:1px solid #d8eee8!important;background:#fff!important;color:#56716a!important;font-size:12px!important;font-weight:900!important;box-shadow:none!important}
+.admin-character-tab span{display:block;margin-top:2px;font-size:9px;font-weight:800;opacity:.72}
+.admin-character-tab.active{background:linear-gradient(135deg,#37cfa3,#7de1c3)!important;color:#073f31!important;border-color:#63d8b7!important;box-shadow:0 8px 18px rgba(43,190,147,.18)!important}
+.admin-character-section{margin-top:0!important}
+.admin-character-section .rarity-heading{margin-top:0}
+.admin-character-period{display:inline-flex;align-items:center;margin-left:6px;padding:3px 7px;border-radius:999px;background:#e9fbf5;color:#238264;font-size:9px;font-weight:850;vertical-align:middle}
+@media(max-width:520px){.admin-character-tabs{grid-template-columns:repeat(2,minmax(0,1fr));gap:6px;top:4px}.admin-character-tab{padding:9px 5px!important;font-size:11px!important}}
 </style></head><body><div class="app"><header><strong>✦ MY GACHA</strong><div class="account-box"><strong id="headerPoints" class="points-balance">🪙 0 P</strong><span class="muted" id="status">연결 설정 필요</span><button type="button" id="userLoginBtn" class="ghost">👤 로그인</button><button type="button" id="userLogoutBtn" class="ghost hidden">로그아웃</button></div></header><div id="notice" role="status"></div><main>
 <section id="home" class="home-dashboard">
   <div class="home-welcome">
@@ -2670,12 +2681,23 @@ function validLimitedPool(){
   &&(rates.SR===0||pools.SR.length>0)
   &&(rates.R===0||pools.R.length>0);
 }
+let limitedScheduleTimer=null;
+function scheduleLimitedRefresh(){
+ if(limitedScheduleTimer){clearTimeout(limitedScheduleTimer);limitedScheduleTimer=null}
+ const now=Date.now(),times=[];
+ for(const c of characters){if(!c.is_limited)continue;for(const value of [c.limited_start,c.limited_end]){const t=new Date(value||'').getTime();if(Number.isFinite(t)&&t>now)times.push(t)}}
+ if(!times.length)return;
+ const delay=Math.min(2147483000,Math.max(50,Math.min(...times)-now+150));
+ limitedScheduleTimer=setTimeout(()=>{renderLimited()},delay)
+}
 function renderLimited(){
+ scheduleLimitedRefresh();
  const box=$('limitedGachaBox');if(!box)return;
  const pool=syncLimitedPoints();box.classList.toggle('hidden',!pool.length);if(!pool.length)return;
+ const start=new Date(Math.max(...pool.map(c=>new Date(c.limited_start).getTime())));
  const end=new Date(Math.min(...pool.map(c=>new Date(c.limited_end).getTime())));
  const rates=limitedRateConfig();
- $('limitedPeriod').textContent=`픽업 ${pool.length}명 · ${end.toLocaleString()}까지`;
+ $('limitedPeriod').textContent=`픽업 ${pool.length}명 · ${start.toLocaleString()} ~ ${end.toLocaleString()}`;
  $('limitedRates').textContent=`등장 확률 · 한정 ${rates.limited}% · 통상 SSR ${rates.SSR}% · SR ${rates.SR}% · R ${rates.R}%`;
  $('limitedPoints').textContent=local.limitedPoints.toLocaleString();
  const invalid=!validLimitedPool();
@@ -3038,7 +3060,7 @@ function playGachaCinematic(cards,{source='normal'}={}){
  })
 }
 
-function orderedMembers(rarity){const pool=rarity==='LIMITED'?characters.filter(c=>c.is_limited):characters.filter(c=>c.rarity===rarity&&!c.is_limited);return pool.sort((a,b)=>(Number(a.sort_order)||0)-(Number(b.sort_order)||0)||String(a.created_at||'').localeCompare(String(b.created_at||''))||String(a.id).localeCompare(String(b.id)))}
+function orderedMembers(rarity){const pool=rarity==='LIMITED'?characters.filter(c=>c.is_limited&&c.rarity==='SSR'):rarity==='SSR'?characters.filter(c=>c.rarity==='SSR'&&!c.is_limited):characters.filter(c=>c.rarity===rarity);return pool.sort((a,b)=>(Number(a.sort_order)||0)-(Number(b.sort_order)||0)||String(a.created_at||'').localeCompare(String(b.created_at||''))||String(a.id).localeCompare(String(b.id)))}
 
 let collectionDetailId=null;
 let collectionDetailViewMode='auto';
@@ -3607,10 +3629,12 @@ $('userAdminFold').addEventListener('toggle',()=>{if($('userAdminFold').open&&ad
 
 let editingId=null;
 function closeEditor(){editingId=null;$('editPanel').classList.add('hidden');$('editForm').reset()}
-function openEditor(c){if(!admin)return;editingId=c.id;$('editTitle').textContent=`${c.name} 수정`;$('editName').value=c.name;$('editRarity').value=c.rarity;$('editLimited').checked=!!c.is_limited;$('editLimitedStart').value=c.limited_start?new Date(c.limited_start).toISOString().slice(0,16):'';$('editLimitedEnd').value=c.limited_end?new Date(c.limited_end).toISOString().slice(0,16):'';$('editDialogues').value=Array.isArray(c.dialogues)?c.dialogues.join('\n'):'';$('editImage').value='';$('editFullLimitImage').value='';$('editFullLimitRemove').checked=false;$('editPreview').src=c.image_url;const fullPreview=$('editFullLimitPreview');if(c.full_limit_image_url){fullPreview.src=c.full_limit_image_url;fullPreview.classList.remove('hidden')}else{fullPreview.removeAttribute('src');fullPreview.classList.add('hidden')}$('editPanel').classList.remove('hidden');$('editPanel').scrollIntoView({behavior:'smooth',block:'start'})}
+function toLocalDateTimeInput(value){if(!value)return '';const d=new Date(value);if(Number.isNaN(d.getTime()))return '';const pad=n=>String(n).padStart(2,'0');return `${d.getFullYear()}-${pad(d.getMonth()+1)}-${pad(d.getDate())}T${pad(d.getHours())}:${pad(d.getMinutes())}`}
+function validateLimitedPeriod(enabled,startValue,endValue){if(!enabled)return {ok:true,start:null,end:null};if(!startValue||!endValue)return {ok:false,message:'한정 캐릭터는 시작 일시와 종료 일시를 모두 입력해 주세요.'};const start=new Date(startValue),end=new Date(endValue);if(Number.isNaN(start.getTime())||Number.isNaN(end.getTime()))return {ok:false,message:'한정 가챠 날짜와 시간을 다시 확인해 주세요.'};if(end.getTime()<=start.getTime())return {ok:false,message:'한정 종료 일시는 시작 일시보다 뒤여야 해요.'};return {ok:true,start:start.toISOString(),end:end.toISOString()}}
+function openEditor(c){if(!admin)return;editingId=c.id;$('editTitle').textContent=`${c.name} 수정`;$('editName').value=c.name;$('editRarity').value=c.rarity;$('editLimited').checked=!!c.is_limited;$('editLimitedStart').value=toLocalDateTimeInput(c.limited_start);$('editLimitedEnd').value=toLocalDateTimeInput(c.limited_end);$('editDialogues').value=Array.isArray(c.dialogues)?c.dialogues.join('\n'):'';$('editImage').value='';$('editFullLimitImage').value='';$('editFullLimitRemove').checked=false;$('editPreview').src=c.image_url;const fullPreview=$('editFullLimitPreview');if(c.full_limit_image_url){fullPreview.src=c.full_limit_image_url;fullPreview.classList.remove('hidden')}else{fullPreview.removeAttribute('src');fullPreview.classList.add('hidden')}$('editPanel').classList.remove('hidden');$('editPanel').scrollIntoView({behavior:'smooth',block:'start'})}
 $('editCancel').onclick=closeEditor;
 // 등급별 임시 순서는 저장 전까지 이 브라우저 화면에서만 유지합니다.
-let orderDraft=null,orderSaving=false;
+let orderDraft=null,orderSaving=false,adminCharacterCategory='LIMITED';
 function ensureOrderDraft(){if(!orderDraft)orderDraft={};for(const rarity of ['SSR','SR','R','LIMITED']){if(!Array.isArray(orderDraft[rarity]))orderDraft[rarity]=orderedMembers(rarity).map(c=>c.id)}return orderDraft}
 function moveOrder(rarity,from,to){const ids=ensureOrderDraft()[rarity];if(from<0||to<0||from>=ids.length||to>=ids.length||from===to)return;ids.splice(to,0,ids.splice(from,1)[0]);renderAdmin()}
 async function saveOrder(rarity,button){if(!admin||orderSaving)return;const ids=[...ensureOrderDraft()[rarity]];orderSaving=true;button.disabled=true;try{for(let i=0;i<ids.length;i++){const {data,error}=await db.from('characters').update({sort_order:i+1}).eq('id',ids[i]).select('id');if(error||!data?.length)throw new Error(error?.message||'정렬 저장 권한을 확인해 주세요.')}await load();notice(rarity+' 순서 저장 완료! 모든 방문자에게 반영됩니다.')}catch(err){notice('순서 저장 실패: '+err.message+' (일부만 저장됐을 수 있으니 새로고침 후 확인해 주세요.)')}finally{orderSaving=false;button.disabled=false}}
@@ -3623,36 +3647,52 @@ function renderAdmin(){
  $('homeSelect').innerHTML='<option value="">선택 안 함</option>'+characters.map(c=>`<option value="${escapeHtml(c.id)}">${escapeHtml(c.name)} (${escapeHtml(c.rarity)})</option>`).join('');
  $('homeSelect').value=settings.home_character_id||'';
  const list=$('adminList');list.replaceChildren();const draft=ensureOrderDraft();
- for(const rarity of ['SSR','SR','R','LIMITED']){
-  const members=draft[rarity].map(id=>characters.find(c=>c.id===id)).filter(c=>c&&(rarity==='LIMITED'?c.is_limited:(c.rarity===rarity&&!c.is_limited)));
-  const section=document.createElement('section');section.className='rarity-section';
-  const heading=document.createElement('h3');heading.className='rarity-heading';
-  const title=document.createElement('span');title.textContent=rarity==='LIMITED'?'✨ 한정':rarity;
-  const badge=document.createElement('span');badge.className='tag';badge.textContent=`${members.length}명`;
-  heading.append(title,badge);section.append(heading);
-  const help=document.createElement('p');help.className='order-help';help.textContent='☰ 손잡이를 꾹 눌러 이동하거나 ↑ ↓ 버튼으로 순서를 변경하세요.';section.append(help);
-  if(!members.length){const empty=document.createElement('p');empty.className='rarity-empty';empty.textContent='등록된 캐릭터가 없어요.';section.append(empty)}
-  for(let i=0;i<members.length;i++){
-   const c=members[i];const row=document.createElement('div');row.className='admin-item';row.dataset.orderId=c.id;row.dataset.rarity=rarity;
-   const handle=document.createElement('button');handle.type='button';handle.className='order-handle';handle.textContent='☰';handle.title='꾹 눌러 드래그';handle.setAttribute('aria-label','꾹 눌러 순서 이동');addOrderDrag(handle,row,rarity,c.id);
-   const img=document.createElement('img');img.src=c.image_url;img.alt='';
-   const label=document.createElement('span');label.className='item-name';label.textContent=c.name+(c.rarity==='SSR'&&c.full_limit_image_url?' · ★★★ 일러스트 등록':'');
-   const arrows=document.createElement('div');arrows.className='order-arrows';
-   const up=document.createElement('button');up.type='button';up.className='ghost';up.textContent='↑';up.title='위로 이동';up.disabled=i===0;up.onclick=()=>moveOrder(rarity,i,i-1);
-   const down=document.createElement('button');down.type='button';down.className='ghost';down.textContent='↓';down.title='아래로 이동';down.disabled=i===members.length-1;down.onclick=()=>moveOrder(rarity,i,i+1);arrows.append(up,down);
-   const actions=document.createElement('div');actions.className='actions';
-   const edit=document.createElement('button');edit.className='ghost';edit.textContent='수정';edit.onclick=()=>openEditor(c);
-   const del=document.createElement('button');del.className='danger';del.textContent='삭제';del.onclick=()=>deleteCharacter(c);
-   actions.append(edit,del);row.append(handle,img,label,arrows,actions);section.append(row);
-  }
-  if(members.length){const save=document.createElement('button');save.type='button';save.className='order-save';save.textContent=rarity+' 순서 저장';save.disabled=orderSaving;save.onclick=()=>saveOrder(rarity,save);section.append(save)}
-  list.append(section);
+ const categoryDefs=[
+  {key:'LIMITED',label:'✨ 한정 SSR'},
+  {key:'SSR',label:'SSR'},
+  {key:'SR',label:'SR'},
+  {key:'R',label:'R'}
+ ];
+ if(!categoryDefs.some(x=>x.key===adminCharacterCategory))adminCharacterCategory='LIMITED';
+ const tabs=document.createElement('div');tabs.className='admin-character-tabs';tabs.setAttribute('role','tablist');
+ for(const def of categoryDefs){
+  const count=orderedMembers(def.key).length;
+  const tab=document.createElement('button');tab.type='button';tab.className='admin-character-tab'+(adminCharacterCategory===def.key?' active':'');tab.setAttribute('role','tab');tab.setAttribute('aria-selected',adminCharacterCategory===def.key?'true':'false');
+  tab.innerHTML=`${def.label}<span>${count}명</span>`;
+  tab.onclick=()=>{adminCharacterCategory=def.key;renderAdmin()};tabs.append(tab)
  }
+ list.append(tabs);
+ const rarity=adminCharacterCategory;
+ const def=categoryDefs.find(x=>x.key===rarity);
+ const members=draft[rarity].map(id=>characters.find(c=>c.id===id)).filter(c=>c&&(rarity==='LIMITED'?(c.is_limited&&c.rarity==='SSR'):rarity==='SSR'?(c.rarity==='SSR'&&!c.is_limited):c.rarity===rarity));
+ const section=document.createElement('section');section.className='rarity-section admin-character-section';
+ const heading=document.createElement('h3');heading.className='rarity-heading';
+ const title=document.createElement('span');title.textContent=def.label;
+ const badge=document.createElement('span');badge.className='tag';badge.textContent=`${members.length}명`;
+ heading.append(title,badge);section.append(heading);
+ const help=document.createElement('p');help.className='order-help';help.textContent='이 카테고리만 표시 중이에요. ☰ 손잡이를 꾹 눌러 이동하거나 ↑ ↓ 버튼으로 순서를 변경하세요.';section.append(help);
+ if(!members.length){const empty=document.createElement('p');empty.className='rarity-empty';empty.textContent='등록된 캐릭터가 없어요.';section.append(empty)}
+ for(let i=0;i<members.length;i++){
+  const c=members[i];const row=document.createElement('div');row.className='admin-item';row.dataset.orderId=c.id;row.dataset.rarity=rarity;
+  const handle=document.createElement('button');handle.type='button';handle.className='order-handle';handle.textContent='☰';handle.title='꾹 눌러 드래그';handle.setAttribute('aria-label','꾹 눌러 순서 이동');addOrderDrag(handle,row,rarity,c.id);
+  const img=document.createElement('img');img.src=c.image_url;img.alt='';
+  const label=document.createElement('span');label.className='item-name';label.textContent=c.name+(c.rarity==='SSR'&&c.full_limit_image_url?' · ★★★ 일러스트 등록':'');
+  if(c.is_limited&&c.limited_start&&c.limited_end){const period=document.createElement('small');period.className='admin-character-period';period.textContent=`${new Date(c.limited_start).toLocaleString()} ~ ${new Date(c.limited_end).toLocaleString()}`;label.append(document.createElement('br'),period)}
+  const arrows=document.createElement('div');arrows.className='order-arrows';
+  const up=document.createElement('button');up.type='button';up.className='ghost';up.textContent='↑';up.title='위로 이동';up.disabled=i===0;up.onclick=()=>moveOrder(rarity,i,i-1);
+  const down=document.createElement('button');down.type='button';down.className='ghost';down.textContent='↓';down.title='아래로 이동';down.disabled=i===members.length-1;down.onclick=()=>moveOrder(rarity,i,i+1);arrows.append(up,down);
+  const actions=document.createElement('div');actions.className='actions';
+  const edit=document.createElement('button');edit.className='ghost';edit.textContent='수정';edit.onclick=()=>openEditor(c);
+  const del=document.createElement('button');del.className='danger';del.textContent='삭제';del.onclick=()=>deleteCharacter(c);
+  actions.append(edit,del);row.append(handle,img,label,arrows,actions);section.append(row);
+ }
+ if(members.length){const save=document.createElement('button');save.type='button';save.className='order-save';save.textContent=def.label+' 순서 저장';save.disabled=orderSaving;save.onclick=()=>saveOrder(rarity,save);section.append(save)}
+ list.append(section);
  if(editingId&&!characters.some(c=>c.id===editingId))closeEditor();
  if(admin&&adminUsers.length)renderAdminUsers();
 }
 function checkImage(file){return !file||file.size<=10*1024*1024&&['image/png','image/jpeg','image/webp','image/gif'].includes(file.type)}
-$('editForm').addEventListener('submit',async e=>{e.preventDefault();if(!admin||!editingId)return notice('관리자 로그인이 필요합니다.');const original=characters.find(c=>c.id===editingId);if(!original)return notice('수정할 캐릭터를 찾을 수 없습니다.');const name=$('editName').value.trim();if(!name)return notice('이름을 입력해 주세요.');const file=$('editImage').files[0],fullFile=$('editFullLimitImage').files[0];if(!checkImage(file)||!checkImage(fullFile))return notice('이미지는 PNG/JPG/WEBP/GIF 10MB 이하만 가능합니다.');const payload={name,rarity:$('editRarity').value,is_limited:$('editLimited').checked,limited_start:$('editLimited').checked&&$('editLimitedStart').value?new Date($('editLimitedStart').value).toISOString():null,limited_end:$('editLimited').checked&&$('editLimitedEnd').value?new Date($('editLimitedEnd').value).toISOString():null,dialogues:$('editDialogues').value.split('\n').map(x=>x.trim()).filter(Boolean)};const saveButton=$('editSave');saveButton.disabled=true;let newPath=null,newFullPath=null;try{if(file){newPath=`${crypto.randomUUID()}.${file.type.split('/')[1]==='jpeg'?'jpg':file.type.split('/')[1]}`;const {error:uploadError}=await db.storage.from('character-images').upload(newPath,file,{contentType:file.type});if(uploadError)throw new Error('새 이미지 업로드 실패: '+uploadError.message);payload.image_path=newPath;payload.image_url=db.storage.from('character-images').getPublicUrl(newPath).data.publicUrl}if(fullFile){newFullPath=`full-limit/${crypto.randomUUID()}.${fullFile.type.split('/')[1]==='jpeg'?'jpg':fullFile.type.split('/')[1]}`;const {error:fullUploadError}=await db.storage.from('character-images').upload(newFullPath,fullFile,{contentType:fullFile.type});if(fullUploadError)throw new Error('풀돌 일러스트 업로드 실패: '+fullUploadError.message);payload.full_limit_image_path=newFullPath;payload.full_limit_image_url=db.storage.from('character-images').getPublicUrl(newFullPath).data.publicUrl}else if($('editFullLimitRemove').checked){payload.full_limit_image_path=null;payload.full_limit_image_url=null}const {data,error}=await db.from('characters').update(payload).eq('id',original.id).select('id');if(error||!data?.length)throw new Error(error?.message||'수정 권한 또는 RLS 정책을 확인해 주세요.');const oldPath=file?original.image_path:null;const oldFullPath=(fullFile||$('editFullLimitRemove').checked)?original.full_limit_image_path:null;closeEditor();await load();notice('캐릭터 수정 완료! 모든 방문자에게 반영됩니다.');const removePaths=[];if(oldPath&&oldPath!==newPath)removePaths.push(oldPath);if(oldFullPath&&oldFullPath!==newFullPath)removePaths.push(oldFullPath);if(removePaths.length){const {error:removeError}=await db.storage.from('character-images').remove(removePaths);if(removeError)notice('수정은 완료됐지만 이전 이미지 정리에 실패했습니다: '+removeError.message)}}catch(err){const cleanup=[newPath,newFullPath].filter(Boolean);if(cleanup.length)await db.storage.from('character-images').remove(cleanup);notice('수정 오류: '+err.message)}finally{saveButton.disabled=false}});
+$('editForm').addEventListener('submit',async e=>{e.preventDefault();if(!admin||!editingId)return notice('관리자 로그인이 필요합니다.');const original=characters.find(c=>c.id===editingId);if(!original)return notice('수정할 캐릭터를 찾을 수 없습니다.');const name=$('editName').value.trim();if(!name)return notice('이름을 입력해 주세요.');const file=$('editImage').files[0],fullFile=$('editFullLimitImage').files[0];if(!checkImage(file)||!checkImage(fullFile))return notice('이미지는 PNG/JPG/WEBP/GIF 10MB 이하만 가능합니다.');const limitedPeriod=validateLimitedPeriod($('editLimited').checked,$('editLimitedStart').value,$('editLimitedEnd').value);if(!limitedPeriod.ok)return notice(limitedPeriod.message);const payload={name,rarity:$('editRarity').value,is_limited:$('editLimited').checked,limited_start:limitedPeriod.start,limited_end:limitedPeriod.end,dialogues:$('editDialogues').value.split('\n').map(x=>x.trim()).filter(Boolean)};const saveButton=$('editSave');saveButton.disabled=true;let newPath=null,newFullPath=null;try{if(file){newPath=`${crypto.randomUUID()}.${file.type.split('/')[1]==='jpeg'?'jpg':file.type.split('/')[1]}`;const {error:uploadError}=await db.storage.from('character-images').upload(newPath,file,{contentType:file.type});if(uploadError)throw new Error('새 이미지 업로드 실패: '+uploadError.message);payload.image_path=newPath;payload.image_url=db.storage.from('character-images').getPublicUrl(newPath).data.publicUrl}if(fullFile){newFullPath=`full-limit/${crypto.randomUUID()}.${fullFile.type.split('/')[1]==='jpeg'?'jpg':fullFile.type.split('/')[1]}`;const {error:fullUploadError}=await db.storage.from('character-images').upload(newFullPath,fullFile,{contentType:fullFile.type});if(fullUploadError)throw new Error('풀돌 일러스트 업로드 실패: '+fullUploadError.message);payload.full_limit_image_path=newFullPath;payload.full_limit_image_url=db.storage.from('character-images').getPublicUrl(newFullPath).data.publicUrl}else if($('editFullLimitRemove').checked){payload.full_limit_image_path=null;payload.full_limit_image_url=null}const {data,error}=await db.from('characters').update(payload).eq('id',original.id).select('id');if(error||!data?.length)throw new Error(error?.message||'수정 권한 또는 RLS 정책을 확인해 주세요.');const oldPath=file?original.image_path:null;const oldFullPath=(fullFile||$('editFullLimitRemove').checked)?original.full_limit_image_path:null;closeEditor();await load();notice('캐릭터 수정 완료! 모든 방문자에게 반영됩니다.');const removePaths=[];if(oldPath&&oldPath!==newPath)removePaths.push(oldPath);if(oldFullPath&&oldFullPath!==newFullPath)removePaths.push(oldFullPath);if(removePaths.length){const {error:removeError}=await db.storage.from('character-images').remove(removePaths);if(removeError)notice('수정은 완료됐지만 이전 이미지 정리에 실패했습니다: '+removeError.message)}}catch(err){const cleanup=[newPath,newFullPath].filter(Boolean);if(cleanup.length)await db.storage.from('character-images').remove(cleanup);notice('수정 오류: '+err.message)}finally{saveButton.disabled=false}});
 $('settingsForm').addEventListener('submit',async e=>{e.preventDefault();if(!admin)return;const payload={ssr:Number($('ssr').value),sr:Number($('sr').value),r:Number($('r').value),pity:Number($('pity').value),home_character_id:$('homeSelect').value||null};if(Object.values(payload).slice(0,3).some(v=>!Number.isFinite(v)||v<0||v>100)||Math.abs(payload.ssr+payload.sr+payload.r-100)>0.000001||!Number.isInteger(payload.pity)||payload.pity<1)return notice('확률 합계는 정확히 100%, 천장은 1 이상의 정수여야 합니다.');const {error}=await db.from('site_settings').update(payload).eq('id',1);if(error)return notice(error.message);await load();notice('공용 설정 저장 완료')});
 function syncLimitedRRate(){
  const a=Number($('limitedRate')?.value||0),b=Number($('limitedSSR')?.value||0),c=Number($('limitedSR')?.value||0);
@@ -3684,7 +3724,7 @@ $('limitedSettingsForm').addEventListener('submit',async e=>{
  if(error)return notice('한정 가챠 설정 저장 실패: '+error.message);
  await load();notice('✨ 한정 가챠 확률 및 LPT 설정 저장 완료!');
 });
-$('characterForm').addEventListener('submit',async e=>{e.preventDefault();if(!admin)return;const file=$('charImage').files[0],fullFile=$('charFullLimitImage').files[0];if(!file||!checkImage(file)||!checkImage(fullFile))return notice('이미지는 PNG/JPG/WEBP/GIF 10MB 이하만 가능합니다.');let path=null,fullPath=null;try{path=`${crypto.randomUUID()}.${file.type.split('/')[1]==='jpeg'?'jpg':file.type.split('/')[1]}`;const {error:uploadError}=await db.storage.from('character-images').upload(path,file,{contentType:file.type});if(uploadError)throw uploadError;const payload={name:$('charName').value.trim(),rarity:$('rarity').value,image_url:db.storage.from('character-images').getPublicUrl(path).data.publicUrl,image_path:path,is_limited:$('charLimited').checked,limited_start:$('charLimited').checked&&$('charLimitedStart').value?new Date($('charLimitedStart').value).toISOString():null,limited_end:$('charLimited').checked&&$('charLimitedEnd').value?new Date($('charLimitedEnd').value).toISOString():null,dialogues:$('dialogues').value.split('\n').map(s=>s.trim()).filter(Boolean)};if(fullFile){fullPath=`full-limit/${crypto.randomUUID()}.${fullFile.type.split('/')[1]==='jpeg'?'jpg':fullFile.type.split('/')[1]}`;const {error:fullUploadError}=await db.storage.from('character-images').upload(fullPath,fullFile,{contentType:fullFile.type});if(fullUploadError)throw fullUploadError;payload.full_limit_image_path=fullPath;payload.full_limit_image_url=db.storage.from('character-images').getPublicUrl(fullPath).data.publicUrl}const {error}=await db.from('characters').insert(payload);if(error)throw error;$('characterForm').reset();await load();notice('캐릭터가 모든 방문자에게 등록되었습니다.')}catch(err){const cleanup=[path,fullPath].filter(Boolean);if(cleanup.length)await db.storage.from('character-images').remove(cleanup);notice('등록 실패: '+err.message)}});
+$('characterForm').addEventListener('submit',async e=>{e.preventDefault();if(!admin)return;const file=$('charImage').files[0],fullFile=$('charFullLimitImage').files[0];if(!file||!checkImage(file)||!checkImage(fullFile))return notice('이미지는 PNG/JPG/WEBP/GIF 10MB 이하만 가능합니다.');const limitedPeriod=validateLimitedPeriod($('charLimited').checked,$('charLimitedStart').value,$('charLimitedEnd').value);if(!limitedPeriod.ok)return notice(limitedPeriod.message);let path=null,fullPath=null;try{path=`${crypto.randomUUID()}.${file.type.split('/')[1]==='jpeg'?'jpg':file.type.split('/')[1]}`;const {error:uploadError}=await db.storage.from('character-images').upload(path,file,{contentType:file.type});if(uploadError)throw uploadError;const payload={name:$('charName').value.trim(),rarity:$('rarity').value,image_url:db.storage.from('character-images').getPublicUrl(path).data.publicUrl,image_path:path,is_limited:$('charLimited').checked,limited_start:limitedPeriod.start,limited_end:limitedPeriod.end,dialogues:$('dialogues').value.split('\n').map(s=>s.trim()).filter(Boolean)};if(fullFile){fullPath=`full-limit/${crypto.randomUUID()}.${fullFile.type.split('/')[1]==='jpeg'?'jpg':fullFile.type.split('/')[1]}`;const {error:fullUploadError}=await db.storage.from('character-images').upload(fullPath,fullFile,{contentType:fullFile.type});if(fullUploadError)throw fullUploadError;payload.full_limit_image_path=fullPath;payload.full_limit_image_url=db.storage.from('character-images').getPublicUrl(fullPath).data.publicUrl}const {error}=await db.from('characters').insert(payload);if(error)throw error;$('characterForm').reset();await load();notice('캐릭터가 모든 방문자에게 등록되었습니다.')}catch(err){const cleanup=[path,fullPath].filter(Boolean);if(cleanup.length)await db.storage.from('character-images').remove(cleanup);notice('등록 실패: '+err.message)}});
 async function deleteCharacter(c){if(!admin||!confirm(`${c.name} 캐릭터를 삭제할까요?`))return;const {error}=await db.from('characters').delete().eq('id',c.id);if(error)return notice('삭제 실패: '+error.message);const paths=[c.image_path,c.full_limit_image_path].filter(Boolean);if(paths.length){const {error:storageError}=await db.storage.from('character-images').remove(paths);if(storageError)notice('캐릭터는 삭제됐지만 이미지 정리에 실패했습니다: '+storageError.message)}await load();notice('캐릭터 삭제 완료')}
 
 // 보유 캐릭터 기반 기억력 게임: 기존 수집/가챠 기록은 수정하지 않습니다.
