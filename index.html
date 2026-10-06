@@ -7177,9 +7177,13 @@ if(ready){await load();arcadeCharacters();await claimGlobalPoints();await authCh
 }
 .pang-board .pang-tile img,
 #pangBoard .pang-tile img{
+  width:100% !important;
+  height:100% !important;
   object-fit:contain !important;
   object-position:center center !important;
-  padding:4px !important;
+  padding:1px !important;
+  transform:scale(1) !important;
+  transform-origin:center center !important;
 }
 </style>
 </body></html>
