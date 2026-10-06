@@ -1068,6 +1068,402 @@
   .gacha-cinematic:not(.hidden),.gacha-door-wrap,.gacha-cinematic.door-ready .gacha-door-wrap,.gacha-cinematic.signal-show .gacha-signal,.gacha-orb::before,.gacha-orb.limited::after{animation:none!important}
 }
 
+
+/* ======================================================================
+   MY GACHA · MINT UI MAJOR REFRESH 2026
+   Visual-only redesign. Existing data / admin / game logic is preserved.
+   ====================================================================== */
+:root{
+  --mint-25:#f8fffc;
+  --mint-50:#f0fcf8;
+  --mint-100:#e2f8f0;
+  --mint-150:#d5f3e9;
+  --mint-200:#c3ecdf;
+  --mint-300:#9fe0cd;
+  --mint-400:#72d1b7;
+  --mint-500:#48bea0;
+  --mint-600:#2f9d84;
+  --mint-700:#247d6c;
+  --mint-800:#215f55;
+  --ink:#263936;
+  --ink-soft:#536c67;
+  --line:#dcebe6;
+  --line-strong:#c5ded6;
+  --surface:rgba(255,255,255,.92);
+  --surface-soft:rgba(248,255,252,.86);
+  --shadow:0 14px 40px rgba(46,104,89,.08);
+  --shadow-soft:0 8px 24px rgba(46,104,89,.065);
+  color:#263936;
+  background:#f3fbf8;
+}
+html{scroll-behavior:smooth;background:#f3fbf8}
+body{
+  min-height:100vh;
+  color:var(--ink);
+  background:
+    radial-gradient(circle at 9% 8%,rgba(139,226,202,.26),transparent 28%),
+    radial-gradient(circle at 91% 20%,rgba(199,240,226,.34),transparent 31%),
+    radial-gradient(circle at 50% 92%,rgba(168,226,211,.16),transparent 34%),
+    linear-gradient(180deg,#f8fffc 0%,#f2faf7 46%,#edf8f4 100%);
+  background-attachment:fixed;
+}
+body::before{
+  content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;
+  background-image:radial-gradient(circle,rgba(62,145,123,.055) 1px,transparent 1px);
+  background-size:22px 22px;
+  mask-image:linear-gradient(180deg,#000 0%,transparent 76%);
+  -webkit-mask-image:linear-gradient(180deg,#000 0%,transparent 76%);
+}
+::selection{background:#bcebdd;color:#1f5d50}
+*{scrollbar-width:thin;scrollbar-color:#abd9cc transparent}
+*::-webkit-scrollbar{width:9px;height:9px}
+*::-webkit-scrollbar-thumb{background:#abd9cc;border-radius:99px;border:2px solid transparent;background-clip:padding-box}
+*::-webkit-scrollbar-track{background:transparent}
+
+.app{max-width:980px!important;padding:16px 18px 132px!important}
+header{
+  position:sticky;top:10px;z-index:38;
+  margin:0 0 20px!important;padding:12px 14px 12px 17px;
+  border:1px solid rgba(199,225,217,.88);border-radius:22px;
+  background:rgba(255,255,255,.82);
+  box-shadow:0 12px 34px rgba(48,105,90,.09),inset 0 1px 0 rgba(255,255,255,.98);
+  backdrop-filter:blur(18px) saturate(1.08);-webkit-backdrop-filter:blur(18px) saturate(1.08)
+}
+header>strong{
+  font-size:18px;font-weight:950;letter-spacing:.055em;
+  color:transparent;background:linear-gradient(120deg,#287f6b,#52c3a5 55%,#89d8c1);
+  -webkit-background-clip:text;background-clip:text;
+}
+h1,h2,h3,h4{color:#263b37;letter-spacing:-.025em}
+h1{font-size:26px!important}h2{font-size:21px!important}h3{font-size:17px!important}
+.muted{color:#748984!important}.mini{line-height:1.55}
+
+.panel{
+  border:1px solid rgba(207,229,222,.94)!important;
+  border-radius:24px!important;
+  padding:21px!important;margin:15px 0!important;
+  background:linear-gradient(180deg,rgba(255,255,255,.96),rgba(251,255,253,.91))!important;
+  box-shadow:var(--shadow)!important;
+}
+.panel:hover{border-color:rgba(190,221,212,.98)!important}
+.account-sync-panel{
+  border-color:#c8e9df!important;
+  background:linear-gradient(135deg,rgba(241,253,249,.98),rgba(255,255,255,.96))!important;
+}
+.points-box,.game-stat,.game-result,.derby-result,.casino-result,.blackjack-result{
+  border:1px solid #d9ece6!important;
+  background:linear-gradient(135deg,#f1fbf7,#fbfffd)!important;
+  color:#36524c!important;
+  box-shadow:none!important;
+}
+.points-balance{color:#2e9b82!important;font-weight:900}
+
+button{
+  border-radius:13px!important;
+  background:linear-gradient(135deg,#4fc3a5,#34aa8d)!important;
+  color:#fff!important;font-weight:850;
+  box-shadow:0 7px 16px rgba(49,160,132,.16),inset 0 1px 0 rgba(255,255,255,.22);
+  transition:transform .16s ease,box-shadow .16s ease,filter .16s ease,background .16s ease!important;
+}
+button:hover:not(:disabled){transform:translateY(-1px);filter:brightness(1.025);box-shadow:0 10px 22px rgba(49,160,132,.20),inset 0 1px 0 rgba(255,255,255,.24)}
+button:active:not(:disabled){transform:translateY(0) scale(.985);box-shadow:0 4px 10px rgba(49,160,132,.14)}
+button.ghost,.ghost{
+  background:#f0faf7!important;color:#397565!important;
+  border:1px solid #d4ebe4!important;box-shadow:none!important;
+}
+button.ghost:hover,.ghost:hover{background:#e6f7f1!important;border-color:#bfe2d7!important}
+button.danger,.danger{background:linear-gradient(135deg,#e56b7c,#d95169)!important;color:#fff!important;border:0!important}
+button:disabled{filter:grayscale(.15);opacity:.48!important;box-shadow:none!important}
+button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible{outline:3px solid rgba(74,190,159,.25)!important;outline-offset:2px}
+
+label{color:#405d56;font-weight:800!important}
+input,select,textarea{
+  color:#304b45!important;
+  border:1px solid #d6e7e2!important;
+  border-radius:13px!important;
+  background:rgba(255,255,255,.94)!important;
+  box-shadow:inset 0 1px 2px rgba(50,92,82,.025);
+  transition:border-color .16s ease,box-shadow .16s ease,background .16s ease!important;
+}
+input:hover,select:hover,textarea:hover{border-color:#bfddd4!important}
+input:focus,select:focus,textarea:focus{border-color:#79cdb6!important;box-shadow:0 0 0 4px rgba(72,190,160,.10)!important;background:#fff!important}
+input[type=checkbox],input[type=radio]{accent-color:#3eb394}
+input[type=range]{accent-color:#49bda0}
+
+#notice{
+  top:84px!important;border:1px solid rgba(129,207,186,.42)!important;
+  background:rgba(31,92,79,.93)!important;border-radius:16px!important;
+  box-shadow:0 14px 32px rgba(26,83,70,.18)!important;
+  backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px)
+}
+
+.nav{
+  left:50%!important;right:auto!important;bottom:12px!important;transform:translateX(-50%);
+  width:min(calc(100% - 24px),930px);padding:8px!important;gap:4px;
+  border:1px solid rgba(196,223,214,.88)!important;border-radius:22px!important;
+  background:rgba(255,255,255,.88)!important;
+  box-shadow:0 18px 46px rgba(38,91,77,.14),inset 0 1px 0 rgba(255,255,255,.98)!important;
+  backdrop-filter:blur(20px) saturate(1.08);-webkit-backdrop-filter:blur(20px) saturate(1.08)
+}
+.nav button{
+  min-height:54px;min-width:0!important;padding:7px 5px!important;
+  border:1px solid transparent!important;border-radius:15px!important;
+  background:transparent!important;color:#728781!important;
+  box-shadow:none!important;font-size:11px!important;font-weight:850!important;line-height:1.5;
+}
+.nav button:hover{transform:none!important;background:#f1faf7!important;color:#3f7668!important}
+.nav button.active{
+  color:#247c67!important;border-color:#c9e9df!important;
+  background:linear-gradient(180deg,#e9f9f4,#dff5ee)!important;
+  box-shadow:inset 0 1px 0 #fff,0 5px 12px rgba(60,155,130,.10)!important;
+}
+
+.card{
+  border:1px solid #dcebe6!important;border-radius:18px!important;
+  background:linear-gradient(180deg,#fff,#fbfefd)!important;
+  box-shadow:0 7px 20px rgba(45,99,85,.055)!important;
+  transition:transform .16s ease,border-color .16s ease,box-shadow .16s ease!important;
+}
+.card:hover{transform:translateY(-2px);border-color:#bddfd5!important;box-shadow:0 11px 26px rgba(45,99,85,.09)!important}
+.card img{border-radius:12px}
+.tag{color:#32977f!important}
+.rarity-heading .tag,.collection-detail-rarity,.detective-case-no,.user-admin-badge,.user-admin-points{
+  color:#2d8c75!important;background:#e7f7f1!important;border:1px solid #d2eee5!important;
+}
+.full-limit-card{border-color:#cfc5f4!important;background:linear-gradient(180deg,#fff,#fcfaff)!important}
+.full-limit-badge{background:linear-gradient(90deg,#62bda6,#8d79d8)!important}
+
+.hero{padding:4px 0}
+.hero img{border-radius:22px;filter:drop-shadow(0 16px 24px rgba(44,105,89,.10))}
+.bubble,.pet-dialogue{
+  border:1px solid #dcece7!important;background:#f2faf7!important;color:#3e5d55!important;
+}
+.home-art-choice,.limit-break-box{border-color:#d8ebe5!important;background:#f7fcfa!important}
+
+/* Event banners */
+.event-banner{border:1px solid #d4e9e2!important;border-radius:22px!important;background:#fff!important;box-shadow:var(--shadow-soft)!important}
+.event-banner-stage{background:linear-gradient(135deg,#dff5ee,#f0fbf7)!important}
+.event-banner-caption{background:linear-gradient(180deg,#f7fdfa,#edf9f5)!important;border-top:1px solid #e0eee9}
+.event-banner-arrow{background:rgba(24,74,63,.42)!important;border:1px solid rgba(255,255,255,.48)!important;backdrop-filter:blur(8px)}
+.event-banner-dot{background:rgba(255,255,255,.52)!important;border-color:rgba(27,72,62,.22)!important}
+.event-banner-dot.active{background:#fff!important;box-shadow:0 0 0 2px rgba(75,187,157,.34)}
+.banner-admin-card{
+  border-color:#d9ebe5!important;background:linear-gradient(180deg,#fbfffd,#f5fcf9)!important;border-radius:18px!important;
+}
+.banner-live-preview{border-color:#cee6df!important;background:linear-gradient(135deg,#e2f5ef,#d5eee6)!important}
+.banner-font-current{background:#e8f7f2!important;color:#357462!important}
+
+/* Admin */
+.admin-fold{
+  border:1px solid #d9ebe5!important;border-radius:18px!important;background:rgba(255,255,255,.88)!important;
+  box-shadow:0 5px 18px rgba(46,100,86,.045)
+}
+.admin-fold>summary{color:#355a51!important;padding:15px 5px!important}
+.admin-fold>summary::after{color:#3cab8e!important}
+.admin-fold[open]>summary{border-bottom-color:#e3efeb!important}
+.admin-item,.pet-admin-card,.pet-special-row,.user-admin-card{
+  border-color:#daeae5!important;background:#fbfefd!important;border-radius:15px!important;
+}
+.edit-panel,.pet-dialogue-editor{
+  border-color:#9fd8c9!important;background:#f5fcf9!important;border-radius:18px!important;
+}
+.user-admin-summary{border-color:#d9eae5!important;background:#f1faf7!important}
+.user-admin-summary strong,.user-admin-section-title{color:#2f9c83!important}
+.user-admin-list-index{background:#e6f6f0!important;color:#2e917a!important}
+.user-admin-suspended{border-color:#e7aab4!important;background:#fff8f9!important}
+
+/* Collection */
+.collection-category-nav{
+  border-color:rgba(207,229,222,.92)!important;background:rgba(255,255,255,.86)!important;
+  box-shadow:0 10px 28px rgba(52,106,92,.085)!important;
+}
+.collection-category-nav button{background:#f0faf7!important;color:#5c7770!important;border-color:#d9ebe5!important}
+.collection-category-nav button.active{background:linear-gradient(135deg,#64c7ae,#42ad91)!important;color:#fff!important}
+.collection-detail-overlay,.pity-overlay,.pet-gift-overlay{background:rgba(38,69,62,.30)!important;backdrop-filter:blur(14px)!important;-webkit-backdrop-filter:blur(14px)!important}
+.collection-detail-dialog,.pity-dialog,.pet-gift-dialog{
+  border:1px solid rgba(213,235,228,.95)!important;
+  background:linear-gradient(180deg,rgba(255,255,255,.97),rgba(246,252,249,.96))!important;
+  box-shadow:0 30px 80px rgba(30,70,60,.20)!important;
+}
+.collection-detail-artbox{background:linear-gradient(145deg,#e5f7f1,#f7fcfa 46%,#eaf8f4)!important}
+.collection-detail-section{border-color:#dfeee9!important;background:rgba(255,255,255,.78)!important}
+.collection-detail-dialogue{border-color:#dcece6!important;background:linear-gradient(180deg,#f2faf7,#fbfefd)!important}
+.locked-card{background:#f0f5f3!important;border-color:#dce6e2!important}
+.locked-art{background:linear-gradient(145deg,#d9e8e3,#aebfb9)!important}
+
+/* Games / utility surfaces */
+.game-stat b{color:#2f947c}
+.memory-card{background:linear-gradient(145deg,#4ebc9f,#319d84)!important}
+.memory-card.matched{border-color:#57ba9e!important;background:#e6faf3!important}
+.detective-shell{--det-ink:#2d4540!important;--det-muted:#6f827d!important;--det-line:#d8e8e3!important;--det-paper:#fbfffd!important;--det-accent:#3ba98c!important;--det-red:#b95d6b!important}
+.detective-mode-btn.active{border-color:#67bea7!important;background:linear-gradient(145deg,#edfaf6,#fff)!important;box-shadow:0 0 0 2px rgba(73,181,151,.10) inset!important}
+.detective-mode-btn.active strong{color:#318c76!important}
+.detective-tabs button{background:#f0f7f5!important;color:#617a73!important;border-color:#dce9e5!important}
+.detective-tabs button.active{background:#42aa8e!important;color:#fff!important;border-color:#42aa8e!important}
+.detective-progress>i{background:linear-gradient(90deg,#5fc4aa,#35a287)!important}
+.pet-upload-slot,.pet-drop-target{border-color:#d4e8e1!important}
+.pet-upload-slot.pet-drag-active .pet-drop-target,.pet-drop-target:hover{border-color:#60c3a8!important;background:#ecfaf5!important}
+.pet-gift-choice{border-color:#dceae6!important;color:#314b45!important}
+.pet-gift-choice.selected{border-color:#57bea2!important;background:#eaf9f4!important}
+.derby-track{background:#e7f6f0!important}
+.derby-lane{border-bottom-color:#b8d7ce!important}
+.casino-balance{border-color:#d6eae3!important;background:#effaf6!important;color:#35675a!important}
+.casino-picker button.active{background:linear-gradient(135deg,#52bea3,#329c83)!important;color:#fff!important}
+.blackjack-panel{border-color:#cfe7df!important}
+
+/* Rarity / special boxes keep meaning but fit mint UI */
+.limited-box{border-color:#decaf0!important;background:linear-gradient(145deg,#fffaff,#f8fffc)!important}
+.limited-tag{color:#9b62bd!important}
+.limited-exchange-cost{background:#fff7dc!important;color:#8c6b18!important}
+
+/* ======================================================================
+   GACHA CINEMATIC · softer door, cleaner orbs, mint-tinted stage
+   ====================================================================== */
+.gacha-cinematic{
+  background:
+    radial-gradient(circle at 50% 16%,rgba(99,226,192,.16),transparent 27%),
+    radial-gradient(circle at 14% 65%,rgba(91,175,155,.10),transparent 34%),
+    radial-gradient(circle at 86% 70%,rgba(151,209,255,.08),transparent 31%),
+    linear-gradient(180deg,#07120f 0%,#0a1915 52%,#06100e 100%)!important;
+}
+.gacha-cinematic::before{
+  background:
+    radial-gradient(circle at 50% 50%,rgba(213,255,243,.09) 0 1px,transparent 2px) 0 0/28px 28px,
+    radial-gradient(circle at 50% 43%,rgba(91,220,184,.12),transparent 44%),
+    linear-gradient(135deg,transparent 10%,rgba(78,192,163,.08) 42%,transparent 70%)!important;
+}
+.gacha-cinema-caption{border-color:rgba(177,238,221,.15)!important;background:linear-gradient(180deg,rgba(231,255,248,.13),rgba(220,255,245,.055))!important}
+.gacha-skip{border-color:rgba(184,239,224,.18)!important;background:linear-gradient(180deg,rgba(223,255,246,.13),rgba(220,255,246,.05))!important}
+.gacha-door-wrap{filter:drop-shadow(0 24px 44px rgba(0,0,0,.30)) drop-shadow(0 0 28px rgba(76,193,162,.06))!important}
+.gacha-door-frame{border-color:rgba(227,255,248,.70)!important}
+.gacha-door{transition:transform 1.12s cubic-bezier(.18,.7,.22,1),opacity .76s ease,filter .76s ease!important}
+.gacha-cinematic.door-open .gacha-door.left{transform:perspective(1000px) rotateY(-86deg) translateX(-2%)!important}
+.gacha-cinematic.door-open .gacha-door.right{transform:perspective(1000px) rotateY(86deg) translateX(2%)!important}
+.gacha-cinematic.door-open .gacha-door-light{opacity:.88!important;transform:translate(-50%,-50%) scaleX(1.25) scaleY(1)!important}
+
+/* SR gold stays gold, but cleaner and less muddy */
+.gacha-cinematic.door-sr .gacha-door-frame{
+  background:linear-gradient(180deg,rgba(255,248,217,.78),rgba(255,225,151,.22))!important;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.98),inset 0 -18px 28px rgba(217,178,73,.10),0 18px 34px rgba(0,0,0,.16),0 0 28px rgba(255,218,110,.28)!important
+}
+.gacha-cinematic.door-sr .gacha-door{
+  background:linear-gradient(180deg,rgba(255,255,255,.62),rgba(255,251,232,.18) 27%,rgba(255,243,200,.10)),linear-gradient(135deg,#ffe8a7,#fff4cf 48%,#ffd987)!important
+}
+/* SSR has a mint-rainbow pearlescent surface */
+.gacha-cinematic.door-ssr .gacha-door-frame{
+  background:linear-gradient(135deg,rgba(175,247,226,.78),rgba(198,232,255,.60) 35%,rgba(227,209,255,.56) 66%,rgba(255,209,232,.54))!important;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.98),0 18px 34px rgba(0,0,0,.15),0 0 28px rgba(103,235,199,.28),0 0 44px rgba(169,202,255,.18)!important
+}
+.gacha-cinematic.door-ssr .gacha-door{
+  background:linear-gradient(180deg,rgba(255,255,255,.62),rgba(255,255,255,.16) 28%,rgba(255,255,255,.08)),linear-gradient(135deg,#a9f0dc,#bfeaff 36%,#d7c8ff 67%,#ffcde5)!important
+}
+.gacha-cinematic.door-ssr .gacha-door-crest{box-shadow:0 0 0 1px rgba(255,255,255,.66),0 0 24px rgba(116,239,205,.34),0 0 42px rgba(180,199,255,.22)!important}
+
+/* Natural fake-out evolution: original door is covered by a pearlescent wash,
+   then JS switches the base rarity underneath before the doors open. */
+.gacha-cinematic.fakeout-transition .gacha-door-frame::after{
+  content:"";position:absolute;inset:0;z-index:3;border-radius:inherit;pointer-events:none;opacity:0;
+  background:linear-gradient(135deg,rgba(142,244,214,.92),rgba(168,228,255,.84) 34%,rgba(216,196,255,.82) 67%,rgba(255,192,224,.78));
+  mix-blend-mode:screen;
+  animation:gachaDoorEvolveWash 1.05s cubic-bezier(.2,.68,.2,1) forwards;
+}
+.gacha-cinematic.fakeout-transition .gacha-door::before{
+  z-index:4!important;opacity:0!important;
+  background:linear-gradient(115deg,transparent 5%,rgba(255,255,255,.92) 28%,rgba(139,245,217,.82) 42%,rgba(182,217,255,.82) 57%,rgba(255,199,229,.78) 72%,transparent 95%)!important;
+  background-size:220% 100%!important;
+  animation:gachaDoorEvolveSweep 1.02s ease-out forwards!important;
+}
+.gacha-cinematic.fakeout-transition .gacha-door-crest{
+  animation:gachaCrestEvolve 1.05s ease-out forwards!important;
+}
+.gacha-cinematic.fakeout-transition .gacha-door-wrap::before{
+  animation:gachaDoorAuraEvolve 1.2s ease-out forwards!important;
+}
+.gacha-cinematic.fakeout-limited .gacha-door-frame::after{
+  background:linear-gradient(135deg,rgba(255,193,229,.94),rgba(214,190,255,.88) 45%,rgba(162,235,226,.76))!important
+}
+@keyframes gachaDoorEvolveWash{
+  0%{opacity:0;filter:blur(10px) saturate(.8)}
+  28%{opacity:.24}
+  66%{opacity:.78;filter:blur(2px) saturate(1.16)}
+  100%{opacity:.92;filter:none saturate(1.08)}
+}
+@keyframes gachaDoorEvolveSweep{
+  0%{opacity:0;background-position:150% 0;filter:blur(7px)}
+  24%{opacity:.35}
+  62%{opacity:.88;filter:blur(1px)}
+  100%{opacity:.96;background-position:-50% 0;filter:none}
+}
+@keyframes gachaCrestEvolve{
+  0%{filter:brightness(1);transform:translate(-50%,-50%) scale(1)}
+  35%{filter:brightness(1.5);transform:translate(-50%,-50%) scale(1.06)}
+  72%{filter:brightness(1.9) saturate(1.35);box-shadow:0 0 0 1px #fff,0 0 30px rgba(120,241,208,.70),0 0 56px rgba(192,204,255,.42)}
+  100%{filter:brightness(1.2);transform:translate(-50%,-50%) scale(1)}
+}
+@keyframes gachaDoorAuraEvolve{
+  0%{opacity:.35;filter:blur(16px);transform:scale(.96)}
+  55%{opacity:1;filter:blur(20px);transform:scale(1.06)}
+  100%{opacity:.72;filter:blur(18px);transform:scale(1.02)}
+}
+
+/* Orb launch field blooms first, then the orbs settle into a clean layout. */
+.gacha-orb-field::before,.gacha-orb-field::after{content:"";position:absolute;inset:10% 8%;pointer-events:none;opacity:0}
+.gacha-orb-field::before{
+  background:radial-gradient(circle at 50% 54%,rgba(224,255,247,.92) 0 3%,rgba(103,229,194,.25) 15%,transparent 47%);
+  filter:blur(8px)
+}
+.gacha-orb-field::after{
+  background:
+    radial-gradient(circle at 25% 36%,#fff 0 1.5px,transparent 2.5px),
+    radial-gradient(circle at 71% 28%,#d9fff5 0 1.5px,transparent 2.5px),
+    radial-gradient(circle at 84% 65%,#fff 0 1.2px,transparent 2.3px),
+    radial-gradient(circle at 38% 76%,#c9f8ec 0 1.4px,transparent 2.5px),
+    radial-gradient(circle at 58% 18%,#fff 0 1px,transparent 2px);
+}
+.gacha-cinematic.orbs-revealing .gacha-orb-field::before{animation:gachaOrbFieldBloom 1.35s ease-out both}
+.gacha-cinematic.orbs-revealing .gacha-orb-field::after{animation:gachaOrbSparkField 1.6s ease-out both}
+@keyframes gachaOrbFieldBloom{0%{opacity:0;transform:scale(.4)}34%{opacity:.9}100%{opacity:0;transform:scale(1.18)}}
+@keyframes gachaOrbSparkField{0%{opacity:0;transform:scale(.72) rotate(-3deg)}38%{opacity:.95}100%{opacity:.12;transform:scale(1.10) rotate(3deg)}}
+@keyframes gachaOrbReveal{
+  0%{opacity:0;transform:translate(0,35px) scale(.28) rotate(var(--rot,0deg));filter:blur(13px) brightness(1.6)}
+  28%{opacity:.78;filter:blur(4px) brightness(1.28)}
+  64%{opacity:1;transform:translate(var(--x),var(--y)) scale(1.09) rotate(0deg);filter:blur(.4px) brightness(1.08)}
+  84%{transform:translate(var(--x),var(--y)) scale(.985) rotate(0deg)}
+  100%{opacity:1;transform:translate(var(--x),var(--y)) scale(1) rotate(0deg);filter:none}
+}
+.gacha-orb{box-shadow:0 12px 24px rgba(0,0,0,.18),inset 0 8px 16px rgba(255,255,255,.56)!important}
+.gacha-orb.r{box-shadow:0 12px 24px rgba(0,0,0,.16),0 0 17px rgba(196,219,211,.22),inset 0 8px 18px rgba(255,255,255,.68)!important}
+.gacha-orb.sr{box-shadow:0 12px 24px rgba(0,0,0,.16),0 0 20px rgba(255,220,124,.34),0 0 36px rgba(255,220,124,.15),inset 0 8px 18px rgba(255,255,255,.72)!important}
+.gacha-orb.ssr{box-shadow:0 12px 24px rgba(0,0,0,.16),0 0 24px rgba(100,236,198,.35),0 0 44px rgba(171,202,255,.22),0 0 56px rgba(255,187,226,.12),inset 0 8px 18px rgba(255,255,255,.76)!important}
+.gacha-orb.limited{box-shadow:0 12px 24px rgba(0,0,0,.16),0 0 26px rgba(255,180,224,.36),0 0 48px rgba(193,178,255,.23),inset 0 8px 18px rgba(255,255,255,.76)!important}
+
+@media(max-width:700px){
+  .app{padding:10px 10px 122px!important}
+  header{top:6px;border-radius:18px;padding:10px 11px;margin-bottom:14px!important;align-items:flex-start!important;gap:8px}
+  header>strong{font-size:15px;padding-top:7px}
+  .account-box{gap:4px!important}
+  .account-box button{padding:7px 8px!important;font-size:10px!important}
+  .points-balance{font-size:11px!important}
+  #status{font-size:10px!important}
+  .panel{padding:16px!important;border-radius:20px!important;margin:11px 0!important}
+  h1{font-size:22px!important}h2{font-size:19px!important}
+  .nav{bottom:7px!important;width:calc(100% - 14px);padding:6px!important;border-radius:18px!important}
+  .nav button{min-height:50px!important;font-size:10px!important;padding:5px 2px!important}
+  .grid{gap:9px!important;grid-template-columns:repeat(auto-fill,minmax(116px,1fr))!important}
+  .card{padding:8px!important}
+  .event-banner{border-radius:18px!important}
+}
+@media(max-width:430px){
+  .nav{gap:1px!important}.nav button{font-size:9px!important}
+  header{position:relative;top:0}
+  .account-box{justify-content:flex-end!important}
+}
+
+@media (prefers-reduced-motion:reduce){
+  button,.card,input,select,textarea{transition:none!important}
+  .gacha-cinematic.fakeout-transition .gacha-door-frame::after,.gacha-cinematic.fakeout-transition .gacha-door::before,.gacha-cinematic.fakeout-transition .gacha-door-crest,.gacha-cinematic.fakeout-transition .gacha-door-wrap::before,.gacha-cinematic.orbs-revealing .gacha-orb-field::before,.gacha-cinematic.orbs-revealing .gacha-orb-field::after{animation:none!important}
+}
+
 </style></head><body><div class="app"><header><strong>✦ MY GACHA</strong><div class="account-box"><strong id="headerPoints" class="points-balance">🪙 0 P</strong><span class="muted" id="status">연결 설정 필요</span><button type="button" id="userLoginBtn" class="ghost">👤 로그인</button><button type="button" id="userLogoutBtn" class="ghost hidden">로그아웃</button></div></header><div id="notice" role="status"></div><main>
 <section id="home"><div class="panel account-sync-panel">
 <h2>👤 유저 계정 · 데이터 연동</h2>
@@ -2154,13 +2550,27 @@ function gachaAnimKind(c){
  return 'r'
 }
 function gachaOrbPositions(n){
- if(n<=1)return [[0,-18]];
- const out=[],radiusX=n<=5?150:190,radiusY=n<=5?105:155;
- for(let i=0;i<n;i++){
-  const t=n===1?0.5:i/(n-1);
-  const angle=Math.PI*(1.14+.72*t);
-  out.push([Math.round(Math.cos(angle)*radiusX),Math.round(Math.sin(angle)*radiusY+115)])
+ if(n<=1)return [[0,-12]];
+ const mobile=window.matchMedia?.('(max-width:520px)').matches;
+ const stepX=mobile?58:76;
+ const rowGap=mobile?82:104;
+ const out=[];
+ if(n<=5){
+  const center=(n-1)/2;
+  for(let i=0;i<n;i++){
+   const x=Math.round((i-center)*stepX);
+   const curve=Math.round(Math.abs(i-center)*(mobile?7:9));
+   out.push([x,-22+curve])
+  }
+  return out
  }
+ const topCount=Math.ceil(n/2),bottomCount=n-topCount;
+ const addRow=(count,rowY)=>{
+  const center=(count-1)/2;
+  for(let i=0;i<count;i++)out.push([Math.round((i-center)*stepX),rowY+Math.round(Math.abs(i-center)*3)])
+ };
+ addRow(topCount,-Math.round(rowGap/2));
+ addRow(bottomCount,Math.round(rowGap/2));
  return out
 }
 function playGachaCinematic(cards,{source='normal'}={}){
@@ -2194,6 +2604,7 @@ function playGachaCinematic(cards,{source='normal'}={}){
   const [x,y]=positions[i]||[0,0];
   orb.style.setProperty('--x',x+'px');
   orb.style.setProperty('--y',y+'px');
+  orb.style.setProperty('--rot',((i%2?1:-1)*(3+(i%4)))+'deg');
   orb.style.animation='none';
   orb.style.opacity='0';
   field.append(orb)
@@ -2216,69 +2627,94 @@ function playGachaCinematic(cards,{source='normal'}={}){
    resolve()
   };
 
+  const fakeoutTarget=firstLimitedIndex>=0?'limited':'ssr';
+  const fakeDoorLabel=fakeDoorKind==='r'?'평범한 문':'금빛 문';
+
   const openDoor=()=>{
-   overlay.classList.add('door-ready','door-open');
+   overlay.classList.add('door-ready');
+
+   // 낚시 연출은 구슬이 먼저 정답을 보여주지 않게 한다.
+   // 낮은 등급 문이 이상하게 발광 -> 문 자체가 SSR/한정 색으로 천천히 승격 -> 문 오픈 순서.
+   if(surpriseFakeout){
+    overlay.classList.add('fakeout-transition',fakeoutTarget==='limited'?'fakeout-limited':'fakeout-ssr');
+    caption.textContent=`${fakeDoorLabel}이 이상하게 빛나기 시작한다...`;
+    lockBriefly(1450);
+
+    setTimeout(()=>{
+     if(done||run!==gachaAnimationRun)return;
+     overlay.classList.add('fakeout-upgrade');
+     caption.textContent='...빛의 색이 바뀐다?!'
+    },330);
+
+    setTimeout(()=>{
+     if(done||run!==gachaAnimationRun)return;
+     overlay.classList.remove('door-r','door-sr','signal-gold');
+     overlay.classList.add('door-'+fakeoutTarget);
+     if(fakeoutTarget==='limited'){
+      overlay.classList.add('signal-limited','signal-show');
+      caption.textContent='✦ LIMITED ✦ 문이 한정의 빛으로 승격했다!'
+     }else{
+      overlay.classList.add('signal-rainbow','signal-show');
+      caption.textContent='...?! 금빛이 무지개로 변했다! SSR 확정!'
+     }
+    },820);
+
+    setTimeout(()=>{
+     if(done||run!==gachaAnimationRun)return;
+     overlay.classList.add('door-open');
+    },1010);
+    return
+   }
+
+   overlay.classList.add('door-open');
    if(doorKind==='sr'){
     overlay.classList.add('signal-gold','signal-show');
-    caption.textContent='금빛 문이 열린다...!'
+    caption.textContent='금빛 문이 부드럽게 열린다...!'
    }else if(doorKind==='ssr'){
     overlay.classList.add('signal-rainbow','signal-show');
-    caption.textContent='무지개 문이 열린다... SSR 확정!'
+    caption.textContent='무지개빛 문이 열린다... SSR 확정!'
    }else if(doorKind==='limited'){
     overlay.classList.add('signal-limited','signal-show');
-    caption.textContent='무지개와 핑크빛 문... 한정의 기척!'
+    caption.textContent='한정의 빛이 문을 감싼다...!'
    }else{
     caption.textContent='문이 조용히 열린다...'
    }
-   lockBriefly(650)
+   lockBriefly(760)
   };
 
   const showOrbs=()=>{
    const orbs=[...field.querySelectorAll('.gacha-orb')];
+   overlay.classList.add('orbs-revealing');
    orbs.forEach((orb,i)=>{
     orb.style.opacity='';
     const isLimited=orb.classList.contains('limited');
     const isSSR=orb.classList.contains('ssr');
-    const delay=i*90;
-    const fly=`gachaOrbReveal .96s cubic-bezier(.2,.72,.24,1) ${delay}ms forwards`;
+    const delay=i*82;
+    const fly=`gachaOrbReveal 1.12s cubic-bezier(.16,.72,.2,1) ${delay}ms forwards`;
     const extra=isSSR
-      ? `,gachaOrbSSRFloat 2.8s ease-in-out ${(.96+delay/1000).toFixed(3)}s infinite`
+      ? `,gachaOrbSSRFloat 3.2s ease-in-out ${(1.12+delay/1000).toFixed(3)}s infinite`
       : isLimited
-        ? `,gachaOrbLimitedFloat 2.5s ease-in-out ${(.96+delay/1000).toFixed(3)}s infinite`
+        ? `,gachaOrbLimitedFloat 3s ease-in-out ${(1.12+delay/1000).toFixed(3)}s infinite`
         : '';
     orb.style.animation=fly+extra
    });
 
-   if(surpriseFakeout){
-    const upgradeIndex=firstLimitedIndex>=0?firstLimitedIndex:firstSSRIndex;
-    setTimeout(()=>{
-     if(done||run!==gachaAnimationRun)return;
-     overlay.classList.add('fakeout-upgrade');
-     const fakeLabel=fakeDoorKind==='r'?'평범한 문':'금빛 문';
-     if(firstLimitedIndex>=0){
-      overlay.classList.add('signal-limited','limited-burst');
-      caption.textContent=`...?! ${fakeLabel}에서 LIMITED로 승격했다!`
-     }else{
-      overlay.classList.add('signal-rainbow');
-      caption.textContent=`...?! ${fakeLabel}에서 무지개로 승격했다!`
-     }
-    },520+Math.max(0,upgradeIndex)*90)
-   }else if(hasLimited&&firstLimitedIndex>=0){
+   if(hasLimited&&firstLimitedIndex>=0){
     setTimeout(()=>{
      if(done||run!==gachaAnimationRun)return;
      overlay.classList.add('limited-burst');
      caption.textContent='✦ LIMITED ✦ 한정 캐릭터 확정!'
-    },520+firstLimitedIndex*90)
+    },610+firstLimitedIndex*82)
    }else if(hasSSR){
-    caption.textContent='무지개 구슬이 있다...!'
+    caption.textContent=surpriseFakeout?'승격한 문 너머에서 무지개 구슬이 나타났다!':'무지개 구슬이 천천히 모습을 드러낸다...!'
    }else if(hasSR){
-    caption.textContent='금색 구슬이 있다...!'
+    caption.textContent='금빛 구슬이 모습을 드러낸다...!'
    }else{
-    caption.textContent='구슬을 확인해 보자!'
+    caption.textContent='구슬들이 빛 속에서 나타난다...'
    }
 
    overlay.classList.add('wait-result');
-   lockBriefly(920+Math.min(cards.length,10)*50)
+   lockBriefly(1080+Math.min(cards.length,10)*52)
   };
 
   const advance=e=>{
