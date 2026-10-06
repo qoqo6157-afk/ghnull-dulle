@@ -1459,6 +1459,98 @@ input[type=range]{accent-color:#49bda0}
   .account-box{justify-content:flex-end!important}
 }
 
+
+/* ======================================================================
+   BOTTOM NAV v2 · larger desktop, compact mobile
+   ====================================================================== */
+.nav{
+  width:min(calc(100% - 36px),860px)!important;
+  bottom:18px!important;
+  padding:9px 11px!important;
+  gap:7px!important;
+  border:1px solid rgba(160,211,196,.72)!important;
+  border-radius:28px!important;
+  background:linear-gradient(180deg,rgba(255,255,255,.95),rgba(247,255,252,.91))!important;
+  box-shadow:0 18px 44px rgba(33,91,76,.16),0 4px 14px rgba(43,116,96,.08),inset 0 1px 0 rgba(255,255,255,1)!important;
+  backdrop-filter:blur(24px) saturate(1.15)!important;
+  -webkit-backdrop-filter:blur(24px) saturate(1.15)!important;
+}
+.nav::before{
+  content:"";position:absolute;left:24px;right:24px;top:0;height:1px;
+  background:linear-gradient(90deg,transparent,rgba(83,193,163,.36),transparent);
+  pointer-events:none;
+}
+.nav button{
+  position:relative;display:flex!important;flex-direction:column;align-items:center;justify-content:center;
+  flex:1 1 0!important;min-width:0!important;min-height:70px!important;
+  gap:4px!important;padding:8px 5px!important;
+  border-radius:20px!important;
+  color:#647d76!important;
+  font-size:13px!important;line-height:1.1!important;font-weight:850!important;
+  letter-spacing:-.01em;
+}
+.nav .nav-icon{
+  display:grid;place-items:center;
+  min-height:27px;
+  font-size:24px!important;line-height:1!important;font-weight:800!important;
+  transform:translateY(0);
+  transition:transform .18s ease,filter .18s ease;
+}
+.nav .nav-label{
+  display:block;font-size:13px!important;line-height:1!important;font-weight:850!important;
+  white-space:nowrap;
+}
+.nav button:hover{
+  background:rgba(231,248,242,.78)!important;
+  color:#2f7563!important;
+}
+.nav button:hover .nav-icon{transform:translateY(-1px)}
+.nav button.active{
+  color:#19765f!important;
+  border-color:rgba(130,204,184,.56)!important;
+  background:linear-gradient(180deg,#e3f8f1 0%,#d3f2e8 100%)!important;
+  box-shadow:0 8px 18px rgba(52,150,124,.17),inset 0 1px 0 rgba(255,255,255,.96)!important;
+  transform:translateY(-3px)!important;
+}
+.nav button.active::after{
+  content:"";position:absolute;left:50%;bottom:5px;width:18px;height:3px;
+  transform:translateX(-50%);border-radius:999px;background:#4ab99b;
+  box-shadow:0 0 9px rgba(74,185,155,.34);
+}
+.nav button.active .nav-icon{
+  transform:translateY(-1px) scale(1.07);
+  filter:drop-shadow(0 3px 5px rgba(46,139,115,.16));
+}
+
+/* Mobile is sized independently from desktop so the bar stays usable
+   without covering too much of the screen. */
+@media(max-width:700px){
+  .app{padding-bottom:108px!important}
+  .nav{
+    width:calc(100% - 16px)!important;
+    bottom:max(7px,env(safe-area-inset-bottom))!important;
+    padding:6px 5px!important;
+    gap:2px!important;
+    border-radius:21px!important;
+  }
+  .nav button{
+    min-height:54px!important;
+    gap:3px!important;
+    padding:6px 2px!important;
+    border-radius:15px!important;
+  }
+  .nav .nav-icon{min-height:21px;font-size:19px!important}
+  .nav .nav-label{font-size:10.5px!important;font-weight:850!important}
+  .nav button.active{transform:translateY(-2px)!important}
+  .nav button.active::after{bottom:3px;width:14px;height:2px}
+}
+@media(max-width:430px){
+  .nav{width:calc(100% - 10px)!important;padding:5px 3px!important;gap:1px!important}
+  .nav button{min-height:51px!important;padding:5px 1px!important;border-radius:14px!important}
+  .nav .nav-icon{font-size:18px!important}
+  .nav .nav-label{font-size:9.5px!important;letter-spacing:-.03em}
+}
+
 @media (prefers-reduced-motion:reduce){
   button,.card,input,select,textarea{transition:none!important}
   .gacha-cinematic.fakeout-transition .gacha-door-frame::after,.gacha-cinematic.fakeout-transition .gacha-door::before,.gacha-cinematic.fakeout-transition .gacha-door-crest,.gacha-cinematic.fakeout-transition .gacha-door-wrap::before,.gacha-cinematic.orbs-revealing .gacha-orb-field::before,.gacha-cinematic.orbs-revealing .gacha-orb-field::after{animation:none!important}
@@ -1762,7 +1854,15 @@ input[type=range]{accent-color:#49bda0}
       </div>
     </div>
   </div>
-</div><div id="limitBreakOverlay" class="limit-break-overlay hidden" role="dialog" aria-modal="true" aria-labelledby="limitBreakTitle"><div class="limit-break-stage"><div id="limitBreakFullFlash" class="limit-break-full-flash hidden"></div><div class="limit-break-art-wrap"><div class="limit-break-burst"></div><div class="limit-break-ring"></div><img id="limitBreakArt" class="limit-break-art" alt=""></div><div id="limitBreakTitle" class="limit-break-title">LIMIT BREAK!</div><div id="limitBreakLevel" class="limit-break-level">★☆☆</div><div id="limitBreakCopy" class="limit-break-copy"></div><button id="limitBreakClose" type="button" class="ghost wide" style="margin-top:14px">확인</button></div></div><div id="accountOverlay" class="pity-overlay hidden" role="dialog" aria-modal="true"><div class="pity-dialog"><h2>👤 로그인 · 계정 데이터 연동</h2><p class="muted">로그인하면 이 계정의 클라우드 세이브와 연결됩니다. 처음 연동할 때는 현재 기기 데이터와 클라우드 데이터 중 어떤 것을 사용할지 선택할 수 있어요. 기존 브라우저 데이터는 먼저 삭제하지 않습니다.</p><label>이메일</label><input id="userEmail" type="email" autocomplete="username"><label>비밀번호</label><input id="userPassword" type="password" autocomplete="current-password"><div class="row"><button id="userSignIn">로그인</button><button id="userSignUp" class="ghost">회원가입</button></div><button id="accountClose" class="ghost wide">닫기</button></div></div><nav class="nav" aria-label="하단 메뉴"><button data-tab="home" class="active">⌂<br>홈</button><button data-tab="gacha">✧<br>가챠</button><button data-tab="collection">▦<br>도감</button><button data-tab="game">🎮<br>게임</button><button data-tab="pet">🥚<br>펫</button><button data-tab="casino">🎰<br>카지노</button><button data-tab="admin">⚙<br>관리</button></nav>
+</div><div id="limitBreakOverlay" class="limit-break-overlay hidden" role="dialog" aria-modal="true" aria-labelledby="limitBreakTitle"><div class="limit-break-stage"><div id="limitBreakFullFlash" class="limit-break-full-flash hidden"></div><div class="limit-break-art-wrap"><div class="limit-break-burst"></div><div class="limit-break-ring"></div><img id="limitBreakArt" class="limit-break-art" alt=""></div><div id="limitBreakTitle" class="limit-break-title">LIMIT BREAK!</div><div id="limitBreakLevel" class="limit-break-level">★☆☆</div><div id="limitBreakCopy" class="limit-break-copy"></div><button id="limitBreakClose" type="button" class="ghost wide" style="margin-top:14px">확인</button></div></div><div id="accountOverlay" class="pity-overlay hidden" role="dialog" aria-modal="true"><div class="pity-dialog"><h2>👤 로그인 · 계정 데이터 연동</h2><p class="muted">로그인하면 이 계정의 클라우드 세이브와 연결됩니다. 처음 연동할 때는 현재 기기 데이터와 클라우드 데이터 중 어떤 것을 사용할지 선택할 수 있어요. 기존 브라우저 데이터는 먼저 삭제하지 않습니다.</p><label>이메일</label><input id="userEmail" type="email" autocomplete="username"><label>비밀번호</label><input id="userPassword" type="password" autocomplete="current-password"><div class="row"><button id="userSignIn">로그인</button><button id="userSignUp" class="ghost">회원가입</button></div><button id="accountClose" class="ghost wide">닫기</button></div></div><nav class="nav" aria-label="하단 메뉴">
+<button data-tab="home" class="active"><span class="nav-icon" aria-hidden="true">⌂</span><span class="nav-label">홈</span></button>
+<button data-tab="gacha"><span class="nav-icon" aria-hidden="true">✧</span><span class="nav-label">가챠</span></button>
+<button data-tab="collection"><span class="nav-icon" aria-hidden="true">▦</span><span class="nav-label">도감</span></button>
+<button data-tab="game"><span class="nav-icon" aria-hidden="true">🎮</span><span class="nav-label">게임</span></button>
+<button data-tab="pet"><span class="nav-icon" aria-hidden="true">🥚</span><span class="nav-label">펫</span></button>
+<button data-tab="casino"><span class="nav-icon" aria-hidden="true">🎰</span><span class="nav-label">카지노</span></button>
+<button data-tab="admin"><span class="nav-icon" aria-hidden="true">⚙</span><span class="nav-label">관리</span></button>
+</nav>
 <script type="module">
 // 이미지에 한정해 우클릭 메뉴 및 끌어서 저장을 제한합니다. 관리자의 파일 선택·업로드는 방해하지 않습니다.
 document.addEventListener('contextmenu',e=>{if(e.target.closest('img')&&!e.target.closest('#homeHero'))e.preventDefault()});
