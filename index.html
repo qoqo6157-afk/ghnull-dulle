@@ -1941,6 +1941,241 @@ button.ghost,.ghost{
   72%{opacity:1;transform:translateY(1px) scale(1.035) rotate(1deg);filter:none}
   100%{opacity:1;transform:none;filter:none}
 }
+
+
+/* ======================================================================
+   USER FIX PACK · result cards + clear white selected state · 2026-10-07
+   ====================================================================== */
+
+/* Gacha results: compact result board like the requested reference. */
+#results:not(:empty),
+#limitedResults:not(:empty){
+  display:grid!important;
+  grid-template-columns:repeat(5,minmax(0,1fr))!important;
+  gap:10px!important;
+  margin:16px 0 0!important;
+  padding:16px!important;
+  border-radius:22px!important;
+  background:linear-gradient(180deg,#fffefa 0%,#fbfffd 100%)!important;
+  border:1.5px solid #ccece3!important;
+  box-shadow:0 13px 28px rgba(68,133,115,.07)!important;
+  overflow:visible!important;
+}
+#limitedResults:not(:empty){
+  border-color:#edd47f!important;
+  background:linear-gradient(180deg,#fffdf6 0%,#fbfffd 100%)!important;
+  box-shadow:0 13px 30px rgba(183,146,48,.08)!important;
+}
+#results:not(:empty)::before,
+#limitedResults:not(:empty)::before{
+  grid-column:1/-1;
+  display:block;
+  margin:0 0 2px;
+  color:#315f54;
+  font-size:17px;
+  font-weight:950;
+  letter-spacing:-.02em;
+}
+#results:not(:empty)::before{content:"뽑기 결과"}
+#limitedResults:not(:empty)::before{content:"LIMITED RESULT  ·  뽑기 결과";color:#4c675f}
+
+#results .gacha-result-card,
+#limitedResults .gacha-result-card{
+  position:relative!important;
+  display:flex!important;
+  flex-direction:column!important;
+  min-width:0!important;
+  min-height:216px!important;
+  padding:8px 8px 10px!important;
+  border-radius:17px!important;
+  background:#fff!important;
+  border:1.5px solid #cce9e1!important;
+  box-shadow:0 6px 14px rgba(63,132,113,.055)!important;
+  text-align:left!important;
+  overflow:hidden!important;
+}
+#results .gacha-result-card.gacha-sr,
+#limitedResults .gacha-result-card.gacha-sr{
+  border-color:#efc44e!important;
+  box-shadow:0 0 0 1px rgba(255,216,95,.22),0 7px 17px rgba(173,131,31,.08)!important;
+}
+#results .gacha-result-card.gacha-ssr,
+#limitedResults .gacha-result-card.gacha-ssr{
+  border:1.5px solid transparent!important;
+  background:linear-gradient(#fff,#fff) padding-box,
+    linear-gradient(120deg,#7ee6cf,#8fd6ff,#cdb1ff,#ffb7d5,#ffe28a,#7ee6cf) border-box!important;
+  box-shadow:0 8px 20px rgba(123,136,224,.11)!important;
+}
+#results .gacha-result-card img,
+#limitedResults .gacha-result-card img{
+  display:block!important;
+  width:100%!important;
+  height:142px!important;
+  margin:0 0 8px!important;
+  padding:2px!important;
+  object-fit:contain!important;
+  border-radius:12px!important;
+  background:linear-gradient(180deg,#f8fffc 0%,#f2faf7 100%)!important;
+}
+#results .gacha-result-card .tag,
+#limitedResults .gacha-result-card .tag{
+  position:absolute!important;
+  z-index:7!important;
+  top:8px!important;
+  left:8px!important;
+  display:inline-flex!important;
+  align-items:center!important;
+  width:auto!important;
+  max-width:calc(100% - 16px)!important;
+  margin:0!important;
+  padding:4px 7px!important;
+  border-radius:999px!important;
+  background:#bcefe1!important;
+  color:#29715f!important;
+  font-size:9px!important;
+  line-height:1!important;
+  font-weight:950!important;
+  white-space:nowrap!important;
+  overflow:hidden!important;
+  text-overflow:ellipsis!important;
+  box-shadow:0 3px 8px rgba(73,148,127,.10)!important;
+  text-shadow:none!important;
+  animation:none!important;
+}
+#results .gacha-result-card.gacha-sr .tag,
+#limitedResults .gacha-result-card.gacha-sr .tag{
+  background:#ffe48a!important;
+  color:#81630e!important;
+  box-shadow:0 3px 8px rgba(184,137,25,.10)!important;
+}
+#results .gacha-result-card.gacha-ssr .tag,
+#limitedResults .gacha-result-card.gacha-ssr .tag{
+  background:linear-gradient(90deg,#d9f7ef,#e6f4ff,#f2e8ff,#ffe9f4)!important;
+  color:#60579d!important;
+  box-shadow:0 3px 9px rgba(108,104,189,.11)!important;
+}
+#results .gacha-result-card strong,
+#limitedResults .gacha-result-card strong{
+  position:relative!important;
+  z-index:5!important;
+  display:block!important;
+  margin:1px 1px 0!important;
+  color:#304a43!important;
+  font-size:12px!important;
+  line-height:1.35!important;
+  font-weight:950!important;
+  text-align:left!important;
+  text-shadow:none!important;
+  overflow-wrap:anywhere!important;
+}
+#results .gacha-result-card .gacha-result-label,
+#limitedResults .gacha-result-card .gacha-result-label{
+  position:relative!important;
+  z-index:5!important;
+  margin:4px 1px 0!important;
+  color:#7a918a!important;
+  font-size:9px!important;
+  line-height:1.35!important;
+  font-weight:800!important;
+  text-align:left!important;
+}
+#results .gacha-result-card::before,
+#results .gacha-result-card::after,
+#limitedResults .gacha-result-card::before,
+#limitedResults .gacha-result-card::after{
+  pointer-events:none!important;
+}
+
+/* Single pull should not become a tiny 1/5-width card. */
+@media(min-width:761px){
+  #results:has(>.gacha-result-card:only-child),
+  #limitedResults:has(>.gacha-result-card:only-child){
+    grid-template-columns:minmax(190px,245px)!important;
+    justify-content:start!important;
+  }
+  #results:has(>.gacha-result-card:only-child)::before,
+  #limitedResults:has(>.gacha-result-card:only-child)::before{
+    grid-column:1/-1!important;
+  }
+}
+@media(max-width:760px){
+  #results:not(:empty),#limitedResults:not(:empty){
+    grid-template-columns:repeat(2,minmax(0,1fr))!important;
+    gap:8px!important;
+    padding:11px!important;
+    border-radius:18px!important;
+  }
+  #results .gacha-result-card,#limitedResults .gacha-result-card{min-height:188px!important;padding:7px!important;border-radius:14px!important}
+  #results .gacha-result-card img,#limitedResults .gacha-result-card img{height:118px!important;border-radius:10px!important}
+  #results:not(:empty)::before,#limitedResults:not(:empty)::before{font-size:15px!important}
+}
+@media(max-width:390px){
+  #results .gacha-result-card img,#limitedResults .gacha-result-card img{height:105px!important}
+  #results .gacha-result-card strong,#limitedResults .gacha-result-card strong{font-size:11px!important}
+}
+
+/* Choice system: unselected = pastel mint, selected = crisp white. */
+.game-picker button,
+.casino-picker button,
+.casino-options button,
+.pity-choice,
+.pet-gift-choice,
+.detective-tabs button,
+.detective-mode-btn,
+.detective-clue,
+.collection-category-nav button,
+.home-art-choice-row button,
+.collection-detail-view-actions button,
+.collection-detail-art-actions button,
+.admin-character-tab{
+  background:linear-gradient(180deg,#e8f8f3 0%,#d9f1e9 100%)!important;
+  color:#426a60!important;
+  border-color:#c4e7dd!important;
+}
+.game-picker button.active,
+.casino-picker button.active,
+.casino-options button.active,
+.pity-choice.selected,
+.pity-choice[aria-pressed="true"],
+.pet-gift-choice.selected,
+.pet-gift-choice[aria-pressed="true"],
+.detective-tabs button.active,
+.detective-mode-btn.active,
+.detective-clue.selected,
+.collection-category-nav button.active,
+.home-art-choice-row button.active,
+.collection-detail-view-actions button.active,
+.collection-detail-art-actions button.active,
+.admin-character-tab.active{
+  background:#fff!important;
+  color:#285f53!important;
+  border-color:#65cdb1!important;
+  box-shadow:0 0 0 2px rgba(101,205,177,.20),0 10px 20px rgba(63,142,121,.11)!important;
+  transform:translateY(-1px)!important;
+}
+.pity-choice.selected::before,
+.pity-choice[aria-pressed="true"]::before{
+  background:linear-gradient(145deg,#fbfffd,#f2faf7)!important;
+  border-color:#d8eee7!important;
+}
+.pity-choice.selected strong,
+.pity-choice[aria-pressed="true"] strong{
+  color:#285f53!important;
+}
+/* Limited exchange keeps the limited badge but uses the same white selected card. */
+.limited-exchange-choice.selected{
+  background:#fff!important;
+  color:#285f53!important;
+  border-color:#65cdb1!important;
+  box-shadow:0 0 0 2px rgba(101,205,177,.20),0 10px 20px rgba(63,142,121,.11)!important;
+}
+/* Character Pang selection follows the same rule without changing gameplay colors. */
+.pang-tile.selected{
+  background:#fff!important;
+  border-color:#65cdb1!important;
+  box-shadow:0 0 0 2px rgba(101,205,177,.22),0 7px 14px rgba(63,142,121,.10)!important;
+}
+
 </style></head><body><div class="app"><header><strong>✦ MY GACHA</strong><div class="account-box"><strong id="headerPoints" class="points-balance">🪙 0 P</strong><span class="muted" id="status">연결 설정 필요</span><button type="button" id="userLoginBtn" class="ghost">👤 로그인</button><button type="button" id="userLogoutBtn" class="ghost hidden">로그아웃</button></div></header><div id="notice" role="status"></div><main>
 <section id="home" class="home-dashboard">
   <div id="eventBanner" class="panel event-banner home-banner hidden" role="button" tabindex="0">
