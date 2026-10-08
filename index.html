@@ -3087,6 +3087,55 @@ button.ghost,.ghost{
 }
 </style>
 
+
+<style id="gacha-typography-compact-v3">
+/* Compact, softer gacha typography + remove the bottom tap hint bar. */
+.gacha-dialogue-line{
+  font-family:'Pretendard Variable','Pretendard','SUIT','Noto Sans KR','Apple SD Gothic Neo',system-ui,sans-serif!important;
+  font-size:clamp(15px,2.6vw,23px)!important;
+  font-weight:700!important;
+  line-height:1.72!important;
+  letter-spacing:-.015em!important;
+}
+.gacha-reveal-titleplate{
+  min-height:76px!important;
+  padding:11px 14px 10px!important;
+  gap:11px!important;
+  bottom:clamp(20px,4.2vh,40px)!important;
+}
+.gacha-reveal-rarity{
+  font-family:'Pretendard Variable','Pretendard','SUIT','Noto Sans KR','Apple SD Gothic Neo',system-ui,sans-serif!important;
+  font-size:clamp(14px,2.2vw,19px)!important;
+  font-weight:900!important;
+}
+.gacha-reveal-subtitle{
+  font-family:'Pretendard Variable','Pretendard','SUIT','Noto Sans KR','Apple SD Gothic Neo',system-ui,sans-serif!important;
+  font-size:clamp(9px,1.5vw,12px)!important;
+  font-weight:800!important;
+}
+.gacha-reveal-name{
+  font-family:'Pretendard Variable','Pretendard','SUIT','Noto Sans KR','Apple SD Gothic Neo',system-ui,sans-serif!important;
+  font-size:clamp(20px,3.7vw,34px)!important;
+  font-weight:850!important;
+  line-height:1.08!important;
+  letter-spacing:-.045em!important;
+}
+.gacha-reveal-state{
+  font-family:'Pretendard Variable','Pretendard','SUIT','Noto Sans KR','Apple SD Gothic Neo',system-ui,sans-serif!important;
+  font-size:9px!important;
+  padding:3px 7px!important;
+}
+.gacha-cinematic.card-sequence .gacha-cinema-caption{display:none!important}
+@media(max-width:520px){
+  .gacha-dialogue-line{font-size:15px!important;line-height:1.7!important;max-width:84vw!important}
+  .gacha-reveal-titleplate{left:10px!important;right:10px!important;bottom:18px!important;min-height:66px!important;padding:9px 10px 8px!important;gap:8px!important}
+  .gacha-reveal-name{font-size:22px!important}
+  .gacha-reveal-rarity{font-size:14px!important}
+  .gacha-reveal-subtitle{font-size:9px!important}
+  .gacha-reveal-state{font-size:8px!important;padding:2px 5px!important}
+}
+</style>
+
 </head><body><div class="app"><header><strong>✦ MY GACHA</strong><div class="account-box"><strong id="headerPoints" class="points-balance">🪙 0 P</strong><span class="muted" id="status">연결 설정 필요</span><button type="button" id="userLoginBtn" class="ghost">👤 로그인</button><button type="button" id="userLogoutBtn" class="ghost hidden">로그아웃</button></div></header><div id="notice" role="status"></div><main>
 <section id="home" class="home-dashboard">
   <div id="eventBanner" class="panel event-banner home-banner hidden" role="button" tabindex="0">
