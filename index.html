@@ -2921,6 +2921,167 @@ button.ghost,.ghost{
 @media (prefers-reduced-motion:reduce){.gacha-reveal-art,.gacha-reveal-spark-sweep,.gacha-reveal-spark-sweep::before,.gacha-reveal-titleplate{animation-duration:.01ms!important;animation-delay:0ms!important}}
 </style>
 
+
+<style id="gacha-card-sequence-polish-v2">
+/* ===== Card reveal polish v2: transparent-art friendly, no black card backdrop ===== */
+.gacha-cinematic.card-sequence{
+  background:
+    radial-gradient(circle at 18% 12%,rgba(180,244,235,.48) 0 9%,transparent 30%),
+    radial-gradient(circle at 84% 22%,rgba(190,221,255,.52) 0 11%,transparent 32%),
+    radial-gradient(circle at 76% 82%,rgba(244,202,255,.38) 0 11%,transparent 33%),
+    linear-gradient(145deg,#f9fffd 0%,#eefaff 45%,#fbf6ff 100%)!important;
+}
+.gacha-cinematic.card-sequence::before{
+  background:
+    radial-gradient(circle,rgba(255,255,255,.92) 0 1px,transparent 1.8px) 0 0/30px 30px,
+    radial-gradient(circle at 50% 45%,rgba(255,255,255,.92),transparent 56%)!important;
+  opacity:.72!important;
+}
+.gacha-card-stage{
+  background:
+    radial-gradient(ellipse at 50% 38%,rgba(255,255,255,.98) 0 16%,rgba(241,252,255,.96) 42%,rgba(232,247,247,.92) 72%,rgba(241,238,255,.90) 100%)!important;
+  border:1px solid rgba(255,255,255,.88);
+  box-shadow:inset 0 0 50px rgba(255,255,255,.62),0 22px 60px rgba(94,142,145,.13);
+}
+.gacha-card-stage::before{
+  content:'';position:absolute;inset:-20%;z-index:0;pointer-events:none;
+  background:
+    radial-gradient(circle at 22% 28%,rgba(121,229,213,.38),transparent 22%),
+    radial-gradient(circle at 80% 22%,rgba(116,190,255,.32),transparent 24%),
+    radial-gradient(circle at 70% 82%,rgba(228,151,255,.26),transparent 25%),
+    radial-gradient(circle at 34% 78%,rgba(255,235,164,.28),transparent 22%);
+  filter:blur(13px);transform:scale(1.08);animation:gachaRevealClouds 7s ease-in-out infinite alternate;
+}
+.gacha-card-stage::after{
+  content:'';position:absolute;inset:0;z-index:2;pointer-events:none;
+  background:
+    linear-gradient(180deg,rgba(255,255,255,.28),transparent 18%,transparent 75%,rgba(255,255,255,.32)),
+    radial-gradient(circle at 50% 48%,transparent 0 44%,rgba(118,223,205,.08) 62%,rgba(255,255,255,.22) 100%);
+  mix-blend-mode:screen;
+}
+@keyframes gachaRevealClouds{0%{transform:translate3d(-1.5%,-1%,0) scale(1.07)}100%{transform:translate3d(1.5%,1%,0) scale(1.12)}}
+
+.gacha-reveal-aura,.gacha-reveal-rings,.gacha-reveal-stars{position:absolute;inset:0;pointer-events:none}
+.gacha-reveal-aura{z-index:1;opacity:.6;background:radial-gradient(circle at 50% 47%,rgba(255,255,255,.92) 0 7%,rgba(125,230,255,.26) 22%,transparent 52%);animation:gachaAuraBreath 2.4s ease-in-out infinite}
+.gacha-reveal-rings{z-index:1;opacity:.28;background:radial-gradient(circle at 50% 49%,transparent 0 28%,rgba(98,211,196,.38) 28.5% 29%,transparent 29.5% 38%,rgba(120,184,255,.28) 38.5% 39%,transparent 39.5% 49%,rgba(232,157,255,.22) 49.5% 50%,transparent 50.5%);transform:scale(.86);animation:gachaRingPulse 3.4s ease-in-out infinite}
+.gacha-reveal-stars{z-index:5;opacity:.55;background-image:radial-gradient(circle,#fff 0 1.2px,transparent 1.7px),radial-gradient(circle,#d9fbff 0 1.5px,transparent 2px),radial-gradient(circle,#fff 0 1px,transparent 1.6px);background-size:78px 78px,112px 112px,150px 150px;background-position:7px 9px,35px 54px,70px 14px;animation:gachaStarDrift 7s linear infinite}
+@keyframes gachaAuraBreath{0%,100%{transform:scale(.92);opacity:.42}50%{transform:scale(1.08);opacity:.78}}
+@keyframes gachaRingPulse{0%,100%{transform:scale(.84) rotate(0);opacity:.18}50%{transform:scale(1.05) rotate(7deg);opacity:.38}}
+@keyframes gachaStarDrift{to{background-position:85px 87px,147px 166px,220px 164px}}
+
+.gacha-reveal-art{z-index:4;clip-path:inset(0 100% 0 0);filter:drop-shadow(0 18px 28px rgba(50,94,102,.13)) saturate(1.04) contrast(1.01)}
+.gacha-card-stage.is-r .gacha-reveal-art,.gacha-card-stage.is-sr .gacha-reveal-art{animation:gachaCardWipe .78s cubic-bezier(.16,.76,.18,1) .05s forwards}
+
+/* SSR: start zoomed, gently pan from upper art to lower art, then reveal the full transparent illustration. */
+.gacha-card-stage.is-ssr{
+  background:radial-gradient(ellipse at 50% 38%,#ffffff 0 15%,#eafaff 43%,#e7f5ff 69%,#f6efff 100%)!important;
+  box-shadow:inset 0 0 68px rgba(255,255,255,.92),0 0 42px rgba(101,202,255,.22),0 24px 65px rgba(100,137,188,.16);
+}
+.gacha-card-stage.is-ssr::before{
+  background:
+    conic-gradient(from 20deg at 50% 48%,transparent 0 10%,rgba(255,255,255,.42) 12%,transparent 16% 33%,rgba(119,223,255,.30) 36%,transparent 41% 58%,rgba(194,153,255,.25) 62%,transparent 67% 82%,rgba(255,231,147,.30) 86%,transparent 92%),
+    radial-gradient(circle at 50% 47%,rgba(255,255,255,.96),rgba(124,222,255,.22) 28%,transparent 57%);
+  filter:blur(4px);animation:gachaSSRBackdrop 4.8s linear infinite;
+}
+.gacha-card-stage.is-ssr .gacha-reveal-aura{opacity:.95;background:radial-gradient(circle at 50% 48%,rgba(255,255,255,1) 0 8%,rgba(98,220,255,.48) 21%,rgba(144,136,255,.17) 39%,transparent 58%);animation:gachaSSRAura 1.85s ease-in-out infinite}
+.gacha-card-stage.is-ssr .gacha-reveal-rings{opacity:.82;background:radial-gradient(circle at 50% 49%,transparent 0 24%,rgba(255,255,255,.94) 24.4% 24.9%,transparent 25.4% 33%,rgba(93,217,255,.68) 33.4% 34%,transparent 34.5% 42%,rgba(189,146,255,.52) 42.5% 43%,transparent 43.5% 52%,rgba(255,223,130,.44) 52.5% 53%,transparent 53.5%);animation:gachaSSRRings 5.2s linear infinite}
+.gacha-card-stage.is-ssr .gacha-reveal-stars{opacity:.95;filter:drop-shadow(0 0 7px rgba(97,223,255,.9));animation:gachaStarDrift 4.4s linear infinite,gachaSSRStarsBlink 1.15s ease-in-out infinite alternate}
+.gacha-card-stage.is-ssr .gacha-reveal-art{clip-path:none;transform-origin:50% 45%;animation:gachaSSRArtReveal 2.62s cubic-bezier(.2,.68,.18,1) both;will-change:transform,filter,opacity}
+@keyframes gachaSSRArtReveal{
+  0%{opacity:0;transform:translate3d(0,10%,0) scale(1.62);filter:brightness(1.9) saturate(.72) blur(2px) drop-shadow(0 18px 28px rgba(50,94,102,.12))}
+  11%{opacity:1;filter:brightness(1.13) saturate(1.08) blur(0) drop-shadow(0 18px 28px rgba(50,94,102,.13));transform:translate3d(0,9%,0) scale(1.56)}
+  36%{transform:translate3d(0,8%,0) scale(1.54)}
+  63%{transform:translate3d(0,-8%,0) scale(1.54)}
+  78%{transform:translate3d(0,-4%,0) scale(1.30)}
+  100%{opacity:1;transform:translate3d(0,0,0) scale(1);filter:brightness(1) saturate(1.06) drop-shadow(0 18px 30px rgba(50,94,102,.16))}
+}
+@keyframes gachaSSRBackdrop{to{transform:rotate(360deg) scale(1.08)}}
+@keyframes gachaSSRAura{0%,100%{transform:scale(.82);filter:brightness(1)}50%{transform:scale(1.13);filter:brightness(1.24)}}
+@keyframes gachaSSRRings{to{transform:scale(.98) rotate(360deg)}}
+@keyframes gachaSSRStarsBlink{from{filter:brightness(.88) drop-shadow(0 0 5px rgba(97,223,255,.65))}to{filter:brightness(1.4) drop-shadow(0 0 10px rgba(97,223,255,.95))}}
+
+/* LIMITED SSR: stronger prismatic halo, rotating celestial rings, denser sparkles. */
+.gacha-card-stage.is-limited{
+  background:radial-gradient(ellipse at 50% 38%,#fff 0 13%,#fff1fb 38%,#f2efff 67%,#eafaff 100%)!important;
+  box-shadow:inset 0 0 78px rgba(255,255,255,.96),0 0 52px rgba(255,118,218,.28),0 0 88px rgba(143,113,255,.19),0 24px 70px rgba(142,106,174,.16);
+}
+.gacha-card-stage.is-limited::before{
+  inset:-32%;filter:blur(2px);background:
+    conic-gradient(from 0deg at 50% 50%,rgba(255,110,208,.36),rgba(255,224,121,.24),rgba(112,231,255,.36),rgba(148,113,255,.35),rgba(255,110,208,.36)),
+    radial-gradient(circle at 50% 49%,rgba(255,255,255,.99) 0 11%,transparent 49%);
+  animation:gachaLimitedPrism 5.5s linear infinite;
+}
+.gacha-card-stage.is-limited::after{
+  background:
+    radial-gradient(circle at 50% 48%,transparent 0 28%,rgba(255,255,255,.72) 28.4% 28.8%,transparent 29.3% 39%,rgba(255,111,214,.50) 39.4% 40%,transparent 40.5% 51%,rgba(128,221,255,.42) 51.4% 52%,transparent 52.5%),
+    conic-gradient(from 0deg at 50% 48%,transparent 0 8%,rgba(255,255,255,.7) 9%,transparent 10% 23%,rgba(255,126,219,.44) 24%,transparent 25% 42%,rgba(112,223,255,.42) 43%,transparent 44% 61%,rgba(164,128,255,.40) 62%,transparent 63% 82%,rgba(255,233,146,.43) 83%,transparent 84%);
+  opacity:.84;animation:gachaLimitedHalo 7s linear infinite;mix-blend-mode:screen;
+}
+.gacha-card-stage.is-limited .gacha-reveal-aura{opacity:1;background:radial-gradient(circle at 50% 48%,#fff 0 7%,rgba(255,108,211,.50) 19%,rgba(132,217,255,.30) 35%,rgba(157,121,255,.19) 48%,transparent 62%);animation:gachaLimitedAura 1.35s ease-in-out infinite}
+.gacha-card-stage.is-limited .gacha-reveal-rings{opacity:1;background:radial-gradient(circle at 50% 49%,transparent 0 21%,rgba(255,255,255,.95) 21.3% 21.8%,transparent 22.2% 29%,rgba(255,103,211,.72) 29.4% 30%,transparent 30.4% 38%,rgba(106,224,255,.66) 38.4% 39%,transparent 39.4% 48%,rgba(172,127,255,.60) 48.4% 49%,transparent 49.4% 58%,rgba(255,232,137,.48) 58.4% 59%,transparent 59.4%);animation:gachaLimitedRings 4.2s linear infinite}
+.gacha-card-stage.is-limited .gacha-reveal-stars{opacity:1;background-size:54px 54px,78px 78px,108px 108px;filter:drop-shadow(0 0 8px rgba(255,107,218,.85)) drop-shadow(0 0 13px rgba(112,220,255,.65));animation:gachaStarDrift 3.1s linear infinite,gachaLimitedStars .8s ease-in-out infinite alternate}
+.gacha-card-stage.is-limited .gacha-reveal-art{clip-path:none;transform-origin:50% 45%;animation:gachaLimitedArtReveal 2.94s cubic-bezier(.18,.72,.17,1) both;will-change:transform,filter,opacity}
+@keyframes gachaLimitedArtReveal{
+  0%{opacity:0;transform:translate3d(0,12%,0) scale(1.68);filter:brightness(2.2) saturate(.55) blur(2.5px) drop-shadow(0 18px 34px rgba(124,74,146,.10))}
+  9%{opacity:1;transform:translate3d(0,10%,0) scale(1.61);filter:brightness(1.22) saturate(1.12) blur(0) drop-shadow(0 20px 34px rgba(124,74,146,.15))}
+  34%{transform:translate3d(0,9%,0) scale(1.58)}
+  60%{transform:translate3d(0,-9%,0) scale(1.58)}
+  75%{transform:translate3d(0,-4%,0) scale(1.34);filter:brightness(1.12) saturate(1.18) drop-shadow(0 20px 36px rgba(124,74,146,.17))}
+  88%{transform:translate3d(0,0,0) scale(.96);filter:brightness(1.38) saturate(1.15) drop-shadow(0 0 24px rgba(255,115,218,.27))}
+  100%{opacity:1;transform:translate3d(0,0,0) scale(1);filter:brightness(1) saturate(1.08) drop-shadow(0 18px 34px rgba(124,74,146,.18))}
+}
+@keyframes gachaLimitedPrism{to{transform:rotate(360deg) scale(1.04)}}
+@keyframes gachaLimitedHalo{to{transform:rotate(-360deg)}}
+@keyframes gachaLimitedAura{0%,100%{transform:scale(.78);filter:brightness(1)}50%{transform:scale(1.18);filter:brightness(1.32)}}
+@keyframes gachaLimitedRings{to{transform:scale(1.02) rotate(360deg)}}
+@keyframes gachaLimitedStars{from{filter:brightness(.82) drop-shadow(0 0 7px rgba(255,107,218,.72))}to{filter:brightness(1.55) drop-shadow(0 0 13px rgba(255,107,218,.95)) drop-shadow(0 0 18px rgba(112,220,255,.72))}}
+
+/* Stronger horizontal glitter sweep. */
+.gacha-reveal-spark-sweep{z-index:8;top:-8%;bottom:-8%;width:20%;background:linear-gradient(90deg,transparent,rgba(255,255,255,.32) 18%,#fff 47%,rgba(190,249,255,.94) 58%,transparent 100%);filter:blur(.3px) drop-shadow(0 0 12px #fff) drop-shadow(0 0 28px rgba(95,225,255,.88));animation:gachaSparkSweep .92s cubic-bezier(.12,.73,.18,1) .10s both}
+.gacha-reveal-spark-sweep::before{content:'✦   ✧   ✦   ✦   ✧   ✦';top:11%;font-size:clamp(20px,4vw,44px);text-shadow:0 0 6px #fff,0 0 18px rgba(98,231,255,.95),0 0 30px rgba(255,117,220,.72)}
+.gacha-card-stage.is-ssr .gacha-reveal-spark-sweep{width:25%;animation:gachaSparkSweep 1.05s cubic-bezier(.1,.75,.16,1) .10s both;filter:drop-shadow(0 0 16px #fff) drop-shadow(0 0 36px rgba(78,215,255,.95))}
+.gacha-card-stage.is-limited .gacha-reveal-spark-sweep{width:29%;background:linear-gradient(90deg,transparent,rgba(255,255,255,.38) 18%,#fff 44%,rgba(255,142,223,.95) 55%,rgba(120,225,255,.90) 68%,transparent);filter:drop-shadow(0 0 17px #fff) drop-shadow(0 0 38px rgba(255,104,218,.95));animation:gachaSparkSweep 1.15s cubic-bezier(.08,.75,.15,1) .08s both}
+
+/* Cleaner bright nameplate inspired by classic idol-game result cards. */
+.gacha-reveal-titleplate{
+  left:clamp(16px,4vw,42px);right:clamp(16px,4vw,42px);bottom:clamp(24px,5.5vh,54px);min-height:94px;
+  padding:15px 18px 14px;gap:14px;border:1px solid rgba(255,255,255,.84);border-bottom:3px solid #62d7ee;border-radius:20px 20px 8px 8px;
+  background:linear-gradient(90deg,rgba(255,255,255,.94) 0%,rgba(239,252,255,.91) 48%,rgba(255,255,255,.70) 78%,rgba(255,255,255,.22) 100%);
+  box-shadow:0 10px 30px rgba(50,111,139,.14),inset 0 1px 0 #fff;backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);
+  color:#315f72;
+}
+.gacha-reveal-titleplate::before{left:16px;right:16%;bottom:-9px;height:13px;background:linear-gradient(90deg,#4fcfd0,#fff 24%,#68bfff 54%,transparent);filter:drop-shadow(0 0 7px rgba(79,207,208,.64))}
+.gacha-reveal-titleplate::after{content:'✦  ·  ✧  ·  ✦';position:absolute;right:18px;top:8px;color:rgba(87,190,215,.58);letter-spacing:.4em;font-size:10px;white-space:nowrap}
+.gacha-reveal-rarity{color:#d79a13;text-shadow:0 1px 0 #fff,0 0 10px rgba(255,198,55,.55);font-size:clamp(17px,3vw,25px)}
+.gacha-reveal-subtitle{color:#4da4bc;text-shadow:none;letter-spacing:.10em;font-weight:900}
+.gacha-reveal-name{color:#3ca5d2;-webkit-text-stroke:1px rgba(255,255,255,.95);text-shadow:0 2px 0 rgba(23,121,165,.16),0 0 8px rgba(255,255,255,.9),0 0 15px rgba(76,185,231,.22)}
+.gacha-reveal-state{border-color:rgba(72,167,193,.38);background:rgba(255,255,255,.78);color:#397f93;text-shadow:none;box-shadow:0 0 13px rgba(112,211,231,.25)}
+.gacha-card-stage.is-ssr .gacha-reveal-titleplate{animation:gachaTitleIn .58s cubic-bezier(.2,.85,.2,1) 2.02s forwards}
+.gacha-card-stage.is-limited .gacha-reveal-titleplate{background:linear-gradient(90deg,rgba(255,255,255,.95),rgba(255,239,250,.93) 45%,rgba(242,238,255,.82) 77%,rgba(255,255,255,.24));border-bottom-color:#f078cf;box-shadow:0 12px 34px rgba(199,91,176,.16),0 0 24px rgba(145,113,255,.10);animation:gachaTitleIn .62s cubic-bezier(.2,.85,.2,1) 2.24s forwards}
+.gacha-card-stage.is-limited .gacha-reveal-titleplate::before{background:linear-gradient(90deg,#ff79d4,#fff 24%,#9b83ff 55%,#6fdcff 72%,transparent);filter:drop-shadow(0 0 9px rgba(255,103,212,.68))}
+.gacha-card-stage.is-limited .gacha-reveal-titleplate::after{content:'✦  LIMITED  ✦';color:rgba(196,73,162,.62);letter-spacing:.18em}
+.gacha-card-stage.is-limited .gacha-reveal-rarity{color:#d94eb7;text-shadow:0 1px 0 #fff,0 0 11px rgba(255,90,205,.45)}
+.gacha-card-stage.is-limited .gacha-reveal-subtitle{color:#9c6bc5}
+.gacha-card-stage.is-limited .gacha-reveal-name{color:#d85fb8;-webkit-text-stroke:1px rgba(255,255,255,.95);text-shadow:0 2px 0 rgba(147,54,126,.14),0 0 9px #fff,0 0 18px rgba(255,95,207,.26)}
+.gacha-card-stage.is-limited .gacha-reveal-state{color:#a24d91;border-color:rgba(218,86,181,.32);box-shadow:0 0 14px rgba(255,104,209,.22)}
+
+.gacha-reveal-progress{background:rgba(255,255,255,.78);border-color:rgba(72,149,158,.22);color:#47756f;text-shadow:none;box-shadow:0 4px 16px rgba(60,126,126,.10)}
+.gacha-cinematic.card-sequence .gacha-cinema-caption{color:#5a7f78!important;background:rgba(255,255,255,.72)!important;border:1px solid rgba(87,171,153,.18)!important;box-shadow:0 8px 24px rgba(64,130,117,.10)!important;backdrop-filter:blur(8px)}
+.gacha-cinematic.card-sequence .gacha-skip{color:#49766d!important;background:rgba(255,255,255,.80)!important;border:1px solid rgba(89,167,151,.24)!important;box-shadow:0 8px 20px rgba(73,132,121,.10)!important}
+
+@media(max-width:520px){
+  .gacha-reveal-titleplate{left:10px;right:10px;bottom:50px;min-height:78px;padding:11px 12px 10px;border-radius:16px 16px 7px 7px}
+  .gacha-reveal-titleplate::after{right:10px;top:5px;font-size:8px}
+  .gacha-reveal-name{font-size:29px}.gacha-reveal-rarity{font-size:16px}.gacha-reveal-subtitle{font-size:10px}
+  .gacha-card-stage.is-ssr .gacha-reveal-art{animation-duration:2.48s}
+  .gacha-card-stage.is-limited .gacha-reveal-art{animation-duration:2.76s}
+}
+@media (prefers-reduced-motion:reduce){
+  .gacha-card-stage.is-ssr .gacha-reveal-art,.gacha-card-stage.is-limited .gacha-reveal-art{animation-duration:.01ms!important}
+  .gacha-reveal-aura,.gacha-reveal-rings,.gacha-reveal-stars{animation:none!important}
+}
+</style>
+
 </head><body><div class="app"><header><strong>✦ MY GACHA</strong><div class="account-box"><strong id="headerPoints" class="points-balance">🪙 0 P</strong><span class="muted" id="status">연결 설정 필요</span><button type="button" id="userLoginBtn" class="ghost">👤 로그인</button><button type="button" id="userLogoutBtn" class="ghost hidden">로그아웃</button></div></header><div id="notice" role="status"></div><main>
 <section id="home" class="home-dashboard">
   <div id="eventBanner" class="panel event-banner home-banner hidden" role="button" tabindex="0">
@@ -3349,6 +3510,9 @@ button.ghost,.ghost{
     <div id="gachaCardReveal" class="gacha-card-reveal hidden" aria-live="polite">
       <div id="gachaDialogueScreen" class="gacha-dialogue-screen hidden"><div id="gachaDialogueLine" class="gacha-dialogue-line"></div></div>
       <div id="gachaCardStage" class="gacha-card-stage hidden">
+        <div class="gacha-reveal-aura" aria-hidden="true"></div>
+        <div class="gacha-reveal-rings" aria-hidden="true"></div>
+        <div class="gacha-reveal-stars" aria-hidden="true"></div>
         <img id="gachaRevealArt" class="gacha-reveal-art" alt="">
         <div class="gacha-reveal-spark-sweep"></div>
         <div class="gacha-reveal-titleplate">
@@ -4334,7 +4498,7 @@ function playGachaCinematic(cards,{source='normal',oldCounts=[]}={}){
    subtitleEl.textContent=c.is_limited?'LIMITED CARD':c.rarity==='SSR'?'SPECIAL CARD':c.rarity==='SR'?'RARE CARD':'CARD';
    nameEl.textContent=c.name||'';stateEl.textContent=Number(oldCounts[index]||0)===0?'NEW':'DUPLICATE';
    caption.textContent=`${revealPos+1} / ${revealOrder.length} · 화면을 터치해서 다음`;
-   lockBriefly(c.rarity==='SSR'?900:620)
+   lockBriefly(c.is_limited?3180:c.rarity==='SSR'?2820:620)
   };
 
   const showCardAt=(index)=>{
