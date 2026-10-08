@@ -3238,6 +3238,44 @@ button.ghost,.ghost{
 }
 </style>
 
+
+<style id="gacha-title-clean-v5">
+/* v5: clean card typography. Remove white stroke/glow that washed out Korean glyphs. */
+.gacha-reveal-titleplate{
+  font-family:'SUIT','Pretendard Variable','Pretendard','Noto Sans KR','Apple SD Gothic Neo','Malgun Gothic',system-ui,sans-serif!important;
+}
+.gacha-reveal-name{
+  color:#329ac7!important;
+  -webkit-text-stroke:0!important;
+  text-stroke:0!important;
+  text-shadow:0 1px 0 rgba(255,255,255,.28),0 2px 7px rgba(38,126,165,.12)!important;
+  font-family:'SUIT','Pretendard Variable','Pretendard','Noto Sans KR','Apple SD Gothic Neo','Malgun Gothic',system-ui,sans-serif!important;
+  font-weight:800!important;
+  letter-spacing:-.035em!important;
+}
+.gacha-card-stage.is-limited .gacha-reveal-name{
+  color:#d950ad!important;
+  -webkit-text-stroke:0!important;
+  text-shadow:0 1px 0 rgba(255,255,255,.24),0 2px 8px rgba(186,67,151,.13)!important;
+}
+.gacha-reveal-rarity{
+  text-shadow:0 1px 0 rgba(255,255,255,.28),0 2px 6px rgba(210,145,15,.16)!important;
+}
+.gacha-card-stage.is-limited .gacha-reveal-rarity{
+  text-shadow:0 1px 0 rgba(255,255,255,.24),0 2px 7px rgba(207,65,168,.15)!important;
+}
+.gacha-reveal-subtitle{
+  text-shadow:none!important;
+  -webkit-text-stroke:0!important;
+}
+.gacha-reveal-state{
+  text-shadow:none!important;
+}
+@media(max-width:520px){
+  .gacha-reveal-name{font-size:21px!important;font-weight:800!important}
+}
+</style>
+
 </head><body><div class="app"><header><strong>✦ MY GACHA</strong><div class="account-box"><strong id="headerPoints" class="points-balance">🪙 0 P</strong><span class="muted" id="status">연결 설정 필요</span><button type="button" id="userLoginBtn" class="ghost">👤 로그인</button><button type="button" id="userLogoutBtn" class="ghost hidden">로그아웃</button></div></header><div id="notice" role="status"></div><main>
 <section id="home" class="home-dashboard">
   <div id="eventBanner" class="panel event-banner home-banner hidden" role="button" tabindex="0">
