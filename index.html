@@ -2870,6 +2870,57 @@ button.ghost,.ghost{
 .trade-qty-remove{width:30px!important;height:30px!important;padding:0!important;font-size:16px!important;line-height:1!important}
 @media(max-width:650px){.trade-selected-item{grid-template-columns:42px minmax(0,1fr)!important}.trade-selected-item img{width:42px!important;height:42px!important}.trade-qty-control.trade-qty-direct{grid-column:1/-1;grid-template-columns:minmax(0,1fr) auto 34px;margin-top:2px}.trade-qty-input{height:38px!important;font-size:14px!important}}
 </style>
+
+<style id="gacha-card-sequence-v1">
+/* ===== One-by-one gacha card reveal ===== */
+.gacha-card-reveal{position:absolute;z-index:42;inset:0;display:grid;place-items:center;overflow:hidden;pointer-events:none}
+.gacha-card-reveal.hidden,.gacha-dialogue-screen.hidden,.gacha-card-stage.hidden{display:none!important}
+.gacha-dialogue-screen{position:absolute;inset:-2%;z-index:5;display:grid;place-items:center;background:#030407;color:#fff;padding:9vw 8vw;text-align:center;animation:gachaDialogueFade .32s ease both}
+.gacha-dialogue-line{max-width:min(86vw,760px);font-size:clamp(20px,4vw,36px);font-weight:800;line-height:1.7;letter-spacing:.025em;text-shadow:0 0 18px #fff3;word-break:keep-all}
+.gacha-dialogue-line::before,.gacha-dialogue-line::after{content:'✦';display:inline-block;margin:0 .65em;color:#fff9;font-size:.55em;vertical-align:middle;text-shadow:0 0 12px #fff}
+@keyframes gachaDialogueFade{from{opacity:0}to{opacity:1}}
+.gacha-card-stage{position:absolute;inset:0;z-index:4;display:grid;place-items:center;background:#070914;overflow:hidden;isolation:isolate}
+.gacha-card-stage::before{content:'';position:absolute;inset:-8%;z-index:-2;background-image:var(--gacha-reveal-bg);background-size:cover;background-position:center;filter:blur(28px) brightness(.42) saturate(1.2);transform:scale(1.1)}
+.gacha-card-stage::after{content:'';position:absolute;inset:0;z-index:-1;background:linear-gradient(180deg,#05061099 0%,transparent 22%,transparent 67%,#050610d8 100%),radial-gradient(circle at 50% 46%,transparent 0 36%,#05061055 72%,#050610cc 100%)}
+.gacha-reveal-art{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;object-position:center;filter:saturate(1.05) contrast(1.02);clip-path:inset(0 100% 0 0);animation:gachaCardWipe .8s cubic-bezier(.16,.76,.18,1) .08s forwards}
+@keyframes gachaCardWipe{0%{clip-path:inset(0 100% 0 0);filter:brightness(1.8) saturate(.65)}75%{filter:brightness(1.12) saturate(1.1)}100%{clip-path:inset(0 0 0 0);filter:saturate(1.05) contrast(1.02)}}
+.gacha-reveal-spark-sweep{position:absolute;z-index:8;top:-10%;bottom:-10%;left:-34%;width:28%;transform:skewX(-13deg);background:linear-gradient(90deg,transparent,#fff3 19%,#fff 48%,#bdf7ffcc 58%,transparent 100%);filter:blur(1px) drop-shadow(0 0 13px #fff) drop-shadow(0 0 28px #91eaff);animation:gachaSparkSweep .95s cubic-bezier(.13,.7,.18,1) forwards;mix-blend-mode:screen}
+.gacha-reveal-spark-sweep::before{content:'✦  ✧  ✦  ✧  ✦';position:absolute;top:16%;left:-90%;width:280%;font-size:clamp(18px,4vw,40px);letter-spacing:.75em;white-space:nowrap;color:#fff;text-shadow:0 0 5px #fff,0 0 16px #8aeaff,0 0 28px #ff91df;animation:gachaSparkStars .95s ease-out both}
+.gacha-reveal-spark-sweep::after{content:'';position:absolute;left:-180%;top:50%;width:420%;height:2px;background:linear-gradient(90deg,transparent,#fff,#a9f2ff,#fff,transparent);box-shadow:0 -38px 12px #fff9,0 38px 12px #f9a7ff99,0 0 22px #fff}
+@keyframes gachaSparkSweep{0%{left:-34%;opacity:0}12%{opacity:1}100%{left:112%;opacity:0}}
+@keyframes gachaSparkStars{0%{opacity:0;transform:translateX(-12%)}28%{opacity:1}100%{opacity:0;transform:translateX(24%)}}
+.gacha-reveal-titleplate{position:absolute;z-index:10;left:clamp(18px,5vw,60px);right:clamp(18px,5vw,60px);bottom:clamp(30px,7vh,76px);display:flex;align-items:flex-end;gap:16px;min-height:92px;padding:14px 18px 13px;border-bottom:2px solid #d9f8ff;background:linear-gradient(90deg,#071224dd 0%,#102b50b8 42%,#0712244a 78%,transparent 100%);box-shadow:0 10px 35px #0005;opacity:0;transform:translateY(24px);animation:gachaTitleIn .55s cubic-bezier(.2,.85,.2,1) .56s forwards}
+.gacha-reveal-titleplate::before{content:'';position:absolute;left:0;right:15%;bottom:-7px;height:11px;background:linear-gradient(90deg,#8de9ff,#fff 28%,#8ed7ff 55%,transparent);clip-path:polygon(0 38%,18% 38%,20% 0,22% 38%,58% 38%,60% 76%,62% 38%,100% 38%,100% 54%,62% 54%,60% 100%,58% 54%,22% 54%,20% 82%,18% 54%,0 54%);filter:drop-shadow(0 0 5px #8feaff)}
+.gacha-reveal-rarity{flex:0 0 auto;margin-bottom:3px;font-size:clamp(16px,3vw,25px);font-weight:1000;letter-spacing:.03em;color:#fff4a8;text-shadow:0 2px 2px #362600,0 0 9px #ffd746,0 0 16px #ff9f35}
+.gacha-reveal-namebox{min-width:0;display:grid;gap:2px}
+.gacha-reveal-subtitle{font-size:clamp(11px,2.1vw,16px);font-weight:800;color:#bcecff;letter-spacing:.04em;text-shadow:0 1px 7px #001a36}
+.gacha-reveal-name{font-size:clamp(27px,5.4vw,54px);font-weight:1000;line-height:1.06;color:#eafcff;-webkit-text-stroke:1px #2287d9;text-shadow:0 2px 0 #07589e,0 0 4px #fff,0 0 17px #60c8ff;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.gacha-reveal-state{flex:0 0 auto;margin-left:auto;margin-bottom:4px;padding:4px 9px;border-radius:999px;border:1px solid #fff9;background:#fff1;color:#fff;font-size:12px;font-weight:1000;letter-spacing:.08em;text-shadow:0 1px 4px #003d72;box-shadow:0 0 13px #7fe4ff88}
+.gacha-card-stage.is-limited .gacha-reveal-titleplate{background:linear-gradient(90deg,#2b0c2cdd 0%,#621b62bd 42%,#34133b61 78%,transparent);border-bottom-color:#ffd1f4}
+.gacha-card-stage.is-limited .gacha-reveal-titleplate::before{background:linear-gradient(90deg,#ff83dd,#fff 28%,#ad8dff 58%,transparent);filter:drop-shadow(0 0 7px #ff7bd9)}
+.gacha-card-stage.is-limited .gacha-reveal-rarity{color:#ffd6f3;text-shadow:0 0 8px #fff,0 0 18px #ff65d6,0 0 28px #8c62ff}
+.gacha-card-stage.is-limited .gacha-reveal-name{-webkit-text-stroke:1px #c044a9;text-shadow:0 2px 0 #77155f,0 0 5px #fff,0 0 18px #ff80d9;color:#fff0fb}
+.gacha-card-stage.is-sr .gacha-reveal-rarity{color:#fff0a0;text-shadow:0 0 11px #ffc32f}
+.gacha-card-stage.is-r .gacha-reveal-rarity{color:#e5e9f4;text-shadow:0 0 8px #9fa8c1}
+@keyframes gachaTitleIn{to{opacity:1;transform:none}}
+.gacha-reveal-progress{position:absolute;z-index:48;left:14px;top:14px;padding:6px 10px;border-radius:999px;background:#0508119c;border:1px solid #ffffff3d;color:#fff;font-size:11px;font-weight:900;letter-spacing:.08em;backdrop-filter:blur(6px)}
+.gacha-cinematic.card-sequence .gacha-door-wrap,.gacha-cinematic.card-sequence .gacha-signal,.gacha-cinematic.card-sequence .gacha-limited-emblem,.gacha-cinematic.card-sequence .gacha-orb-field{opacity:0!important;pointer-events:none!important;transition:opacity .2s ease}
+.gacha-cinematic.card-sequence .gacha-cinema-caption{z-index:49;bottom:1.8%;font-size:11px;color:#fff9}
+.gacha-cinematic.card-sequence .gacha-cinema-caption::after{content:''!important;display:none!important}
+.gacha-cinematic.card-sequence .gacha-skip{z-index:60}
+.gacha-cinematic.skip-new-ssr .gacha-skip{border-color:#bff7ff99;box-shadow:0 0 18px #8de8ff55}
+/* fakeout: white/gold door -> shimmer -> rainbow door */
+.gacha-cinematic.fakeout-transition .gacha-door-wrap::before{content:'✦  ✧  ✦';position:absolute;z-index:20;left:-28%;top:8%;width:42%;height:84%;display:grid;place-items:center;color:#fff;font-size:25px;letter-spacing:.35em;background:linear-gradient(90deg,transparent,#fff5,#d9fbffcc,#fff5,transparent);filter:drop-shadow(0 0 8px #fff) drop-shadow(0 0 17px #8cf0ff);animation:gachaDoorShararang 1.05s ease-in-out .2s both;pointer-events:none}
+@keyframes gachaDoorShararang{0%{left:-30%;opacity:0}16%{opacity:1}78%{opacity:1}100%{left:91%;opacity:0}}
+@media(max-width:520px){
+ .gacha-dialogue-screen{padding:12vw 7vw}.gacha-dialogue-line{font-size:20px;line-height:1.65}
+ .gacha-reveal-titleplate{left:12px;right:12px;bottom:55px;gap:9px;padding:11px 12px 10px;min-height:76px}
+ .gacha-reveal-name{font-size:29px}.gacha-reveal-subtitle{font-size:11px}.gacha-reveal-rarity{font-size:16px}.gacha-reveal-state{font-size:10px;padding:3px 6px}
+ .gacha-reveal-progress{left:10px;top:10px}
+}
+@media (prefers-reduced-motion:reduce){.gacha-reveal-art,.gacha-reveal-spark-sweep,.gacha-reveal-spark-sweep::before,.gacha-reveal-titleplate{animation-duration:.01ms!important;animation-delay:0ms!important}}
+</style>
+
 </head><body><div class="app"><header><strong>✦ MY GACHA</strong><div class="account-box"><strong id="headerPoints" class="points-balance">🪙 0 P</strong><span class="muted" id="status">연결 설정 필요</span><button type="button" id="userLoginBtn" class="ghost">👤 로그인</button><button type="button" id="userLogoutBtn" class="ghost hidden">로그아웃</button></div></header><div id="notice" role="status"></div><main>
 <section id="home" class="home-dashboard">
   <div id="eventBanner" class="panel event-banner home-banner hidden" role="button" tabindex="0">
@@ -3295,6 +3346,19 @@ button.ghost,.ghost{
       <div class="gacha-door-crest"></div>
     </div>
     <div id="gachaOrbField" class="gacha-orb-field"></div>
+    <div id="gachaCardReveal" class="gacha-card-reveal hidden" aria-live="polite">
+      <div id="gachaDialogueScreen" class="gacha-dialogue-screen hidden"><div id="gachaDialogueLine" class="gacha-dialogue-line"></div></div>
+      <div id="gachaCardStage" class="gacha-card-stage hidden">
+        <img id="gachaRevealArt" class="gacha-reveal-art" alt="">
+        <div class="gacha-reveal-spark-sweep"></div>
+        <div class="gacha-reveal-titleplate">
+          <div id="gachaRevealRarity" class="gacha-reveal-rarity">SSR</div>
+          <div class="gacha-reveal-namebox"><div id="gachaRevealSubtitle" class="gacha-reveal-subtitle"></div><div id="gachaRevealName" class="gacha-reveal-name"></div></div>
+          <div id="gachaRevealState" class="gacha-reveal-state"></div>
+        </div>
+      </div>
+    </div>
+    <div id="gachaRevealProgress" class="gacha-reveal-progress hidden">1 / 10</div>
   </div>
 </div><div id="collectionDetailOverlay" class="collection-detail-overlay hidden" role="dialog" aria-modal="true" aria-labelledby="collectionDetailName">
   <div class="collection-detail-dialog">
@@ -4008,7 +4072,7 @@ async function limitedDraw(n){
  if(local.points<cost)return notice('포인트가 부족해요.');
  const rates=limitedRateConfig(),pools=limitedPools();
  local.points-=cost;local.limitedPoints+=n;
- const out=[],pulled=[];
+ const out=[],pulled=[],pulledOld=[];
  for(let i=0;i<n;i++){
   const x=Math.random()*100;
   let type;
@@ -4021,10 +4085,10 @@ async function limitedDraw(n){
   const old=local.counts[c.id]||0;
   local.counts[c.id]=old+1;
   const label=type==='LIMITED'?(old?`한정 중복 · ${old+1}`:'LIMITED NEW'):(old?`중복 · ${old+1}`:`${c.rarity} NEW`);
-  pulled.push(c);out.push(gachaResultCard(c,label,i))
+  pulled.push(c);pulledOld.push(old);out.push(gachaResultCard(c,label,i))
  }
  save();gachaAnimationBusy=true;render();
- try{await playGachaCinematic(pulled,{source:'limited'})}
+ try{await playGachaCinematic(pulled,{source:'limited',oldCounts:pulledOld})}
  finally{gachaAnimationBusy=false}
  $('limitedResults').innerHTML=out.join('');render()
 }
@@ -4186,184 +4250,135 @@ function gachaOrbPositions(n){
  addRow(bottomCount,Math.round(rowGap/2));
  return out
 }
-function playGachaCinematic(cards,{source='normal'}={}){
+function gachaRevealDialogue(c){
+ const lines=Array.isArray(c?.dialogues)?c.dialogues.map(x=>String(x||'').trim()).filter(Boolean):[];
+ return lines.length?lines[Math.floor(Math.random()*lines.length)]:'...'
+}
+function playGachaCinematic(cards,{source='normal',oldCounts=[]}={}){
  const overlay=$('gachaCinematic'),field=$('gachaOrbField'),caption=$('gachaCinemaCaption'),skip=$('gachaSkipButton');
+ const reveal=$('gachaCardReveal'),dialogue=$('gachaDialogueScreen'),dialogueLine=$('gachaDialogueLine'),cardStage=$('gachaCardStage');
+ const art=$('gachaRevealArt'),rarityEl=$('gachaRevealRarity'),subtitleEl=$('gachaRevealSubtitle'),nameEl=$('gachaRevealName'),stateEl=$('gachaRevealState'),progress=$('gachaRevealProgress');
  if(!overlay||!field||!cards?.length)return Promise.resolve();
 
  const run=++gachaAnimationRun;
  const hasLimited=cards.some(c=>c?.is_limited);
  const hasSSR=cards.some(c=>!c?.is_limited&&c?.rarity==='SSR');
  const hasSR=cards.some(c=>c?.rarity==='SR');
-
- // 실제 결과와 문 색은 분리.
- // 보통은 최고 등급대로 문이 나오지만, 실제 SSR/한정이 든 뽑기에서 아주 낮은 확률로
- // 일반 흰색 문 또는 금색 SR 문이 먼저 나왔다가 구슬 공개 순간 승격한다.
  const fakeDoorRoll=(hasLimited||hasSSR)?Math.random():1;
- const fakeDoorKind=fakeDoorRoll<0.05?'r':fakeDoorRoll<0.15?'sr':null; // 흰색 5% · 금색 10%
+ const fakeDoorKind=fakeDoorRoll<0.05?'r':fakeDoorRoll<0.15?'sr':null;
  const surpriseFakeout=!!fakeDoorKind;
  const doorKind=fakeDoorKind||(hasLimited?'limited':hasSSR?'ssr':hasSR?'sr':'r');
-
- const firstSSRIndex=cards.findIndex(c=>!c?.is_limited&&c?.rarity==='SSR');
  const firstLimitedIndex=cards.findIndex(c=>c?.is_limited);
  const positions=gachaOrbPositions(cards.length);
+ const naturalOrder=cards.map((_,i)=>i);
+ const newSSRIndices=cards.map((c,i)=>c?.rarity==='SSR'&&Number(oldCounts[i]||0)===0?i:-1).filter(i=>i>=0);
 
  overlay.className='gacha-cinematic hidden door-'+doorKind;
  field.replaceChildren();
  overlay.setAttribute('aria-hidden','false');
+ reveal?.classList.add('hidden');dialogue?.classList.add('hidden');cardStage?.classList.add('hidden');progress?.classList.add('hidden');
 
  cards.forEach((c,i)=>{
   const orb=document.createElement('div');
   orb.className='gacha-orb '+gachaAnimKind(c);
   const [x,y]=positions[i]||[0,0];
-  orb.style.setProperty('--x',x+'px');
-  orb.style.setProperty('--y',y+'px');
-  orb.style.setProperty('--rot',((i%2?1:-1)*(3+(i%4)))+'deg');
-  orb.style.animation='none';
-  orb.style.opacity='0';
-  field.append(orb)
+  orb.style.setProperty('--x',x+'px');orb.style.setProperty('--y',y+'px');orb.style.setProperty('--rot',((i%2?1:-1)*(3+(i%4)))+'deg');
+  orb.style.animation='none';orb.style.opacity='0';field.append(orb)
  });
 
  return new Promise(resolve=>{
   let done=false,step=0,lockedUntil=0;
-
+  let revealOrder=naturalOrder.slice(),revealPos=-1,currentIndex=-1,skipMode=false,dialogueTimer=0;
   const lockBriefly=(ms=520)=>{lockedUntil=performance.now()+ms};
   const canAdvance=()=>performance.now()>=lockedUntil;
-
+  const clearDialogueTimer=()=>{if(dialogueTimer){clearTimeout(dialogueTimer);dialogueTimer=0}};
+  const resetCardVisual=()=>{if(!cardStage)return;cardStage.className='gacha-card-stage hidden';cardStage.style.removeProperty('--gacha-reveal-bg');if(art){art.className='gacha-reveal-art';art.removeAttribute('src')}};
   const finish=()=>{
-   if(done)return;
-   done=true;
-   overlay.onclick=null;
-   if(skip)skip.onclick=null;
-   overlay.className='gacha-cinematic hidden';
-   overlay.setAttribute('aria-hidden','true');
-   field.replaceChildren();
-   resolve()
+   if(done)return;done=true;clearDialogueTimer();overlay.onclick=null;if(skip)skip.onclick=null;
+   overlay.className='gacha-cinematic hidden';overlay.setAttribute('aria-hidden','true');field.replaceChildren();
+   reveal?.classList.add('hidden');dialogue?.classList.add('hidden');resetCardVisual();progress?.classList.add('hidden');resolve()
   };
 
-  const fakeoutTarget=firstLimitedIndex>=0?'limited':'ssr';
-  const fakeDoorLabel=fakeDoorKind==='r'?'평범한 문':'금빛 문';
-
+  const fakeoutTarget='ssr';
   const openDoor=()=>{
    overlay.classList.add('door-ready');
-
-   // 낚시 연출은 구슬이 먼저 정답을 보여주지 않게 한다.
-   // 낮은 등급 문이 이상하게 발광 -> 문 자체가 SSR/한정 색으로 천천히 승격 -> 문 오픈 순서.
    if(surpriseFakeout){
     overlay.classList.add('fakeout-transition',fakeoutTarget==='limited'?'fakeout-limited':'fakeout-ssr');
-    caption.textContent=`${fakeDoorLabel}이 이상하게 빛나기 시작한다...`;
-    lockBriefly(1450);
-
-    setTimeout(()=>{
-     if(done||run!==gachaAnimationRun)return;
-     overlay.classList.add('fakeout-upgrade');
-     caption.textContent='...빛의 색이 바뀐다?!'
-    },330);
-
-    setTimeout(()=>{
-     if(done||run!==gachaAnimationRun)return;
-     overlay.classList.remove('door-r','door-sr','signal-gold');
-     overlay.classList.add('door-'+fakeoutTarget);
-     if(fakeoutTarget==='limited'){
-      overlay.classList.add('signal-limited','signal-show');
-      caption.textContent='✦ LIMITED ✦ 문이 한정의 빛으로 승격했다!'
-     }else{
-      overlay.classList.add('signal-rainbow','signal-show');
-      caption.textContent='...?! 금빛이 무지개로 변했다! SSR 확정!'
-     }
-    },820);
-
-    setTimeout(()=>{
-     if(done||run!==gachaAnimationRun)return;
-     overlay.classList.add('door-open');
-    },1010);
-    return
+    caption.textContent=fakeDoorKind==='r'?'흰 문이 반짝인다...':'금빛 문이 반짝인다...';lockBriefly(1380);
+    setTimeout(()=>{if(done||run!==gachaAnimationRun)return;overlay.classList.add('fakeout-upgrade');caption.textContent='✦  ✧  ✦'},360);
+    setTimeout(()=>{if(done||run!==gachaAnimationRun)return;overlay.classList.remove('door-r','door-sr','signal-gold');overlay.classList.add('door-'+fakeoutTarget,'signal-rainbow','signal-show');caption.textContent='무지개빛으로 변했다!'},790);
+    setTimeout(()=>{if(done||run!==gachaAnimationRun)return;overlay.classList.add('door-open')},1010);return
    }
-
    overlay.classList.add('door-open');
-   if(doorKind==='sr'){
-    overlay.classList.add('signal-gold','signal-show');
-    caption.textContent='금빛 문이 부드럽게 열린다...!'
-   }else if(doorKind==='ssr'){
-    overlay.classList.add('signal-rainbow','signal-show');
-    caption.textContent='무지개빛 문이 열린다... SSR 확정!'
-   }else if(doorKind==='limited'){
-    overlay.classList.add('signal-limited','signal-show');
-    caption.textContent='한정의 빛이 문을 감싼다...!'
-   }else{
-    caption.textContent='문이 조용히 열린다...'
-   }
+   if(doorKind==='sr'){overlay.classList.add('signal-gold','signal-show');caption.textContent='금빛 문이 열린다...'}
+   else if(doorKind==='ssr'){overlay.classList.add('signal-rainbow','signal-show');caption.textContent='무지개 문이 열린다...'}
+   else if(doorKind==='limited'){overlay.classList.add('signal-limited','signal-show');caption.textContent='한정의 빛이 문을 감싼다...'}
+   else caption.textContent='문이 열린다...';
    lockBriefly(760)
   };
 
   const showOrbs=()=>{
-   const orbs=[...field.querySelectorAll('.gacha-orb')];
-   overlay.classList.add('orbs-revealing');
-   orbs.forEach((orb,i)=>{
-    orb.style.opacity='';
-    const isLimited=orb.classList.contains('limited');
-    const isSSR=orb.classList.contains('ssr');
-    const delay=i*82;
-    const fly=`gachaOrbReveal 1.12s cubic-bezier(.16,.72,.2,1) ${delay}ms forwards`;
-    const extra=isSSR
-      ? `,gachaOrbSSRFloat 3.2s ease-in-out ${(1.12+delay/1000).toFixed(3)}s infinite`
-      : isLimited
-        ? `,gachaOrbLimitedFloat 3s ease-in-out ${(1.12+delay/1000).toFixed(3)}s infinite`
-        : '';
-    orb.style.animation=fly+extra
-   });
+   const orbs=[...field.querySelectorAll('.gacha-orb')];overlay.classList.add('orbs-revealing');
+   orbs.forEach((orb,i)=>{orb.style.opacity='';const isLimited=orb.classList.contains('limited'),isSSR=orb.classList.contains('ssr'),delay=i*82;const fly=`gachaOrbReveal 1.12s cubic-bezier(.16,.72,.2,1) ${delay}ms forwards`;const extra=isSSR?`,gachaOrbSSRFloat 3.2s ease-in-out ${(1.12+delay/1000).toFixed(3)}s infinite`:isLimited?`,gachaOrbLimitedFloat 3s ease-in-out ${(1.12+delay/1000).toFixed(3)}s infinite`:'';orb.style.animation=fly+extra});
+   caption.textContent=hasLimited?'한정의 빛이 섞인 구슬들이 나타났다...':hasSSR?'무지개 구슬이 모습을 드러낸다...':hasSR?'금빛 구슬이 모습을 드러낸다...':'구슬들이 모습을 드러낸다...';
+   overlay.classList.add('wait-result');lockBriefly(1080+Math.min(cards.length,10)*52)
+  };
 
-   if(hasLimited&&firstLimitedIndex>=0){
-    setTimeout(()=>{
-     if(done||run!==gachaAnimationRun)return;
-     overlay.classList.add('limited-burst');
-     caption.textContent='✦ LIMITED ✦ 한정 캐릭터 확정!'
-    },610+firstLimitedIndex*82)
-   }else if(hasSSR){
-    caption.textContent=surpriseFakeout?'승격한 문 너머에서 무지개 구슬이 나타났다!':'무지개 구슬이 천천히 모습을 드러낸다...!'
-   }else if(hasSR){
-    caption.textContent='금빛 구슬이 모습을 드러낸다...!'
-   }else{
-    caption.textContent='구슬들이 빛 속에서 나타난다...'
+  const drawCardArt=(index)=>{
+   const c=cards[index];if(!c||done)return;
+   clearDialogueTimer();dialogue?.classList.add('hidden');reveal?.classList.remove('hidden');resetCardVisual();
+   const kind=gachaAnimKind(c);cardStage.classList.remove('hidden');cardStage.classList.add('is-'+kind);
+   const img=c.image_url||characterDisplayImage(c)||'';cardStage.style.setProperty('--gacha-reveal-bg',`url("${String(img).replace(/"/g,'\\"')}")`);
+   art.alt=c.name||'';art.src=img;void cardStage.offsetWidth;art.className='gacha-reveal-art';
+   rarityEl.textContent=c.is_limited?'LIMITED SSR':c.rarity;
+   subtitleEl.textContent=c.is_limited?'LIMITED CARD':c.rarity==='SSR'?'SPECIAL CARD':c.rarity==='SR'?'RARE CARD':'CARD';
+   nameEl.textContent=c.name||'';stateEl.textContent=Number(oldCounts[index]||0)===0?'NEW':'DUPLICATE';
+   caption.textContent=`${revealPos+1} / ${revealOrder.length} · 화면을 터치해서 다음`;
+   lockBriefly(c.rarity==='SSR'?900:620)
+  };
+
+  const showCardAt=(index)=>{
+   currentIndex=index;overlay.classList.add('card-sequence');reveal?.classList.remove('hidden');progress?.classList.remove('hidden');progress.textContent=`${revealPos+1} / ${revealOrder.length}`;
+   const c=cards[index],isSSR=c?.rarity==='SSR';
+   if(isSSR){
+    resetCardVisual();dialogue?.classList.remove('hidden');dialogueLine.textContent=gachaRevealDialogue(c);caption.textContent=c.is_limited?'LIMITED SSR · 대사':'SSR · 대사';
+    lockBriefly(1320);
+    dialogueTimer=setTimeout(()=>{if(done||run!==gachaAnimationRun||currentIndex!==index)return;drawCardArt(index)},1120)
+   }else drawCardArt(index)
+  };
+
+  const startSequence=()=>{step=3;revealOrder=naturalOrder.slice();revealPos=0;showCardAt(revealOrder[0])};
+  const nextReveal=()=>{
+   if(revealPos+1>=revealOrder.length){finish();return}
+   revealPos++;showCardAt(revealOrder[revealPos])
+  };
+  const skipToNewSSR=()=>{
+   const remaining=newSSRIndices.filter(i=>i!==currentIndex && (!skipMode || !revealOrder.slice(0,revealPos+1).includes(i)));
+   const keepCurrent=cards[currentIndex]?.rarity==='SSR'&&Number(oldCounts[currentIndex]||0)===0&&step===3;
+   const queue=(keepCurrent?[currentIndex]:[]).concat(remaining.filter(i=>!keepCurrent||i!==currentIndex));
+   if(!queue.length){finish();return}
+   skipMode=true;overlay.classList.add('skip-new-ssr','card-sequence');revealOrder=queue;revealPos=0;
+   if(keepCurrent){
+    progress?.classList.remove('hidden');if(progress)progress.textContent=`1 / ${revealOrder.length}`;
+    caption.textContent=`1 / ${revealOrder.length} · NEW SSR 연출만 계속`;
+    return
    }
-
-   overlay.classList.add('wait-result');
-   lockBriefly(1080+Math.min(cards.length,10)*52)
+   showCardAt(revealOrder[0])
   };
 
   const advance=e=>{
-   if(e){e.preventDefault();e.stopPropagation()}
-   if(done||!canAdvance())return;
-
-   if(step===0){
-    step=1;
-    openDoor();
-    return
-   }
-   if(step===1){
-    step=2;
-    showOrbs();
-    return
-   }
-   finish()
+   if(e){e.preventDefault();e.stopPropagation()}if(done||!canAdvance())return;
+   if(step===0){step=1;openDoor();return}
+   if(step===1){step=2;showOrbs();return}
+   if(step===2){startSequence();return}
+   if(step===3){nextReveal();return}
   };
-
   overlay.onclick=advance;
-  if(skip)skip.onclick=e=>{
-   e.preventDefault();
-   e.stopPropagation();
-   finish()
-  };
-
+  if(skip)skip.onclick=e=>{e.preventDefault();e.stopPropagation();if(done)return;skipToNewSSR()};
   overlay.classList.remove('hidden');
-  caption.textContent=
-   doorKind==='sr'?'금빛 문이 나타났다...':
-   doorKind==='ssr'?'무지개 문이 나타났다...':
-   doorKind==='limited'?'무지개와 핑크빛 문이 나타났다...':
-   '문이 나타났다...';
-  lockBriefly(420)
+  caption.textContent=doorKind==='sr'?'금빛 문이 나타났다...':doorKind==='ssr'?'무지개 문이 나타났다...':doorKind==='limited'?'특별한 문이 나타났다...':'문이 나타났다...';lockBriefly(420)
  })
 }
-
 function orderedMembers(rarity){const pool=rarity==='LIMITED'?characters.filter(c=>c.is_limited&&c.rarity==='SSR'):rarity==='SSR'?characters.filter(c=>c.rarity==='SSR'&&!c.is_limited):characters.filter(c=>c.rarity===rarity);return pool.sort((a,b)=>(Number(a.sort_order)||0)-(Number(b.sort_order)||0)||String(a.created_at||'').localeCompare(String(b.created_at||''))||String(a.id).localeCompare(String(b.id)))}
 function collectionLimitedHasStarted(c){if(!c?.is_limited)return true;const start=new Date(c.limited_start||'').getTime();return !Number.isFinite(start)||Date.now()>=start}
 function collectionMembers(rarity){return orderedMembers(rarity).filter(c=>rarity!=='LIMITED'||collectionLimitedHasStarted(c))}
@@ -4608,7 +4623,7 @@ async function finishGacha(){
  const out=entries.map(({c,old,i})=>gachaResultCard(c,old?`중복 · ${old+1}`:'NEW',i));
  local.pendingGacha=null;save();$('pityOverlay').classList.add('hidden');
  gachaAnimationBusy=true;render();
- try{await playGachaCinematic(entries.map(x=>x.c),{source:'normal'})}
+ try{await playGachaCinematic(entries.map(x=>x.c),{source:'normal',oldCounts:entries.map(x=>x.old)})}
  finally{gachaAnimationBusy=false}
  $('results').innerHTML=out.join('');render()
 }
