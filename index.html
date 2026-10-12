@@ -3274,6 +3274,28 @@ button.ghost,.ghost{
 @media(max-width:520px){
   .gacha-reveal-name{font-size:21px!important;font-weight:800!important}
 }
+
+
+/* HOME CHARACTER · persistent 4 slots + manual swipe/arrow carousel */
+#homeHero.home-character-slider{position:relative;touch-action:pan-y;overscroll-behavior-x:contain}
+#homeHero.home-character-slider.has-multiple{grid-template-areas:"art name" "art bubble" "art save" "controls ."!important}
+#homeHero>.home-character-slider-controls{grid-area:controls;display:flex;align-items:center;justify-content:center;gap:10px;min-height:38px;margin-top:-3px;user-select:none;-webkit-user-select:none}
+.home-character-slide-arrow{display:grid!important;place-items:center;width:34px!important;height:34px!important;min-width:34px!important;padding:0!important;border-radius:999px!important;border:1px solid #cbe9df!important;background:rgba(255,255,255,.92)!important;color:#3a9f84!important;font-size:24px!important;line-height:1!important;box-shadow:0 5px 14px rgba(58,159,132,.10)!important}
+.home-character-slide-arrow:hover{transform:translateY(-1px)!important;background:#f2fcf8!important}
+.home-character-slide-dots{display:flex;align-items:center;justify-content:center;gap:7px}
+.home-character-slide-dot{width:8px!important;height:8px!important;min-width:8px!important;padding:0!important;border:0!important;border-radius:999px!important;background:#cfe4de!important;box-shadow:none!important;transition:width .22s ease,background .22s ease!important}
+.home-character-slide-dot.active{width:22px!important;background:#63c7aa!important}
+.home-character-slide-count{min-width:35px;color:#78948c;font-size:9px;font-weight:900;letter-spacing:.04em;text-align:center}
+#homeHero>.home-slide-next{animation:homeSlideInNext .44s cubic-bezier(.22,.78,.22,1) both}
+#homeHero>.home-slide-prev{animation:homeSlideInPrev .44s cubic-bezier(.22,.78,.22,1) both}
+@keyframes homeSlideInNext{from{opacity:.15;transform:translateX(34px) scale(.985)}to{opacity:1;transform:translateX(0) scale(1)}}
+@keyframes homeSlideInPrev{from{opacity:.15;transform:translateX(-34px) scale(.985)}to{opacity:1;transform:translateX(0) scale(1)}}
+@media(max-width:650px){
+ #homeHero.home-character-slider.has-multiple{grid-template-areas:"art" "controls" "name" "bubble" "save"!important}
+ #homeHero>.home-character-slider-controls{margin:0 0 1px;min-height:36px}
+ .home-character-slide-arrow{width:32px!important;height:32px!important;min-width:32px!important;font-size:22px!important}
+}
+@media(prefers-reduced-motion:reduce){#homeHero>.home-slide-next,#homeHero>.home-slide-prev{animation:none!important}}
 </style>
 
 </head><body><div class="app"><header><strong>✦ MY GACHA</strong><div class="account-box"><strong id="headerPoints" class="points-balance">🪙 0 P</strong><span class="muted" id="status">연결 설정 필요</span><button type="button" id="userLoginBtn" class="ghost">👤 로그인</button><button type="button" id="userLogoutBtn" class="ghost hidden">로그아웃</button></div></header><div id="notice" role="status"></div><main>
@@ -3801,7 +3823,7 @@ const SUPABASE_ANON_KEY='sb_publishable_lAvF0YPrCfGs0lNW06QIHA_aChjh1iS';
 const ready=SUPABASE_URL.startsWith('https://')&&!SUPABASE_ANON_KEY.startsWith('PASTE_');
 const db=ready?createClient(SUPABASE_URL,SUPABASE_ANON_KEY):null;
 const $=id=>document.getElementById(id);let characters=[],settings={ssr:3,sr:17,r:80,pity:90,limited_rate:3,limited_ssr:3,limited_sr:17,limited_r:77,limited_pity:90,home_character_id:null},admin=false,session=null;
-const key='my-gacha-secure-v1';let local;try{local=JSON.parse(localStorage.getItem(key)||'{}')}catch{local={}};local.counts??={};local.sinceSSR??=0;local.homeCharacterId??=null;local.points=Number.isSafeInteger(local.points)&&local.points>=0?local.points:3000;local.pendingGacha??=null;local.pityPoints=Number.isSafeInteger(local.pityPoints)&&local.pityPoints>=0?local.pityPoints:Math.max(0,Math.floor(Number(local.sinceSSR)||0));local.attendance=local.attendance&&typeof local.attendance==='object'?local.attendance:{lastDate:null,day:0};local.lastGlobalGrantId=Number.isSafeInteger(local.lastGlobalGrantId)&&local.lastGlobalGrantId>=0?local.lastGlobalGrantId:0;local.homeCharacterIds=Array.isArray(local.homeCharacterIds)?local.homeCharacterIds.slice(0,3):(local.homeCharacterId?[local.homeCharacterId]:[]);local.limitedPoints=Number.isSafeInteger(local.limitedPoints)&&local.limitedPoints>=0?local.limitedPoints:0;local.limitedEventKey??=null;local.limitBreaks=local.limitBreaks&&typeof local.limitBreaks==='object'?local.limitBreaks:{};local.homeArtModes=local.homeArtModes&&typeof local.homeArtModes==='object'?local.homeArtModes:{};local.tetrisBest=Number.isSafeInteger(local.tetrisBest)&&local.tetrisBest>=0?local.tetrisBest:0;local.tetrisBestLines=Number.isSafeInteger(local.tetrisBestLines)&&local.tetrisBestLines>=0?local.tetrisBestLines:0;local.pangEquippedCharacterId??=null;local.detective=local.detective&&typeof local.detective==='object'?local.detective:{};
+const key='my-gacha-secure-v1';let local;try{local=JSON.parse(localStorage.getItem(key)||'{}')}catch{local={}};local.counts??={};local.sinceSSR??=0;local.homeCharacterId??=null;local.points=Number.isSafeInteger(local.points)&&local.points>=0?local.points:3000;local.pendingGacha??=null;local.pityPoints=Number.isSafeInteger(local.pityPoints)&&local.pityPoints>=0?local.pityPoints:Math.max(0,Math.floor(Number(local.sinceSSR)||0));local.attendance=local.attendance&&typeof local.attendance==='object'?local.attendance:{lastDate:null,day:0};local.lastGlobalGrantId=Number.isSafeInteger(local.lastGlobalGrantId)&&local.lastGlobalGrantId>=0?local.lastGlobalGrantId:0;local.homeCharacterIds=Array.isArray(local.homeCharacterIds)?[...new Set(local.homeCharacterIds.filter(Boolean))].slice(0,4):(local.homeCharacterId?[local.homeCharacterId]:[]);local.limitedPoints=Number.isSafeInteger(local.limitedPoints)&&local.limitedPoints>=0?local.limitedPoints:0;local.limitedEventKey??=null;local.limitBreaks=local.limitBreaks&&typeof local.limitBreaks==='object'?local.limitBreaks:{};local.homeArtModes=local.homeArtModes&&typeof local.homeArtModes==='object'?local.homeArtModes:{};local.tetrisBest=Number.isSafeInteger(local.tetrisBest)&&local.tetrisBest>=0?local.tetrisBest:0;local.tetrisBestLines=Number.isSafeInteger(local.tetrisBestLines)&&local.tetrisBestLines>=0?local.tetrisBestLines:0;local.pangEquippedCharacterId??=null;local.detective=local.detective&&typeof local.detective==='object'?local.detective:{};
 const attendanceRewards=[400,600,800,1000,1300,1600,2500];
 function attendanceDate(){const d=new Date();return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`}
 function attendanceDayNumber(date){if(!/^\d{4}-\d{2}-\d{2}$/.test(date||''))return null;const [y,m,d]=date.split('-').map(Number);const ms=Date.UTC(y,m-1,d);const check=new Date(ms);return check.getUTCFullYear()===y&&check.getUTCMonth()===m-1&&check.getUTCDate()===d?Math.floor(ms/86400000):null}
@@ -3818,7 +3840,7 @@ function normalizeCloudSave(data){
  x.counts=x.counts&&typeof x.counts==='object'?x.counts:{};
  x.sinceSSR=Number.isSafeInteger(x.sinceSSR)&&x.sinceSSR>=0?x.sinceSSR:0;
  x.homeCharacterId=x.homeCharacterId??null;
- x.homeCharacterIds=Array.isArray(x.homeCharacterIds)?x.homeCharacterIds.slice(0,3):(x.homeCharacterId?[x.homeCharacterId]:[]);
+ x.homeCharacterIds=Array.isArray(x.homeCharacterIds)?[...new Set(x.homeCharacterIds.filter(Boolean))].slice(0,4):(x.homeCharacterId?[x.homeCharacterId]:[]);
  x.points=Number.isSafeInteger(x.points)&&x.points>=0?x.points:3000;
  x.pendingGacha=x.pendingGacha??null;
  x.pityPoints=Number.isSafeInteger(x.pityPoints)&&x.pityPoints>=0?x.pityPoints:Math.max(0,Math.floor(Number(x.sinceSSR)||0));
@@ -4537,7 +4559,56 @@ $('limitedExchangeOverlay').addEventListener('click',e=>{if(e.target===$('limite
 document.addEventListener('keydown',e=>{if(e.key==='Escape'&&!$('limitedExchangeOverlay').classList.contains('hidden'))closeLimitedExchange()});
 
 window.navigate=function(tab){for(const id of ['home','gacha','collection','game','pet','casino','user','admin'])$(id).classList.toggle('hidden',id!==tab);document.querySelectorAll('[data-tab]').forEach(b=>b.classList.toggle('active',b.dataset.tab===tab));if(tab==='collection')renderCollection();if(tab==='game')renderGameInfo();if(tab==='casino')renderCasino();if(tab==='pet')renderPet();if(tab==='user'&&typeof refreshUserHub==='function')refreshUserHub(false)};document.querySelectorAll('[data-tab]').forEach(b=>b.addEventListener('click',()=>navigate(b.dataset.tab)));
-function render(){renderAttendance();renderBanner();renderLimited();local.homeCharacterIds=[...new Set(local.homeCharacterIds||[])].filter(id=>characters.some(c=>c.id===id&&(local.counts[c.id]||0)>0)).slice(0,3);const homes=local.homeCharacterIds.map(id=>characters.find(c=>c.id===id)).filter(Boolean);const home=homes.length?homes[Math.floor(Math.random()*homes.length)]:characters.find(c=>c.id===settings.home_character_id);$('homeHero').replaceChildren();if(home){const homeImage=homeCharacterImage(home);const image=document.createElement('img');image.src=homeImage;image.alt=home.name;image.title='눌러서 대사 듣기';const name=document.createElement('strong');name.textContent=home.name;const bubble=document.createElement('div');bubble.className='bubble';bubble.textContent='캐릭터를 눌러보세요!';image.addEventListener('click',()=>{const lines=Array.isArray(home.dialogues)?home.dialogues:[];bubble.textContent=lines.length?lines[Math.floor(Math.random()*lines.length)]:'등록된 대사가 없어요.'});const download=document.createElement('button');download.type='button';download.className='home-save-image';download.textContent='📥 캐릭터 이미지 저장';download.addEventListener('click',async()=>{download.disabled=true;try{const response=await fetch(homeImage);if(!response.ok)throw new Error('이미지 불러오기 실패');const blob=await response.blob();const ext=({'image/png':'png','image/jpeg':'jpg','image/webp':'webp','image/gif':'gif'})[blob.type]||'png';const filename=(home.name||'character').replace(/[\\/:*?"<>|\x00-\x1f]/g,'_')+'.'+ext;const url=URL.createObjectURL(blob);const link=document.createElement('a');link.href=url;link.download=filename;document.body.append(link);link.click();link.remove();setTimeout(()=>URL.revokeObjectURL(url),30000);notice('이미지 저장을 시작했어요!')}catch(err){notice('자동 저장에 실패했어요. 홈 캐릭터 이미지를 길게 누르거나 마우스 오른쪽 버튼으로 저장해 주세요.')}finally{download.disabled=false}});$('homeHero').append(image,name,bubble,download)}else $('homeHero').textContent='관리자가 홈 캐릭터를 설정하면 여기에 표시됩니다.';$('rates').textContent=`SSR ${settings.ssr}% · SR ${settings.sr}% · R ${settings.r}%`;$('pityText').textContent=`✨ 천장 포인트 ${local.pityPoints.toLocaleString()} / ${settings.pity.toLocaleString()} PT · ${local.pityPoints>=settings.pity?'SSR 교환 가능!':`교환까지 ${(settings.pity-local.pityPoints).toLocaleString()} PT`}`;$('pityPoints').textContent=local.pityPoints.toLocaleString();$('pityExchange').disabled=!ready||!characters.some(c=>c.rarity==='SSR'&&!c.is_limited)||local.pityPoints<settings.pity||!!local.pendingGacha||gachaAnimationBusy;$('headerPoints').textContent=`🪙 ${local.points.toLocaleString()} P`;$('gachaPoints').textContent=local.points.toLocaleString();$('draw1').disabled=!ready||!validPool()||local.points<100||!!local.pendingGacha||gachaAnimationBusy;$('draw10').disabled=!ready||!validPool()||local.points<1000||!!local.pendingGacha||gachaAnimationBusy;renderCollection();renderGameInfo();renderCasino();if($('pangCharacter'))pangPopulateCharacter();if($('runnerBest'))$('runnerBest').textContent=Number(local.runnerBest||0).toLocaleString();if($('tetrisBest'))$('tetrisBest').textContent=Number(local.tetrisBest||0).toLocaleString();if(admin)renderAdmin()}
+let homeCarouselIndex=0,homeSwipeLockUntil=0;
+function storedHomeCharacterIds(){
+ const ids=Array.isArray(local.homeCharacterIds)?local.homeCharacterIds:(local.homeCharacterId?[local.homeCharacterId]:[]);
+ local.homeCharacterIds=[...new Set(ids.filter(Boolean))].slice(0,4);
+ local.homeCharacterId=local.homeCharacterIds[0]||null;
+ return local.homeCharacterIds
+}
+function visibleHomeCharacters(){
+ const homes=storedHomeCharacterIds().map(id=>characters.find(c=>String(c.id)===String(id))).filter(c=>c&&(Number(local.counts[c.id])||0)>0);
+ if(homes.length)return homes;
+ const fallback=characters.find(c=>String(c.id)===String(settings.home_character_id));
+ return fallback?[fallback]:[]
+}
+function moveHomeCarousel(step){
+ const homes=visibleHomeCharacters();
+ if(homes.length<2)return;
+ homeCarouselIndex=(homeCarouselIndex+step+homes.length)%homes.length;
+ renderHomeCharacter(step>0?1:-1)
+}
+function renderHomeCharacter(direction=0){
+ const hero=$('homeHero');if(!hero)return;
+ const homes=visibleHomeCharacters();
+ hero.replaceChildren();hero.classList.add('home-character-slider');
+ if(!homes.length){homeCarouselIndex=0;hero.classList.remove('has-multiple');const empty=document.createElement('p');empty.className='muted';empty.textContent='홈 캐릭터를 설정해 주세요.';hero.append(empty);return}
+ if(homeCarouselIndex>=homes.length)homeCarouselIndex=0;
+ const home=homes[homeCarouselIndex],homeImage=homeCharacterImage(home);
+ hero.classList.toggle('has-multiple',homes.length>1);
+ const image=document.createElement('img');image.src=homeImage;image.alt=home.name;image.title=homes.length>1?'눌러서 대사 · 좌우로 밀어 캐릭터 변경':'눌러서 대사 듣기';
+ const name=document.createElement('strong');name.textContent=home.name;
+ const bubble=document.createElement('div');bubble.className='bubble';bubble.textContent='캐릭터를 눌러보세요!';
+ const slideClass=direction>0?'home-slide-next':direction<0?'home-slide-prev':'';
+ if(slideClass)for(const el of [image,name,bubble])el.classList.add(slideClass);
+ image.addEventListener('click',()=>{if(Date.now()<homeSwipeLockUntil)return;const lines=Array.isArray(home.dialogues)?home.dialogues:[];bubble.textContent=lines.length?lines[Math.floor(Math.random()*lines.length)]:'등록된 대사가 없어요.'});
+ const download=document.createElement('button');download.type='button';download.className='home-save-image';download.textContent='📥 캐릭터 이미지 저장';if(slideClass)download.classList.add(slideClass);
+ download.addEventListener('click',async()=>{download.disabled=true;try{const response=await fetch(homeImage);if(!response.ok)throw new Error('이미지 불러오기 실패');const blob=await response.blob();const ext=({'image/png':'png','image/jpeg':'jpg','image/webp':'webp','image/gif':'gif'})[blob.type]||'png';const filename=(home.name||'character').replace(/[\\/:*?"<>|\x00-\x1f]/g,'_')+'.'+ext;const url=URL.createObjectURL(blob);const link=document.createElement('a');link.href=url;link.download=filename;document.body.append(link);link.click();link.remove();setTimeout(()=>URL.revokeObjectURL(url),30000);notice('이미지 저장을 시작했어요!')}catch(err){notice('자동 저장에 실패했어요. 홈 캐릭터 이미지를 길게 누르거나 마우스 오른쪽 버튼으로 저장해 주세요.')}finally{download.disabled=false}});
+ hero.append(image,name,bubble,download);
+ if(homes.length>1){
+  const controls=document.createElement('div');controls.className='home-character-slider-controls';controls.setAttribute('aria-label','홈 캐릭터 슬라이드');
+  const prev=document.createElement('button');prev.type='button';prev.className='home-character-slide-arrow';prev.textContent='‹';prev.setAttribute('aria-label','이전 홈 캐릭터');prev.onclick=()=>moveHomeCarousel(-1);
+  const dots=document.createElement('div');dots.className='home-character-slide-dots';
+  homes.forEach((c,i)=>{const dot=document.createElement('button');dot.type='button';dot.className='home-character-slide-dot'+(i===homeCarouselIndex?' active':'');dot.setAttribute('aria-label',`${i+1}번째 · ${c.name}`);dot.onclick=()=>{if(i===homeCarouselIndex)return;const dir=i>homeCarouselIndex?1:-1;homeCarouselIndex=i;renderHomeCharacter(dir)};dots.append(dot)});
+  const next=document.createElement('button');next.type='button';next.className='home-character-slide-arrow';next.textContent='›';next.setAttribute('aria-label','다음 홈 캐릭터');next.onclick=()=>moveHomeCarousel(1);
+  const count=document.createElement('span');count.className='home-character-slide-count';count.textContent=`${homeCarouselIndex+1} / ${homes.length}`;
+  controls.append(prev,dots,next,count);hero.append(controls)
+ }
+ let startX=0,startY=0,tracking=false;
+ hero.addEventListener('touchstart',e=>{if(e.touches.length!==1)return;startX=e.touches[0].clientX;startY=e.touches[0].clientY;tracking=true},{passive:true});
+ hero.addEventListener('touchend',e=>{if(!tracking||homes.length<2)return;tracking=false;const t=e.changedTouches[0],dx=t.clientX-startX,dy=t.clientY-startY;if(Math.abs(dx)>=45&&Math.abs(dx)>Math.abs(dy)*1.15){homeSwipeLockUntil=Date.now()+450;moveHomeCarousel(dx<0?1:-1)}},{passive:true})
+}
+function render(){renderAttendance();renderBanner();renderLimited();renderHomeCharacter();$('rates').textContent=`SSR ${settings.ssr}% · SR ${settings.sr}% · R ${settings.r}%`;$('pityText').textContent=`✨ 천장 포인트 ${local.pityPoints.toLocaleString()} / ${settings.pity.toLocaleString()} PT · ${local.pityPoints>=settings.pity?'SSR 교환 가능!':`교환까지 ${(settings.pity-local.pityPoints).toLocaleString()} PT`}`;$('pityPoints').textContent=local.pityPoints.toLocaleString();$('pityExchange').disabled=!ready||!characters.some(c=>c.rarity==='SSR'&&!c.is_limited)||local.pityPoints<settings.pity||!!local.pendingGacha||gachaAnimationBusy;$('headerPoints').textContent=`🪙 ${local.points.toLocaleString()} P`;$('gachaPoints').textContent=local.points.toLocaleString();$('draw1').disabled=!ready||!validPool()||local.points<100||!!local.pendingGacha||gachaAnimationBusy;$('draw10').disabled=!ready||!validPool()||local.points<1000||!!local.pendingGacha||gachaAnimationBusy;renderCollection();renderGameInfo();renderCasino();if($('pangCharacter'))pangPopulateCharacter();if($('runnerBest'))$('runnerBest').textContent=Number(local.runnerBest||0).toLocaleString();if($('tetrisBest'))$('tetrisBest').textContent=Number(local.tetrisBest||0).toLocaleString();if(admin)renderAdmin()}
 function validPool(){return ['SSR','SR','R'].every(r=>Number(settings[r.toLowerCase()])===0||characters.some(c=>c.rarity===r&&!c.is_limited))&&characters.some(c=>c.rarity==='SSR'&&!c.is_limited)&&settings.pity>=1}
 function limitBreakLevel(c){if(!c||c.rarity!=='SSR')return 0;const n=Number(local.limitBreaks?.[c.id])||0;return Math.max(0,Math.min(3,Math.floor(n)))}
 function limitBreakStars(c){const lv=limitBreakLevel(c);return '★'.repeat(lv)+'☆'.repeat(3-lv)}
@@ -4545,9 +4616,10 @@ function characterDisplayImage(c){return c&&limitBreakLevel(c)>=3&&c.full_limit_
 function homeArtMode(c){if(!c||limitBreakLevel(c)<3||!c.full_limit_image_url)return 'base';return local.homeArtModes?.[c.id]==='base'?'base':'full'}
 function homeCharacterImage(c){return homeArtMode(c)==='full'&&c?.full_limit_image_url?c.full_limit_image_url:c?.image_url||''}
 function setHomeCharacter(c,mode=null){
+ storedHomeCharacterIds();
  const selected=local.homeCharacterIds.includes(c.id);
  if(!selected){
-  if(local.homeCharacterIds.length>=3)return notice('홈 캐릭터는 최대 3명까지 설정할 수 있어요.');
+  if(local.homeCharacterIds.length>=4)return notice('홈 캐릭터는 최대 4명까지 설정할 수 있어요.');
   local.homeCharacterIds.push(c.id)
  }
  if(limitBreakLevel(c)>=3&&c.full_limit_image_url&&['base','full'].includes(mode))local.homeArtModes[c.id]=mode;
@@ -4558,6 +4630,7 @@ function setHomeCharacter(c,mode=null){
  notice(`${c.name}을(를) 홈에 설정했어요. · ${label}`)
 }
 function removeHomeCharacter(c){
+ storedHomeCharacterIds();
  local.homeCharacterIds=local.homeCharacterIds.filter(id=>id!==c.id);
  local.homeCharacterId=local.homeCharacterIds[0]||null;
  save();render();if(String(collectionDetailId)===String(c.id))refreshCollectionDetail();notice('홈 캐릭터 설정을 해제했어요.')
@@ -4859,14 +4932,14 @@ function refreshCollectionDetail(){
 
  const homeBtn=$('collectionDetailHome');
  homeBtn.className=selected?'wide ghost':'wide';
- homeBtn.textContent=selected?'🏠 홈 설정 해제':`🏠 홈에 설정 (${local.homeCharacterIds.length}/3)`;
- homeBtn.disabled=!selected&&local.homeCharacterIds.length>=3;
+ homeBtn.textContent=selected?'🏠 홈 설정 해제':`🏠 홈에 설정 (${local.homeCharacterIds.length}/4)`;
+ homeBtn.disabled=!selected&&local.homeCharacterIds.length>=4;
  homeBtn.onclick=()=>{
   selected?removeHomeCharacter(c):setHomeCharacter(c,canChooseArt?homeArtMode(c):null);
   collectionDetailId=c.id;
   refreshCollectionDetail()
  };
- $('collectionDetailHomeCount').textContent=`현재 홈 캐릭터 ${local.homeCharacterIds.length}/3`;
+ $('collectionDetailHomeCount').textContent=`현재 홈 캐릭터 ${local.homeCharacterIds.length}/4`;
 }
 function showCollectionDetail(c){
  if(!c||(Number(local.counts[c.id])||0)<1)return;
@@ -4927,7 +5000,7 @@ if(canChooseArt){
  }
  item.append(choice)
 }else{
- const button=document.createElement('button');button.type='button';button.className='wide'+(selected?' ghost':'');button.textContent=selected?'홈 설정 해제':`홈에 설정 (${local.homeCharacterIds.length}/3)`;
+ const button=document.createElement('button');button.type='button';button.className='wide'+(selected?' ghost':'');button.textContent=selected?'홈 설정 해제':`홈에 설정 (${local.homeCharacterIds.length}/4)`;
  button.onclick=e=>{e.stopPropagation();selected?removeHomeCharacter(c):setHomeCharacter(c,null)};
  item.append(button)
 }}cards.append(item)}section.append(cards)}grid.append(section)}}function showLimitBreakEffect(c,newLevel){
