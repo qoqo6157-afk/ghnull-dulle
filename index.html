@@ -7317,15 +7317,15 @@ function tetBindRepeat(id,fn){
 }
 tetBindRepeat('tetrisLeft',()=>tetMove(-1,0));tetBindRepeat('tetrisRight',()=>tetMove(1,0));tetBindRepeat('tetrisDown',()=>tetMove(0,1,true));
 
-// PC keyboard: use our own fast DAS/ARR instead of the browser/OS key-repeat delay.
-// A tap still moves exactly one cell; holding begins rapid movement almost immediately.
+// PC keyboard: use a moderate custom DAS/ARR so held movement feels responsive without sliding too far.
+// A tap still moves exactly one cell; holding waits briefly, then repeats at a controlled rate.
 const tetKeyboardRepeat=new Map();
 function tetStopKeyboardRepeat(code){
  const state=tetKeyboardRepeat.get(code);if(!state)return;
  clearTimeout(state.delayTimer);clearInterval(state.repeatTimer);tetKeyboardRepeat.delete(code)
 }
 function tetStopAllKeyboardRepeats(){for(const code of [...tetKeyboardRepeat.keys()])tetStopKeyboardRepeat(code)}
-function tetStartKeyboardRepeat(code,fn,delay=85,interval=28){
+function tetStartKeyboardRepeat(code,fn,delay=135,interval=50){
  if(tetKeyboardRepeat.has(code))return;
  fn();
  const state={delayTimer:null,repeatTimer:null};tetKeyboardRepeat.set(code,state);
@@ -7348,16 +7348,16 @@ document.addEventListener('keydown',e=>{
  if(key==='ArrowLeft'){
   if(e.repeat)return;
   tetStopKeyboardRepeat('ArrowRight');
-  tetStartKeyboardRepeat('ArrowLeft',()=>tetMove(-1,0),85,28)
+  tetStartKeyboardRepeat('ArrowLeft',()=>tetMove(-1,0),135,50)
  }
  else if(key==='ArrowRight'){
   if(e.repeat)return;
   tetStopKeyboardRepeat('ArrowLeft');
-  tetStartKeyboardRepeat('ArrowRight',()=>tetMove(1,0),85,28)
+  tetStartKeyboardRepeat('ArrowRight',()=>tetMove(1,0),135,50)
  }
  else if(key==='ArrowDown'){
   if(e.repeat)return;
-  tetStartKeyboardRepeat('ArrowDown',()=>tetMove(0,1,true),65,32)
+  tetStartKeyboardRepeat('ArrowDown',()=>tetMove(0,1,true),95,45)
  }
  else if((key==='ArrowUp'||key==='KeyX')&&!e.repeat)tetRotate(1);
  else if(key==='KeyZ'&&!e.repeat)tetRotate(-1);
