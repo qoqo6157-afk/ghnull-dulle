@@ -7316,22 +7316,61 @@ function tetBindRepeat(id,fn){
  ['pointerup','pointercancel','lostpointercapture','pointerleave'].forEach(ev=>el.addEventListener(ev,stop))
 }
 tetBindRepeat('tetrisLeft',()=>tetMove(-1,0));tetBindRepeat('tetrisRight',()=>tetMove(1,0));tetBindRepeat('tetrisDown',()=>tetMove(0,1,true));
+
+// PC keyboard: use our own fast DAS/ARR instead of the browser/OS key-repeat delay.
+// A tap still moves exactly one cell; holding begins rapid movement almost immediately.
+const tetKeyboardRepeat=new Map();
+function tetStopKeyboardRepeat(code){
+ const state=tetKeyboardRepeat.get(code);if(!state)return;
+ clearTimeout(state.delayTimer);clearInterval(state.repeatTimer);tetKeyboardRepeat.delete(code)
+}
+function tetStopAllKeyboardRepeats(){for(const code of [...tetKeyboardRepeat.keys()])tetStopKeyboardRepeat(code)}
+function tetStartKeyboardRepeat(code,fn,delay=85,interval=28){
+ if(tetKeyboardRepeat.has(code))return;
+ fn();
+ const state={delayTimer:null,repeatTimer:null};tetKeyboardRepeat.set(code,state);
+ state.delayTimer=setTimeout(()=>{
+  if(!tetris.active||tetris.paused){tetStopKeyboardRepeat(code);return}
+  fn();
+  state.repeatTimer=setInterval(()=>{
+   if(!tetris.active||tetris.paused){tetStopKeyboardRepeat(code);return}
+   fn()
+  },interval)
+ },delay)
+}
 document.addEventListener('keydown',e=>{
  const tag=document.activeElement?.tagName;if(['INPUT','TEXTAREA','SELECT'].includes(tag))return;
  const visible=!$('tetrisSection')?.classList.contains('hidden');if(!visible)return;
  const key=e.code;
  if(['ArrowLeft','ArrowRight','ArrowDown','ArrowUp','Space','KeyX','KeyZ','KeyC','ShiftLeft','ShiftRight','KeyP','Escape'].includes(key))e.preventDefault();
- if((key==='KeyP'||key==='Escape')&&!e.repeat){tetrisTogglePause(false);return}
+ if((key==='KeyP'||key==='Escape')&&!e.repeat){tetStopAllKeyboardRepeats();tetrisTogglePause(false);return}
  if(!tetris.active||tetris.paused)return;
- if(key==='ArrowLeft')tetMove(-1,0);
- else if(key==='ArrowRight')tetMove(1,0);
- else if(key==='ArrowDown')tetMove(0,1,true);
+ if(key==='ArrowLeft'){
+  if(e.repeat)return;
+  tetStopKeyboardRepeat('ArrowRight');
+  tetStartKeyboardRepeat('ArrowLeft',()=>tetMove(-1,0),85,28)
+ }
+ else if(key==='ArrowRight'){
+  if(e.repeat)return;
+  tetStopKeyboardRepeat('ArrowLeft');
+  tetStartKeyboardRepeat('ArrowRight',()=>tetMove(1,0),85,28)
+ }
+ else if(key==='ArrowDown'){
+  if(e.repeat)return;
+  tetStartKeyboardRepeat('ArrowDown',()=>tetMove(0,1,true),65,32)
+ }
  else if((key==='ArrowUp'||key==='KeyX')&&!e.repeat)tetRotate(1);
  else if(key==='KeyZ'&&!e.repeat)tetRotate(-1);
  else if(key==='Space'&&!e.repeat)tetHardDrop();
  else if((key==='KeyC'||key==='ShiftLeft'||key==='ShiftRight')&&!e.repeat)tetHold()
 });
-document.addEventListener('visibilitychange',()=>{if(document.hidden&&tetris.active&&!tetris.paused)tetrisTogglePause(true)});
+document.addEventListener('keyup',e=>{
+ if(e.code==='ArrowLeft'||e.code==='ArrowRight'||e.code==='ArrowDown')tetStopKeyboardRepeat(e.code)
+});
+window.addEventListener('blur',tetStopAllKeyboardRepeats);
+document.addEventListener('visibilitychange',()=>{
+ if(document.hidden){tetStopAllKeyboardRepeats();if(tetris.active&&!tetris.paused)tetrisTogglePause(true)}
+});
 local.tetrisBest=Number(local.tetrisBest||0);local.tetrisBestLines=Number(local.tetrisBestLines||0);tetris.board=tetEmptyBoard();tetrisUpdateStats();tetrisRefreshCharacter();drawTetris();
 
 const rhythm={held:new Set(),hp:100,effects:[],active:false,paused:false,raf:0,start:0,pauseAt:0,elapsed:0,notes:[],score:0,combo:0,judged:0,quality:0,feedback:'',feedbackUntil:0,audio:null,img:null,beatIndex:0,duration:60000,beat:500,media:null,difficulty:'normal',misses:0};
