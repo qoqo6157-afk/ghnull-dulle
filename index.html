@@ -3321,6 +3321,31 @@ button.ghost,.ghost{
 .banner-text-toggle{display:flex;align-items:center;gap:8px;margin:12px 0 2px;font-weight:800}.banner-text-toggle input{width:auto!important;margin:0}.banner-neon-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}.banner-neon-box{min-width:0}.banner-neon-box>label{margin-top:0}.banner-neon-box .banner-color-row{grid-template-columns:58px minmax(0,1fr)}
 @media(max-width:520px){.banner-neon-grid{grid-template-columns:1fr}}
 </style>
+
+<style>
+/* Normal gacha pickup campaign */
+.normal-pickup-box{margin:14px 0;padding:14px;border:1px solid #ffd1e3;border-radius:18px;background:linear-gradient(135deg,#fff8fc,#f6fbff);box-shadow:0 8px 24px #ff9fc31f}
+.normal-pickup-head{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;margin-bottom:8px}
+.normal-pickup-title{font-weight:950;color:#e34f8f;letter-spacing:.04em}
+.normal-pickup-period{font-size:12px;color:#7b7180}
+.normal-pickup-help{margin:4px 0 10px;font-size:12px;color:#7b7180}
+.normal-pickup-cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:9px}
+.normal-pickup-card{display:grid;grid-template-columns:46px 1fr;align-items:center;gap:9px;padding:8px 10px;border-radius:14px;background:#fff;border:1px solid #f3d9e4;min-width:0}
+.normal-pickup-card img{width:46px;height:54px;object-fit:contain;border-radius:10px;background:#fff}
+.normal-pickup-card strong{display:block;font-size:13px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.normal-pickup-card small{display:block;margin-top:2px;color:#8b7a86;font-size:11px}
+.normal-pickup-tag{display:inline-flex;align-items:center;gap:4px;padding:3px 8px;border-radius:999px;background:linear-gradient(90deg,#ff77ad,#ff9bd0);color:#fff;font-size:10px;font-weight:950;letter-spacing:.08em;box-shadow:0 3px 10px #ff79af33}
+.pickup-admin-box{margin:16px 0;padding:14px;border:1px solid #f0d9e5;border-radius:16px;background:#fffafd}
+.pickup-admin-box h3{margin:0 0 6px}
+.pickup-admin-targets{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:8px;margin-top:9px}
+.pickup-admin-target{display:flex;align-items:center;gap:8px;padding:8px 9px;border:1px solid #e9e4eb;border-radius:12px;background:#fff;cursor:pointer}
+.pickup-admin-target:has(input:checked){border-color:#77d8c2;box-shadow:0 0 0 2px #77d8c226;background:#f5fffb}
+.pickup-admin-target input{width:auto;margin:0}
+.pickup-admin-target img{width:38px;height:46px;object-fit:contain;border-radius:8px;background:#fff}
+.pickup-admin-target span{min-width:0;font-size:12px;font-weight:800}
+.pickup-admin-summary{margin:8px 0 0;font-size:12px;color:#7a7180}
+@media(max-width:560px){.normal-pickup-cards{grid-template-columns:1fr 1fr}.normal-pickup-card{grid-template-columns:40px 1fr;padding:7px}.normal-pickup-card img{width:40px;height:48px}.pickup-admin-targets{grid-template-columns:1fr 1fr}.pickup-admin-target{padding:7px}.pickup-admin-target img{width:34px;height:42px}}
+</style>
 </head><body><div class="app"><header><strong>✦ MY GACHA</strong><div class="account-box"><strong id="headerPoints" class="points-balance">🪙 0 P</strong><span class="muted" id="status">연결 설정 필요</span><button type="button" id="userLoginBtn" class="ghost">👤 로그인</button><button type="button" id="userLogoutBtn" class="ghost hidden">로그아웃</button></div></header><div id="notice" role="status"></div><main>
 <section id="home" class="home-dashboard">
   <div id="eventBanner" class="panel event-banner home-banner hidden" role="button" tabindex="0">
@@ -3385,7 +3410,7 @@ button.ghost,.ghost{
     <button type="button" class="home-quick-card" onclick="navigate('game')"><span class="home-quick-icon">🎮</span><span><b>미니게임</b><small>포인트 모으기</small></span><em>→</em></button>
   </div>
 </section>
-<section id="gacha" class="hidden"><div class="panel"><h2>캐릭터 가챠</h2><p class="muted" id="rates"></p><p id="pityText"></p><div class="points-box"><strong>✨ 천장 포인트: <span id="pityPoints">0</span> PT</strong><p class="muted mini">뽑기 1회마다 +1 PT · SSR을 뽑아도 유지 · 90 PT(관리자 설정값)로 원하는 SSR 교환</p><button type="button" id="pityExchange" class="ghost wide">✨ SSR 교환소 · 원하는 SSR 선택</button></div><div class="points-box"><strong>🪙 보유 게임 포인트: <span id="gachaPoints">0</span> P</strong><p class="muted mini">1회 100 P · 10회 1,000 P · 게임 클리어로 포인트 획득</p></div><div class="row"><button id="draw1">1회 뽑기 · 100 P</button><button id="draw10">10회 뽑기 · 1,000 P</button></div><p class="muted mini">뽑기 1회마다 천장 포인트 +1 PT. 자연 SSR 획득 시에도 포인트는 유지되며 교환 시 필요한 PT만 차감됩니다.</p></div><div id="results" class="grid result"></div><div id="limitedGachaBox" class="panel limited-box hidden"><h2>✨ 한정 픽업 가챠</h2><p id="limitedPeriod" class="muted"></p><p id="limitedRates" class="muted mini"></p><div class="points-box"><strong class="limited-tag">🌟 한정 천장 포인트: <span id="limitedPoints">0</span> LPT</strong><p class="muted mini">한정 뽑기 1회마다 +1 LPT · 이벤트 종료 시 소멸 · 일반 PT와 별도</p></div><div class="row"><button id="limitedDraw1">한정 1회 · 100 P</button><button id="limitedDraw10">한정 10회 · 1,000 P</button></div><button id="limitedExchange" class="ghost wide">🌟 한정 캐릭터 교환</button><div id="limitedResults" class="grid result"></div></div></section>
+<section id="gacha" class="hidden"><div class="panel"><h2>캐릭터 가챠</h2><p class="muted" id="rates"></p><div id="normalPickupBox" class="normal-pickup-box hidden"></div><p id="pityText"></p><div class="points-box"><strong>✨ 천장 포인트: <span id="pityPoints">0</span> PT</strong><p class="muted mini">뽑기 1회마다 +1 PT · SSR을 뽑아도 유지 · 90 PT(관리자 설정값)로 원하는 SSR 교환</p><button type="button" id="pityExchange" class="ghost wide">✨ SSR 교환소 · 원하는 SSR 선택</button></div><div class="points-box"><strong>🪙 보유 게임 포인트: <span id="gachaPoints">0</span> P</strong><p class="muted mini">1회 100 P · 10회 1,000 P · 게임 클리어로 포인트 획득</p></div><div class="row"><button id="draw1">1회 뽑기 · 100 P</button><button id="draw10">10회 뽑기 · 1,000 P</button></div><p class="muted mini">뽑기 1회마다 천장 포인트 +1 PT. 자연 SSR 획득 시에도 포인트는 유지되며 교환 시 필요한 PT만 차감됩니다.</p></div><div id="results" class="grid result"></div><div id="limitedGachaBox" class="panel limited-box hidden"><h2>✨ 한정 픽업 가챠</h2><p id="limitedPeriod" class="muted"></p><p id="limitedRates" class="muted mini"></p><div class="points-box"><strong class="limited-tag">🌟 한정 천장 포인트: <span id="limitedPoints">0</span> LPT</strong><p class="muted mini">한정 뽑기 1회마다 +1 LPT · 이벤트 종료 시 소멸 · 일반 PT와 별도</p></div><div class="row"><button id="limitedDraw1">한정 1회 · 100 P</button><button id="limitedDraw10">한정 10회 · 1,000 P</button></div><button id="limitedExchange" class="ghost wide">🌟 한정 캐릭터 교환</button><div id="limitedResults" class="grid result"></div></div></section>
 <section id="collection" class="hidden"><div class="panel"><h2>캐릭터 도감</h2><p class="muted">미획득 캐릭터는 비밀로 표시돼요. 가챠에서 획득하면 이미지와 이름이 공개됩니다! 보유 캐릭터는 홈에 설정할 수 있어요.</p><div id="collectionCategoryNav" class="collection-category-nav" aria-label="도감 카테고리"><button type="button" data-collection-category="SSR">SSR<span id="collectionCatCountSSR" class="collection-cat-count">0명</span></button><button type="button" data-collection-category="SR">SR<span id="collectionCatCountSR" class="collection-cat-count">0명</span></button><button type="button" data-collection-category="R">R<span id="collectionCatCountR" class="collection-cat-count">0명</span></button><button type="button" data-collection-category="LIMITED">✨ 한정<span id="collectionCatCountLIMITED" class="collection-cat-count">0명</span></button></div><div id="collectionGrid"></div></div></section>
 <section id="game" class="hidden"><div class="panel"><h2>🎮 미니게임</h2><p class="muted">게임을 골라 포인트를 모아 보세요!</p><div class="game-picker"><button type="button" id="chooseMemory" class="active">🃏 카드 짝 맞추기</button><button type="button" id="choosePang">💥 캐릭터 팡!</button><button type="button" id="chooseRunner">🏃 캐릭터 점프</button><button type="button" id="chooseTetris">🧱 테트리스</button><button type="button" id="chooseRhythm">🎵 리듬 탭</button><button type="button" id="chooseDetective">🔎 사건 수사</button></div></div><div id="memorySection" class="panel"><h2>🃏 카드 짝 맞추기</h2><p class="muted">보유 캐릭터로 카드 짝을 맞히고 포인트를 모으세요! 보유 캐릭터가 없어도 쉬움 난이도에서 비공개 연습 카드로 시작할 수 있어요.</p><div class="points-box"><strong>🪙 내 포인트: <span id="gamePoints">0</span> P</strong><p class="muted mini">클리어 보상: 쉬움 +200 P · 보통 +400 P · 어려움 +600 P</p></div><label for="gameDifficulty">난이도</label><select id="gameDifficulty"><option value="4">🌱 쉬움 · 4쌍 / 8장</option><option value="6" selected>🌸 보통 · 6쌍 / 12장</option><option value="8">🔥 어려움 · 8쌍 / 16장</option></select><p class="muted mini" id="gameOwned"></p><div class="game-controls"><button id="gameStart">게임 시작</button><button id="gameRestart" class="ghost" disabled>다시 시작</button></div><div class="game-stats"><div class="game-stat"><span class="mini muted">시간</span><b id="gameTime">00:00</b></div><div class="game-stat"><span class="mini muted">시도</span><b id="gameMoves">0</b></div><div class="game-stat"><span class="mini muted">성공</span><b id="gameMatches">0/6</b></div></div><div id="memoryGrid" class="memory-grid" aria-label="카드 짝 맞추기 게임"></div><div id="gameResult" class="game-result hidden" role="status"></div><p class="muted mini" id="gameRecords"></p><p class="muted mini">게임 기록은 이 브라우저에만 저장됩니다. 보유 캐릭터 종류가 난이도에 필요한 수보다 적으면 시작할 수 없습니다. · ★★★ 풀돌 SSR 보유 1장당 보상 +5% (최대 +20%)</p></div>
 <div id="pangSection" class="panel hidden">
@@ -3670,7 +3695,18 @@ button.ghost,.ghost{
 <p><button class="wide">배너 전체 저장</button></p>
 </form>
 </div></details><details class="admin-fold"><summary>🪙 포인트 관리</summary><div data-fold-body><h3>내 포인트 충전</h3><p class="muted mini">현재 로그인한 관리자의 이 브라우저 포인트에만 추가됩니다. 방문자 포인트는 변경되지 않습니다.</p><form id="adminPointsForm"><label for="adminPointsAmount">추가할 포인트 (1 이상)</label><input id="adminPointsAmount" type="number" min="1" max="100000000" step="1" inputmode="numeric" required placeholder="예: 3000"><p><button id="adminPointsAdd" type="submit">내 포인트 추가하기</button></p></form><hr><h3>전체 방문자 포인트 지급</h3><p class="muted mini">관리자만 지급 공지를 등록할 수 있어요. 모든 방문자가 사이트를 열거나 다시 방문하면 각 브라우저에 1회 지급됩니다. 브라우저별 포인트 방식이므로 실제 계정별 지급·중복 방지는 지원하지 않아요.</p><form id="globalPointsForm"><label for="globalPointsAmount">모든 방문자에게 지급할 포인트</label><input id="globalPointsAmount" type="number" min="1" max="100000000" step="1" inputmode="numeric" required placeholder="예: 5000"><p><button id="globalPointsSend" type="submit">전체 방문자에게 지급하기</button></p></form><button type="button" id="globalPointsRefresh" class="ghost">🎁 전체 지급 확인하기</button></div></details><details class="admin-fold"><summary>🎵 리듬게임 노래 관리</summary><div data-fold-body><p class="muted mini">관리자만 등록할 수 있어요. MP3/WAV/OGG 파일의 음량 변화와 박자를 분석해 EASY·NORMAL·HARD·SPECIAL 4개 채보를 자동 생성합니다. 자동 채보는 완벽하지 않을 수 있어요. 사용 권한이 있는 음원만 등록해 주세요.</p><form id="rhythmUploadForm"><label for="rhythmUploadTitle">노래 제목</label><input id="rhythmUploadTitle" maxlength="100" required><label for="rhythmUploadArtist">아티스트</label><input id="rhythmUploadArtist" maxlength="100" required><label for="rhythmUploadFile">음원 파일 (MP3/WAV/OGG · 최대 20MB)</label><input id="rhythmUploadFile" type="file" accept="audio/mpeg,audio/mp3,audio/wav,audio/x-wav,audio/ogg,.mp3,.wav,.ogg" required><p><button id="rhythmUploadButton" type="submit">🎼 자동 채보 생성 후 노래 등록</button></p><p id="rhythmUploadStatus" class="muted mini" role="status"></p></form><div id="rhythmAdminList"></div></div></details><details class="admin-fold"><summary>🥚 펫 종류 · 대사 관리</summary><div data-fold-body><p class="muted mini">종류 개수 제한 없음 · 아기/어린이/성인 각각 기본·슬픔·꼬질꼬질·기쁨 이미지 4종과 사망 시 무덤 이미지를 등록할 수 있어요. 이미지 칸에 파일을 끌어다 놓을 수 있습니다. 상태 이미지를 비우면 기본 이미지로 자동 대체됩니다. 행동·위험·선물별 대사도 함께 설정합니다.</p><form id="petAdminForm"><input id="petEditId" type="hidden"><label>펫 이름</label><input id="petName" maxlength="80" required><label>설명</label><input id="petDescription" maxlength="300"><div id="petImageFields"></div><div class="pet-dialogue-editor"><h3>💬 간편 대사 편집기</h3><p class="muted mini">코드 입력 없이 대사 종류를 고르고 한 줄에 한 대사씩 적어 주세요. 여러 줄을 적으면 랜덤으로 나와요.</p><p class="muted mini"><strong>👆 부위 터치 대사:</strong> 머리 쓰담 / 얼굴 터치 / 몸 터치도 아래 대사 종류에서 각각 설정할 수 있어요. 펫 이미지의 위쪽 약 35%는 머리, 가운데 약 25%는 얼굴, 아래쪽은 몸으로 판정합니다.</p><label for="petDialogueCategory">대사 종류</label><select id="petDialogueCategory"></select><label for="petDialogueLines">대사 (한 줄에 하나씩)</label><textarea id="petDialogueLines" placeholder="첫 번째 대사&#10;두 번째 대사"></textarea><p class="pet-dialogue-help">다른 종류를 선택하면 입력 내용이 자동으로 보관돼요. 마지막에 펫 저장 버튼을 눌러야 서버에 반영됩니다.</p><hr><h3>🎁 특정 R 아이템 전용 대사</h3><p class="muted mini">아이템 이름을 선택하고 대사만 입력하세요. ID나 JSON은 몰라도 돼요. 이름이 같은 아이템도 구분됩니다.</p><div id="petSpecialGiftRows"></div><button type="button" class="ghost" id="petAddSpecialGift">＋ R 아이템 전용 대사 추가</button></div><label><input id="petPublished" type="checkbox" checked style="width:auto"> 알 선택 목록에 공개</label><p><button type="submit" id="petAdminSave">펫 등록 / 수정 저장</button> <button type="button" class="ghost" id="petAdminReset">새 펫 입력</button></p></form><div id="petAdminList"></div></div></details>
-<details class="admin-fold"><summary>🎲 일반 가챠 설정</summary><div data-fold-body><form id="settingsForm"><div class="row"><div><label>SSR (%)</label><input id="ssr" type="number" min="0" max="100" step="0.01" required></div><div><label>SR (%)</label><input id="sr" type="number" min="0" max="100" step="0.01" required></div><div><label>R (%)</label><input id="r" type="number" min="0" max="100" step="0.01" required></div></div><label>SSR 교환 필요 천장 포인트</label><input id="pity" type="number" min="1" max="10000" required><label>홈에 세울 캐릭터</label><select id="homeSelect"></select><p><button>설정 저장</button></p></form>
+<details class="admin-fold"><summary>🎲 일반 가챠 설정</summary><div data-fold-body><form id="settingsForm"><div class="row"><div><label>SSR (%)</label><input id="ssr" type="number" min="0" max="100" step="0.01" required></div><div><label>SR (%)</label><input id="sr" type="number" min="0" max="100" step="0.01" required></div><div><label>R (%)</label><input id="r" type="number" min="0" max="100" step="0.01" required></div></div><label>SSR 교환 필요 천장 포인트</label><input id="pity" type="number" min="1" max="10000" required><label>홈에 세울 캐릭터</label><select id="homeSelect"></select>
+<div class="pickup-admin-box">
+<h3>🔥 통상 가챠 PICK UP</h3>
+<p class="muted mini">통상 SSR/SR/R 전체 확률은 그대로 유지하고, 같은 등급 안에서 선택한 카드의 등장 가중치만 높입니다. 기간이 끝나면 자동으로 원래 균등 확률로 돌아갑니다.</p>
+<label><input id="normalPickupEnabled" type="checkbox" style="width:auto"> 픽업 사용</label>
+<div class="row"><div><label>픽업 시작 일시</label><input id="normalPickupStart" type="datetime-local"></div><div><label>픽업 종료 일시</label><input id="normalPickupEnd" type="datetime-local"></div></div>
+<label>픽업 배율 (같은 등급의 일반 카드 대비)</label><input id="normalPickupMultiplier" type="number" min="1" max="100" step="0.1" value="5">
+<p class="muted mini">예: 5배로 설정하면 같은 등급에서 일반 카드 가중치 1, 픽업 카드 가중치 5로 추첨됩니다.</p>
+<label>픽업 대상 카드</label><div id="normalPickupTargets" class="pickup-admin-targets"></div>
+<p id="normalPickupAdminSummary" class="pickup-admin-summary"></p>
+</div>
+<p><button>설정 저장</button></p></form>
 </div></details><details class="admin-fold"><summary>✨ 한정 가챠 설정</summary><div data-fold-body>
 <p class="muted mini">한정 가챠에서만 사용하는 별도 확률입니다. 한정 캐릭터 + 통상 SSR/SR/R이 함께 등장하며, 네 확률의 합계는 정확히 100%여야 합니다.</p>
 <form id="limitedSettingsForm">
@@ -3848,7 +3884,7 @@ const SUPABASE_URL='https://awphoeuhuceqjdzupzvn.supabase.co';
 const SUPABASE_ANON_KEY='sb_publishable_lAvF0YPrCfGs0lNW06QIHA_aChjh1iS';
 const ready=SUPABASE_URL.startsWith('https://')&&!SUPABASE_ANON_KEY.startsWith('PASTE_');
 const db=ready?createClient(SUPABASE_URL,SUPABASE_ANON_KEY):null;
-const $=id=>document.getElementById(id);let characters=[],settings={ssr:3,sr:17,r:80,pity:90,limited_rate:3,limited_ssr:3,limited_sr:17,limited_r:77,limited_pity:90,home_character_id:null},admin=false,session=null;
+const $=id=>document.getElementById(id);let characters=[],settings={ssr:3,sr:17,r:80,pity:90,limited_rate:3,limited_ssr:3,limited_sr:17,limited_r:77,limited_pity:90,home_character_id:null,normal_pickup_config:{enabled:false,start_at:null,end_at:null,multiplier:5,character_ids:[]}},admin=false,session=null;
 const key='my-gacha-secure-v1';let local;try{local=JSON.parse(localStorage.getItem(key)||'{}')}catch{local={}};local.counts??={};local.sinceSSR??=0;local.homeCharacterId??=null;local.points=Number.isSafeInteger(local.points)&&local.points>=0?local.points:3000;local.pendingGacha??=null;local.pityPoints=Number.isSafeInteger(local.pityPoints)&&local.pityPoints>=0?local.pityPoints:Math.max(0,Math.floor(Number(local.sinceSSR)||0));local.attendance=local.attendance&&typeof local.attendance==='object'?local.attendance:{lastDate:null,day:0};local.lastGlobalGrantId=Number.isSafeInteger(local.lastGlobalGrantId)&&local.lastGlobalGrantId>=0?local.lastGlobalGrantId:0;local.homeCharacterIds=Array.isArray(local.homeCharacterIds)?[...new Set(local.homeCharacterIds.filter(Boolean))].slice(0,4):(local.homeCharacterId?[local.homeCharacterId]:[]);local.limitedPoints=Number.isSafeInteger(local.limitedPoints)&&local.limitedPoints>=0?local.limitedPoints:0;local.limitedEventKey??=null;local.limitBreaks=local.limitBreaks&&typeof local.limitBreaks==='object'?local.limitBreaks:{};local.homeArtModes=local.homeArtModes&&typeof local.homeArtModes==='object'?local.homeArtModes:{};local.tetrisBest=Number.isSafeInteger(local.tetrisBest)&&local.tetrisBest>=0?local.tetrisBest:0;local.tetrisBestLines=Number.isSafeInteger(local.tetrisBestLines)&&local.tetrisBestLines>=0?local.tetrisBestLines:0;local.pangEquippedCharacterId??=null;local.detective=local.detective&&typeof local.detective==='object'?local.detective:{};
 const attendanceRewards=[400,600,800,1000,1300,1600,2500];
 function attendanceDate(){const d=new Date();return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`}
@@ -4527,7 +4563,7 @@ async function limitedDraw(n){
   const old=local.counts[c.id]||0;
   local.counts[c.id]=old+1;
   const label=type==='LIMITED'?(old?`한정 중복 · ${old+1}`:'LIMITED NEW'):(old?`중복 · ${old+1}`:`${c.rarity} NEW`);
-  pulled.push(c);pulledOld.push(old);out.push(gachaResultCard(c,label,i))
+  pulled.push(c);pulledOld.push(old);out.push(gachaResultCard(c,label,i,'limited'))
  }
  save();gachaAnimationBusy=true;render();
  try{await playGachaCinematic(pulled,{source:'limited',oldCounts:pulledOld})}
@@ -4613,7 +4649,7 @@ $('limitedExchangeConfirm').onclick=()=>{
  save();
 
  closeLimitedExchange();
- $('limitedResults').innerHTML=gachaResultCard(c,old?`한정 교환 · 보유 ${old+1}장`:'LIMITED 교환 NEW',0);
+ $('limitedResults').innerHTML=gachaResultCard(c,old?`한정 교환 · 보유 ${old+1}장`:'LIMITED 교환 NEW',0,'limited');
  render();
  notice(`${c.name} 한정 교환 완료! ${need.toLocaleString()} LPT 사용 · 잔여 ${local.limitedPoints.toLocaleString()} LPT`);
 };
@@ -4670,7 +4706,65 @@ function renderHomeCharacter(direction=0){
  hero.addEventListener('touchstart',e=>{if(e.touches.length!==1)return;startX=e.touches[0].clientX;startY=e.touches[0].clientY;tracking=true},{passive:true});
  hero.addEventListener('touchend',e=>{if(!tracking||homes.length<2)return;tracking=false;const t=e.changedTouches[0],dx=t.clientX-startX,dy=t.clientY-startY;if(Math.abs(dx)>=45&&Math.abs(dx)>Math.abs(dy)*1.15){homeSwipeLockUntil=Date.now()+450;moveHomeCarousel(dx<0?1:-1)}},{passive:true})
 }
-function render(){renderAttendance();renderBanner();renderLimited();renderHomeCharacter();$('rates').textContent=`SSR ${settings.ssr}% · SR ${settings.sr}% · R ${settings.r}%`;$('pityText').textContent=`✨ 천장 포인트 ${local.pityPoints.toLocaleString()} / ${settings.pity.toLocaleString()} PT · ${local.pityPoints>=settings.pity?'SSR 교환 가능!':`교환까지 ${(settings.pity-local.pityPoints).toLocaleString()} PT`}`;$('pityPoints').textContent=local.pityPoints.toLocaleString();$('pityExchange').disabled=!ready||!characters.some(c=>c.rarity==='SSR'&&!c.is_limited)||local.pityPoints<settings.pity||!!local.pendingGacha||gachaAnimationBusy;$('headerPoints').textContent=`🪙 ${local.points.toLocaleString()} P`;$('gachaPoints').textContent=local.points.toLocaleString();$('draw1').disabled=!ready||!validPool()||local.points<100||!!local.pendingGacha||gachaAnimationBusy;$('draw10').disabled=!ready||!validPool()||local.points<1000||!!local.pendingGacha||gachaAnimationBusy;renderCollection();renderGameInfo();renderCasino();if($('pangCharacter'))pangPopulateCharacter();if($('runnerBest'))$('runnerBest').textContent=Number(local.runnerBest||0).toLocaleString();if($('tetrisBest'))$('tetrisBest').textContent=Number(local.tetrisBest||0).toLocaleString();if(admin)renderAdmin()}
+function normalPickupConfig(){
+ let raw=settings?.normal_pickup_config;
+ if(typeof raw==='string'){try{raw=JSON.parse(raw)}catch{raw={}}}
+ raw=raw&&typeof raw==='object'&&!Array.isArray(raw)?raw:{};
+ const ids=Array.isArray(raw.character_ids)?[...new Set(raw.character_ids.map(String).filter(Boolean))]:[];
+ const multiplier=Number(raw.multiplier);
+ return {enabled:raw.enabled===true,start_at:raw.start_at||null,end_at:raw.end_at||null,multiplier:Number.isFinite(multiplier)?Math.max(1,Math.min(100,multiplier)):5,character_ids:ids}
+}
+function normalPickupState(now=Date.now()){
+ const cfg=normalPickupConfig(),start=cfg.start_at?new Date(cfg.start_at).getTime():NaN,end=cfg.end_at?new Date(cfg.end_at).getTime():NaN;
+ const validPeriod=Number.isFinite(start)&&Number.isFinite(end)&&end>start;
+ const active=cfg.enabled&&validPeriod&&now>=start&&now<=end;
+ const idSet=new Set(cfg.character_ids);
+ const cards=characters.filter(c=>!c.is_limited&&['SSR','SR','R'].includes(c.rarity)&&idSet.has(String(c.id)));
+ return {...cfg,startMs:start,endMs:end,validPeriod,active:active&&cards.length>0,cards,idSet}
+}
+function normalPickupChanceFor(c,state=normalPickupState()){
+ if(!state.active||!c||!state.idSet.has(String(c.id)))return null;
+ const pool=characters.filter(x=>!x.is_limited&&x.rarity===c.rarity);
+ if(!pool.length)return null;
+ const total=pool.reduce((sum,x)=>sum+(state.idSet.has(String(x.id))?state.multiplier:1),0);
+ const rate=Number(settings[String(c.rarity).toLowerCase()])||0;
+ return total>0?rate*state.multiplier/total:null
+}
+function pickNormalGachaCharacter(rarity){
+ const pool=characters.filter(c=>c.rarity===rarity&&!c.is_limited);
+ if(!pool.length)return null;
+ const state=normalPickupState();
+ if(!state.active)return pool[Math.floor(Math.random()*pool.length)];
+ const weights=pool.map(c=>state.idSet.has(String(c.id))?state.multiplier:1),total=weights.reduce((a,b)=>a+b,0);
+ let roll=Math.random()*total;
+ for(let i=0;i<pool.length;i++){roll-=weights[i];if(roll<0)return pool[i]}
+ return pool[pool.length-1]
+}
+function renderNormalPickup(){
+ const box=$('normalPickupBox');if(!box)return;
+ const state=normalPickupState();box.replaceChildren();box.classList.toggle('hidden',!state.active);if(!state.active)return;
+ const head=document.createElement('div');head.className='normal-pickup-head';
+ const title=document.createElement('div');title.className='normal-pickup-title';title.textContent='🔥 NORMAL PICK UP';
+ const period=document.createElement('div');period.className='normal-pickup-period';period.textContent=`${new Date(state.startMs).toLocaleString()} ~ ${new Date(state.endMs).toLocaleString()}`;
+ head.append(title,period);
+ const help=document.createElement('p');help.className='normal-pickup-help';help.textContent=`통상 등급 확률은 그대로 · 대상 카드는 같은 등급 안에서 ${state.multiplier}× 가중치`;
+ const cards=document.createElement('div');cards.className='normal-pickup-cards';
+ state.cards.forEach(c=>{const item=document.createElement('div');item.className='normal-pickup-card';const img=document.createElement('img');img.src=c.image_url;img.alt=c.name;const info=document.createElement('div');const name=document.createElement('strong');name.textContent=c.name;const meta=document.createElement('small');const chance=normalPickupChanceFor(c,state);meta.textContent=`${c.rarity} · 개별 약 ${chance===null?'?':chance.toFixed(chance<1?3:2)}%`;const tag=document.createElement('span');tag.className='normal-pickup-tag';tag.textContent='PICK UP';info.append(name,meta,tag);item.append(img,info);cards.append(item)});
+ box.append(head,help,cards)
+}
+function renderNormalPickupAdmin(){
+ if(!$('normalPickupTargets'))return;
+ const cfg=normalPickupConfig();
+ $('normalPickupEnabled').checked=cfg.enabled;
+ $('normalPickupStart').value=toLocalDateTimeInput(cfg.start_at);
+ $('normalPickupEnd').value=toLocalDateTimeInput(cfg.end_at);
+ $('normalPickupMultiplier').value=String(cfg.multiplier);
+ const selected=new Set(cfg.character_ids.map(String)),wrap=$('normalPickupTargets');wrap.replaceChildren();
+ const pool=characters.filter(c=>!c.is_limited&&['SSR','SR','R'].includes(c.rarity));
+ pool.forEach(c=>{const label=document.createElement('label');label.className='pickup-admin-target';const check=document.createElement('input');check.type='checkbox';check.value=String(c.id);check.checked=selected.has(String(c.id));check.dataset.pickupTarget='1';const img=document.createElement('img');img.src=c.image_url;img.alt='';const text=document.createElement('span');text.textContent=`${c.name} · ${c.rarity}`;label.append(check,img,text);wrap.append(label)});
+ const picked=pool.filter(c=>selected.has(String(c.id)));$('normalPickupAdminSummary').textContent=picked.length?`현재 선택: ${picked.map(c=>c.name).join(', ')}`:'현재 선택된 픽업 카드가 없습니다.'
+}
+function render(){renderAttendance();renderBanner();renderLimited();renderHomeCharacter();renderNormalPickup();$('rates').textContent=`SSR ${settings.ssr}% · SR ${settings.sr}% · R ${settings.r}%`;$('pityText').textContent=`✨ 천장 포인트 ${local.pityPoints.toLocaleString()} / ${settings.pity.toLocaleString()} PT · ${local.pityPoints>=settings.pity?'SSR 교환 가능!':`교환까지 ${(settings.pity-local.pityPoints).toLocaleString()} PT`}`;$('pityPoints').textContent=local.pityPoints.toLocaleString();$('pityExchange').disabled=!ready||!characters.some(c=>c.rarity==='SSR'&&!c.is_limited)||local.pityPoints<settings.pity||!!local.pendingGacha||gachaAnimationBusy;$('headerPoints').textContent=`🪙 ${local.points.toLocaleString()} P`;$('gachaPoints').textContent=local.points.toLocaleString();$('draw1').disabled=!ready||!validPool()||local.points<100||!!local.pendingGacha||gachaAnimationBusy;$('draw10').disabled=!ready||!validPool()||local.points<1000||!!local.pendingGacha||gachaAnimationBusy;renderCollection();renderGameInfo();renderCasino();if($('pangCharacter'))pangPopulateCharacter();if($('runnerBest'))$('runnerBest').textContent=Number(local.runnerBest||0).toLocaleString();if($('tetrisBest'))$('tetrisBest').textContent=Number(local.tetrisBest||0).toLocaleString();if(admin)renderAdmin()}
 function validPool(){return ['SSR','SR','R'].every(r=>Number(settings[r.toLowerCase()])===0||characters.some(c=>c.rarity===r&&!c.is_limited))&&characters.some(c=>c.rarity==='SSR'&&!c.is_limited)&&settings.pity>=1}
 function limitBreakLevel(c){if(!c||c.rarity!=='SSR')return 0;const n=Number(local.limitBreaks?.[c.id])||0;return Math.max(0,Math.min(3,Math.floor(n)))}
 function limitBreakStars(c){const lv=limitBreakLevel(c);return '★'.repeat(lv)+'☆'.repeat(3-lv)}
@@ -4704,11 +4798,13 @@ function selectedFullLimitBonus(selectId){const value=$(selectId)?.value;const c
 function withSelectedFullLimitBonus(base,selectId){const bonus=selectedFullLimitBonus(selectId);return {base,rate:bonus.rate,reward:Math.floor(base*(1+bonus.rate)),character:bonus.character}}
 function rewardBonusText(rate){return rate>0?` · ★★★ 풀돌 보너스 +${Math.round(rate*100)}%`:''}
 function card(c,count){const full=count!==undefined&&limitBreakLevel(c)>=3;const image=count!==undefined?characterDisplayImage(c):c.image_url;return `<div class="card${full?' full-limit-card':''}"><img src="${escapeHtml(image)}" alt="${escapeHtml(c.name)}"><div class="tag">${escapeHtml(c.rarity)}</div><strong>${escapeHtml(c.name)}</strong>${full?'<div class="full-limit-badge">★★★ FULL LIMIT</div>':''}${count!==undefined?`<p class="muted mini">${count?`보유 ${count}장${count>1?' · 사용 가능 중복 '+(count-1)+'장':''}`:'미획득'}</p>`:''}</div>`}
-function gachaResultCard(c,label='',index=0){
+function gachaResultCard(c,label='',index=0,source='neutral'){
  const rarityClass=c.rarity==='SSR'?' gacha-ssr':c.rarity==='SR'?' gacha-sr':'';
  const safeLabel=escapeHtml(label||'');
  const limitedBadge=c.is_limited?'✨ 한정 · ':'';
- return `<div class="card gacha-result-card${rarityClass}" style="--gacha-delay:${Math.min(index,12)*70}ms"><img src="${escapeHtml(c.image_url)}" alt="${escapeHtml(c.name)}"><div class="tag">${limitedBadge}${escapeHtml(c.rarity)}</div><strong>${escapeHtml(c.name)}</strong>${safeLabel?`<p class="gacha-result-label">${safeLabel}</p>`:''}</div>`
+ const pickup=source==='normal'&&normalPickupState().active&&normalPickupState().idSet.has(String(c.id));
+ const pickupBadge=pickup?' · PICK UP':'';
+ return `<div class="card gacha-result-card${rarityClass}" style="--gacha-delay:${Math.min(index,12)*70}ms"><img src="${escapeHtml(c.image_url)}" alt="${escapeHtml(c.name)}"><div class="tag">${limitedBadge}${escapeHtml(c.rarity)}${pickupBadge}</div><strong>${escapeHtml(c.name)}</strong>${safeLabel?`<p class="gacha-result-label">${safeLabel}</p>`:''}</div>`
 }
 let gachaAnimationBusy=false;
 let gachaAnimationRun=0;
@@ -5113,7 +5209,7 @@ function addGachaResult(c){const old=Number(local.counts[c.id])||0;local.counts[
 async function finishGacha(){
  const pending=local.pendingGacha;if(!pending)return;
  const entries=pending.results.map(({id,old},i)=>{const c=characters.find(x=>x.id===id);return c?{c,old,i}:null}).filter(Boolean);
- const out=entries.map(({c,old,i})=>gachaResultCard(c,old?`중복 · ${old+1}`:'NEW',i));
+ const out=entries.map(({c,old,i})=>gachaResultCard(c,old?`중복 · ${old+1}`:'NEW',i,'normal'));
  local.pendingGacha=null;save();$('pityOverlay').classList.add('hidden');
  gachaAnimationBusy=true;render();
  try{await playGachaCinematic(entries.map(x=>x.c),{source:'normal',oldCounts:entries.map(x=>x.old)})}
@@ -5122,11 +5218,11 @@ async function finishGacha(){
 }
 function continueGacha(){const pending=local.pendingGacha;if(!pending)return;if(pending.waiting){showPitySelection();render();return}while(pending.remaining>0){
  if(local.sinceSSR+1>=settings.pity){pending.waiting=true;save();showPitySelection();render();return}
- const x=Math.random()*100;const rarity=x<Number(settings.ssr)?'SSR':x<Number(settings.ssr)+Number(settings.sr)?'SR':'R';const pool=characters.filter(c=>c.rarity===rarity&&!c.is_limited);if(!pool.length){notice('캐릭터 목록이 변경됐어요. 관리자에게 문의해 주세요.');save();return}const c=pool[Math.floor(Math.random()*pool.length)];pending.remaining--;addGachaResult(c)
+ const x=Math.random()*100;const rarity=x<Number(settings.ssr)?'SSR':x<Number(settings.ssr)+Number(settings.sr)?'SR':'R';const c=pickNormalGachaCharacter(rarity);if(!c){notice('캐릭터 목록이 변경됐어요. 관리자에게 문의해 주세요.');save();return}pending.remaining--;addGachaResult(c)
  }finishGacha()}
-function draw(n){if(gachaAnimationBusy)return;if(local.pendingGacha)return continueGacha();if(!validPool())return notice('SSR 캐릭터와 확률이 0보다 큰 모든 등급의 캐릭터를 등록해야 합니다.');const cost=n*100;if(local.points<cost)return notice(`포인트가 부족해요! ${n}회 뽑기는 ${cost.toLocaleString()} P가 필요해요. 게임에서 포인트를 모아 주세요.`);local.points-=cost;local.pendingGacha={remaining:n,waiting:false,results:[]};save();for(let i=0;i<n;i++){const x=Math.random()*100;const rarity=x<Number(settings.ssr)?'SSR':x<Number(settings.ssr)+Number(settings.sr)?'SR':'R';const pool=characters.filter(c=>c.rarity===rarity&&!c.is_limited);if(!pool.length){notice('캐릭터 목록이 변경됐어요. 관리자에게 문의해 주세요.');return}const c=pool[Math.floor(Math.random()*pool.length)];local.pendingGacha.remaining--;addGachaResult(c);local.pityPoints+=1;save()}finishGacha()}
+function draw(n){if(gachaAnimationBusy)return;if(local.pendingGacha)return continueGacha();if(!validPool())return notice('SSR 캐릭터와 확률이 0보다 큰 모든 등급의 캐릭터를 등록해야 합니다.');const cost=n*100;if(local.points<cost)return notice(`포인트가 부족해요! ${n}회 뽑기는 ${cost.toLocaleString()} P가 필요해요. 게임에서 포인트를 모아 주세요.`);local.points-=cost;local.pendingGacha={remaining:n,waiting:false,results:[]};save();for(let i=0;i<n;i++){const x=Math.random()*100;const rarity=x<Number(settings.ssr)?'SSR':x<Number(settings.ssr)+Number(settings.sr)?'SR':'R';const c=pickNormalGachaCharacter(rarity);if(!c){notice('캐릭터 목록이 변경됐어요. 관리자에게 문의해 주세요.');return}local.pendingGacha.remaining--;addGachaResult(c);local.pityPoints+=1;save()}finishGacha()}
 $('pityConfirm').onclick=()=>{if(!chosenPityId)return;const c=characters.find(c=>c.id===chosenPityId&&c.rarity==='SSR');if(!c)return notice('선택한 SSR을 찾을 수 없어요. 다시 선택해 주세요.');const pending=local.pendingGacha;if(pending?.waiting){pending.waiting=false;pending.remaining--;addGachaResult(c);$('pityOverlay').classList.add('hidden');chosenPityId=null;continueGacha();return}if(pending||local.pityPoints<settings.pity)return notice('천장 포인트가 부족하거나 뽑기가 진행 중이에요.');local.pityPoints-=settings.pity;local.counts[c.id]=(Number(local.counts[c.id])||0)+1;save();$('pityOverlay').classList.add('hidden');chosenPityId=null;$('results').innerHTML=gachaResultCard(c,'SSR 교환 완료',0);render();notice(`${c.name} SSR 교환 완료! ${settings.pity} PT 사용 · 잔여 ${local.pityPoints} PT`)}; $('pityExchange').onclick=showPitySelection;$('pityCancel').onclick=()=>{if(local.pendingGacha?.waiting)return;$('pityOverlay').classList.add('hidden');chosenPityId=null};
-$('draw1').onclick=()=>draw(1);$('draw10').onclick=()=>draw(10);
+$('draw1').onclick=()=>draw(1);$('draw10').onclick=()=>draw(10);setInterval(()=>{if(!$('gacha')?.classList.contains('hidden'))renderNormalPickup()},30000);
 async function load(){if(!db)return notice('index.html 상단에 Supabase URL과 publishable/anon key를 입력해 주세요.');const [c,s]=await Promise.all([db.from('characters').select('*').order('created_at'),db.from('site_settings').select('*').eq('id',1).single()]);if(c.error||s.error)return notice('데이터 로드 오류: '+(c.error||s.error).message);characters=c.data;settings=s.data;orderDraft=null;if($('bannerEnabled')){$('bannerEnabled').checked=!!settings.event_banner_enabled;bannerDraft=bannerDraftFromSettings();renderBannerAdmin()}render();if(!local.derbyPending&&!derby.running)derbyPrepare();if(local.pendingGacha)continueGacha()}
 async function authCheck(){if(!db)return;const {data:{session:current}}=await db.auth.getSession();session=current;admin=false;if(current){const {data,error}=await db.rpc('is_site_admin');admin=!error&&data===true}if(!admin)closeEditor();$('loginBox').classList.toggle('hidden',admin);$('adminPanel').classList.toggle('hidden',!admin);renderRhythmAdmin();renderPetAdmin();$('status').textContent=admin?'관리자 로그인':'공개 사이트';if(admin){await loadAdminUsers();if(typeof loadSocialAdmin==='function')await loadSocialAdmin()}else{adminUsers=[];if($('userAdminList'))$('userAdminList').replaceChildren();if($('socialAdminUsers'))$('socialAdminUsers').replaceChildren();if($('socialAdminTrades'))$('socialAdminTrades').replaceChildren()}render()}
 $('loginForm').addEventListener('submit',async e=>{e.preventDefault();if(!db)return notice('Supabase 연결 설정을 먼저 해주세요.');const {error}=await db.auth.signInWithPassword({email:$('email').value,password:$('password').value});if(error)return notice('로그인 실패: '+error.message);$('password').value='';await authCheck();if(!admin){await db.auth.signOut();await authCheck();notice('이 계정은 관리자 권한이 없습니다.')}else notice('관리자 로그인 성공')});$('logout').onclick=async()=>{await db.auth.signOut();await authCheck()};
@@ -5462,6 +5558,7 @@ function renderAdmin(){
  for(const [id,key] of Object.entries(limitedKeys))if($(id))$(id).value=Number.isFinite(Number(settings[key]))?Number(settings[key]):limitedDefaults[id];syncLimitedRRate();
  $('homeSelect').innerHTML='<option value="">선택 안 함</option>'+characters.map(c=>`<option value="${escapeHtml(c.id)}">${escapeHtml(c.name)} (${escapeHtml(c.rarity)})</option>`).join('');
  $('homeSelect').value=settings.home_character_id||'';
+ renderNormalPickupAdmin();
  const list=$('adminList');list.replaceChildren();const draft=ensureOrderDraft();
  const categoryDefs=[
   {key:'LIMITED',label:'✨ 한정 SSR'},
@@ -5509,7 +5606,25 @@ function renderAdmin(){
 }
 function checkImage(file){return !file||file.size<=10*1024*1024&&['image/png','image/jpeg','image/webp','image/gif'].includes(file.type)}
 $('editForm').addEventListener('submit',async e=>{e.preventDefault();if(!admin||!editingId)return notice('관리자 로그인이 필요합니다.');const original=characters.find(c=>c.id===editingId);if(!original)return notice('수정할 캐릭터를 찾을 수 없습니다.');const name=$('editName').value.trim();if(!name)return notice('이름을 입력해 주세요.');const file=$('editImage').files[0],fullFile=$('editFullLimitImage').files[0];if(!checkImage(file)||!checkImage(fullFile))return notice('이미지는 PNG/JPG/WEBP/GIF 10MB 이하만 가능합니다.');const limitedPeriod=validateLimitedPeriod($('editLimited').checked,$('editLimitedStart').value,$('editLimitedEnd').value);if(!limitedPeriod.ok)return notice(limitedPeriod.message);const payload={name,rarity:$('editRarity').value,is_limited:$('editLimited').checked,limited_start:limitedPeriod.start,limited_end:limitedPeriod.end,dialogues:$('editDialogues').value.split('\n').map(x=>x.trim()).filter(Boolean)};const saveButton=$('editSave');saveButton.disabled=true;let newPath=null,newFullPath=null;try{if(file){newPath=`${crypto.randomUUID()}.${file.type.split('/')[1]==='jpeg'?'jpg':file.type.split('/')[1]}`;const {error:uploadError}=await db.storage.from('character-images').upload(newPath,file,{contentType:file.type});if(uploadError)throw new Error('새 이미지 업로드 실패: '+uploadError.message);payload.image_path=newPath;payload.image_url=db.storage.from('character-images').getPublicUrl(newPath).data.publicUrl}if(fullFile){newFullPath=`full-limit/${crypto.randomUUID()}.${fullFile.type.split('/')[1]==='jpeg'?'jpg':fullFile.type.split('/')[1]}`;const {error:fullUploadError}=await db.storage.from('character-images').upload(newFullPath,fullFile,{contentType:fullFile.type});if(fullUploadError)throw new Error('풀돌 일러스트 업로드 실패: '+fullUploadError.message);payload.full_limit_image_path=newFullPath;payload.full_limit_image_url=db.storage.from('character-images').getPublicUrl(newFullPath).data.publicUrl}else if($('editFullLimitRemove').checked){payload.full_limit_image_path=null;payload.full_limit_image_url=null}const {data,error}=await db.from('characters').update(payload).eq('id',original.id).select('id');if(error||!data?.length)throw new Error(error?.message||'수정 권한 또는 RLS 정책을 확인해 주세요.');const oldPath=file?original.image_path:null;const oldFullPath=(fullFile||$('editFullLimitRemove').checked)?original.full_limit_image_path:null;closeEditor();await load();notice('캐릭터 수정 완료! 모든 방문자에게 반영됩니다.');const removePaths=[];if(oldPath&&oldPath!==newPath)removePaths.push(oldPath);if(oldFullPath&&oldFullPath!==newFullPath)removePaths.push(oldFullPath);if(removePaths.length){const {error:removeError}=await db.storage.from('character-images').remove(removePaths);if(removeError)notice('수정은 완료됐지만 이전 이미지 정리에 실패했습니다: '+removeError.message)}}catch(err){const cleanup=[newPath,newFullPath].filter(Boolean);if(cleanup.length)await db.storage.from('character-images').remove(cleanup);notice('수정 오류: '+err.message)}finally{saveButton.disabled=false}});
-$('settingsForm').addEventListener('submit',async e=>{e.preventDefault();if(!admin)return;const payload={ssr:Number($('ssr').value),sr:Number($('sr').value),r:Number($('r').value),pity:Number($('pity').value),home_character_id:$('homeSelect').value||null};if(Object.values(payload).slice(0,3).some(v=>!Number.isFinite(v)||v<0||v>100)||Math.abs(payload.ssr+payload.sr+payload.r-100)>0.000001||!Number.isInteger(payload.pity)||payload.pity<1)return notice('확률 합계는 정확히 100%, 천장은 1 이상의 정수여야 합니다.');const {error}=await db.from('site_settings').update(payload).eq('id',1);if(error)return notice(error.message);await load();notice('공용 설정 저장 완료')});
+$('settingsForm').addEventListener('submit',async e=>{
+ e.preventDefault();if(!admin)return;
+ const enabled=$('normalPickupEnabled').checked,startValue=$('normalPickupStart').value,endValue=$('normalPickupEnd').value,multiplier=Number($('normalPickupMultiplier').value);
+ const ids=[...document.querySelectorAll('[data-pickup-target]:checked')].map(x=>String(x.value));
+ let start=null,end=null;
+ if(enabled){
+  if(!startValue||!endValue)return notice('픽업 사용 시 시작 일시와 종료 일시를 모두 입력해 주세요.');
+  start=new Date(startValue);end=new Date(endValue);
+  if(Number.isNaN(start.getTime())||Number.isNaN(end.getTime())||end<=start)return notice('픽업 종료 일시는 시작 일시보다 뒤여야 합니다.');
+  if(!ids.length)return notice('픽업 대상 카드를 1장 이상 선택해 주세요.');
+  if(!Number.isFinite(multiplier)||multiplier<1||multiplier>100)return notice('픽업 배율은 1~100 사이로 입력해 주세요.')
+ }
+ const pickup={enabled,start_at:start?start.toISOString():null,end_at:end?end.toISOString():null,multiplier:Number.isFinite(multiplier)?Math.max(1,Math.min(100,multiplier)):5,character_ids:ids};
+ const payload={ssr:Number($('ssr').value),sr:Number($('sr').value),r:Number($('r').value),pity:Number($('pity').value),home_character_id:$('homeSelect').value||null,normal_pickup_config:pickup};
+ if([payload.ssr,payload.sr,payload.r].some(v=>!Number.isFinite(v)||v<0||v>100)||Math.abs(payload.ssr+payload.sr+payload.r-100)>0.000001||!Number.isInteger(payload.pity)||payload.pity<1)return notice('확률 합계는 정확히 100%, 천장은 1 이상의 정수여야 합니다.');
+ const {error}=await db.from('site_settings').update(payload).eq('id',1);
+ if(error){const msg=String(error.message||'');return notice((msg.includes('normal_pickup_config')?'통상 픽업 SQL을 먼저 실행해 주세요. · ':'설정 저장 실패: ')+msg)}
+ await load();notice('공용 설정 + 통상 픽업 설정 저장 완료')
+});
 function syncLimitedRRate(){
  const a=Number($('limitedRate')?.value||0),b=Number($('limitedSSR')?.value||0),c=Number($('limitedSR')?.value||0);
  const r=Math.max(0,Math.round((100-a-b-c)*100)/100);
